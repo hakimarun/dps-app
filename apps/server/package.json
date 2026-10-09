@@ -8,6 +8,9 @@
   "dependencies": {
     "@dps/engine": "*",
     "@dps/schema": "*",
-    "ws": "^8.22.0"
+    "nodemailer": "^10.0.16",
+    "qrcode": "^1.5.4",
+    "ws": "^8.22.0",
+    "zod": "^4.6.5"
   }
 }

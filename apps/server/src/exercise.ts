@@ -1,12 +1,10 @@
-// Eine laufende Übung: gespeichert werden nur die angenommenen Helfer-Aktionen.
+// Eine Übung: gespeichert werden nur die angenommenen Helfer-Aktionen und die Steuerbefehle der Leitung.
 // Der Zustand wird daraus mit der Engine neu berechnet; so lassen sich verspätete (offline gepufferte)
-// Aktionen an ihrer echten Zeit einsortieren.
-import { appendFileSync, mkdirSync, readFileSync, readdirSync } from "node:fs";
-import { dirname } from "node:path";
-import { randomUUID } from "node:crypto";
-import { Action, Patient, Scenario } from "@dps/schema";
-import type { ClientMsg, View } from "@dps/schema/protocol";
-import { apply, initial, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
+// Aktionen an ihrer echten Zeit einsortieren. Keine Ein- und Ausgabe hier, das Speichern machen onRecord/onControl.
+import { readFileSync, readdirSync } from "node:fs";
+import { Action, Patient, Scenario, type Sk } from "@dps/schema";
+import type { ClientMsg, LeitungView, Status, View } from "@dps/schema/protocol";
+import { apply, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
 
 export type Library = { defs: Defs; scenarios: Record<string, Scenario> };
 
@@ -19,49 +17,74 @@ export function loadLibrary(dir: URL): Library {
   return { defs: { patients, actions }, scenarios };
 }
 
-type Rec = { id: string; t: number; event: Event; name?: string };
-type Header = { code: string; scenario: Scenario; settings: Settings; seed: number; startedAt: number };
-export type Exercise = Header & { defs: Defs; records: Rec[]; seen: Set<string>; names: Map<string, string>; file?: string };
+export type Rec = { id: string; t: number; event: Event; name?: string };
+export type Control = { at: number; type: "start" | "pause" | "resume" | "end" };
+export type Header = { code: string; owner: string; scenario: Scenario; settings: Settings; seed: number; created: number };
+export type Exercise = Header & {
+  defs: Defs;
+  records: Rec[];
+  controls: Control[];
+  seen: Set<string>;
+  names: Map<string, string>;
+  onRecord?: (r: Rec) => void;
+  onControl?: (c: Control) => void;
+};
 
-export function createExercise(h: Header, defs: Defs, file?: string): Exercise {
-  if (file) {
-    mkdirSync(dirname(file), { recursive: true });
-    appendFileSync(file, JSON.stringify({ type: "exercise", ...h }) + "\n");
-  }
-  return { ...h, defs, records: [], seen: new Set(), names: new Map(), file };
+export function createExercise(h: Header, defs: Defs): Exercise {
+  return { ...h, defs, records: [], controls: [], seen: new Set(), names: new Map() };
 }
 
-// Lädt eine Übung aus ihrer Protokolldatei (eine JSON-Zeile je Eintrag).
-export function loadExercise(file: string, defs: Defs): Exercise {
-  const [head, ...lines] = readFileSync(file, "utf8").trim().split("\n").map((l) => JSON.parse(l));
-  const { type: _, ...h } = head;
-  const ex: Exercise = { ...(h as Header), defs, records: [], seen: new Set(), names: new Map(), file };
-  for (const { type: _t, ...r } of lines) addRecord(ex, r as Rec);
-  return ex;
-}
-
-function addRecord(ex: Exercise, r: Rec) {
+export function addRecord(ex: Exercise, r: Rec) {
   const i = ex.records.findLastIndex((x) => x.t <= r.t) + 1;
   ex.records.splice(i, 0, r);
   ex.seen.add(r.id);
   if (r.event.type === "join" && r.name) ex.names.set(r.event.participant, r.name);
 }
 
-export const minutes = (ex: Exercise, ms: number) => Math.max(0, (ms - ex.startedAt) / 60000);
+export function status(ex: Exercise): Status {
+  const last = ex.controls.at(-1)?.type;
+  return !last ? "ready" : last === "pause" ? "paused" : last === "end" ? "ended" : "running";
+}
+
+// Übungsminuten bis ms: nur die Zeit, in der die Übung lief.
+export function minutes(ex: Exercise, ms: number): number {
+  let total = 0;
+  let since: number | null = null;
+  for (const c of ex.controls) {
+    if (c.at > ms) break;
+    if (c.type === "start" || c.type === "resume") since = c.at;
+    else if (since !== null) (total += c.at - since), (since = null);
+  }
+  if (since !== null) total += ms - since;
+  return Math.max(0, total / 60000);
+}
+
+export function control(ex: Exercise, type: Control["type"], now: number): string | null {
+  const s = status(ex);
+  const ok = { start: s === "ready", pause: s === "running", resume: s === "paused", end: s !== "ended" }[type];
+  if (!ok) return `in diesem Zustand (${s}) nicht möglich`;
+  const c = { at: now, type };
+  ex.controls.push(c);
+  ex.onControl?.(c);
+  return null;
+}
 
 // ponytail: rechnet bei jeder Abfrage alles neu (O(Aktionen)); bei Bedarf Zwischenstände cachen.
-export function stateAt(ex: Exercise, t: number): State {
+export function stateAt(ex: Exercise, t: number, generated?: Event[]): State {
   const s = initial(ex.scenario, ex.defs, ex.settings, ex.seed);
   for (const r of ex.records) {
     if (r.t > t) break;
-    tick(s, r.t);
+    const g = tick(s, r.t);
+    generated?.push(...g);
     if (!validate(s, r.event)) apply(s, r.event); // nachträglich ungültig gewordene Aktionen fallen weg
   }
-  tick(s, t);
+  const rest = tick(s, t); // nicht in generated?.push(...) einbetten: ?. würde tick sonst überspringen
+  generated?.push(...rest);
   return s;
 }
 
 const BUFFER_MINUTES = 10; // so weit zurück darf eine gepufferte Aktion liegen
+const NOT_RUNNING: Record<Status, string> = { ready: "Übung noch nicht gestartet", paused: "Übung pausiert", ended: "Übung beendet", running: "" };
 
 export function submit(
   ex: Exercise,
@@ -70,25 +93,28 @@ export function submit(
   now: number,
 ): { error: string | null; participant?: string } {
   if (ex.seen.has(msg.id)) return { error: null, participant: participant ?? undefined }; // erneut gesendet
+  const st = status(ex);
   const nowT = minutes(ex, now);
-  const atT = minutes(ex, msg.at);
   const i = msg.intent;
   let event: Event;
   let name: string | undefined;
   if (i.type === "join") {
+    if (st === "ended") return { error: NOT_RUNNING.ended };
     if (participant) return { error: "schon beigetreten" };
-    event = { t: nowT, type: "join", participant: randomUUID(), unit: i.unit };
+    event = { t: nowT, type: "join", participant: crypto.randomUUID(), unit: i.unit };
     name = i.name;
   } else {
     if (!participant) return { error: "nicht beigetreten" };
-    const t = atT <= nowT && atT >= nowT - BUFFER_MINUTES ? atT : nowT;
+    if (st !== "running") return { error: NOT_RUNNING[st] };
+    const atT = minutes(ex, msg.at);
+    const t = msg.at <= now && atT >= nowT - BUFFER_MINUTES ? atT : nowT;
     event = { ...i, t, participant };
   }
   const error = validate(stateAt(ex, event.t), event);
   if (error) return { error };
   const r: Rec = { id: msg.id, t: event.t, event, name };
   addRecord(ex, r);
-  if (ex.file) appendFileSync(ex.file, JSON.stringify({ type: "intent", ...r }) + "\n");
+  ex.onRecord?.(r);
   return { error: null, participant: event.participant };
 }
 
@@ -106,4 +132,64 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
     inventory: unit.inventory,
     unitArrived: s.t >= unit.arrivesAt,
   };
+}
+
+const RANK: Record<Sk, number> = { I: 3, II: 2, III: 1, IV: 0, EX: -1 };
+const CONTACT_ALERT_MIN = 5;
+
+// Was die Leitung sieht: alles, inklusive Soll-SK, Hinweisen und Ereignisstrom.
+export function leitungView(ex: Exercise, now: number): LeitungView {
+  const t = minutes(ex, now);
+  const generated: Event[] = [];
+  const s = stateAt(ex, t, generated);
+  const name = (id: string) => ex.names.get(id) ?? "?";
+  const action = (id: string) => ex.defs.actions[id]?.title ?? id;
+  const counts: LeitungView["counts"] = { I: 0, II: 0, III: 0, IV: 0, EX: 0, offen: 0 };
+  const patients = Object.entries(s.patients).map(([id, ps]) => {
+    const ph = phaseDef(s, id);
+    const target = targetSk(s, id);
+    const helpers = Object.entries(s.participants).filter(([, h]) => h.busy?.patient === id || h.patient === id).map(([hid]) => name(hid));
+    const busyHere = Object.values(s.participants).some((h) => h.busy?.patient === id);
+    const last = ex.records.findLast((r) => r.t <= t && "patient" in r.event && r.event.patient === id)?.t ?? null;
+    const lastContact = busyHere ? t : last;
+    counts[ps.triage ?? "offen"]++;
+    const alert = ph.dead
+      ? "verstorben"
+      : ph.left
+        ? null
+        : ps.triage && RANK[ps.triage] < RANK[target]
+          ? `Untertriage (Soll ${target})`
+          : target === "I" && t - (lastContact ?? 0) >= CONTACT_ALERT_MIN
+            ? `seit ${Math.floor(t - (lastContact ?? 0))} min ohne Helfer`
+            : !ps.triage && t >= 10
+              ? "nicht gesichtet"
+              : null;
+    return { id, title: ex.defs.patients[id].title, phase: ph.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert };
+  });
+  const helpers = Object.entries(s.participants).map(([id, h]) => ({
+    id, name: name(id), unit: h.unit, patient: h.patient, busy: h.busy ? action(h.busy.action) : null,
+  }));
+  const text = (e: Event): string => {
+    const P = (p: string) => p.toUpperCase();
+    switch (e.type) {
+      case "join": return `${name(e.participant)} tritt bei (${e.unit})`;
+      case "scan": return `${name(e.participant)} scannt ${P(e.patient)}`;
+      case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
+      case "end": return `${name(e.participant)}: Maßnahme beendet`;
+      case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
+      case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;
+    }
+  };
+  // Nur echte Phasenwechsel; die Engine meldet auch erneute Regelprüfungen in derselben Phase.
+  const prev: Record<string, string> = Object.fromEntries(Object.keys(s.patients).map((id) => [id, ex.defs.patients[id].start]));
+  const changes = generated.filter((e) => {
+    if (e.type !== "phase" || prev[e.patient] === e.to) return false;
+    prev[e.patient] = e.to;
+    return true;
+  });
+  const events = [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...changes]
+    .sort((a, b) => b.t - a.t)
+    .slice(0, 30)
+    .map((e) => ({ t: e.t, text: text(e) }));
+  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, events };
 }

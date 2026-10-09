@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { ClientMsg, Intent, ServerMsg, View } from "@dps/schema/protocol";
 
 type Welcome = Extract<ServerMsg, { type: "welcome" }>;
+type Clock = Extract<ServerMsg, { type: "clock" }>;
 type Pending = Extract<ClientMsg, { type: "intent" }>;
 
 export type Conn = {
@@ -16,13 +17,16 @@ export type Conn = {
   queued: number;
   error: string | null;
   offset: number; // Serverzeit minus Gerätezeit in ms
+  clock: Clock | null;
+  code: string; // Übungscode
 };
 
+export const DEFAULT_SERVER = process.env.EXPO_PUBLIC_SERVER_URL ?? "ws://localhost:3000";
 const key = (code: string) => `dps:${code.toUpperCase()}`;
 const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
 export function useConnection() {
-  const [c, setC] = useState<Conn>({ status: "idle", welcome: null, participant: null, view: null, queued: 0, error: null, offset: 0 });
+  const [c, setC] = useState<Conn>({ status: "idle", welcome: null, participant: null, view: null, queued: 0, error: null, offset: 0, clock: null, code: "" });
   const r = useRef({ ws: null as WebSocket | null, server: "", code: "", participant: null as string | null, queue: [] as Pending[], offset: 0, retry: 0 as ReturnType<typeof setTimeout> | 0 });
 
   const save = () => AsyncStorage.setItem(key(r.current.code), JSON.stringify({ participant: r.current.participant, queue: r.current.queue }));
@@ -45,12 +49,14 @@ export function useConnection() {
     };
     ws.onmessage = (e) => {
       const m = JSON.parse(String(e.data)) as ServerMsg;
-      if (m.type === "welcome") {
+      if (m.type === "clock") {
         r.current.offset = m.serverNow - Date.now();
+        setC((s) => ({ ...s, clock: m, offset: r.current.offset }));
+      } else if (m.type === "welcome") {
         if (!m.participant) r.current.queue = r.current.queue.filter((q) => q.intent.type === "join"); // Server kennt uns nicht (mehr)
         r.current.participant = m.participant;
         save();
-        setC((s) => ({ ...s, status: "online", welcome: m, participant: m.participant, offset: r.current.offset, queued: r.current.queue.length, error: null }));
+        setC((s) => ({ ...s, status: "online", welcome: m, participant: m.participant, queued: r.current.queue.length, error: null }));
         flush();
       } else if (m.type === "ack") {
         r.current.queue = r.current.queue.filter((q) => q.id !== m.id);
@@ -58,7 +64,7 @@ export function useConnection() {
         save();
         setC((s) => ({ ...s, participant: r.current.participant, queued: r.current.queue.length, error: m.error }));
       } else if (m.type === "view") setC((s) => ({ ...s, view: m.view }));
-      else setC((s) => ({ ...s, error: m.error }));
+      else if (m.type === "error") setC((s) => ({ ...s, error: m.error }));
     };
   }, []);
 
@@ -69,7 +75,7 @@ export function useConnection() {
       const stored = JSON.parse((await AsyncStorage.getItem(key(code))) ?? "{}");
       Object.assign(r.current, { server, code: code.toUpperCase(), participant: stored.participant ?? null, queue: stored.queue ?? [] });
       await AsyncStorage.setItem("dps:last", JSON.stringify({ server, code }));
-      setC({ status: "connecting", welcome: null, participant: null, view: null, queued: r.current.queue.length, error: null, offset: 0 });
+      setC({ status: "connecting", welcome: null, participant: null, view: null, queued: r.current.queue.length, error: null, offset: 0, clock: null, code: r.current.code });
       open();
     },
     [open],
@@ -85,6 +91,12 @@ export function useConnection() {
 
   useEffect(() => () => r.current.ws?.close(), []);
   return { conn: c, connect, send };
+}
+
+// Übungsminuten jetzt: Stand der letzten Uhr-Nachricht, weitergezählt nur während die Übung läuft.
+export function exerciseMinutes(clock: Clock | null, offset: number, now: number): number {
+  if (!clock) return 0;
+  return clock.t + (clock.status === "running" ? (now + offset - clock.serverNow) / 60000 : 0);
 }
 
 export async function lastConnection(): Promise<{ server: string; code: string } | null> {

@@ -25,7 +25,7 @@ Run lint and typecheck before declaring any task done.
 
 ## Navigation & Routing
 
-- Die App hat bewusst noch kein Expo Router: ein einziger Ablauf, Screens per Zustand in `App.tsx`. Bei mehr Screens (Meilenstein 3) auf Expo Router mit Routen in `src/app/` umstellen.
+- Die App hat bewusst noch kein Expo Router: ein einziger Ablauf, Screens per Zustand in `App.tsx`. Helfer in `App.tsx`, Praxisanleiter in `src/leitung.tsx`. Auf Expo Router (Routen in `src/app/`) umstellen, sobald Deep Links oder echte Zurück-Navigation gebraucht werden.
 
 ## Building with EAS
 

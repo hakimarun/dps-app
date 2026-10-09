@@ -3,14 +3,17 @@
   "private": true,
   "type": "module",
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "test": "node --test",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "server": "node apps/server/src/main.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
+    "@types/ws": "^8.18.2",
     "typescript": "^7.0.2"
   }
 }

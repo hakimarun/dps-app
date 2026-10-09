@@ -1,0 +1,13 @@
+{
+  "name": "@dps/server",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.ts"
+  },
+  "dependencies": {
+    "@dps/engine": "*",
+    "@dps/schema": "*",
+    "ws": "^8.22.0"
+  }
+}

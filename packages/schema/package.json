@@ -2,7 +2,10 @@
   "name": "@dps/schema",
   "private": true,
   "type": "module",
-  "exports": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./protocol": "./src/protocol.ts"
+  },
   "dependencies": {
     "zod": "^4.6.5"
   }

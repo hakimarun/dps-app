@@ -18,7 +18,7 @@ export function loadLibrary(dir: URL): Library {
 }
 
 export type Rec = { id: string; t: number; event: Event; name?: string };
-export type Control = { at: number; type: "start" | "pause" | "resume" | "end" };
+export type Control = { at: number; type: "start" | "pause" | "resume" | "end" | "release" }; // release: Berichte freigegeben
 export type Header = { code: string; owner: string; scenario: Scenario; settings: Settings; seed: number; created: number };
 export type Exercise = Header & {
   defs: Defs;
@@ -42,9 +42,11 @@ export function addRecord(ex: Exercise, r: Rec) {
 }
 
 export function status(ex: Exercise): Status {
-  const last = ex.controls.at(-1)?.type;
+  const last = ex.controls.findLast((c) => c.type !== "release")?.type;
   return !last ? "ready" : last === "pause" ? "paused" : last === "end" ? "ended" : "running";
 }
+
+export const released = (ex: Exercise) => ex.controls.some((c) => c.type === "release");
 
 // Übungsminuten bis ms: nur die Zeit, in der die Übung lief.
 export function minutes(ex: Exercise, ms: number): number {
@@ -61,7 +63,7 @@ export function minutes(ex: Exercise, ms: number): number {
 
 export function control(ex: Exercise, type: Control["type"], now: number): string | null {
   const s = status(ex);
-  const ok = { start: s === "ready", pause: s === "running", resume: s === "paused", end: s !== "ended" }[type];
+  const ok = { start: s === "ready", pause: s === "running", resume: s === "paused", end: s !== "ended", release: s === "ended" && !released(ex) }[type];
   if (!ok) return `in diesem Zustand (${s}) nicht möglich`;
   const c = { at: now, type };
   ex.controls.push(c);

@@ -59,7 +59,14 @@ export const Patient = z
     version: z.number().int().positive(),
     title: z.string(),
     picture: z.string(), // sichtbares Bild auf dem QR-Zettel
-    profile: z.record(z.string(), z.unknown()).default({}), // Gesprächsprofil für den KI-Dialog (M5)
+    profile: z.record(z.string(), z.unknown()).default({}), // Gesprächsprofil für den KI-Dialog
+    // Für die Auswertung: kritische Maßnahmen (eine der Maßnahmen bis "within" Minuten bei 15-min-Phasen) und schädliche Maßnahmen.
+    scoring: z
+      .object({
+        critical: z.array(z.object({ actions: z.array(z.string()).min(1), within: z.number().positive() })).default([]),
+        harmful: z.array(z.string()).default([]),
+      })
+      .default({ critical: [], harmful: [] }),
     base: Findings,
     start: z.string(),
     phases: z.record(z.string(), Phase),

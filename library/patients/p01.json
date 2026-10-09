@@ -2,6 +2,7 @@
   "id": "p01", "version": 1, "title": "Arterielle Blutung am Unterschenkel",
   "picture": "Mann, ca. 35 Jahre, liegt neben dem Bus. Offene Wunde am rechten Unterschenkel, spritzende Blutung, große Blutlache. Wach, ängstlich und blass.",
   "profile": { "temperament": "aengstlich", "speech": "ganze Sätze, ab Phase 2 verwirrt", "anamnesis": { "allergies": "Penicillin", "medication": "keine", "history": "keine Vorerkrankungen", "lastMeal": "vor 2 h" }, "pitfall": "fragt ständig: Verliere ich mein Bein?" },
+  "scoring": {"critical": [{"actions": ["tourniquet"], "within": 15}], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 24, "spo2": 96, "hr": 115, "bp": "115/90", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "spurtingBleeding": true, "pain": 8 },
   "start": "1",
   "phases": {

@@ -38,9 +38,11 @@ function run(script: Event[], until: number, settings: Partial<Settings> = {}, s
 const phaseOf = (s: State, id: string) => s.patients[id].phase;
 
 test("Bibliothek: alle Regeln nutzen bekannte Maßnahmen, Szenario kennt alle Patienten", () => {
-  for (const p of Object.values(patients))
+  for (const p of Object.values(patients)) {
     for (const ph of Object.values(p.phases))
       for (const r of ph.rules) for (const a of [...r.when, ...r.active]) assert.ok(actions[a], `${p.id}: Maßnahme ${a} fehlt`);
+    for (const a of [...p.scoring.critical.flatMap((c) => c.actions), ...p.scoring.harmful]) assert.ok(actions[a], `${p.id}: Auswertung nennt unbekannte Maßnahme ${a}`);
+  }
   for (const id of scenario.patients) assert.ok(patients[id], `Szenario: ${id} fehlt`);
 });
 

@@ -5,9 +5,9 @@ import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
-import type { Status } from "@dps/schema/protocol";
+import type { Status, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
-import { Button, Chip, Field, SK, Sheet, Title, clock, dark, light, skColor, type Theme } from "./src/ui";
+import { Badge, Button, Chip, Field, SK, Sheet, Stars, Title, clock, dark, light, skColor, type Theme } from "./src/ui";
 import { Leitung } from "./src/leitung";
 
 const VITALS: [string, string, string?][] = [["AF", "rr"], ["HF", "hr"], ["RR", "bp"], ["SpO₂", "spo2", " %"], ["GCS", "gcs"], ["Rekap", "recap", " s"]];
@@ -75,6 +75,7 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
   const min = exerciseMinutes(conn.clock, conn.offset, now);
   let body: ReactNode;
   if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
+  else if (conn.participant && conn.clock?.status === "ended") body = <Result t={t} result={conn.view?.result ?? null} />;
   else if (!conn.participant) body = <Join t={t} units={w.units} online={conn.status === "online"} onJoin={(name, unit) => send({ type: "join", name, unit })} />;
   else if (sheet === "scan" || !conn.view?.patient)
     body = <Scan t={t} code={conn.code} current={conn.view?.patient?.id}
@@ -239,5 +240,54 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         </View>
       </View>
     </View>
+  );
+}
+
+const n = (k: number, one: string, many: string) => `${k} ${k === 1 ? one : many}`;
+
+function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"]> | null }) {
+  if (!result)
+    return (
+      <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
+        <Title t={t}>Übung beendet</Title>
+        <Text style={{ color: t.quiet }}>Deine Auswertung erscheint hier, sobald der Praxisanleiter sie freigibt.</Text>
+      </ScrollView>
+    );
+  const { team, me } = result;
+  const list = (items: string[]) => items.map((x, i) => <Text key={i} style={{ color: t.text }}>• {x}</Text>);
+  return (
+    <ScrollView contentContainerStyle={{ padding: 20, gap: 14 }}>
+      <Title t={t}>Übung beendet</Title>
+      <View style={{ borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 14, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View>
+          <Text style={{ color: t.quiet }}>Team-Ergebnis</Text>
+          <Stars t={t} stars={team.stars} />
+        </View>
+        <View style={{ alignItems: "flex-end" }}>
+          <Text style={{ color: t.text, fontWeight: "600", fontSize: 17 }}>{team.survived} von {team.eligible}</Text>
+          <Text style={{ color: t.quiet }}>Patienten überlebt</Text>
+        </View>
+      </View>
+      <View>
+        <Text style={{ color: t.text, fontSize: 28, fontWeight: "600" }}>{me.points >= 0 ? "+" : ""}{me.points} Punkte</Text>
+        <Text style={{ color: t.quiet }}>nur für dich sichtbar</Text>
+      </View>
+      {me.badges.length > 0 && <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>{me.badges.map((b) => <Badge key={b} t={t} label={b} />)}</View>}
+      {me.good.length > 0 && (
+        <View style={{ gap: 4 }}>
+          <Text style={{ color: t.text, fontWeight: "600" }}>Gut gelaufen</Text>
+          {list(me.good)}
+        </View>
+      )}
+      {me.improve.length > 0 && (
+        <View style={{ gap: 4, backgroundColor: t.tint, borderRadius: 12, padding: 14 }}>
+          <Text style={{ color: t.text, fontWeight: "600" }}>Nächstes Mal</Text>
+          {list(me.improve)}
+        </View>
+      )}
+      <Text style={{ color: t.quiet }}>
+        {n(me.patients, "Patient", "Patienten")} · {n(me.actions, "Maßnahme", "Maßnahmen")} · {n(me.triages, "Sichtung", "Sichtungen")} · {Math.round(me.busyShare * 100)} % der Zeit in Maßnahmen
+      </Text>
+    </ScrollView>
   );
 }

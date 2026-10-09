@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Findings, Patient, Sk } from "@dps/schema";
-import type { Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
+import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Button, Chip, Field, Sheet, Title, clock, skColor, type Theme } from "./ui";
+import { Badge, Button, Chip, Field, Sheet, Stars, Title, clock, skColor, type Theme } from "./ui";
 
 type Session = { server: string; token: string; email: string };
 type LibPatient = { id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number };
@@ -286,6 +286,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
       </View>
       <Text style={{ color: t.quiet }}>{v?.title ?? "verbinde …"}</Text>
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
+      {st === "ended" && <EvaluationPanel t={t} session={session} code={code} />}
       <View style={{ flexDirection: "row", gap: 6 }}>{(["I", "II", "III", "EX", "offen"] as const).map(skCell)}</View>
       {v?.patients.map((p) => (
         <View key={p.id} style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
@@ -312,5 +313,49 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
         {st !== "ended" && <Button t={t} label="Übung beenden" onPress={() => ctl("end")} />}
       </View>
     </ScrollView>
+  );
+}
+
+const OUTCOME_RED = new Set(["verstorben"]);
+
+function EvaluationPanel({ t, session, code }: { t: Theme; session: Session; code: string }) {
+  const [ev, setEv] = useState<Evaluation | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const load = () => void api<Evaluation>(session, `/api/exercises/${code}/evaluation`).then(setEv, (e: Error) => setError(e.message));
+  useEffect(load, [code]);
+  if (!ev) return error ? <Text style={{ color: t.red }}>{error}</Text> : null;
+  const m = (x: number | null) => (x === null ? "–" : clock(x * 60000));
+  return (
+    <View style={{ gap: 10, borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 14 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <Text style={{ color: t.text, fontWeight: "700", fontSize: 20 }}>Auswertung</Text>
+        <Stars t={t} stars={ev.team.stars} />
+      </View>
+      <Text style={{ color: t.text }}>{ev.team.survived} von {ev.team.eligible} Patienten überlebt</Text>
+      <Text style={{ color: t.quiet }}>Kritische Maßnahmen: {ev.critical.timely} rechtzeitig · {ev.critical.late} zu spät · {ev.critical.missed} verpasst</Text>
+      <Text style={{ color: t.quiet }}>Erste Sichtung: {ev.triage.correct} korrekt · {ev.triage.over} Übertriage · {ev.triage.under} Untertriage</Text>
+      <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Patienten</Text>
+      {ev.patients.map((p) => (
+        <View key={p.id}>
+          <Text style={{ color: OUTCOME_RED.has(p.outcome) ? t.red : t.text, fontWeight: "600" }}>{p.id.toUpperCase()} · {p.outcome}</Text>
+          <Text style={{ color: t.quiet }}>Erstkontakt {m(p.firstContact)} · Sichtung {m(p.firstTriage)}{p.triage ? ` (${p.triage})` : ""}</Text>
+          {p.missed.length > 0 && <Text style={{ color: t.red }}>verpasst: {p.missed.join(", ")}</Text>}
+        </View>
+      ))}
+      <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Helfer</Text>
+      {ev.helpers.map((h) => (
+        <View key={h.id} style={{ gap: 4 }}>
+          <Text style={{ color: t.text, fontWeight: "600" }}>{h.name} ({h.unit}) · {h.points} Punkte · {Math.round(h.busyShare * 100)} % in Maßnahmen</Text>
+          {h.badges.length > 0 && <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>{h.badges.map((b) => <Badge key={b} t={t} label={b} />)}</View>}
+          {h.improve.map((x, i) => <Text key={i} style={{ color: t.quiet }}>• {x}</Text>)}
+        </View>
+      ))}
+      {ev.released ? (
+        <Text style={{ color: t.quiet }}>Berichte sind für die Helfer freigegeben.</Text>
+      ) : (
+        <Button t={t} strong label="Berichte für Helfer freigeben"
+          onPress={() => api(session, `/api/exercises/${code}/control`, { type: "release" }).then(load, (e: Error) => setError(e.message))} />
+      )}
+    </View>
   );
 }

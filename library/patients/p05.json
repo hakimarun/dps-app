@@ -2,6 +2,7 @@
   "id": "p05", "version": 1, "title": "Verlegter Atemweg beim Bewusstlosen",
   "picture": "Mann, ca. 50 Jahre, liegt auf dem Rücken. Verletzungen im Mittelgesicht, Blut im Mund. Reagiert nicht, atmet gurgelnd und kaum sichtbar.",
   "profile": { "temperament": "keins", "speech": "keine Antwort" },
+  "scoring": {"critical": [{"actions": ["airway_open"], "within": 5}, {"actions": ["wendl", "airway_hold"], "within": 20}], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 8, "spo2": 80, "hr": 120, "bp": "150/90", "radialPulse": true, "recap": 3, "gcs": 6, "followsCommands": false },
   "start": "1",
   "phases": {

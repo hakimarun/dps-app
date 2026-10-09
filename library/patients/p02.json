@@ -2,6 +2,7 @@
   "id": "p02", "version": 1, "title": "Spannungspneumothorax",
   "picture": "Frau, ca. 45 Jahre, sitzt an die Buswand gelehnt und hält sich die rechte Brustseite. Deutlich luftnot, spricht nur kurze Sätze. Äußerlich kaum verletzt.",
   "profile": { "temperament": "kooperativ", "speech": "2–3 Wörter pro Antwort, ab Phase 3 keine", "anamnesis": { "history": "Asthma", "medication": "Salbutamol-Spray", "event": "Schmerz rechts beim Atmen seit dem Aufprall" }, "pitfall": "Asthma verleitet zur Fehldiagnose Asthmaanfall" },
+  "scoring": {"critical": [{"actions": ["auscultate"], "within": 30}, {"actions": ["needle_decompression"], "within": 30}], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 32, "spo2": 90, "hr": 118, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "exam": { "auscultation": "Atemgeräusch rechts aufgehoben", "percussion": "rechts hypersonor" } },
   "start": "1",
   "phases": {

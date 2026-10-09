@@ -11,7 +11,8 @@ import nodemailer from "nodemailer";
 import { z } from "zod";
 import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, LoginReq, VerifyReq, type Level, type ServerMsg } from "@dps/schema/protocol";
 import type { Settings } from "@dps/engine";
-import { control, leitungView, loadLibrary, minutes, stateAt, status, submit, viewFor, type Exercise } from "./exercise.ts";
+import { control, leitungView, loadLibrary, minutes, released, stateAt, status, submit, viewFor, type Exercise } from "./exercise.ts";
+import { evaluate } from "./evaluation.ts";
 import { approvalCounts, loadExercises, myApprovals, newCode, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "./db.ts";
 import { printPage } from "./print.ts";
 
@@ -126,6 +127,11 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     exercises.set(code, ex);
     return send(res, 201, { code });
   }
+  if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/evaluation$/))) {
+    const ex = exercises.get(m[1]);
+    if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
+    return send(res, 200, evaluate(ex, Date.now()));
+  }
   if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/control$/))) {
     const ex = exercises.get(m[1]);
     if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
@@ -187,10 +193,13 @@ function broadcast(ex: Exercise, withClock = false) {
   const mine = [...clients].filter(([, c]) => c.ex === ex);
   if (!mine.length) return;
   const s = stateAt(ex, minutes(ex, now));
+  const ev = released(ex) ? evaluate(ex, now) : null; // Bericht erst nach Freigabe durch die Leitung
   for (const [ws, c] of mine) {
     if (withClock) out(ws, clock(ex, now));
     if (!c.watch && !c.participant) continue;
-    const json = JSON.stringify(c.watch ? { type: "leitung", view: leitungView(ex, now) } : { type: "view", view: viewFor(ex, s, c.participant!) });
+    const me = ev?.helpers.find((h) => h.id === c.participant);
+    const view = c.watch ? null : { ...viewFor(ex, s, c.participant!), result: ev && me ? { team: ev.team, me } : null };
+    const json = JSON.stringify(c.watch ? { type: "leitung", view: leitungView(ex, now) } : { type: "view", view: view! });
     if (json !== c.last) (c.last = json), ws.send(json);
   }
 }

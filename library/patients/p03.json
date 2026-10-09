@@ -2,6 +2,7 @@
   "id": "p03", "version": 1, "title": "Schweres Schädel-Hirn-Trauma",
   "picture": "Mann, ca. 60 Jahre, liegt auf dem Rücken im Gang des Busses. Große Kopfplatzwunde, reagiert nicht auf Ansprache, atmet schnarchend.",
   "profile": { "temperament": "keins", "speech": "keine Antwort, stöhnt auf Schmerzreiz" },
+  "scoring": {"critical": [{"actions": ["airway_open"], "within": 15}, {"actions": ["oxygen"], "within": 15}, {"actions": ["intubation"], "within": 45}], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 12, "spo2": 88, "hr": 64, "bp": "160/90", "radialPulse": true, "recap": 2, "gcs": 7, "followsCommands": false, "exam": { "pupils": "links weiter als rechts" } },
   "start": "1",
   "phases": {

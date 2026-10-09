@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Sk } from "@dps/schema";
 
-export const light = { bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828" };
-export const dark = { bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350" };
+export const light = { bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828", gold: "#B8860B" };
+export const dark = { bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350", gold: "#FFD54F" };
 export type Theme = typeof light;
 
 export const SK: Record<Sk, { label: string; light: string | null; dark: string | null }> = {
@@ -70,6 +70,19 @@ export function Sheet({ t, title, onClose, children }: { t: Theme; title: string
         {children}
         <Button t={t} label="Schließen" onPress={onClose} />
       </ScrollView>
+    </View>
+  );
+}
+
+// Auswertung: Team-Sterne in Gold (die einzige Farbe außerhalb der Sichtungskategorien).
+export function Stars({ t, stars }: { t: Theme; stars: number }) {
+  return <Text style={{ color: t.gold, fontSize: 32 }} accessibilityLabel={`${stars} von 3 Sternen`}>{"★".repeat(stars)}{"☆".repeat(3 - stars)}</Text>;
+}
+
+export function Badge({ t, label }: { t: Theme; label: string }) {
+  return (
+    <View style={{ borderWidth: 2, borderColor: t.gold, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 }}>
+      <Text style={{ color: t.text, fontWeight: "600" }}>{label}</Text>
     </View>
   );
 }

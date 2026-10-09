@@ -2,6 +2,7 @@
   "id": "p07", "version": 1, "title": "Geschlossene Femurfraktur",
   "picture": "Mann, ca. 25 Jahre, liegt neben dem Bus. Rechter Oberschenkel deformiert und verkürzt. Schreit vor Schmerzen und ruft laut nach Hilfe.",
   "profile": { "temperament": "aggressiv und fordernd", "speech": "schreit, beschimpft Helfer", "anamnesis": { "allergies": "Metamizol", "event": "Alkohol auf der Vereinsfahrt" }, "pitfall": "Lautstärke zieht Helfer an" },
+  "scoring": {"critical": [], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 24, "spo2": 97, "hr": 105, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 9 },
   "start": "1",
   "phases": {

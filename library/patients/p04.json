@@ -2,6 +2,7 @@
   "id": "p04", "version": 1, "title": "Instabile Beckenfraktur",
   "picture": "Frau, ca. 70 Jahre, liegt neben dem umgekippten Bus. Starke Schmerzen in Becken und Leiste, kann nicht aufstehen. Keine äußere Blutung.",
   "profile": { "temperament": "verharmlosend, schwerhörig", "speech": "leise, versteht nur laute und deutliche Sätze", "anamnesis": { "history": "Vorhofflimmern, Bluthochdruck", "medication": "Blutverdünner (Apixaban)" }, "pitfall": "Kümmern Sie sich erst um die anderen." },
+  "scoring": {"critical": [{"actions": ["pelvic_binder"], "within": 30}, {"actions": ["transport"], "within": 45}], "harmful": []},
   "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 95, "hr": 105, "bp": "120/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 8, "exam": { "pelvis": "instabil, Druckschmerz" } },
   "start": "1",
   "phases": {

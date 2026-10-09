@@ -29,14 +29,49 @@ export const CreateExerciseReq = z.object({
   algorithm: Algorithm,
   level: Level,
 });
-export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end"]) });
+export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
 
 export type Intent = z.infer<typeof Intent>;
 export type ClientMsg = z.infer<typeof ClientMsg>;
 export type Level = z.infer<typeof Level>;
 export type Status = "ready" | "running" | "paused" | "ended";
 
+export type HelperReport = {
+  id: string;
+  name: string;
+  unit: string;
+  points: number;
+  badges: string[];
+  patients: number; // betreute Patienten
+  actions: number;
+  triages: number;
+  busyShare: number; // Anteil der Zeit in Maßnahmen, 0..1
+  good: string[]; // höchstens 3
+  improve: string[]; // höchstens 3, wichtigste zuerst
+};
+
+export type Team = { stars: 0 | 1 | 2 | 3; survived: number; eligible: number };
+
+export type Evaluation = {
+  released: boolean;
+  t: number;
+  team: Team;
+  critical: { timely: number; late: number; missed: number };
+  triage: { correct: number; over: number; under: number }; // erste Sichtung je Patient
+  patients: {
+    id: string;
+    title: string;
+    firstContact: number | null;
+    firstTriage: number | null;
+    triage: "korrekt" | "übertriage" | "untertriage" | null;
+    outcome: "verstorben" | "abtransportiert" | "vor Ort" | "tot aufgefunden";
+    missed: string[];
+  }[];
+  helpers: HelperReport[];
+};
+
 export type View = {
+  result?: { team: Team; me: HelperReport } | null; // erst nach Freigabe durch die Leitung
   me: { id: string; name: string; unit: string; busy: { action: string; until: number | null } | null } | null;
   patient: { id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[] } | null;
   inventory: Record<string, number>;

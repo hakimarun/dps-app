@@ -2,6 +2,7 @@
   "id": "p06", "version": 1, "title": "Verbrennung mit Inhalationstrauma",
   "picture": "Mann, ca. 30 Jahre, kommt aus dem brennenden Motorraum und läuft selbst zur Sammelstelle. Gesicht und Arme verbrannt, Gesicht rußgeschwärzt, Nasenhaare versengt. Heiser, zittert.",
   "profile": { "temperament": "kooperativ, will helfen", "speech": "heiser, ab Phase 3 nur flüsternd", "anamnesis": { "history": "Raucher", "medication": "keine", "event": "war 2–3 min im Rauch" }, "pitfall": "will zurück zum Bus und spielt die Atemprobleme herunter" },
+  "scoring": {"critical": [{"actions": ["oxygen"], "within": 30}, {"actions": ["warm"], "within": 30}, {"actions": ["intubation"], "within": 45}], "harmful": ["cool_large"]},
   "base": { "walking": true, "breathing": true, "rr": 22, "spo2": 95, "hr": 110, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 9, "temp": 36.5, "exam": { "burn": "ca. 25 % KOF, 2.–3. Grad, Gesicht und beide Arme", "airway": "Ruß im Gesicht, versengte Nasenhaare, heiser" } },
   "start": "1",
   "phases": {

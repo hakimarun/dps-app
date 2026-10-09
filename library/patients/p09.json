@@ -2,6 +2,7 @@
   "id": "p09", "version": 1, "title": "Leichtverletzt, psychisch belastet",
   "picture": "Frau, ca. 20 Jahre, läuft aufgeregt umher. Leicht blutende Schnittwunden am Unterarm. Atmet schnell, Kribbeln in den Händen, fragt nach ihrer Freundin.",
   "profile": { "temperament": "panisch", "speech": "schnell und durcheinander", "anamnesis": { "history": "keine Vorerkrankungen" }, "pitfall": "hat gesehen, dass unter dem Bus noch jemand liegt (P10), sagt es nur beruhigt und auf Nachfrage" },
+  "scoring": {"critical": [], "harmful": ["bag_rebreathing"]},
   "base": { "walking": true, "breathing": true, "rr": 28, "spo2": 99, "hr": 110, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 2 },
   "start": "1",
   "phases": {

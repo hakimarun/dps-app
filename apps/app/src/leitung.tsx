@@ -15,6 +15,8 @@ type ExerciseInfo = { code: string; title: string; status: Status; patients: str
 type Clock = Extract<ServerMsg, { type: "clock" }>;
 
 const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", paused: "pausiert", ended: "beendet" };
+const ROLES = [["sichtung", "Sichtungstrupps"], ["behandlung", "Behandlungstrupps"], ["transport", "Transporttrupps"]] as const;
+const ROLE_SHORT: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
 const httpBase = (server: string) => server.trim().replace(/^ws/, "http").replace(/\/$/, "");
@@ -201,6 +203,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [picked, setPicked] = useState<string[]>([]);
   const [algorithm, setAlgorithm] = useState("mstart");
   const [level, setLevel] = useState<Level>("fortgeschritten");
+  const [trupps, setTrupps] = useState({ sichtung: 1, behandlung: 2, transport: 1 });
   const [error, setError] = useState<string | null>(null);
   const sc = lib?.scenarios.find((s) => s.id === scenario) ?? lib?.scenarios[0];
   const byId = new Map(lib?.patients.map((p) => [p.id, p]));
@@ -229,9 +232,18 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {LEVELS.map(([id, label]) => <Chip key={id} t={t} label={label} selected={level === id} onPress={() => setLevel(id)} />)}
       </View>
+      <Text style={{ color: t.quiet }}>Trupps (jeder bekommt einen eigenen Beitrittscode)</Text>
+      {ROLES.map(([role, label]) => (
+        <View key={role} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+          <Text style={{ color: t.text, flex: 1 }}>{label}</Text>
+          <View style={{ width: 56 }}><Button t={t} label="−" disabled={trupps[role] === 0} onPress={() => setTrupps((x) => ({ ...x, [role]: x[role] - 1 }))} /></View>
+          <Text style={{ color: t.text, fontWeight: "600", width: 24, textAlign: "center" }}>{trupps[role]}</Text>
+          <View style={{ width: 56 }}><Button t={t} label="+" onPress={() => setTrupps((x) => ({ ...x, [role]: x[role] + 1 }))} /></View>
+        </View>
+      ))}
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <Button t={t} strong label="Übung anlegen" disabled={!sc || picked.length === 0}
-        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
+        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, trupps }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
       <Button t={t} label="Abbrechen" onPress={onCancel} />
     </ScrollView>
   );
@@ -294,14 +306,20 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
           <View style={{ flex: 1 }}>
             <Text style={{ color: t.text, fontWeight: "600" }}>{p.id.toUpperCase()} · {p.title}</Text>
             {p.alert ? <Text style={{ color: t.red, fontWeight: "600" }}>{p.alert}</Text> : null}
-            <Text style={{ color: t.quiet }}>Soll {p.target} · Ist {p.triage ?? "–"} · {p.helpers.join(", ") || "kein Helfer"}</Text>
+            <Text style={{ color: t.quiet }}>Soll {p.target} · Ist {p.triage ?? "–"} · {p.place} · {p.helpers.join(", ") || "kein Helfer"}</Text>
           </View>
           <Text style={{ color: t.quiet, fontSize: 12 }}>{p.phase}</Text>
         </View>
       ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Helfer ({v?.helpers.length ?? 0})</Text>
       {v?.helpers.map((h) => (
-        <Text key={h.id} style={{ color: t.quiet }}>{h.name} ({h.unit}) · {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}</Text>
+        <Text key={h.id} style={{ color: t.quiet }}>{h.name} ({h.trupp ?? h.unit}) · {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}</Text>
+      ))}
+      {(v?.trupps.length ?? 0) > 0 && <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Trupps</Text>}
+      {v?.trupps.map((tr) => (
+        <Text key={tr.code} style={{ color: t.quiet }}>
+          <Text style={{ color: t.text, fontWeight: "700" }}>{tr.code}</Text> · {tr.name} · {tr.unit} · {tr.members.join(", ") || "noch niemand"}
+        </Text>
       ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Ereignisse</Text>
       {v?.events.slice(0, 15).map((e, i) => <Text key={i} style={{ color: t.quiet }}>{clock(e.t * 60000)} {e.text}</Text>)}
@@ -334,13 +352,25 @@ function EvaluationPanel({ t, session, code }: { t: Theme; session: Session; cod
       <Text style={{ color: t.text }}>{ev.team.survived} von {ev.team.eligible} Patienten überlebt</Text>
       <Text style={{ color: t.quiet }}>Kritische Maßnahmen: {ev.critical.timely} rechtzeitig · {ev.critical.late} zu spät · {ev.critical.missed} verpasst</Text>
       <Text style={{ color: t.quiet }}>Erste Sichtung: {ev.triage.correct} korrekt · {ev.triage.over} Übertriage · {ev.triage.under} Untertriage</Text>
+      {(["sichtung", "behandlung", "transport"] as const).filter((r) => Object.values(ev.triageByRole[r]).some((x) => x > 0)).map((r) => (
+        <Text key={r} style={{ color: t.quiet }}>Sichtungen durch {ROLE_SHORT[r]}: {ev.triageByRole[r].correct} korrekt · {ev.triageByRole[r].over} über · {ev.triageByRole[r].under} unter</Text>
+      ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Patienten</Text>
       {ev.patients.map((p) => (
         <View key={p.id}>
           <Text style={{ color: OUTCOME_RED.has(p.outcome) ? t.red : t.text, fontWeight: "600" }}>{p.id.toUpperCase()} · {p.outcome}</Text>
           <Text style={{ color: t.quiet }}>Erstkontakt {m(p.firstContact)} · Sichtung {m(p.firstTriage)}{p.triage ? ` (${p.triage})` : ""}</Text>
           {p.missed.length > 0 && <Text style={{ color: t.red }}>verpasst: {p.missed.join(", ")}</Text>}
+          {p.handover && (
+            <Text style={{ color: p.handover.missing.length ? t.red : t.quiet }}>
+              Übergabe {m(p.handover.t)} an {p.handover.vehicle} → {p.handover.destination}{p.handover.missing.length ? ` · fehlte: ${p.handover.missing.join(", ")}` : " · vollständig"}
+            </Text>
+          )}
         </View>
+      ))}
+      {ev.trupps.length > 0 && <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Trupps</Text>}
+      {ev.trupps.map((tr) => (
+        <Text key={tr.code} style={{ color: t.text }}>{tr.name} · {tr.points} Punkte · {tr.members.join(", ") || "ohne Mitglieder"}</Text>
       ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Helfer</Text>
       {ev.helpers.map((h) => (

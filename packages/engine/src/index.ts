@@ -1,6 +1,6 @@
 // Simulations-Engine: reines TypeScript ohne Ein- und Ausgabe.
 // Gleiches Szenario, gleicher Seed und gleiche Ereignisse ergeben immer denselben Zustand.
-import type { Action, Algorithm, Findings, Patient, Phase, Scenario, Sk } from "@dps/schema";
+import type { Action, Algorithm, Findings, Patient, Phase, Place, Scenario, Sk } from "@dps/schema";
 
 export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean };
 export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15, random: false };
@@ -12,10 +12,19 @@ export type Event =
   | { t: number; type: "start"; participant: string; patient: string; action: string }
   | { t: number; type: "end"; participant: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
+  | { t: number; type: "admit"; participant: string; patient: string; place: Place }
+  | { t: number; type: "handover"; participant: string; patient: string; vehicle: string; destination: string; diagnosis: string }
   | { t: number; type: "phase"; patient: string; to: string };
 
 type Running = { action: string; patient: string; until: number | null; ok: boolean };
-export type PatientState = { phase: string; phaseStart: number; done: string[]; triage: Sk | null };
+export type PatientState = {
+  phase: string;
+  phaseStart: number;
+  done: string[];
+  triage: Sk | null;
+  place: Place | "fundort" | "abtransport";
+  left: boolean; // abtransportiert: läuft nicht weiter
+};
 export type ParticipantState = { unit: string; patient: string | null; busy: Running | null };
 export type Defs = { patients: Record<string, Patient>; actions: Record<string, Action> };
 export type State = {
@@ -25,7 +34,7 @@ export type State = {
   defs: Defs;
   patients: Record<string, PatientState>;
   participants: Record<string, ParticipantState>;
-  units: Record<string, { arrivesAt: number; inventory: Record<string, number> }>;
+  units: Record<string, { arrivesAt: number; seats: number; inventory: Record<string, number> }>;
 };
 
 export function initial(scenario: Scenario, defs: Defs, settings: Settings = defaultSettings, seed = 1): State {
@@ -33,10 +42,10 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
   for (const id of scenario.patients) {
     const p = defs.patients[id];
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
-    patients[id] = { phase: p.start, phaseStart: 0, done: [], triage: null };
+    patients[id] = { phase: p.start, phaseStart: 0, done: [], triage: null, place: "fundort", left: false };
   }
   const units: State["units"] = {};
-  for (const u of scenario.units) units[u.id] = { arrivesAt: u.arrivesAt, inventory: { ...u.inventory } };
+  for (const u of scenario.units) units[u.id] = { arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
   return { t: 0, settings, rng: seed >>> 0, defs, patients, participants: {}, units };
 }
 
@@ -48,10 +57,20 @@ export function validate(s: State, e: Event): string | null {
   if (!h) return "nicht beigetreten";
   if (e.type === "end") return h.busy?.until === null ? null : "keine dauerhafte Maßnahme aktiv";
   if (h.busy) return "Helfer ist beschäftigt";
-  if (!s.patients[e.patient]) return "unbekannter Patient";
+  const ps = s.patients[e.patient];
+  if (!ps) return "unbekannter Patient";
+  if (ps.left) return "Patient ist bereits abtransportiert";
   if (e.type === "scan") return null;
   if (h.patient !== e.patient) return "erst Patient scannen";
-  if (e.type === "triage") return null;
+  if (e.type === "triage" || e.type === "admit") return null;
+  if (e.type === "handover") {
+    const v = s.units[e.vehicle];
+    if (!v) return "unbekanntes Fahrzeug";
+    if (e.t < v.arrivesAt) return "Fahrzeug noch nicht eingetroffen";
+    if (v.seats < 1) return "kein Platz mehr im Fahrzeug";
+    if (Object.values(s.participants).some((x) => x.busy?.patient === e.patient)) return "erst laufende Maßnahmen beenden";
+    return null;
+  }
   const a = s.defs.actions[e.action];
   if (!a) return "unbekannte Maßnahme";
   const unit = s.units[h.unit];
@@ -90,6 +109,16 @@ export function apply(s: State, e: Event): State {
     case "triage":
       s.patients[e.patient].triage = e.sk;
       break;
+    case "admit":
+      s.patients[e.patient].place = e.place;
+      break;
+    case "handover": {
+      const ps = s.patients[e.patient];
+      Object.assign(ps, { left: true, place: "abtransport" });
+      if (!ps.done.includes("handover")) ps.done.push("handover");
+      s.units[e.vehicle].seats--;
+      break;
+    }
     case "phase":
       s.patients[e.patient].phase = e.to;
       s.patients[e.patient].phaseStart = e.t;
@@ -109,7 +138,7 @@ export function tick(s: State, now: number): Event[] {
     }
     for (const [id, ps] of Object.entries(s.patients)) {
       const ph = phaseDef(s, id);
-      if (ph.dead || ph.left || (!ph.rules.length && !ph.else)) continue;
+      if (ph.dead || ph.left || ps.left || (!ph.rules.length && !ph.else)) continue;
       const end = ps.phaseStart + (ph.minutes ?? s.settings.phaseMinutes);
       if (end <= now && (!next || end < next.t)) next = { t: end, type: "phase", patient: id, to: nextPhase(s, id) };
     }

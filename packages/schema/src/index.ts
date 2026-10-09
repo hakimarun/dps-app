@@ -3,6 +3,7 @@
 import { z } from "zod";
 
 export const Sk = z.enum(["I", "II", "III", "IV", "EX"]);
+export const Place = z.enum(["ablage", "bhp"]); // Patientenablage, Behandlungsplatz
 export const Algorithm = z.enum(["mstart", "prior", "asav"]);
 
 const findingFields = {
@@ -61,6 +62,7 @@ export const Patient = z
     picture: z.string(), // sichtbares Bild auf dem QR-Zettel
     profile: z.record(z.string(), z.unknown()).default({}), // Gesprächsprofil für den KI-Dialog
     // Für die Auswertung: kritische Maßnahmen (eine der Maßnahmen bis "within" Minuten bei 15-min-Phasen) und schädliche Maßnahmen.
+    // "handover" steht für die Übergabe zum Abtransport.
     scoring: z
       .object({
         critical: z.array(z.object({ actions: z.array(z.string()).min(1), within: z.number().positive() })).default([]),
@@ -100,6 +102,7 @@ export const Scenario = z.object({
         id: z.string(),
         title: z.string(),
         arrivesAt: z.number().min(0), // Minuten nach Übungsstart
+        seats: z.number().int().min(0).default(0), // Transportplätze (0 = kann nicht transportieren, z. B. NEF)
         inventory: z.record(z.string(), z.number().int().min(0)),
       }),
     )
@@ -107,6 +110,7 @@ export const Scenario = z.object({
 });
 
 export type Sk = z.infer<typeof Sk>;
+export type Place = z.infer<typeof Place>;
 export type Algorithm = z.infer<typeof Algorithm>;
 export type Findings = z.infer<typeof Findings>;
 export type Phase = z.infer<typeof Phase>;

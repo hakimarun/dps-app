@@ -53,7 +53,7 @@ export default function App() {
 
 function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
   const { conn, connect, send } = useConnection();
-  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan">(null);
+  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover">(null);
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const i = setInterval(() => setNow(Date.now()), 1000);
@@ -76,7 +76,8 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
   let body: ReactNode;
   if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
   else if (conn.participant && conn.clock?.status === "ended") body = <Result t={t} result={conn.view?.result ?? null} />;
-  else if (!conn.participant) body = <Join t={t} units={w.units} online={conn.status === "online"} onJoin={(name, unit) => send({ type: "join", name, unit })} />;
+  else if (!conn.participant)
+    body = <Join t={t} units={w.units} trupp={w.trupp} online={conn.status === "online"} onJoin={(name, unit) => send({ type: "join", name, ...(unit ? { unit } : {}) })} />;
   else if (sheet === "scan" || !conn.view?.patient)
     body = <Scan t={t} code={conn.code} current={conn.view?.patient?.id}
       onScan={(patient) => (send({ type: "scan", patient }), setSheet(null))} onBack={() => setSheet(null)} />;
@@ -89,6 +90,7 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
           <Text style={{ color: t.quiet, fontSize: 13 }}>
             {clock(min * 60000)}
             {conn.clock && STATUS[conn.clock.status] ? ` · ${STATUS[conn.clock.status]}` : ""}
+            {conn.view?.me?.trupp ? ` · ${conn.view.me.trupp}` : ""}
           </Text>
           <Text style={{ color: conn.status === "online" ? t.green : t.quiet, fontSize: 13 }}>
             {conn.status === "online" ? "● online" : "○ offline"}
@@ -110,6 +112,18 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
             );
           })}
         </Sheet>
+      )}
+      {sheet === "admit" && conn.view?.patient && (
+        <Sheet t={t} title={`Aufnahme ${conn.view.patient.id.toUpperCase()}`} onClose={() => setSheet(null)}>
+          {(["ablage", "bhp"] as const).map((place) => (
+            <Button key={place} t={t} strong label={place === "ablage" ? "Patientenablage" : "Behandlungsplatz"}
+              onPress={() => (send({ type: "admit", patient: conn.view!.patient!.id, place }), setSheet(null))} />
+          ))}
+        </Sheet>
+      )}
+      {sheet === "handover" && conn.view?.patient && (
+        <HandoverSheet t={t} patient={conn.view.patient.id} vehicles={conn.view.vehicles} onClose={() => setSheet(null)}
+          onHandover={(vehicle, destination, diagnosis) => (send({ type: "handover", patient: conn.view!.patient!.id, vehicle, destination, diagnosis }), setSheet(null))} />
       )}
       {sheet === "triage" && conn.view?.patient && (
         <Sheet t={t} title={`Sichtung ${conn.view.patient.id.toUpperCase()}`} onClose={() => setSheet(null)}>
@@ -141,18 +155,27 @@ function Connect({ t, status, error, onConnect, onExit }: { t: Theme; status: st
   );
 }
 
-function Join({ t, units, online, onJoin }: { t: Theme; units: { id: string; title: string }[]; online: boolean; onJoin: (name: string, unit: string) => void }) {
+const ROLE: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
+
+function Join({ t, units, trupp, online, onJoin }: {
+  t: Theme; units: { id: string; title: string }[]; trupp: { name: string; role: string; unit: string } | null; online: boolean; onJoin: (name: string, unit?: string) => void;
+}) {
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
   return (
     <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
       <Title t={t}>Beitreten</Title>
+      {trupp && <Text style={{ color: t.text, fontSize: 17 }}>{trupp.name} · {trupp.unit} · {ROLE[trupp.role]}</Text>}
       <Field t={t} label="Name oder Kürzel" value={name} onChange={setName} />
-      <Text style={{ color: t.quiet }}>Einheit</Text>
-      <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-        {units.map((u) => <Chip key={u.id} t={t} label={u.title} selected={unit === u.id} onPress={() => setUnit(u.id)} />)}
-      </View>
-      <Button t={t} strong label="Beitreten" disabled={!online || !name.trim() || !unit} onPress={() => onJoin(name.trim(), unit)} />
+      {!trupp && (
+        <>
+          <Text style={{ color: t.quiet }}>Einheit</Text>
+          <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+            {units.map((u) => <Chip key={u.id} t={t} label={u.title} selected={unit === u.id} onPress={() => setUnit(u.id)} />)}
+          </View>
+        </>
+      )}
+      <Button t={t} strong label="Beitreten" disabled={!online || !name.trim() || (!trupp && !unit)} onPress={() => onJoin(name.trim(), trupp ? undefined : unit)} />
     </ScrollView>
   );
 }
@@ -186,7 +209,7 @@ function Scan({ t, code, current, onScan, onBack }: { t: Theme; code: string; cu
 }
 
 function PatientScreen({ t, conn, min, onSheet, onEnd }: {
-  t: Theme; conn: ReturnType<typeof useConnection>["conn"]; min: number; onSheet: (s: "actions" | "triage" | "scan") => void; onEnd: () => void;
+  t: Theme; conn: ReturnType<typeof useConnection>["conn"]; min: number; onSheet: (s: "actions" | "triage" | "scan" | "admit" | "handover") => void; onEnd: () => void;
 }) {
   const v = conn.view!;
   const p = v.patient!;
@@ -206,6 +229,8 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
           )}
         </View>
         <Text style={{ color: t.text, fontSize: 17, lineHeight: 24 }}>{p.picture}</Text>
+        <Text style={{ color: t.quiet }}>Ort: {p.place}</Text>
+        {p.left && <Text style={{ color: t.text, fontWeight: "600" }}>Abtransportiert. Scanne den nächsten Patienten.</Text>}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {VITALS.map(([label, k, unit]) => (
             <View key={k} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10, padding: 10 }}>
@@ -233,11 +258,17 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
             {busy.until === null && <Button t={t} label="Beenden" onPress={onEnd} />}
           </View>
         )}
-        <Button t={t} strong label="Maßnahme" disabled={!!busy} onPress={() => onSheet("actions")} />
+        {!p.left && <Button t={t} strong label="Maßnahme" disabled={!!busy} onPress={() => onSheet("actions")} />}
         <View style={{ flexDirection: "row", gap: 10 }}>
-          <View style={{ flex: 1 }}><Button t={t} label="Sichten" disabled={!!busy} onPress={() => onSheet("triage")} /></View>
-          <View style={{ flex: 1 }}><Button t={t} label="Scannen" disabled={!!busy} onPress={() => onSheet("scan")} /></View>
+          {!p.left && <View style={{ flex: 1 }}><Button t={t} label="Sichten" disabled={!!busy} onPress={() => onSheet("triage")} /></View>}
+          <View style={{ flex: 1 }}><Button t={t} strong={p.left} label="Scannen" disabled={!!busy} onPress={() => onSheet("scan")} /></View>
         </View>
+        {!p.left && (
+          <View style={{ flexDirection: "row", gap: 10 }}>
+            <View style={{ flex: 1 }}><Button t={t} label="Aufnahme" disabled={!!busy} onPress={() => onSheet("admit")} /></View>
+            {v.me?.role !== "sichtung" && <View style={{ flex: 1 }}><Button t={t} label="Übergabe" disabled={!!busy} onPress={() => onSheet("handover")} /></View>}
+          </View>
+        )}
       </View>
     </View>
   );
@@ -289,5 +320,27 @@ function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"
         {n(me.patients, "Patient", "Patienten")} · {n(me.actions, "Maßnahme", "Maßnahmen")} · {n(me.triages, "Sichtung", "Sichtungen")} · {Math.round(me.busyShare * 100)} % der Zeit in Maßnahmen
       </Text>
     </ScrollView>
+  );
+}
+
+function HandoverSheet({ t, patient, vehicles, onHandover, onClose }: {
+  t: Theme; patient: string; vehicles: ViewData["vehicles"]; onHandover: (vehicle: string, destination: string, diagnosis: string) => void; onClose: () => void;
+}) {
+  const [vehicle, setVehicle] = useState("");
+  const [destination, setDestination] = useState("");
+  const [diagnosis, setDiagnosis] = useState("");
+  return (
+    <Sheet t={t} title={`Übergabe ${patient.toUpperCase()}`} onClose={onClose}>
+      <Text style={{ color: t.quiet }}>Fahrzeug</Text>
+      <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+        {vehicles.map((v) => (
+          <Chip key={v.id} t={t} label={`${v.title} · ${!v.arrived ? "noch nicht da" : v.seats > 0 ? `${v.seats} frei` : "voll"}`}
+            selected={vehicle === v.id} disabled={!v.arrived || v.seats < 1} onPress={() => setVehicle(v.id)} />
+        ))}
+      </View>
+      <Field t={t} label="Zielklinik" value={destination} onChange={setDestination} />
+      <Field t={t} label="Verdacht (z. B. instabile Beckenfraktur)" value={diagnosis} onChange={setDiagnosis} />
+      <Button t={t} strong label="Übergeben" disabled={!vehicle || !destination.trim()} onPress={() => onHandover(vehicle, destination.trim(), diagnosis.trim())} />
+    </Sheet>
   );
 }

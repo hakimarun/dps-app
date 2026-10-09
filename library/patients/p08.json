@@ -2,14 +2,13 @@
   "id": "p08", "version": 1, "title": "Gehfähig mit Gurtmarke, verzögerte Milzblutung",
   "picture": "Frau, ca. 40 Jahre, steht an der Sammelstelle. Sie war angeschnallt, sagt \"mir geht es gut\" und hat leichte Bauchschmerzen.",
   "profile": { "temperament": "verharmlosend, höflich", "speech": "ganze Sätze", "anamnesis": { "history": "keine Vorerkrankungen", "lastMeal": "vor 1 h", "event": "Schmerz im linken Oberbauch beim Einatmen" }, "pitfall": "Mir geht es gut, ich muss nur meinen Mann anrufen." },
-  "scoring": {"critical": [{"actions": ["examine_abdomen"], "within": 30}, {"actions": ["transport"], "within": 45}], "harmful": []},
+  "scoring": {"critical": [{"actions": ["examine_abdomen"], "within": 30}, {"actions": ["handover"], "within": 45}], "harmful": []},
   "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 98, "hr": 92, "bp": "125/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 3, "exam": { "abdomen": "Gurtmarke quer über dem Unterbauch, Druckschmerz linker Oberbauch" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["transport"], "then": "klinik" }], "else": "2" },
-    "2": { "findings": { "rr": 20, "hr": 105, "bp": "115/80", "pain": 5 }, "rules": [{ "when": ["transport"], "then": "klinik" }], "else": "3" },
-    "3": { "findings": { "walking": false, "rr": 24, "hr": 120, "bp": "95/65", "recap": 3, "pain": 6 }, "rules": [{ "when": ["transport"], "then": "klinik" }], "else": "4" },
-    "4": { "findings": { "walking": false, "rr": 28, "hr": 135, "bp": "80/55", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 6 }, "rules": [{ "when": ["transport"], "then": "klinik" }] },
-    "klinik": { "left": true }
+    "1": { "else": "2" },
+    "2": { "findings": { "rr": 20, "hr": 105, "bp": "115/80", "pain": 5 }, "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 24, "hr": 120, "bp": "95/65", "recap": 3, "pain": 6 }, "else": "4" },
+    "4": { "findings": { "walking": false, "rr": 28, "hr": 135, "bp": "80/55", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 6 } }
   }
 }

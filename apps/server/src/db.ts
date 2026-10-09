@@ -19,8 +19,11 @@ export function openDb(path: string): Db {
     create table if not exists approvals (user_id text not null, item text not null, version integer not null, at integer not null, primary key (user_id, item));
     create table if not exists exercises (code text primary key, owner text not null, header text not null);
     create table if not exists controls (code text not null, at integer not null, type text not null);
-    create table if not exists records (seq integer primary key autoincrement, code text not null, id text not null, t real not null, event text not null, name text);
+    create table if not exists records (seq integer primary key autoincrement, code text not null, id text not null, t real not null, event text not null, name text, trupp text);
   `);
+  // Datenbanken aus Meilenstein 3/4 haben noch keine Trupp-Spalte.
+  const cols = db.prepare("pragma table_info(records)").all() as { name: string }[];
+  if (!cols.some((c) => c.name === "trupp")) db.exec("alter table records add column trupp text");
   return db;
 }
 
@@ -76,8 +79,8 @@ export function setApproval(db: Db, userId: string, item: string, version: numbe
 
 // Übungen: Kopf, Steuerbefehle und Aktionen werden sofort geschrieben, beim Start alles wieder geladen.
 function persist(db: Db, ex: Exercise): Exercise {
-  const ins = db.prepare("insert into records (code, id, t, event, name) values (?, ?, ?, ?, ?)");
-  ex.onRecord = (r) => ins.run(ex.code, r.id, r.t, JSON.stringify(r.event), r.name ?? null);
+  const ins = db.prepare("insert into records (code, id, t, event, name, trupp) values (?, ?, ?, ?, ?, ?)");
+  ex.onRecord = (r) => ins.run(ex.code, r.id, r.t, JSON.stringify(r.event), r.name ?? null, r.trupp ?? null);
   const ctl = db.prepare("insert into controls values (?, ?, ?)");
   ex.onControl = (c) => ctl.run(ex.code, c.at, c.type);
   return ex;
@@ -93,9 +96,9 @@ export function loadExercises(db: Db, defs: Defs): Exercise[] {
   return heads.map(({ header }) => {
     const ex = createExercise(JSON.parse(header) as Header, defs);
     for (const c of db.prepare("select at, type from controls where code = ? order by rowid").all(ex.code) as Exercise["controls"]) ex.controls.push(c);
-    const recs = db.prepare("select id, t, event, name from records where code = ? order by seq").all(ex.code) as
-      { id: string; t: number; event: string; name: string | null }[];
-    for (const r of recs) addRecord(ex, { id: r.id, t: r.t, event: JSON.parse(r.event), name: r.name ?? undefined });
+    const recs = db.prepare("select id, t, event, name, trupp from records where code = ? order by seq").all(ex.code) as
+      { id: string; t: number; event: string; name: string | null; trupp: string | null }[];
+    for (const r of recs) addRecord(ex, { id: r.id, t: r.t, event: JSON.parse(r.event), name: r.name ?? undefined, trupp: r.trupp ?? undefined });
     return persist(db, ex);
   });
 }

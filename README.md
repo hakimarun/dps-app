@@ -2,7 +2,7 @@
 
 Digitale dynamische Patientensimulation für MANV-Übungen im Rettungsdienst: Helfer scannen QR-Patienten mit dem eigenen Handy, Patienten verändern sich je nach Behandlung, Praxisanleiter sehen die Lage live und bekommen eine Auswertung.
 
-Stand: Meilenstein 4 – Helfer-App, Praxisanleiter-Bereich und Auswertung mit Team-Sternen, Punkten, Abzeichen und Bericht je Helfer.
+Stand: Meilenstein 5 – Helfer-App, Praxisanleiter-Bereich, Auswertung und Einsatzabläufe (Trupps mit eigenen Codes, separate Sichtung, Patientenaufnahme, Übergabe an Fahrzeuge).
 
 ## Aufbau
 
@@ -36,7 +36,8 @@ npm run web -w @dps/app
 
 Als Praxisanleiter anmelden: Ohne `SMTP_URL` steht der Anmeldecode im Server-Log. Für echten Mailversand
 `SMTP_URL` (z. B. `smtps://user:pass@host`) und `MAIL_FROM` setzen. Dann Fälle in der Bibliothek freigeben,
-Übung anlegen, QR-Zettel drucken (`/print/<CODE>`) und starten. Nach dem Ende zeigt die Lage die Auswertung;
+Übung mit Trupps anlegen, Zettel drucken (`/print/<CODE>`: Übungscode, ein Code je Trupp, QR-Zettel je Patient) und starten.
+Helfer treten mit dem Code ihres Trupps bei; Sichtungstrupps sichten nur und leisten lebensrettende Sofortmaßnahmen. Nach dem Ende zeigt die Lage die Auswertung;
 „Berichte freigeben“ schickt jedem Helfer seinen Bericht. Punktewerte stehen in `apps/server/src/evaluation.ts`.
 
 Auf dem Handy: Expo Go oder Development Build, als Server `ws://<IP des Rechners>:3000` eintragen.

@@ -2,6 +2,7 @@
 import QRCode from "qrcode";
 import type { Exercise } from "./exercise.ts";
 
+const ROLE = { sichtung: "nur Sichtung und lebensrettende Sofortmaßnahmen", behandlung: "Behandlung", transport: "Transport und Übergabe" };
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
 export async function printPage(ex: Exercise): Promise<string> {
@@ -33,6 +34,8 @@ export async function printPage(ex: Exercise): Promise<string> {
 <div class="hint">Drucken oder „Als PDF speichern“ (Strg/Cmd + P). Zettel an der gestrichelten Linie trennen und auf dem Gelände verteilen.</div>
 <section class="card join"><h1>${esc(ex.scenario.title)}</h1><div>Beitrittscode für die Helfer-App</div><div class="code">${ex.code}</div>
 <p>${ex.scenario.patients.length} Patienten · Zettel nur für diese Übung</p></section>
+${ex.trupps!.map((tr) => `<section class="card join"><h1>${esc(tr.name)}</h1><div>${esc(ex.scenario.units.find((u) => u.id === tr.unit)?.title ?? tr.unit)} · ${ROLE[tr.role]}</div><div class="code">${tr.code}</div>
+<p>Diesen Code in der Helfer-App eingeben: Trupp, Einheit und Funktion sind dann schon gesetzt.</p></section>`).join("")}
 ${cards.join("")}
 </body></html>`;
 }

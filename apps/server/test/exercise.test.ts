@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { control, createExercise, leitungView, loadLibrary, minutes, stateAt, status, submit, viewFor } from "../src/exercise.ts";
+import { control, createExercise, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -99,15 +99,17 @@ test("Freigaben und Übungen überstehen einen Neustart", () => {
   const db = openDb(":memory:");
   setApproval(db, "u1", "p01", 1, true, 0);
   assert.equal(myApprovals(db, "u1").get("p01"), 1);
-  const ex = saveExercise(db, header, lib.defs);
+  const trupp = { code: "TRUPPX", name: "Behandlungstrupp 1", role: "behandlung" as const, unit: "rtw1" };
+  const ex = saveExercise(db, { ...header, trupps: [trupp] }, lib.defs);
   control(ex, "start", 0);
-  const p = submit(ex, null, msg({ type: "join", name: "Eva", unit: "rtw1" }, 0), 0).participant!;
+  const p = submit(ex, null, msg({ type: "join", name: "Eva" }, 0), 0, trupp).participant!;
   submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
   submit(ex, p, msg({ type: "start", patient: "p01", action: "tourniquet" }, 2 * MIN), 2 * MIN);
   const [again] = loadExercises(db, lib.defs);
   assert.equal(status(again), "running");
   assert.deepEqual(stateAt(again, 20).patients, stateAt(ex, 20).patients);
   assert.equal(again.names.get(p), "Eva");
+  assert.equal(truppOf(again, p)?.name, "Behandlungstrupp 1"); // Trupp-Zugehörigkeit bleibt erhalten
 });
 
 test("Ungültige Client-Nachrichten werden abgelehnt", () => {

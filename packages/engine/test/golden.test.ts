@@ -21,6 +21,8 @@ const scan = (t: number, patient: string, participant = "h1"): Event => ({ t, ty
 const act = (t: number, patient: string, action: string, participant = "h1"): Event => ({ t, type: "start", participant, patient, action });
 const end = (t: number, participant = "h1"): Event => ({ t, type: "end", participant });
 const join = (t: number, participant: string, unit: string): Event => ({ t, type: "join", participant, unit });
+const handover = (t: number, patient: string, vehicle: string, participant = "h1"): Event =>
+  ({ t, type: "handover", participant, patient, vehicle, destination: "Klinikum", diagnosis: "Verdacht" });
 
 // Spielt ein Skript wie der Server: erst fällige Ereignisse, dann prüfen, dann anwenden.
 function run(script: Event[], until: number, settings: Partial<Settings> = {}, seed = 1) {
@@ -41,7 +43,8 @@ test("Bibliothek: alle Regeln nutzen bekannte Maßnahmen, Szenario kennt alle Pa
   for (const p of Object.values(patients)) {
     for (const ph of Object.values(p.phases))
       for (const r of ph.rules) for (const a of [...r.when, ...r.active]) assert.ok(actions[a], `${p.id}: Maßnahme ${a} fehlt`);
-    for (const a of [...p.scoring.critical.flatMap((c) => c.actions), ...p.scoring.harmful]) assert.ok(actions[a], `${p.id}: Auswertung nennt unbekannte Maßnahme ${a}`);
+    for (const a of [...p.scoring.critical.flatMap((c) => c.actions), ...p.scoring.harmful])
+      assert.ok(actions[a] || a === "handover", `${p.id}: Auswertung nennt unbekannte Maßnahme ${a}`);
   }
   for (const id of scenario.patients) assert.ok(patients[id], `Szenario: ${id} fehlt`);
 });
@@ -85,7 +88,7 @@ const paths: [string, Event[], number, Record<string, string>][] = [
   ["P01 Tourniquet erst in Phase 2", [scan(0, "p01"), act(20, "p01", "tourniquet")], 60, { p01: "2-schock-gestillt" }],
   ["P02 Auskultation und Entlastung", [scan(0, "p02"), act(1, "p02", "auscultate"), act(3, "p02", "needle_decompression")], 60, { p02: "3-entlastet" }],
   ["P03 Atemweg, O2, Intubation durch NEF", [scan(0, "p03"), act(0.5, "p03", "airway_open"), act(1, "p03", "oxygen"), scan(11, "p03", "h2"), act(11, "p03", "intubation", "h2")], 60, { p03: "intubiert" }],
-  ["P04 Beckengurt, Volumen, Transport", [scan(0, "p04"), act(0.5, "p04", "examine_pelvis"), act(1, "p04", "pelvic_binder"), act(4, "p04", "iv_access"), act(7, "p04", "fluids"), act(20, "p04", "transport")], 60, { p04: "klinik" }],
+  ["P04 Beckengurt, Volumen, Transport", [scan(0, "p04"), act(0.5, "p04", "examine_pelvis"), act(1, "p04", "pelvic_binder"), act(4, "p04", "iv_access"), act(7, "p04", "fluids"), handover(20, "p04", "rtw1")], 60, { p04: "2-versorgt" }],
   ["P04 Beckengurt ohne Transport bremst nur", [scan(0, "p04"), act(1, "p04", "pelvic_binder"), act(4, "p04", "iv_access"), act(7, "p04", "fluids")], 60, { p04: "4" }],
   ["P05 Atemweg frei, aber nicht gehalten", [scan(0, "p05"), act(1, "p05", "airway_open")], 60, { p05: "tot" }],
   ["P05 Atemweg dauerhaft gehalten", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold")], 45, { p05: "3" }],
@@ -94,7 +97,7 @@ const paths: [string, Event[], number, Record<string, string>][] = [
   ["P06 O2, Wärme, Zugang, Intubation", [scan(0, "p06"), act(0.5, "p06", "oxygen"), act(2, "p06", "warm"), act(3, "p06", "iv_access"), scan(16, "p06", "h2"), act(16, "p06", "intubation", "h2")], 60, { p06: "intubiert" }],
   ["P06 großflächig gekühlt", [scan(0, "p06"), act(1, "p06", "cool_large")], 15, { p06: "2-unterkuehlt" }],
   ["P07 Schiene und Analgesie", [scan(0, "p07"), act(1, "p07", "splint"), act(6, "p07", "analgesia")], 60, { p07: "versorgt" }],
-  ["P08 nachgesichtet und transportiert", [scan(0, "p08"), act(1, "p08", "examine_abdomen"), act(20, "p08", "transport")], 60, { p08: "klinik" }],
+  ["P08 nachgesichtet und transportiert", [scan(0, "p08"), act(1, "p08", "examine_abdomen"), handover(20, "p08", "ktw1")], 60, { p08: "2" }],
   ["P09 beruhigt", [scan(0, "p09"), act(1, "p09", "calm")], 60, { p09: "ruhig" }],
   ["P09 Tütenrückatmung", [scan(0, "p09"), act(1, "p09", "bag_rebreathing")], 15, { p09: "falsch-behandelt" }],
 ];
@@ -139,4 +142,24 @@ test("Zufall: Entlastung misslingt manchmal, aber gleich je Seed", () => {
   const results = Array.from({ length: 60 }, (_, i) => outcome(i + 1));
   assert.ok(results.includes("2") && results.includes("2-entlastet"), "beide Ausgänge kommen vor");
   assert.equal(outcome(7), outcome(7));
+});
+
+test("Aufnahme und Übergabe: Ort, Fahrzeugplätze, Eintreffen, Stillstand nach Abtransport", () => {
+  const { s } = run([scan(0, "p04"), { t: 1, type: "admit", participant: "h1", patient: "p04", place: "bhp" }], 2);
+  assert.equal(s.patients.p04.place, "bhp");
+  assert.equal(validate(s, handover(2, "p04", "rtw2")), "Fahrzeug noch nicht eingetroffen");
+  assert.equal(validate(s, handover(2, "p04", "nef1")), "Fahrzeug noch nicht eingetroffen");
+  apply(s, handover(2, "p04", "rtw1"));
+  assert.equal(s.patients.p04.left, true);
+  assert.equal(s.patients.p04.place, "abtransport");
+  assert.equal(validate(s, scan(3, "p04")), "Patient ist bereits abtransportiert");
+  apply(s, scan(3, "p01"));
+  assert.equal(validate(s, handover(3, "p01", "rtw1")), "kein Platz mehr im Fahrzeug");
+  tick(s, 60);
+  assert.equal(s.patients.p04.phase, "1"); // läuft nach dem Abtransport nicht weiter
+});
+
+test("Übergabe nur ohne laufende Maßnahme am Patienten", () => {
+  const { s } = run([scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), scan(2, "p05", "h2")], 3);
+  assert.equal(validate(s, handover(3, "p05", "rtw1", "h2")), "erst laufende Maßnahmen beenden");
 });

@@ -1,22 +1,83 @@
 {
   "id": "busunfall",
   "title": "Reisebus umgekippt, Brand im Motorraum",
-  "patients": ["p01", "p02", "p03", "p04", "p05", "p06", "p07", "p08", "p09", "p10"],
+  "patients": [
+    "p01",
+    "p02",
+    "p03",
+    "p04",
+    "p05",
+    "p06",
+    "p07",
+    "p08",
+    "p09",
+    "p10"
+  ],
   "units": [
     {
       "id": "rtw1",
       "title": "RTW 1",
       "arrivesAt": 0,
       "inventory": {
-        "tourniquet": 2, "dressing": 4, "wendl": 1, "o2_mask": 2, "needle": 1, "iv_cannula": 4, "infusion": 4,
-        "analgesic": 2, "pelvic_binder": 1, "splint": 1, "rescue_blanket": 4, "ett": 0
-      }
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0
+      },
+      "seats": 1
     },
     {
       "id": "nef1",
       "title": "NEF 1",
       "arrivesAt": 10,
-      "inventory": { "needle": 2, "ett": 2, "analgesic": 4, "iv_cannula": 2, "infusion": 2, "o2_mask": 1 }
+      "inventory": {
+        "needle": 2,
+        "ett": 2,
+        "analgesic": 4,
+        "iv_cannula": 2,
+        "infusion": 2,
+        "o2_mask": 1
+      },
+      "seats": 0
+    },
+    {
+      "id": "rtw2",
+      "title": "RTW 2",
+      "arrivesAt": 15,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0
+      }
+    },
+    {
+      "id": "ktw1",
+      "title": "KTW 1",
+      "arrivesAt": 20,
+      "seats": 2,
+      "inventory": {
+        "dressing": 4,
+        "o2_mask": 1,
+        "rescue_blanket": 4
+      }
     }
   ]
 }

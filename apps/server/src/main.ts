@@ -9,9 +9,9 @@ import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import { z } from "zod";
-import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, LoginReq, VerifyReq, type Level, type ServerMsg } from "@dps/schema/protocol";
+import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, LoginReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import type { Settings } from "@dps/engine";
-import { control, leitungView, loadLibrary, minutes, released, stateAt, status, submit, viewFor, type Exercise } from "./exercise.ts";
+import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, loadExercises, myApprovals, newCode, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "./db.ts";
 import { printPage } from "./print.ts";
@@ -21,6 +21,16 @@ mkdirSync(opt.data, { recursive: true });
 const db = openDb(join(opt.data, "dps.sqlite"));
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
 const exercises = new Map(loadExercises(db, lib.defs).map((ex) => [ex.code, ex]));
+// Trupp-Codes zeigen direkt auf Übung und Trupp.
+const truppCodes = new Map<string, { ex: Exercise; trupp: Trupp }>();
+const indexTrupps = (ex: Exercise) => ex.trupps!.forEach((trupp) => truppCodes.set(trupp.code, { ex, trupp }));
+exercises.forEach(indexTrupps);
+const resolve = (code: string) => {
+  const c = code.toUpperCase();
+  const ex = exercises.get(c);
+  return ex ? { ex, trupp: null } : truppCodes.get(c) ?? null;
+};
+const ROLE_LABEL: Record<Role, string> = { sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp" };
 const mailer = process.env.SMTP_URL ? nodemailer.createTransport(process.env.SMTP_URL) : null;
 
 const LEVELS: Record<Level, Pick<Settings, "phaseMinutes" | "random">> = {
@@ -110,7 +120,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   }
   if (route === "GET /api/exercises") {
     const mine = [...exercises.values()].filter((ex) => ex.owner === user.id).sort((a, b) => b.created - a.created);
-    return send(res, 200, mine.map((ex) => ({ code: ex.code, title: ex.scenario.title, status: status(ex), patients: ex.scenario.patients, created: ex.created, settings: ex.settings })));
+    return send(res, 200, mine.map((ex) => ({ code: ex.code, title: ex.scenario.title, status: status(ex), patients: ex.scenario.patients, created: ex.created, settings: ex.settings, trupps: ex.trupps })));
   }
   if (route === "POST /api/exercises") {
     const r = CreateExerciseReq.parse(await body(req));
@@ -119,12 +129,21 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const mine = myApprovals(db, user.id);
     const missing = r.patients.filter((id) => !lib.defs.patients[id] || mine.get(id) !== lib.defs.patients[id].version);
     if (missing.length) throw new HttpError(400, `nicht von dir freigegeben: ${missing.join(", ")}`);
-    const code = newCode((c) => exercises.has(c));
+    const taken = (c: string) => exercises.has(c) || truppCodes.has(c) || trupps.some((t) => t.code === c);
+    // Trupps: Transporttrupps auf Fahrzeuge mit Plätzen verteilen, die übrigen reihum auf alle Einheiten.
+    const trupps: Trupp[] = [];
+    for (const role of ["sichtung", "behandlung", "transport"] as const) {
+      const units = role === "transport" && sc.units.some((u) => u.seats > 0) ? sc.units.filter((u) => u.seats > 0) : sc.units;
+      for (let i = 0; i < r.trupps[role]; i++)
+        trupps.push({ code: newCode(taken), name: `${ROLE_LABEL[role]} ${i + 1}`, role, unit: units[i % units.length].id });
+    }
+    const code = newCode(taken);
     const ex = saveExercise(db, {
       code, owner: user.id, scenario: { ...sc, patients: r.patients },
-      settings: { algorithm: r.algorithm, ...LEVELS[r.level] }, seed: randomInt(1, 2 ** 31), created: Date.now(),
+      settings: { algorithm: r.algorithm, ...LEVELS[r.level] }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps,
     }, lib.defs);
     exercises.set(code, ex);
+    indexTrupps(ex);
     return send(res, 201, { code });
   }
   if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/evaluation$/))) {
@@ -156,7 +175,7 @@ const http = createServer((req, res) => {
 });
 
 // WebSocket: Helfer (hello) und Leitung (watch).
-type Client = { ex: Exercise | null; participant: string | null; watch: boolean; last: string };
+type Client = { ex: Exercise | null; trupp: Trupp | null; participant: string | null; watch: boolean; last: string };
 const clients = new Map<WebSocket, Client>();
 const out = (ws: WebSocket, m: ServerMsg) => ws.send(JSON.stringify(m));
 const clock = (ex: Exercise, now = Date.now()): ServerMsg => ({ type: "clock", status: status(ex), t: minutes(ex, now), serverNow: now });
@@ -167,20 +186,24 @@ function onMessage(ws: WebSocket, raw: string) {
   if (!parsed.success) return out(ws, { type: "error", error: "ungültige Nachricht" });
   const m = parsed.data;
   if (m.type === "hello" || m.type === "watch") {
-    const ex = exercises.get(m.exercise.toUpperCase());
-    if (!ex) return out(ws, { type: "error", error: "unbekannter Übungscode" });
+    const found = resolve(m.exercise);
+    if (!found || (m.type === "watch" && found.trupp)) return out(ws, { type: "error", error: "unbekannter Übungscode" });
+    const { ex, trupp } = found;
     if (m.type === "watch" && ex.owner !== userByToken(db, m.token)?.id) return out(ws, { type: "error", error: "keine Berechtigung" });
-    Object.assign(c, { ex, watch: m.type === "watch", last: "", participant: m.type === "hello" && m.participant && ex.names.has(m.participant) ? m.participant : null });
-    if (m.type === "hello")
+    Object.assign(c, { ex, trupp, watch: m.type === "watch", last: "", participant: m.type === "hello" && m.participant && ex.names.has(m.participant) ? m.participant : null });
+    if (m.type === "hello") {
+      const role = c.participant ? roleOf(ex, c.participant) : trupp?.role ?? "behandlung";
       out(ws, {
         type: "welcome", title: ex.scenario.title, participant: c.participant,
         units: ex.scenario.units.map((u) => ({ id: u.id, title: u.title })),
-        actions: Object.values(ex.defs.actions).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material })),
+        actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material })),
+        trupp: trupp && { name: trupp.name, role: trupp.role, unit: ex.scenario.units.find((u) => u.id === trupp.unit)?.title ?? trupp.unit },
       });
+    }
     out(ws, clock(ex));
   } else {
     if (!c.ex || c.watch) return out(ws, { type: "error", error: "erst hello senden" });
-    const r = submit(c.ex, c.participant, m, Date.now());
+    const r = submit(c.ex, c.participant, m, Date.now(), c.trupp);
     if (r.participant) c.participant = r.participant;
     out(ws, { type: "ack", id: m.id, error: r.error, participant: r.participant });
   }
@@ -205,7 +228,7 @@ function broadcast(ex: Exercise, withClock = false) {
 }
 
 new WebSocketServer({ server: http }).on("connection", (ws) => {
-  clients.set(ws, { ex: null, participant: null, watch: false, last: "" });
+  clients.set(ws, { ex: null, trupp: null, participant: null, watch: false, last: "" });
   ws.on("message", (raw) => onMessage(ws, String(raw)));
   ws.on("close", () => clients.delete(ws));
 });

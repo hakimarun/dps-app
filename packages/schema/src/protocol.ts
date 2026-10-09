@@ -1,13 +1,23 @@
 // Nachrichten zwischen App und Server (WebSocket, JSON) und REST-Eingaben der Praxisanleiter.
 import { z } from "zod";
-import { Algorithm, Sk, type Findings } from "./index.ts";
+import { Algorithm, Place, Sk, type Findings } from "./index.ts";
+
+// Trupp-Funktionen: Sichtungstrupps sichten nur (plus lebensrettende Sofortmaßnahmen).
+export const Role = z.enum(["sichtung", "behandlung", "transport"]);
+export type Role = z.infer<typeof Role>;
+export type Trupp = { code: string; name: string; role: Role; unit: string };
 
 export const Intent = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("join"), name: z.string().trim().min(1).max(40), unit: z.string() }),
+  z.object({ type: z.literal("join"), name: z.string().trim().min(1).max(40), unit: z.string().optional() }), // ohne unit: Einheit des Trupps
   z.object({ type: z.literal("scan"), patient: z.string() }),
   z.object({ type: z.literal("start"), patient: z.string(), action: z.string() }),
   z.object({ type: z.literal("end") }),
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
+  z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),
+  z.object({
+    type: z.literal("handover"), patient: z.string(), vehicle: z.string(),
+    destination: z.string().trim().min(1).max(80), diagnosis: z.string().trim().max(200),
+  }),
 ]);
 
 // Alles vom Client wird hier geprüft, bevor der Server es anfasst.
@@ -28,6 +38,9 @@ export const CreateExerciseReq = z.object({
   patients: z.array(z.string().max(64)).min(1).max(100),
   algorithm: Algorithm,
   level: Level,
+  trupps: z
+    .object({ sichtung: z.number().int().min(0).max(10), behandlung: z.number().int().min(0).max(20), transport: z.number().int().min(0).max(10) })
+    .default({ sichtung: 1, behandlung: 2, transport: 1 }),
 });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
 
@@ -66,16 +79,20 @@ export type Evaluation = {
     triage: "korrekt" | "übertriage" | "untertriage" | null;
     outcome: "verstorben" | "abtransportiert" | "vor Ort" | "tot aufgefunden";
     missed: string[];
+    handover: { t: number; vehicle: string; destination: string; missing: string[] } | null; // missing: was in der Übergabe fehlte
   }[];
   helpers: HelperReport[];
+  trupps: { code: string; name: string; role: Role; points: number; members: string[] }[];
+  triageByRole: Record<Role, { correct: number; over: number; under: number }>;
 };
 
 export type View = {
   result?: { team: Team; me: HelperReport } | null; // erst nach Freigabe durch die Leitung
-  me: { id: string; name: string; unit: string; busy: { action: string; until: number | null } | null } | null;
-  patient: { id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[] } | null;
+  me: { id: string; name: string; unit: string; role: Role; trupp: string | null; busy: { action: string; until: number | null } | null } | null;
+  patient: { id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean } | null;
   inventory: Record<string, number>;
   unitArrived: boolean;
+  vehicles: { id: string; title: string; seats: number; arrived: boolean }[];
 };
 
 export type LeitungView = {
@@ -93,8 +110,10 @@ export type LeitungView = {
     helpers: string[];
     lastContact: number | null;
     alert: string | null;
+    place: string;
   }[];
-  helpers: { id: string; name: string; unit: string; patient: string | null; busy: string | null }[];
+  helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null }[];
+  trupps: (Trupp & { members: string[] })[];
   events: { t: number; text: string }[]; // neueste zuerst
 };
 
@@ -105,8 +124,9 @@ export type ServerMsg =
       type: "welcome";
       title: string;
       units: { id: string; title: string }[];
-      actions: ActionInfo[];
+      actions: ActionInfo[]; // nur die für diese Funktion erlaubten
       participant: string | null;
+      trupp: { name: string; role: Role; unit: string } | null; // bei Beitritt mit Trupp-Code
     }
   // Übungsuhr: t Minuten zum Zeitpunkt serverNow; läuft nur bei status "running" weiter.
   | { type: "clock"; status: Status; t: number; serverNow: number }

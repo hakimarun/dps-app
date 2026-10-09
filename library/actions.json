@@ -22,6 +22,5 @@
   { "id": "warm", "title": "Wärmeerhalt (Rettungsdecke)", "minutes": 1, "material": { "rescue_blanket": 1 } },
   { "id": "cool_large", "title": "Großflächig kühlen", "minutes": 2 },
   { "id": "calm", "title": "Betreuen und beruhigen", "minutes": 3 },
-  { "id": "bag_rebreathing", "title": "Tütenrückatmung", "minutes": 1 },
-  { "id": "transport", "title": "Abtransport", "minutes": 2 }
+  { "id": "bag_rebreathing", "title": "Tütenrückatmung", "minutes": 1 }
 ]

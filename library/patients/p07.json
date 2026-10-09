@@ -1,0 +1,14 @@
+{
+  "id": "p07", "version": 1, "title": "Geschlossene Femurfraktur",
+  "picture": "Mann, ca. 25 Jahre, liegt neben dem Bus. Rechter Oberschenkel deformiert und verkürzt. Schreit vor Schmerzen und ruft laut nach Hilfe.",
+  "profile": { "temperament": "aggressiv und fordernd", "speech": "schreit, beschimpft Helfer", "anamnesis": { "allergies": "Metamizol", "event": "Alkohol auf der Vereinsfahrt" }, "pitfall": "Lautstärke zieht Helfer an" },
+  "base": { "walking": false, "breathing": true, "rr": 24, "spo2": 97, "hr": 105, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 9 },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }], "else": "2" },
+    "2": { "findings": { "hr": 110, "bp": "130/85" }, "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }], "else": "3" },
+    "3": { "findings": { "hr": 112, "bp": "125/85" }, "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }], "else": "4" },
+    "4": { "findings": { "hr": 115, "bp": "125/80" }, "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }] },
+    "versorgt": { "findings": { "hr": 95, "bp": "130/80", "pain": 4 } }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "p05", "version": 1, "title": "Verlegter Atemweg beim Bewusstlosen",
+  "picture": "Mann, ca. 50 Jahre, liegt auf dem Rücken. Verletzungen im Mittelgesicht, Blut im Mund. Reagiert nicht, atmet gurgelnd und kaum sichtbar.",
+  "profile": { "temperament": "keins", "speech": "keine Antwort" },
+  "base": { "walking": false, "breathing": true, "rr": 8, "spo2": 80, "hr": 120, "bp": "150/90", "radialPulse": true, "recap": 3, "gcs": 6, "followsCommands": false },
+  "start": "1",
+  "phases": {
+    "1": { "minutes": 5, "rules": [{ "when": ["airway_open"], "then": "2" }], "else": "tot" },
+    "2": { "findings": { "rr": 16, "spo2": 92, "hr": 100, "bp": "140/85" }, "rules": [{ "active": ["airway_hold"], "then": "3" }, { "when": ["wendl"], "then": "3" }], "else": "1-wieder" },
+    "1-wieder": { "minutes": 5, "rules": [{ "active": ["airway_hold"], "then": "2" }, { "when": ["wendl"], "then": "2" }], "else": "tot" },
+    "3": { "findings": { "rr": 16, "spo2": 94, "hr": 95, "bp": "135/85" }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "when": ["wendl"], "then": "3" }, { "active": ["airway_hold"], "then": "3" }], "else": "1-wieder" },
+    "intubiert": { "findings": { "rr": 12, "spo2": 98, "hr": 90, "bp": "130/80", "gcs": 3 } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3 } }
+  }
+}

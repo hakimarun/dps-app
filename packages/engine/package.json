@@ -1,0 +1,7 @@
+{
+  "name": "@dps/engine",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "dependencies": { "@dps/schema": "*" }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "p03", "version": 1, "title": "Schweres Schädel-Hirn-Trauma",
+  "picture": "Mann, ca. 60 Jahre, liegt auf dem Rücken im Gang des Busses. Große Kopfplatzwunde, reagiert nicht auf Ansprache, atmet schnarchend.",
+  "profile": { "temperament": "keins", "speech": "keine Antwort, stöhnt auf Schmerzreiz" },
+  "base": { "walking": false, "breathing": true, "rr": 12, "spo2": 88, "hr": 64, "bp": "160/90", "radialPulse": true, "recap": 2, "gcs": 7, "followsCommands": false, "exam": { "pupils": "links weiter als rechts" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["airway_open", "oxygen"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "spo2": 82, "gcs": 6, "exam": { "motor": "Strecksynergismen auf Schmerzreiz" } }, "else": "3" },
+    "3": { "findings": { "rr": 8, "spo2": 80, "hr": 52, "bp": "185/100", "gcs": 4, "exam": { "pupils": "links weit und lichtstarr", "motor": "Strecksynergismen auf Schmerzreiz" } }, "else": "4-tot" },
+    "4-tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3 } },
+    "2-versorgt": { "findings": { "spo2": 96, "hr": 70, "bp": "150/85" }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3-versorgt" },
+    "3-versorgt": { "findings": { "spo2": 96, "hr": 70, "bp": "150/85", "exam": { "pupils": "Pupillendifferenz nimmt zu" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }] },
+    "intubiert": { "findings": { "rr": 12, "spo2": 98, "hr": 72, "bp": "145/85", "gcs": 3 } }
+  }
+}

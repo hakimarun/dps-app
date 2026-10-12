@@ -15,7 +15,7 @@ import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
 import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, withCallsigns, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
-import { evaluate } from "./evaluation.ts";
+import { evaluate, summary } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, setApproval, userByToken, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
 import { suggestFeedback } from "./feedback.ts";
@@ -385,6 +385,13 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   if (route === "GET /api/exercises") {
     const mine = [...exercises.values()].filter((ex) => ex.owner === user.id).sort((a, b) => b.created - a.created);
     return send(res, 200, mine.map((ex) => ({ code: ex.code, title: ex.scenario.title, status: status(ex), patients: ex.scenario.patients, created: ex.created, settings: ex.settings, trupps: ex.trupps, observer: ex.observer ?? null })));
+  }
+  // F7: beendete eigene Übungen nebeneinander, älteste zuerst
+  if (route === "GET /api/exercises/compare") {
+    const now = Date.now();
+    // nur Übungen, die wirklich liefen (eine nie gestartete hätte sonst 3 Sterne ohne Einsatz)
+    const done = [...exercises.values()].filter((ex) => ex.owner === user.id && status(ex) === "ended" && ex.controls.some((c) => c.type === "start")).sort((a, b) => a.created - b.created);
+    return send(res, 200, done.map((ex) => summary(ex, evaluate(ex, now))));
   }
   if (route === "POST /api/exercises") {
     const r = CreateExerciseReq.parse(await body(req));

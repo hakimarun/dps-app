@@ -207,3 +207,19 @@ test("Führung: fordert Verstärkung an (trifft nach Anfahrzeit ein) und gibt di
   assert.equal(new Set(signs).size, signs.length);
   assert.ok(signs.some((x) => /\/82-/.test(x))); // NEF-Kennzahl
 });
+
+test("Vergleich über Durchgänge: Kennzahlen einer Übung in einer Zeile", async () => {
+  const { summary } = await import("../src/evaluation.ts");
+  const { ex, join, act } = exercise(["p01", "p04"]);
+  const a = join("Anna");
+  act(a, 1, { type: "scan", patient: "p01" });
+  act(a, 2, { type: "start", patient: "p01", action: "tourniquet" });
+  act(a, 3, { type: "triage", patient: "p01", sk: "I" });
+  control(ex, "end", 61 * MIN);
+  const s = summary(ex, evaluate(ex, 61 * MIN));
+  assert.equal(s.helpers, 1);
+  assert.equal(s.patients, 2);
+  assert.equal(s.triageCorrect, 1); // eine Erstsichtung, korrekt
+  assert.equal(s.firstTriage, 3);
+  assert.ok(s.criticalTimely !== null && s.criticalTimely > 0 && s.criticalTimely < 1); // Tourniquet rechtzeitig, Beckengurt verpasst
+});

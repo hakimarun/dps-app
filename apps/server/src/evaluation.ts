@@ -238,3 +238,18 @@ function compute(ex: Exercise, T: number): Evaluation {
     patients: patients.map((p) => ({ ...p })), helpers, trupps, triageByRole,
   };
 }
+
+// F7: Kennzahlen einer Übung in einer Zeile, für den Vergleich über mehrere Durchgänge.
+export function summary(ex: Exercise, ev: Evaluation) {
+  const crit = ev.critical.timely + ev.critical.late + ev.critical.missed;
+  const tri = ev.triage.correct + ev.triage.over + ev.triage.under;
+  const first = ev.patients.flatMap((p) => (p.firstTriage === null ? [] : [p.firstTriage]));
+  return {
+    code: ex.code, title: ex.scenario.title, created: ex.created, minutes: ev.t, helpers: ev.helpers.length, patients: ev.patients.length,
+    stars: ev.team.stars, survived: ev.team.survived, eligible: ev.team.eligible,
+    criticalTimely: crit ? ev.critical.timely / crit : null, // Anteil kritischer Maßnahmen rechtzeitig
+    triageCorrect: tri ? ev.triage.correct / tri : null, // Anteil richtiger Erstsichtungen
+    firstTriage: first.length ? first.reduce((a, b) => a + b, 0) / first.length : null, // mittlere Minuten bis zur Erstsichtung
+  };
+}
+export type Summary = ReturnType<typeof summary>;

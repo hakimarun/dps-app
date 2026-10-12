@@ -76,12 +76,16 @@ function Home({ t, session, startNew, onExit }: { t: Theme; session: Session; st
 function Exercises({ t, session, startNew, onOpen }: { t: Theme; session: Session; startNew: boolean; onOpen: (code: string) => void }) {
   const [list, setList] = useState<ExerciseInfo[] | null>(null);
   const [creating, setCreating] = useState(startNew);
+  const [comparing, setComparing] = useState(false);
   useEffect(() => void api<ExerciseInfo[]>(session, "/api/exercises").then(setList), [session.token, creating]);
   if (creating) return <NewExercise t={t} session={session} onCreated={onOpen} onCancel={() => setCreating(false)} />;
+  if (comparing) return <Compare t={t} session={session} onClose={() => setComparing(false)} />;
+  const ended = list?.filter((ex) => ex.status === "ended").length ?? 0;
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
       <Title t={t}>Übungen</Title>
       <FunButton label="+ Neue Übung" color={FUN.purple} text="#FFFFFF" onPress={() => setCreating(true)} />
+      {ended >= 2 && <Button t={t} label="Durchgänge vergleichen" note={`${ended} beendete Übungen`} onPress={() => setComparing(true)} />}
       {list?.map((ex) => (
         <Card key={ex.code} t={t} color={STATUS_COLOR[ex.status]} onPress={() => onOpen(ex.code)}>
           <Text style={{ color: t.text, fontWeight: "900", fontSize: 18, letterSpacing: 1 }}>{ex.code}</Text>
@@ -584,5 +588,49 @@ function FeedbackBox({ t, session, code, helper, saved, onSaved }: { t: Theme; s
       </View>
       {error && <Text style={{ color: t.red }}>{error}</Text>}
     </View>
+  );
+}
+
+// F7: Durchgänge vergleichen. Je Szenario die beendeten Übungen in zeitlicher Folge; Pfeile gegenüber dem vorigen Durchgang.
+type Summary = {
+  code: string; title: string; created: number; minutes: number; helpers: number; patients: number; stars: number; survived: number; eligible: number;
+  criticalTimely: number | null; triageCorrect: number | null; firstTriage: number | null;
+};
+function Compare({ t, session, onClose }: { t: Theme; session: Session; onClose: () => void }) {
+  const [runs, setRuns] = useState<Summary[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => void api<Summary[]>(session, "/api/exercises/compare").then(setRuns, (e: Error) => setError(e.message)), []);
+  const pct = (x: number | null) => (x === null ? "–" : `${Math.round(x * 100)} %`);
+  // höher besser (Anteile) bzw. niedriger besser (Minuten bis zur Sichtung)
+  const trend = (now: number | null, before: number | null, lowerIsBetter = false) =>
+    now === null || before === null || Math.abs(now - before) < 0.005 ? "" : (now > before) !== lowerIsBetter ? " ▲" : " ▼";
+  const groups = [...new Set(runs?.map((r) => r.title))].map((title) => runs!.filter((r) => r.title === title));
+  return (
+    <Sheet t={t} title="Durchgänge vergleichen" onClose={onClose}>
+      {error && <Text style={{ color: t.red }}>{error}</Text>}
+      {!runs && !error && <Text style={{ color: t.quiet }}>lade …</Text>}
+      <Text style={{ color: t.quiet }}>▲ besser, ▼ schlechter als der vorige Durchgang desselben Szenarios.</Text>
+      {groups.map((g) => (
+        <View key={g[0].title} style={{ gap: 8 }}>
+          <Text style={{ color: t.text, fontSize: 18, fontWeight: "900", marginTop: 8 }}>{g[0].title}</Text>
+          {g.map((r, i) => {
+            const prev = g[i - 1];
+            return (
+              <Card key={r.code} t={t} color={r.stars >= 2 ? t.green : r.stars === 1 ? t.gold : t.line}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                  <Text style={{ color: t.text, fontWeight: "900" }}>{new Date(r.created).toLocaleDateString("de-DE")} · {r.code}</Text>
+                  <Text style={{ color: t.gold }} accessibilityLabel={`${r.stars} von 3 Sternen`}>{"★".repeat(r.stars)}{"☆".repeat(3 - r.stars)}</Text>
+                </View>
+                <Text style={{ color: t.quiet }}>{r.helpers} Helfer · {r.patients} Patienten · {clock(r.minutes * 60000)} min</Text>
+                <Text style={{ color: t.text }}>Überlebt {r.survived} von {r.eligible}{trend(r.eligible ? r.survived / r.eligible : null, prev?.eligible ? prev.survived / prev.eligible : null)}</Text>
+                <Text style={{ color: t.text }}>Kritische Maßnahmen rechtzeitig {pct(r.criticalTimely)}{trend(r.criticalTimely, prev?.criticalTimely ?? null)}</Text>
+                <Text style={{ color: t.text }}>Erstsichtung korrekt {pct(r.triageCorrect)}{trend(r.triageCorrect, prev?.triageCorrect ?? null)}</Text>
+                <Text style={{ color: t.text }}>Ø bis zur Erstsichtung {r.firstTriage === null ? "–" : `${clock(r.firstTriage * 60000)} min`}{trend(r.firstTriage, prev?.firstTriage ?? null, true)}</Text>
+              </Card>
+            );
+          })}
+        </View>
+      ))}
+    </Sheet>
   );
 }

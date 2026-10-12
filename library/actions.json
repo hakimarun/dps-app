@@ -25,6 +25,7 @@
   { "id": "fluids", "title": "Infusion 500 ml", "minutes": 2, "material": { "infusion": 1 }, "group": "Blutung und Kreislauf" },
   { "id": "wound_packing", "title": "Wundtamponade (Hämostyptikum)", "minutes": 3, "material": { "hemostatic": 1 }, "group": "Blutung und Kreislauf" },
   { "id": "cpr", "title": "Reanimation (Herzdruckmassage und Beatmung)", "minutes": null, "group": "Blutung und Kreislauf" },
+  { "id": "pacing", "title": "Externer Schrittmacher", "minutes": 3, "material": { "pacer_pads": 1 }, "group": "Blutung und Kreislauf" },
   { "id": "analgesia", "title": "Analgesie", "minutes": 2, "material": { "analgesic": 1 }, "group": "Medikamente" },
   { "id": "glucose", "title": "Glukose geben", "minutes": 2, "material": { "glucose": 1 }, "group": "Medikamente" },
   { "id": "pelvic_binder", "title": "Beckengurt anlegen", "minutes": 3, "material": { "pelvic_binder": 1 }, "group": "Lagerung und Immobilisation" },

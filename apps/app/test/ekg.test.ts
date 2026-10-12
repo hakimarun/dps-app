@@ -21,7 +21,7 @@ test("EKG-Befund aus dem Fall wählt den Rhythmus", () => {
     ["Sinustachykardie", "sinus"], ["Asystolie (Nulllinie)", "asystole"], ["Kammerflimmern, grob", "vf"], ["Kammertachykardie", "vt"],
     ["Vorhofflimmern, Tachyarrhythmie", "af"], ["Vorhofflattern 2:1", "flutter"], ["AV-Block III (totaler AV-Block)", "av3"],
     ["AV-Block II Typ Wenckebach", "wenckebach"], ["AV-Block II Typ Mobitz II", "mobitz2"], ["AV-Block I", "av1"],
-    ["STEMI (ST-Hebung V2–V4)", "stemi"], ["ST-Senkung", "st-depression"], ["Sinusrhythmus mit VES", "pvc"],
+    ["STEMI (ST-Hebung V2–V4)", "stemi"], ["ST-Senkung", "st-depression"], ["Sinusrhythmus mit VES", "pvc"], ["Schrittmacherstimulation, Frequenz 70", "paced"],
   ];
   for (const [text, want] of cases) assert.equal(rhythmOf(text), want, text);
 });
@@ -36,6 +36,7 @@ test("Kammerkomplexe passen zur Herzfrequenz, Blöcke lassen Überleitungen aus"
   assert.ok(crossings("av3", 35, 0.08) - crossings("av3", 35, 0.7) >= 3);
   assert.equal(crossings("wenckebach", 60, 0.7), 6); // 8 P-Wellen, jede vierte nicht übergeleitet
   assert.equal(crossings("asystole", 0, 0.1), 0);
+  assert.equal(crossings("paced", 70, 1.2), 7); // je Schlag ein Stimulationsspike
 });
 
 test("Kammerflimmern: unruhig, aber ohne regelmäßige R-Zacken", () => {

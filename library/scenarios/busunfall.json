@@ -11,7 +11,10 @@
     "p07",
     "p08",
     "p09",
-    "p10"
+    "p10",
+    "p11",
+    "p12",
+    "p13"
   ],
   "units": [
     {
@@ -37,7 +40,8 @@
         "chest_seal": 2,
         "hemostatic": 2,
         "burn_dressing": 2,
-        "glucose": 1
+        "glucose": 1,
+        "pacer_pads": 1
       },
       "seats": 1
     },
@@ -55,7 +59,8 @@
         "bvm": 1,
         "chest_seal": 1,
         "hemostatic": 1,
-        "glucose": 2
+        "glucose": 2,
+        "pacer_pads": 1
       },
       "seats": 0
     },
@@ -83,7 +88,8 @@
         "chest_seal": 2,
         "hemostatic": 2,
         "burn_dressing": 2,
-        "glucose": 1
+        "glucose": 1,
+        "pacer_pads": 1
       }
     },
     {

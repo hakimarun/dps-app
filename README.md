@@ -11,7 +11,7 @@ apps/app/          Helfer-App (Expo): Verbinden, Beitreten, QR-Scan, Befunde, Ma
 apps/server/       Übungsserver: REST für Praxisanleiter, WebSocket für Helfer und Live-Lage, SQLite (node:sqlite) in data/
 packages/schema/   Szenarioformat und Protokoll App <-> Server (zod)
 packages/engine/   Simulations-Engine: initial, validate, apply, tick, visible, targetSk, triage
-library/           Musterverläufe P01–P10, Maßnahmenkatalog, Szenario "Busunfall", ideas/ mit 100 Fall- und 100 Szenario-Ideen (CC BY 4.0)
+library/           Musterverläufe P01–P13, Maßnahmenkatalog, Szenario "Busunfall", ideas/ mit 100 Fall- und 100 Szenario-Ideen (CC BY 4.0)
 ```
 
 Die Engine ist deterministisch: `events.reduce(apply, initial(scenario, defs, settings, seed))` ergibt immer denselben Zustand.

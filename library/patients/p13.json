@@ -1,0 +1,15 @@
+{
+  "id": "p13", "version": 1, "title": "Totaler AV-Block nach Synkope",
+  "picture": "Älterer Mann, ca. 80 Jahre, liegt neben seinem Sitz im Bus. War kurz bewusstlos, jetzt wach. Sehr blass, Platzwunde an der Stirn.",
+  "profile": { "temperament": "kooperativ, langsam", "speech": "ganze Sätze, leise", "anamnesis": { "symptoms": "Mir ist so schwindelig, und ich bin ganz schlapp.", "allergies": "Nein, keine Allergien.", "medication": "Ich nehme Bisoprolol für den Blutdruck.", "history": "Mein Herz schlägt schon länger etwas langsam, der Hausarzt wollte das abklären.", "lastMeal": "Ein Brötchen vor der Abfahrt.", "event": "Mir wurde auf einmal schwarz vor Augen, dann lag ich auf dem Boden." }, "pitfall": "Die Platzwunde lenkt vom Herzen ab.", "sources": ["ERC-Leitlinien 2021 Bradykardie-Algorithmus", "ESC-Leitlinie Kardiale Schrittmachertherapie 2021"] },
+  "meta": {"category": "Internistisch", "tags": ["EKG", "Bradykardie"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["ecg"], "within": 15}, {"actions": ["pacing"], "within": 25}, {"actions": ["handover"], "within": 45}], "harmful": []},
+  "base": { "walking": false, "breathing": true, "rr": 16, "spo2": 94, "hr": 34, "bp": "85/50", "radialPulse": true, "recap": 3, "gcs": 14, "followsCommands": true, "pain": 2, "exam": { "ecg": "AV-Block III (totaler AV-Block), Kammerersatzrhythmus", "bodycheck": "Platzwunde an der Stirn, sonst unverletzt" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["pacing"], "then": "stimuliert" }], "else": "2" },
+    "2": { "findings": { "hr": 28, "bp": "70/40", "radialPulse": false, "gcs": 11, "followsCommands": false }, "rules": [{ "when": ["pacing"], "then": "stimuliert" }], "else": "3" },
+    "3": { "dead": true, "findings": { "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "bodycheck": "Platzwunde an der Stirn" } } },
+    "stimuliert": { "findings": { "hr": 70, "bp": "110/65", "gcs": 15, "exam": { "ecg": "Schrittmacherstimulation, Frequenz 70", "bodycheck": "Platzwunde an der Stirn, sonst unverletzt" } } }
+  }
+}

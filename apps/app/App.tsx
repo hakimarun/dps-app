@@ -23,7 +23,7 @@ const MATERIAL: Record<string, string> = {
   tourniquet: "Tourniquet", dressing: "Verband", wendl: "Wendl-Tubus", o2_mask: "O₂-Maske", needle: "Punktionsnadel", ett: "Tubus",
   iv_cannula: "Venenkanüle", infusion: "Infusion", analgesic: "Analgetikum", pelvic_binder: "Beckengurt", splint: "Schiene", rescue_blanket: "Rettungsdecke",
   cervical_collar: "HWS-Stütze", vacuum_mattress: "Vakuummatratze", bvm: "Beatmungsbeutel", chest_seal: "Chest Seal", hemostatic: "Hämostyptikum",
-  burn_dressing: "Brandwundenverband", glucose: "Glukose",
+  burn_dressing: "Brandwundenverband", glucose: "Glukose", pacer_pads: "Schrittmacher-Elektroden",
 };
 const SILENT = "(keine Reaktion)"; // so antwortet der Server, wenn der Patient nicht sprechen kann
 // Vorschläge nach SAMPLER als ganze Sätze; das Thema geht mit, damit es auch ohne KI eine Antwort gibt.

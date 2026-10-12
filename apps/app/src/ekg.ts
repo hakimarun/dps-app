@@ -3,12 +3,13 @@
 // Ohne React-Abhängigkeit, damit sie sich mit Node testen lässt.
 
 export type Rhythm =
-  | "sinus" | "asystole" | "af" | "flutter" | "vf" | "vt" | "av1" | "wenckebach" | "mobitz2" | "av3" | "stemi" | "st-depression" | "pvc";
+  | "sinus" | "paced" | "asystole" | "af" | "flutter" | "vf" | "vt" | "av1" | "wenckebach" | "mobitz2" | "av3" | "stemi" | "st-depression" | "pvc";
 
 // Befundtext → Rhythmus; Reihenfolge wichtig (z. B. "Kammerflattern" vor "flattern").
 export function rhythmOf(text: string): Rhythm {
   const t = text.toLowerCase();
   if (/asystolie|nulllinie/.test(t)) return "asystole";
+  if (/schrittmacher/.test(t)) return "paced";
   if (/kammerflimmern|\bvf\b/.test(t)) return "vf";
   if (/kammerflattern|kammertachykardie|ventrikuläre tachykardie|\bvt\b/.test(t)) return "vt";
   if (/vorhofflimmern/.test(t)) return "af";
@@ -52,6 +53,9 @@ export function ecgValue(rhythm: Rhythm, hr: number, d: number): (t: number) => 
       break;
     case "vt":
       evenly(beats, d).forEach((t) => ev.push({ t, shape: wide }));
+      break;
+    case "paced": // schmaler Stimulationsspike, danach breiter Kammerkomplex
+      evenly(beats, d).forEach((t) => ev.push({ t: t - 0.04, shape: (x) => bump(x, 0, 0.0015, 1.4) }, { t, shape: wide }));
       break;
     case "af": { // keine P-Wellen, unregelmäßige Abstände, flimmernde Grundlinie
       const w = Array.from({ length: beats }, (_, i) => [0.7, 1.35, 0.9, 1.15, 0.8, 1.25, 1.0, 0.85][i % 8]);

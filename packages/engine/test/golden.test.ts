@@ -66,6 +66,9 @@ test("Soll-SK nach mSTaRT stimmt mit den Verlaufstabellen überein", () => {
     p08: { "1": "III", "2": "III", "3": "II", "4": "I" },
     p09: { "1": "III" },
     p10: { "1": "EX" },
+    p11: { "1": "III", "2": "II", "3": "EX" }, // gehfähig: die Falle zeigt erst das EKG
+    p12: { "1": "I", "2": "I", "versorgt": "II" },
+    p13: { "1": "II", "2": "I", "stimuliert": "II", "3": "EX" },
   };
   const s = initial(scenario, defs);
   for (const [id, phases] of Object.entries(expected))
@@ -94,6 +97,13 @@ const paths: [string, Event[], number, Record<string, string>][] = [
   ["P05 Atemweg dauerhaft gehalten", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold")], 45, { p05: "3" }],
   ["P05 Halten beendet: erneute Verlegung", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), end(40)], 54, { p05: "1-wieder" }],
   ["P05 Wendl-Tubus", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "wendl")], 60, { p05: "3" }],
+  ["P11 unbehandelt: Kammerflimmern", [], 45, { p11: "3" }],
+  ["P11 EKG erkennt den Infarkt, Übergabe", [scan(0, "p11"), act(1, "p11", "ecg"), handover(20, "p11", "rtw1")], 60, { p11: "2-erkannt" }],
+  ["P11 EKG erkannt, aber nicht transportiert", [scan(0, "p11"), act(1, "p11", "ecg")], 45, { p11: "3" }],
+  ["P12 Blutzucker und Glukose", [scan(0, "p12"), act(1, "p12", "blood_glucose"), act(3, "p12", "glucose")], 60, { p12: "versorgt" }],
+  ["P12 unbehandelt: bewusstlos, aber am Leben", [], 60, { p12: "3" }],
+  ["P13 Schrittmacher durch NEF", [scan(0, "p13"), act(1, "p13", "ecg"), scan(11, "p13", "h2"), act(11, "p13", "pacing", "h2")], 60, { p13: "stimuliert" }],
+  ["P13 unbehandelt: Asystolie", [], 45, { p13: "3" }],
   ["P05 stabile Seitenlage hält den Atemweg frei", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "recovery_position")], 60, { p05: "3" }],
   ["P03 Seitenlage und Sauerstoff statt Esmarch", [scan(0, "p03"), act(1, "p03", "recovery_position"), act(3, "p03", "oxygen")], 15, { p03: "2-versorgt" }],
   ["P06 O2, Wärme, Zugang, Intubation", [scan(0, "p06"), act(0.5, "p06", "oxygen"), act(2, "p06", "warm"), act(3, "p06", "iv_access"), scan(16, "p06", "h2"), act(16, "p06", "intubation", "h2")], 60, { p06: "intubiert" }],

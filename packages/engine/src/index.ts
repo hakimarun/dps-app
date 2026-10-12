@@ -2,8 +2,9 @@
 // Gleiches Szenario, gleicher Seed und gleiche Ereignisse ergeben immer denselben Zustand.
 import type { Action, Algorithm, Findings, Patient, Phase, Place, Scenario, Sk } from "@dps/schema";
 
-// vitals: "text" zeigt Befunde wie auf der Papier-dPS ("Puls schnell und schwach") statt Zahlen (H2).
-export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "text" };
+// vitals: "text" zeigt Befunde wie auf der Papier-dPS ("Puls schnell und schwach") statt Zahlen (H2),
+// "live" lässt die Zahlen nach einem Phasenwechsel gleiten und leicht schwanken wie am Monitor.
+export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "live" | "text" };
 export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15, random: false };
 
 // Zeit t in Minuten seit Übungsstart.
@@ -23,6 +24,7 @@ type Running = { action: string; patient: string; until: number | null; ok: bool
 export type PatientState = {
   phase: string;
   phaseStart: number;
+  from: string | null; // vorige Phase, für gleitende Vitalwerte
   done: string[];
   triage: Sk | null;
   place: Place | "fundort" | "abtransport";
@@ -45,7 +47,7 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
   for (const id of scenario.patients) {
     const p = defs.patients[id];
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
-    patients[id] = { phase: p.start, phaseStart: 0, done: [], triage: null, place: "fundort", left: false };
+    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false };
   }
   const units: State["units"] = {};
   for (const u of scenario.units) units[u.id] = { arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
@@ -123,6 +125,7 @@ export function apply(s: State, e: Event): State {
       break;
     }
     case "phase":
+      s.patients[e.patient].from = s.patients[e.patient].phase;
       s.patients[e.patient].phase = e.to;
       s.patients[e.patient].phaseStart = e.t;
       break;
@@ -166,10 +169,40 @@ export function phaseDef(s: State, id: string): Phase {
   return s.defs.patients[id].phases[s.patients[id].phase];
 }
 
-export function findings(s: State, id: string): Findings {
+export function findings(s: State, id: string, phase = s.patients[id].phase): Findings {
   const p = s.defs.patients[id];
-  const f = phaseDef(s, id).findings;
+  const f = p.phases[phase].findings;
   return { ...p.base, ...f, exam: { ...p.base.exam, ...f.exam } };
+}
+
+// Vitalwerte im Modus "live": nach einem Phasenwechsel GLIDE_MIN Minuten linear vom alten zum neuen Wert,
+// dazu kleine Schwankungen je Minute. Deterministisch (Hash aus Patient, Wert und Minute), damit Replay und Tests stabil bleiben.
+// Nur Anzeige: Soll-Sichtung und Auswertung rechnen weiter mit den Werten der Phase.
+const GLIDE_MIN = 3;
+const JITTER = { hr: 2, rr: 1, spo2: 1, sys: 3, dia: 2 } as const;
+function noise(key: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < key.length; i++) h = Math.imul(h ^ key.charCodeAt(i), 16777619);
+  return ((h >>> 0) % 2001) / 1000 - 1; // -1 … 1
+}
+const bpParts = (bp: string) => bp.match(/^(\d+)\/(\d+)$/)?.slice(1).map(Number) as [number, number] | undefined;
+export function liveFindings(s: State, id: string, t = s.t): Findings {
+  const ps = s.patients[id];
+  const f = findings(s, id);
+  if (phaseDef(s, id).dead) return f;
+  const k = ps.from ? Math.min(1, (t - ps.phaseStart) / GLIDE_MIN) : 1;
+  const prev = ps.from ? findings(s, id, ps.from) : f;
+  const minute = Math.floor(t);
+  const at = (key: string, a: number, b: number, amp: number) => {
+    const v = a + (b - a) * k;
+    return v <= 0 ? 0 : Math.max(0, Math.round(v + amp * noise(`${id}:${key}:${minute}`)));
+  };
+  const out = { ...f, hr: at("hr", prev.hr, f.hr, JITTER.hr), rr: at("rr", prev.rr, f.rr, JITTER.rr) };
+  if (f.spo2 !== undefined) out.spo2 = Math.min(100, at("spo2", prev.spo2 ?? f.spo2, f.spo2, JITTER.spo2));
+  const [a, b] = [bpParts(prev.bp ?? ""), bpParts(f.bp ?? "")];
+  if (b) out.bp = `${at("sys", (a ?? b)[0], b[0], JITTER.sys)}/${at("dia", (a ?? b)[1], b[1], JITTER.dia)}`;
+  if (f.temp !== undefined) out.temp = Math.round(((prev.temp ?? f.temp) + (f.temp - (prev.temp ?? f.temp)) * k) * 10) / 10;
+  return out;
 }
 
 // Was der Helfer sieht: Befunde, die eine Maßnahme aufdeckt, erst nach dieser Maßnahme.
@@ -189,7 +222,7 @@ export function visible(s: State, id: string): Partial<Findings> {
   const gates = new Map<string, string[]>();
   for (const a of Object.values(s.defs.actions)) for (const k of a.reveals) gates.set(k, [...(gates.get(k) ?? []), a.id]);
   const shown = (k: string) => !gates.has(k) || gates.get(k)!.some((a) => done.has(a));
-  const { exam, ...rest } = withDefaults(findings(s, id));
+  const { exam, ...rest } = withDefaults(s.settings.vitals === "live" ? liveFindings(s, id) : findings(s, id));
   const out: Partial<Findings> = Object.fromEntries(Object.entries(rest).filter(([k]) => shown(k)));
   out.exam = Object.fromEntries(Object.entries(exam).filter(([k]) => shown(`exam.${k}`)));
   return out;

@@ -314,7 +314,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
           {VITALS.map(([label, k, unit]) => (
             <Pressable key={`${p.id}-${k}`} disabled={!CARD_DEVICE[k] || !hasDevice(CARD_DEVICE[k])} onPress={() => setDevice(CARD_DEVICE[k])}
               accessibilityRole={CARD_DEVICE[k] && hasDevice(CARD_DEVICE[k]) ? "button" : undefined} style={{ width: "31%", backgroundColor: t.card, borderRadius: 14, borderBottomWidth: 3, borderColor: t.edge }}>
-              <Flash t={t} value={f[k]}>
+              <Flash t={t} value={p.live ? null : f[k]}>
                 <View style={{ padding: 10 }}>
                   <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
                   {p.vitalsText?.[k] ? (

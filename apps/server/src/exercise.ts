@@ -184,7 +184,7 @@ export async function submitAsk(ex: Exercise, participant: string | null, msg: E
 const NUMERIC = ["rr", "hr", "bp", "spo2", "gcs", "recap", "temp"] as const;
 function findingsFor(ex: Exercise, s: State, p: string) {
   const f = visible(s, p);
-  if (ex.settings.vitals !== "text") return { findings: f, vitalsText: null };
+  if (ex.settings.vitals !== "text") return { findings: f, vitalsText: null, live: ex.settings.vitals === "live" };
   const vitalsText = describe(f);
   const { glucose: _, ...exam } = f.exam ?? {};
   return { findings: { ...Object.fromEntries(Object.entries(f).filter(([k]) => !(NUMERIC as readonly string[]).includes(k))), exam }, vitalsText };

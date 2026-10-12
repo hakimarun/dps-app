@@ -122,7 +122,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [level, setLevel] = useState<Level>("fortgeschritten");
   const [trupps, setTrupps] = useState({ sichtung: 1, behandlung: 2, transport: 1 });
   // H1/H2: Vorgaben der Stufe einzeln überschreiben (null = wie die Stufe)
-  const [vitals, setVitals] = useState<"numbers" | "text">("numbers");
+  const [vitals, setVitals] = useState<"numbers" | "live" | "text">("numbers");
   const [phaseMinutes, setPhaseMinutes] = useState<number | null>(null);
   const [random, setRandom] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -156,6 +156,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       <Text style={{ color: t.quiet }}>Vitalwerte auf den Handys</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         <Chip t={t} label="Zahlen" selected={vitals === "numbers"} onPress={() => setVitals("numbers")} />
+        <Chip t={t} label="Zahlen gleitend wie am Monitor" selected={vitals === "live"} onPress={() => setVitals("live")} />
         <Chip t={t} label="Befundtext wie Papier-dPS" selected={vitals === "text"} onPress={() => setVitals("text")} />
       </View>
       <Text style={{ color: t.quiet }}>Phasendauer</Text>

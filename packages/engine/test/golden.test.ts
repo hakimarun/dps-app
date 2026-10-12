@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { apply, defaultSettings, describe, ecgOf, initial, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
+import { apply, defaultSettings, describe, ecgOf, initial, liveFindings, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
 
 const lib = new URL("../../../library/", import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, lib), "utf8"));
@@ -194,4 +194,21 @@ test("Befundtext statt Zahlen (Papier-dPS)", () => {
   });
   assert.deepEqual(describe({ rr: 16, hr: 80, radialPulse: true, gcs: 15 }), { rr: "normal", hr: "normal", gcs: "wach, orientiert" });
   assert.deepEqual(describe({ breathing: false, rr: 0, hr: 0 }), { rr: "keine Atmung", hr: "kein Puls" });
+});
+
+test("Gleitende Vitalwerte: nach dem Phasenwechsel vom alten zum neuen Wert, danach kleine Schwankung; Soll-SK bleibt an der Phase", () => {
+  const { s } = run([], 16.5, { vitals: "live" });
+  assert.equal(phaseOf(s, "p01"), "2-schock"); // HF 115 → 135, RR 115/90 → 85/60
+  const mid = liveFindings(s, "p01");
+  assert.ok(mid.hr >= 123 && mid.hr <= 127, `HF mitten im Gleiten: ${mid.hr}`);
+  const [sys] = mid.bp!.split("/").map(Number);
+  assert.ok(sys >= 97 && sys <= 103, `RR mitten im Gleiten: ${mid.bp}`);
+  assert.deepEqual(liveFindings(s, "p01"), mid); // gleiche Minute, gleiche Werte
+  const hrs = [20, 21, 22, 23, 24, 25].map((t) => liveFindings(s, "p01", t).hr);
+  assert.ok(hrs.every((v) => Math.abs(v - 135) <= 2) && new Set(hrs).size > 1, `Schwankung um 135: ${hrs}`);
+  assert.equal(visible(s, "p01").hr, mid.hr); // Helfer sehen im Modus "live" die gleitenden Werte
+  assert.equal(targetSk(s, "p01"), targetSk(run([], 16.5).s, "p01"));
+  const dead = run([], 50, { vitals: "live" }).s;
+  assert.equal(liveFindings(dead, "p01").hr, 0); // tot bleibt Nulllinie
+  assert.equal(visible(run([], 16.5).s, "p01").hr, 135); // ohne "live" stufenweise wie bisher
 });

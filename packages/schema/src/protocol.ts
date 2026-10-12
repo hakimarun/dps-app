@@ -54,7 +54,7 @@ export const CreateExerciseReq = z.object({
   // H1/H2: Vorgaben der Stufe einzeln überschreiben
   phaseMinutes: z.number().int().min(5).max(30).optional(),
   random: z.boolean().optional(),
-  vitals: z.enum(["numbers", "text"]).default("numbers"),
+  vitals: z.enum(["numbers", "live", "text"]).default("numbers"),
 });
 export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional() });
 // Formular-Editor (A1/A4): Fall im Bibliotheksformat, geprüft wird auf dem Server.
@@ -117,6 +117,7 @@ export type View = {
   patient: {
     id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean;
     vitalsText: Record<string, string> | null; // Befundtext statt Zahlen (Vitalwerte-Modus "text"); dann fehlen die Zahlen in findings
+    live?: boolean; // Vitalwerte gleiten und schwanken (Modus "live"): kein Aufblitzen bei jeder Änderung
     image?: string | null; // Patientenbild (Pfad auf dem Server), falls eines erzeugt wurde
     dialog: { q: string; a: string }[]; // eigene Fragen an diesen Patienten
   } | null;

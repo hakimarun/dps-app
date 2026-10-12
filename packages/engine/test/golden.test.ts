@@ -233,3 +233,16 @@ test("Zwei-Helfer-Maßnahme: wartet auf den zweiten Helfer, startet dann für be
   assert.ok(!alone.patients.p04.done.includes("vacuum_mattress"));
   assert.equal(validate(alone, assist(21, "p04", "h1")), "keine Maßnahme wartet auf Hilfe");
 });
+
+test("Material holen: von einem anderen Fahrzeug vor Ort in die eigene Einheit, je ein Stück", () => {
+  const fetch = (t: number, from: string, item: string, participant = "h1"): Event => ({ t, type: "fetch", participant, from, item });
+  const { s } = run([], 5);
+  assert.equal(validate(s, fetch(5, "nef1", "needle")), "Fahrzeug noch nicht eingetroffen");
+  assert.equal(validate(s, fetch(5, "rtw1", "needle")), "unbekanntes Fahrzeug"); // nicht von sich selbst
+  tick(s, 11);
+  assert.equal(validate(s, fetch(11, "nef1", "needle")), null);
+  apply(s, fetch(11, "nef1", "needle"));
+  assert.equal(s.units.rtw1.inventory.needle, 2);
+  assert.equal(s.units.nef1.inventory.needle, 1);
+  assert.equal(validate(s, fetch(11, "nef1", "tourniquet")), "kein tourniquet mehr auf diesem Fahrzeug");
+});

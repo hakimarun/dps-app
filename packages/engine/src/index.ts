@@ -15,6 +15,8 @@ export type Event =
   | { t: number; type: "end"; participant: string }
   // Zweiter Helfer steigt in eine wartende Zwei-Helfer-Maßnahme am Patienten ein (C7); dann startet sie für beide.
   | { t: number; type: "assist"; participant: string; patient: string }
+  // Material von einem anderen Fahrzeug vor Ort in die eigene Einheit holen (C10), je ein Stück.
+  | { t: number; type: "fetch"; participant: string; from: string; item: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
   | { t: number; type: "admit"; participant: string; patient: string; place: Place }
   // Gespräch mit dem Patienten; ändert den Zustand nicht, wird für die Auswertung protokolliert.
@@ -76,6 +78,12 @@ export function validate(s: State, e: Event): string | null {
   if (!h) return "nicht beigetreten";
   if (e.type === "end") return h.busy?.until === null ? null : "keine dauerhafte Maßnahme aktiv";
   if (h.busy && !(e.type === "ask" && h.patient === e.patient)) return "Helfer ist beschäftigt"; // reden geht auch während einer Maßnahme
+  if (e.type === "fetch") {
+    const from = s.units[e.from];
+    if (!from || e.from === h.unit) return "unbekanntes Fahrzeug";
+    if (e.t < from.arrivesAt) return "Fahrzeug noch nicht eingetroffen";
+    return (from.inventory[e.item] ?? 0) < 1 ? `kein ${e.item} mehr auf diesem Fahrzeug` : null;
+  }
   const ps = s.patients[e.patient];
   if (!ps) return "unbekannter Patient";
   if (ps.left) return "Patient ist bereits abtransportiert";
@@ -157,6 +165,12 @@ export function apply(s: State, e: Event): State {
       Object.assign(ps, { left: true, place: "abtransport" });
       if (!ps.done.includes("handover")) ps.done.push("handover");
       s.units[e.vehicle].seats--;
+      break;
+    }
+    case "fetch": {
+      const own = s.units[s.participants[e.participant].unit].inventory;
+      s.units[e.from].inventory[e.item]--;
+      own[e.item] = (own[e.item] ?? 0) + 1;
       break;
     }
     case "message":

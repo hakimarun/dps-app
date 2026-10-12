@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Platform, Share } from "react-native";
 import type { Sk } from "@dps/schema";
 
-export type Session = { server: string; token: string; email: string };
+export type Session = { server: string; token: string }; // token: Geräteschlüssel der Spielleitung (keine Konten)
 export type LibPatient = {
   id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number;
   meta: { category: string; tags: string[]; difficulty: string }; sk: Sk | null; origin: "muster" | "ki" | "eigen" | "import"; errors: string[];

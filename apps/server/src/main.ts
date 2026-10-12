@@ -1,6 +1,5 @@
-// Übungsserver: REST für Praxisanleiter, WebSocket für Helfer und Live-Lage.
+// Übungsserver: REST für die Spielleitung (Geräteschlüssel statt Konten), WebSocket für Helfer und Live-Lage.
 //   node apps/server/src/main.ts --port 3000 --data data
-// E-Mail: SMTP_URL (z. B. smtps://user:pass@host) und MAIL_FROM setzen; ohne SMTP_URL steht der Anmeldecode im Log.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { extname, join, resolve as resolvePath, sep } from "node:path";
@@ -8,17 +7,16 @@ import { fileURLToPath } from "node:url";
 import { randomInt } from "node:crypto";
 import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
-import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, FeedbackReq, GenerateReq, InjectReq, NoteReq, ScenarioBundle, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, EE_ROLES, FeedbackReq, ROLE_LABEL, GenerateReq, InjectReq, NoteReq, ScenarioBundle, ScenarioGenReq, ScenarioSaveReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
 import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
-import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
+import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, setApproval, userByToken, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
 import { suggestFeedback } from "./feedback.ts";
 import { imageGenFromEnv } from "./images.ts";
@@ -83,7 +81,6 @@ const SOLO_MAX = 300; // ponytail: feste Obergrenze gegen Fluten des offenen End
 // Solo-Fälle sind ohne Anmeldung offen: KI höchstens SOLO_AI_QUESTIONS Fragen je Fall, danach antwortet der Patient aus seinem Profil.
 const SOLO_AI_QUESTIONS = 20;
 const aiFor = (ex: Exercise) => (ex.owner === SOLO && ex.records.filter((r) => r.event.type === "ask").length >= SOLO_AI_QUESTIONS ? null : dialogAi);
-const ROLE_LABEL: Record<Role, string> = { sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp" };
 // KI-Entwurf eines Patienten: speichern; besteht er die Prüfung, ist er spielbar (nach Freigabe).
 async function draftPatient(brief: string, owner: string): Promise<Draft> {
   const { raw, report } = await generate(generatorAi!, brief, lib.defs.actions, lib.defs.patients.p01);
@@ -114,7 +111,8 @@ async function fillScenario(id: string, briefs: string[], owner: string) {
     job.done++;
   }
 }
-const mailer = process.env.SMTP_URL ? nodemailer.createTransport(process.env.SMTP_URL) : null;
+const devices: number[] = []; // Zeitpunkte neuer Geräte in der letzten Minute
+const DEVICES_PER_MINUTE = 30; // ponytail: globale Grenze gegen Fluten; bei Bedarf je IP
 
 const LEVELS: Record<Level, Pick<Settings, "phaseMinutes" | "random">> = {
   einsteiger: { phaseMinutes: 20, random: false },
@@ -174,22 +172,21 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     res.writeHead(200, { "content-type": "image/png", "cache-control": "max-age=3600" });
     return res.end(png);
   }
-  if (route === "POST /api/login") {
-    const { email } = LoginReq.parse(await body(req));
-    const r = requestLogin(db, email, Date.now());
-    if ("error" in r) throw new HttpError(429, r.error);
-    if (mailer)
-      await mailer.sendMail({ from: process.env.MAIL_FROM ?? "dPS <noreply@localhost>", to: email, subject: "Dein Anmeldecode für dPS", text: `Dein Code: ${r.code}\nEr gilt 15 Minuten.` });
-    else console.log(`Anmeldecode für ${email}: ${r.code}`);
-    return send(res, 200, { ok: true });
+  // Ohne Konten: Gerät bekommt beim ersten "Neues Spiel starten" einen Schlüssel.
+  if (route === "POST /api/device") {
+    const now = Date.now();
+    while (devices.length && now - devices[0] > 60_000) devices.shift();
+    if (devices.length >= DEVICES_PER_MINUTE) throw new HttpError(429, "Gerade starten sehr viele neue Geräte, bitte gleich erneut versuchen");
+    devices.push(now);
+    return send(res, 201, { token: newDevice(db, now) });
   }
-  if (route === "POST /api/verify") {
-    const { email, code } = VerifyReq.parse(await body(req));
-    const r = verifyLogin(db, email, code, Date.now());
-    if (!r) throw new HttpError(401, "Code falsch oder abgelaufen");
-    return send(res, 200, { token: r.token });
+  // Ein Eingabefeld für alle Codes: Übung, Trupp oder Beobachter.
+  if ((m = route.match(/^GET \/api\/code\/([A-Za-z0-9]{6})$/))) {
+    const c = m[1].toUpperCase();
+    const kind = exercises.has(c) ? "exercise" : truppCodes.has(c) ? "trupp" : observerCodes.has(c) ? "observer" : null;
+    if (!kind) throw new HttpError(404, "Diesen Code gibt es nicht");
+    return send(res, 200, { kind, code: c });
   }
-
   // E7: Beobachter mit Beobachter-Code (ohne Konto): Lage zum Zuordnen lesen, Notizen schreiben.
   if ((m = route.match(/^GET \/api\/observe\/([A-Z0-9]{6})$/))) {
     const ex = observerCodes.get(m[1]);
@@ -237,7 +234,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
       patients: [
         ...Object.values(lib.defs.patients).map((p) => ({
           id: p.id, version: p.version, title: p.title, picture: p.picture,
-          approved: mine.get(p.id) === p.version,
+          approved: !drafts.has(p.id) || mine.get(p.id) === p.version, // Musterfälle sind geprüft und sofort spielbar
           approvals: counts.get(p.id) ?? 0,
           uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
           meta: p.meta, sk: startSk(p), origin: drafts.get(p.id)?.origin ?? "muster", errors: [] as string[], editable: drafts.get(p.id)?.owner === user.id,
@@ -394,13 +391,21 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const sc = lib.scenarios[r.scenario];
     if (!sc) throw new HttpError(400, "unbekanntes Szenario");
     const mine = myApprovals(db, user.id);
-    const missing = r.patients.filter((id) => !lib.defs.patients[id] || mine.get(id) !== lib.defs.patients[id].version);
+    // Ohne Konten: Musterfälle gelten als freigegeben; KI-, eigene und importierte Fälle braucht weiter die eigene Freigabe.
+    const missing = r.patients.filter((id) => !lib.defs.patients[id] || (drafts.has(id) && mine.get(id) !== lib.defs.patients[id].version));
     if (missing.length) throw new HttpError(400, `nicht von dir freigegeben: ${missing.join(", ")}`);
     const taken = (c: string) => codeTaken(c) || trupps.some((t) => t.code === c);
     // Trupps: Transporttrupps auf Fahrzeuge mit Plätzen verteilen, die übrigen reihum auf alle Einheiten.
     const trupps: Trupp[] = [];
+    // B3: je Einsatzeinheit Sicherungstrupp, Arzt, Zelt- und Techniktrupp; der Sicherungstrupp auf ein Fahrzeug mit Plätzen (Abgabe).
+    const seated = sc.units.some((u) => u.seats > 0) ? sc.units.filter((u) => u.seats > 0) : sc.units;
+    for (let e = 0; e < r.einheiten; e++)
+      EE_ROLES.forEach((role, k) => trupps.push({
+        code: newCode(taken), name: `EE ${e + 1} ${ROLE_LABEL[role]}`, role,
+        unit: (role === "sicherung" ? seated[e % seated.length] : sc.units[(e * EE_ROLES.length + k) % sc.units.length]).id,
+      }));
     for (const role of ["sichtung", "behandlung", "transport"] as const) {
-      const units = role === "transport" && sc.units.some((u) => u.seats > 0) ? sc.units.filter((u) => u.seats > 0) : sc.units;
+      const units = role === "transport" ? seated : sc.units;
       for (let i = 0; i < r.trupps[role]; i++)
         trupps.push({ code: newCode(taken), name: `${ROLE_LABEL[role]} ${i + 1}`, role, unit: units[i % units.length].id });
     }

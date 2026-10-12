@@ -90,7 +90,7 @@ test("Trupps: Beitritt per Trupp-Code, Sichtungstrupp sichtet nur, Auswertung je
   const b = join("Bob", trupps[1]);
   assert.equal(ex.names.get(s), "Sina");
   assert.equal(send(s, 1, { type: "scan", patient: "p01" }), null);
-  assert.match(send(s, 1, { type: "start", patient: "p01", action: "iv_access" }) ?? "", /Sichtungstrupps sichten/);
+  assert.match(send(s, 1, { type: "start", patient: "p01", action: "iv_access" }) ?? "", /nur lebensrettende Sofortmaßnahmen/);
   assert.equal(send(s, 2, { type: "triage", patient: "p01", sk: "I" }), null);
   assert.equal(send(s, 3, { type: "start", patient: "p01", action: "tourniquet" }), null); // lebensrettende Sofortmaßnahme erlaubt
   assert.equal(send(b, 3, { type: "scan", patient: "p04" }), null);
@@ -145,4 +145,30 @@ test("Kompetenzprofil: Achsen zählen Richtiges von Bewertbarem", () => {
   assert.deepEqual(a.kommunikation, { ok: 0, total: 0 }); // nichts zu bewerten
   assert.deepEqual(b.sichtung, { ok: 1, total: 2 });
   assert.deepEqual(b.blutung, { ok: 0, total: 1 }); // Beckengurt an P04 fehlte
+});
+
+test("Einsatzeinheit: Arzt sichtet zuerst, Zelt-/Techniktrupp versorgen und sichten nach, Sicherungstrupp nimmt auf und gibt ab", () => {
+  const trupps = [
+    { code: "EESICH", name: "EE 1 Sicherungstrupp", role: "sicherung" as const, unit: "rtw1" },
+    { code: "EEARZT", name: "EE 1 Arzt", role: "arzt" as const, unit: "rtw1" },
+    { code: "EEZELT", name: "EE 1 Zelttrupp", role: "zelt" as const, unit: "rtw1" },
+  ];
+  const ex = createExercise({ code: "EE0001", owner: "u1", scenario: { ...lib.scenarios.busunfall, patients: ["p01", "p04"] }, settings: defaultSettings, seed: 1, created: 0, trupps }, lib.defs);
+  control(ex, "start", 0);
+  const join = (name: string, tr: (typeof trupps)[number]) =>
+    submit(ex, null, { type: "intent", id: `ee-${++n}`, at: 0, intent: { type: "join", name } }, 0, tr).participant!;
+  const send = (who: string, min: number, intent: Intent) => submit(ex, who, { type: "intent", id: `ee-${++n}`, at: min * MIN, intent }, min * MIN).error;
+  const [sich, arzt, zelt] = [join("Sam", trupps[0]), join("Dr. A", trupps[1]), join("Zoe", trupps[2])];
+  for (const who of [sich, arzt, zelt]) assert.equal(send(who, 1, { type: "scan", patient: "p01" }), null);
+  assert.equal(send(zelt, 1, { type: "triage", patient: "p01", sk: "I" }), "Die Erstsichtung macht der Arzt, nachsichten dürft ihr");
+  assert.equal(send(sich, 1, { type: "triage", patient: "p01", sk: "I" }), "Sichten macht der Arzt");
+  assert.equal(send(arzt, 1, { type: "triage", patient: "p01", sk: "I" }), null);
+  assert.equal(send(zelt, 2, { type: "triage", patient: "p01", sk: "I" }), null); // Nachsichtung
+  assert.equal(send(zelt, 2, { type: "admit", patient: "p01", place: "bhp" }), "Die Aufnahme macht der Sicherungstrupp");
+  assert.equal(send(sich, 2, { type: "admit", patient: "p01", place: "bhp" }), null);
+  assert.match(send(sich, 3, { type: "start", patient: "p01", action: "iv_access" }) ?? "", /nur lebensrettende Sofortmaßnahmen/);
+  assert.equal(send(sich, 3, { type: "start", patient: "p01", action: "tourniquet" }), null); // Sofortmaßnahme geht
+  assert.equal(send(zelt, 3, { type: "start", patient: "p01", action: "iv_access" }), null);
+  assert.equal(send(arzt, 3, { type: "start", patient: "p01", action: "analgesia" }), null); // Arzt behandelt auch
+  assert.equal(evaluate(ex, 5 * MIN).triageByRole.arzt.correct, 1);
 });

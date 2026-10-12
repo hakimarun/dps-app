@@ -8,7 +8,7 @@ Stand: Meilenstein 7 – interaktives Design (Lobby mit QR-Code und Countdown, A
 
 ```text
 apps/app/          Helfer-App (Expo): Verbinden, Beitreten, QR-Scan, Befunde, Maßnahmen, Sichtung, Offline-Puffer
-apps/server/       Übungsserver: REST für Praxisanleiter, WebSocket für Helfer und Live-Lage, SQLite (node:sqlite) in data/
+apps/server/       Übungsserver: REST für die Spielleitung, WebSocket für Helfer und Live-Lage, SQLite (node:sqlite) in data/
 packages/schema/   Szenarioformat und Protokoll App <-> Server (zod)
 packages/engine/   Simulations-Engine: initial, validate, apply, tick, visible, targetSk, triage
 library/           Musterverläufe P01–P13, Maßnahmenkatalog, Szenario "Busunfall", ideas/ mit 100 Fall- und 100 Szenario-Ideen (CC BY 4.0)
@@ -34,10 +34,11 @@ npm run server
 npm run web -w @dps/app
 ```
 
-Als Praxisanleiter anmelden: Ohne `SMTP_URL` steht der Anmeldecode im Server-Log. Für echten Mailversand
-`SMTP_URL` (z. B. `smtps://user:pass@host`) und `MAIL_FROM` setzen. Dann Fälle in der Bibliothek freigeben,
-Übung mit Trupps anlegen, Zettel drucken (`/print/<CODE>`: Übungscode, ein Code je Trupp, QR-Zettel je Patient) und starten.
-Helfer treten mit dem Code ihres Trupps bei; Sichtungstrupps sichten nur und leisten lebensrettende Sofortmaßnahmen. Nach dem Ende zeigt die Lage die Auswertung;
+Eine Startseite für alle, ohne Konten und ohne E-Mail: Spielcode eingeben (Übung, Trupp oder Beobachter) oder
+„Neues Spiel starten“. Das Gerät der Spielleitung bekommt dabei still einen Schlüssel; daran hängen seine Spiele, eigenen Fälle
+und Freigaben („Meine Spiele“ auf der Startseite). Fälle in der Bibliothek freigeben, Übung mit Einsatzeinheiten anlegen,
+Zettel drucken (`/print/<CODE>`: Übungscode, ein Code je Trupp, QR-Zettel je Patient) und starten.
+Je Einsatzeinheit gibt es Sicherungstrupp (Aufnahme und Abgabe), Arzt (Erstsichtung), Zelt- und Techniktrupp (Versorgung und Nachsichtung). Nach dem Ende zeigt die Lage die Auswertung;
 „Berichte freigeben“ schickt jedem Helfer seinen Bericht. Punktewerte stehen in `apps/server/src/evaluation.ts`.
 
 Auf dem Handy: Expo Go oder Development Build, als Server `ws://<IP des Rechners>:3000` eintragen.

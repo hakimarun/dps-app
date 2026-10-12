@@ -1,13 +1,13 @@
-// Praxisanleiter (Meilenstein 3): Anmeldung per E-Mail-Code, Bibliothek mit eigener Freigabe,
+// Spielleitung: ohne Konto (Geräteschlüssel), Bibliothek mit eigener Freigabe,
 // Übung anlegen, QR-Zettel, Start/Pause/Ende und Live-Lage.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, Image, Linking, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
-import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
-import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
+import { ROLE_LABEL, Role, type Evaluation, type Level, type LeitungView, type ServerMsg, type Status } from "@dps/schema/protocol";
+import { exerciseMinutes } from "./connection";
 import { Badge, Button, Card, Chip, Field, Logo, Sheet, pressed, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
-import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
+import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
 import { ReplaySheet, exportCsv, openReport } from "./replay";
@@ -17,52 +17,34 @@ type Clock = Extract<ServerMsg, { type: "clock" }>;
 
 const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", paused: "pausiert", ended: "beendet" };
 const STATUS_COLOR: Record<Status, string> = { ready: FUN.blue, running: FUN.green, paused: FUN.gold, ended: FUN.purple };
-const ROLES = [["sichtung", "Sichtungstrupps"], ["behandlung", "Behandlungstrupps"], ["transport", "Transporttrupps"]] as const;
-const ROLE_SHORT: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
 const LEVEL_MINUTES: Record<Level, number> = { einsteiger: 20, fortgeschritten: 15, experte: 12 }; // wie LEVELS im Server
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
-export function Leitung({ t, onExit }: { t: Theme; onExit: () => void }) {
-  const [session, setSession] = useState<Session | null | undefined>(undefined);
-  useEffect(() => {
-    AsyncStorage.getItem("dps:session").then((v) => setSession(v ? JSON.parse(v) : null));
-  }, []);
-  const save = (s: Session | null) => (setSession(s), s ? AsyncStorage.setItem("dps:session", JSON.stringify(s)) : AsyncStorage.removeItem("dps:session"));
-  if (session === undefined) return null;
-  return session ? <Home t={t} session={session} onLogout={() => save(null)} onExit={onExit} /> : <Login t={t} onLogin={save} onExit={onExit} />;
-}
-
-function Login({ t, onLogin, onExit }: { t: Theme; onLogin: (s: Session) => void; onExit: () => void }) {
-  const [server, setServer] = useState(DEFAULT_SERVER);
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [sent, setSent] = useState(false);
+// Spielleitung ohne Konto: Das Gerät holt sich beim ersten Mal einen Schlüssel, daran hängen seine Spiele und Fälle.
+export function Leitung({ t, server, startNew, onExit }: { t: Theme; server: string; startNew: boolean; onExit: () => void }) {
+  const [session, setSession] = useState<Session | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const run = (p: Promise<unknown>) => (setError(null), p.catch((e: Error) => setError(e.message)));
-  return (
-    <PinScreen fullBleed color={FUN.red} footer={<PinLink label="Rolle wechseln" onPress={onExit} />}>
-      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Übungsleitung</Text>
-      <Text style={{ color: "#666", textAlign: "center" }}>Praxisanleiter und Ärzte melden sich mit einem Code per E-Mail an.</Text>
-      <Field t={light} label="E-Mail" value={email} onChange={setEmail} keyboard="email-address" />
-      {!sent && (
-        <FunButton label="Code anfordern" color="#333333" text="#FFFFFF" disabled={!email.includes("@")}
-          onPress={() => run(api({ server, token: "" }, "/api/login", { email: email.trim() }).then(() => setSent(true)))} />
-      )}
-      {sent && (
-        <>
-          <Field t={light} label="Code aus der E-Mail" value={code} onChange={setCode} keyboard="number-pad" />
-          <FunButton big label="Anmelden" color="#333333" text="#FFFFFF" disabled={!/^\d{6}$/.test(code)}
-            onPress={() => run(api<{ token: string }>({ server, token: "" }, "/api/verify", { email: email.trim(), code }).then(({ token }) => onLogin({ server, token, email: email.trim() })))} />
-          <Button t={light} label="Code erneut anfordern" onPress={() => run(api({ server, token: "" }, "/api/login", { email: email.trim() }))} />
-        </>
-      )}
-      {error && <Text style={{ color: light.red, fontWeight: "700" }}>{error}</Text>}
-      <Field t={light} label="Server" value={server} onChange={setServer} />
-    </PinScreen>
-  );
+  useEffect(() => {
+    AsyncStorage.getItem("dps:device").then(async (v) => {
+      const known = v ? (JSON.parse(v) as Session) : null;
+      if (known?.server === server) return setSession(known);
+      const { token } = await api<{ token: string }>({ server, token: "" }, "/api/device", {});
+      const s = { server, token };
+      await AsyncStorage.setItem("dps:device", JSON.stringify(s));
+      setSession(s);
+    }).catch((e: Error) => setError(e.message === "Failed to fetch" ? "Server nicht erreichbar" : e.message));
+  }, [server]);
+  if (!session)
+    return (
+      <View style={{ padding: 20, gap: 12 }}>
+        <Text style={{ color: error ? t.red : t.quiet }}>{error ?? "einen Moment …"}</Text>
+        <Text style={{ color: t.text, fontWeight: "700" }} accessibilityRole="button" onPress={onExit}>‹ Zur Startseite</Text>
+      </View>
+    );
+  return <Home t={t} session={session} startNew={startNew} onExit={onExit} />;
 }
 
-function Home({ t, session, onLogout, onExit }: { t: Theme; session: Session; onLogout: () => void; onExit: () => void }) {
+function Home({ t, session, startNew, onExit }: { t: Theme; session: Session; startNew: boolean; onExit: () => void }) {
   const [tab, setTab] = useState<"uebungen" | "bibliothek">("uebungen");
   const [open, setOpen] = useState<string | null>(null);
   if (open) return <ExerciseScreen t={t} session={session} code={open} onBack={() => setOpen(null)} />;
@@ -81,21 +63,17 @@ function Home({ t, session, onLogout, onExit }: { t: Theme; session: Session; on
           ))}
         </View>
       </View>
-      <View style={{ flex: 1 }}>{tab === "bibliothek" ? <LibraryScreen t={t} session={session} /> : <Exercises t={t} session={session} onOpen={setOpen} />}</View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, borderTopWidth: 1, borderColor: t.line }}>
-        <Text style={{ color: t.quiet, flexShrink: 1 }} numberOfLines={1}>{session.email}</Text>
-        <View style={{ flexDirection: "row", gap: 16 }}>
-          <Text style={{ color: t.text, fontWeight: "600" }} accessibilityRole="button" onPress={onExit}>Rolle wechseln</Text>
-          <Text style={{ color: t.text, fontWeight: "600" }} accessibilityRole="button" onPress={onLogout}>Abmelden</Text>
-        </View>
+      <View style={{ flex: 1 }}>{tab === "bibliothek" ? <LibraryScreen t={t} session={session} /> : <Exercises t={t} session={session} startNew={startNew} onOpen={setOpen} />}</View>
+      <View style={{ padding: 20, borderTopWidth: 1, borderColor: t.line }}>
+        <Text style={{ color: t.text, fontWeight: "600" }} accessibilityRole="button" onPress={onExit}>‹ Zur Startseite</Text>
       </View>
     </View>
   );
 }
 
-function Exercises({ t, session, onOpen }: { t: Theme; session: Session; onOpen: (code: string) => void }) {
+function Exercises({ t, session, startNew, onOpen }: { t: Theme; session: Session; startNew: boolean; onOpen: (code: string) => void }) {
   const [list, setList] = useState<ExerciseInfo[] | null>(null);
-  const [creating, setCreating] = useState(false);
+  const [creating, setCreating] = useState(startNew);
   useEffect(() => void api<ExerciseInfo[]>(session, "/api/exercises").then(setList), [session.token, creating]);
   if (creating) return <NewExercise t={t} session={session} onCreated={onOpen} onCancel={() => setCreating(false)} />;
   return (
@@ -120,7 +98,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [picked, setPicked] = useState<string[]>([]);
   const [algorithm, setAlgorithm] = useState("mstart");
   const [level, setLevel] = useState<Level>("fortgeschritten");
-  const [trupps, setTrupps] = useState({ sichtung: 1, behandlung: 2, transport: 1 });
+  const [einheiten, setEinheiten] = useState(1); // B3: Einsatzeinheiten statt einzelner Trupps
   // H1/H2: Vorgaben der Stufe einzeln überschreiben (null = wie die Stufe)
   const [vitals, setVitals] = useState<"numbers" | "live" | "text">("numbers");
   const [phaseMinutes, setPhaseMinutes] = useState<number | null>(null);
@@ -137,7 +115,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {lib?.scenarios.map((s) => <Chip key={s.id} t={t} label={s.title} selected={sc?.id === s.id} onPress={() => setScenario(s.id)} />)}
       </View>
-      <Text style={{ color: t.quiet }}>Patienten (nur von dir freigegebene)</Text>
+      <Text style={{ color: t.quiet }}>Patienten (Musterfälle und von dir freigegebene eigene Fälle)</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {sc?.patients.map((id) => {
           const p = byId.get(id);
@@ -170,18 +148,16 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
         <Chip t={t} label="an" selected={random === true} onPress={() => setRandom(true)} />
         <Chip t={t} label="aus" selected={random === false} onPress={() => setRandom(false)} />
       </View>
-      <Text style={{ color: t.quiet }}>Trupps (jeder bekommt einen eigenen Beitrittscode)</Text>
-      {ROLES.map(([role, label]) => (
-        <View key={role} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
-          <Text style={{ color: t.text, flex: 1 }}>{label}</Text>
-          <View style={{ width: 56 }}><Button t={t} label="−" disabled={trupps[role] === 0} onPress={() => setTrupps((x) => ({ ...x, [role]: x[role] - 1 }))} /></View>
-          <Text style={{ color: t.text, fontWeight: "600", width: 24, textAlign: "center" }}>{trupps[role]}</Text>
-          <View style={{ width: 56 }}><Button t={t} label="+" onPress={() => setTrupps((x) => ({ ...x, [role]: x[role] + 1 }))} /></View>
-        </View>
-      ))}
+      <Text style={{ color: t.quiet }}>Einsatzeinheiten (je EE: Sicherungstrupp für Aufnahme und Abgabe, Arzt für die Sichtung, Zelt- und Techniktrupp für die Versorgung; jeder Trupp bekommt einen eigenen Beitrittscode)</Text>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <Text style={{ color: t.text, flex: 1 }}>{einheiten === 0 ? "ohne EE: jeder Helfer darf alles" : `${einheiten} ${einheiten === 1 ? "Einsatzeinheit" : "Einsatzeinheiten"} · ${einheiten * 4} Trupps`}</Text>
+        <View style={{ width: 56 }}><Button t={t} label="−" disabled={einheiten === 0} onPress={() => setEinheiten(einheiten - 1)} /></View>
+        <Text style={{ color: t.text, fontWeight: "600", width: 24, textAlign: "center" }}>{einheiten}</Text>
+        <View style={{ width: 56 }}><Button t={t} label="+" disabled={einheiten === 6} onPress={() => setEinheiten(einheiten + 1)} /></View>
+      </View>
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <Button t={t} strong label="Übung anlegen" disabled={!sc || picked.length === 0}
-        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, trupps, vitals, ...(phaseMinutes ? { phaseMinutes } : {}), ...(random !== null ? { random } : {}) }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
+        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, einheiten, vitals, ...(phaseMinutes ? { phaseMinutes } : {}), ...(random !== null ? { random } : {}) }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
       <Button t={t} label="Abbrechen" onPress={onCancel} />
     </ScrollView>
   );
@@ -371,7 +347,7 @@ function Lobby({ t, session, code, view, error, onStart, onBack, onEnd }: {
             <Image source={{ uri: `${httpBase(session.server)}/qr/${code}.png` }} style={{ width: 180, height: 180 }} accessibilityRole="image" accessibilityLabel="QR-Code zum Beitreten" />
           </View>
         </View>
-        <Text style={{ color: WHITE, opacity: 0.9 }}>dPS-App öffnen → „Ich übe“ → Code eingeben oder QR-Code scannen</Text>
+        <Text style={{ color: WHITE, opacity: 0.9 }}>dPS-App öffnen → Code eingeben oder QR-Code scannen</Text>
         {error && <Text style={{ color: WHITE, fontWeight: "700" }}>{error}</Text>}
         <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
           <Wiggle trigger={helpers.length}>
@@ -532,8 +508,8 @@ function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; ses
       <Text style={{ color: t.text }}>{ev.team.survived} von {ev.team.eligible} Patienten überlebt</Text>
       <Text style={{ color: t.quiet }}>Kritische Maßnahmen: {ev.critical.timely} rechtzeitig · {ev.critical.late} zu spät · {ev.critical.missed} verpasst</Text>
       <Text style={{ color: t.quiet }}>Erste Sichtung: {ev.triage.correct} korrekt · {ev.triage.over} Übertriage · {ev.triage.under} Untertriage</Text>
-      {(["sichtung", "behandlung", "transport"] as const).filter((r) => Object.values(ev.triageByRole[r]).some((x) => x > 0)).map((r) => (
-        <Text key={r} style={{ color: t.quiet }}>Sichtungen durch {ROLE_SHORT[r]}: {ev.triageByRole[r].correct} korrekt · {ev.triageByRole[r].over} über · {ev.triageByRole[r].under} unter</Text>
+      {Role.options.filter((r) => Object.values(ev.triageByRole[r] ?? {}).some((x) => x > 0)).map((r) => (
+        <Text key={r} style={{ color: t.quiet }}>Sichtungen durch {ROLE_LABEL[r]}: {ev.triageByRole[r].correct} korrekt · {ev.triageByRole[r].over} über · {ev.triageByRole[r].under} unter</Text>
       ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 6 }}>Patienten</Text>
       {ev.patients.map((p) => (

@@ -1,18 +1,18 @@
-// dPS-App: Rollenwahl, Helfer-Ablauf (Meilenstein 2) und Praxisanleiter (Meilenstein 3, src/leitung.tsx).
+// dPS-App: Startseite (Code oder neues Spiel), Helfer-Ablauf und Spielleitung (src/leitung.tsx).
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, Vibration, View, useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
-import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
+import { ROLE_TASK, roleRule, type Role, type Status, type Topic, type View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
 import { Solo, type SoloGame } from "./src/solo";
 import { ProfileScreen, addToProfile } from "./src/profile";
 import { Observe } from "./src/observe";
 import { canListen, canSpeak, listen, speak, stopSpeaking } from "./src/speech";
 import { voiceFor } from "./src/voice";
-import { Badge, Button, Chip, Field, Flash, Logo, Overlay, Pop, SK, Sheet, Title, clock, dark, light, pressed, skColor, useCountUp, type Theme } from "./src/ui";
+import { Badge, Button, Chip, Field, Flash, Overlay, Pop, SK, Sheet, Title, clock, dark, light, pressed, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
 import { httpBase } from "./src/api";
@@ -42,43 +42,87 @@ const QUICK: Record<Topic, string> = {
 const STATUS: Record<Status, string> = { ready: "noch nicht gestartet", running: "", paused: "pausiert", ended: "beendet" };
 
 
+// Eine Startseite für alle: Code eingeben (Übung, Trupp oder Beobachter) oder ein neues Spiel starten. Keine Konten.
+type Screen =
+  | { kind: "start" }
+  | { kind: "helfer"; server: string; code: string }
+  | { kind: "beobachter"; server: string; code: string }
+  | { kind: "leitung"; server: string; startNew: boolean }
+  | { kind: "solo" }
+  | { kind: "profil" };
+
 export default function App() {
   const t = useColorScheme() === "dark" ? dark : light;
-  const [role, setRole] = useState<"helfer" | "leitung" | "solo" | "profil" | "beobachter" | null>(null);
-  useEffect(() => {
-    AsyncStorage.getItem("dps:role").then((r) => (r === "helfer" || r === "leitung") && setRole(r));
-  }, []);
-  const choose = (r: typeof role) => (setRole(r), AsyncStorage.setItem("dps:role", r ?? ""));
+  const [screen, setScreen] = useState<Screen>({ kind: "start" });
+  const home = () => setScreen({ kind: "start" });
   return (
     <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: 48 }}>
       <StatusBar style="auto" />
-      {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "profil" ? <ProfileScreen onExit={() => choose(null)} /> : role === "beobachter" ? <Observe t={t} onExit={() => choose(null)} /> : role === "solo" ? (
-        <Solo onExit={() => choose(null)} play={(game) => <Helfer t={t} onExit={() => choose(null)} solo={game} />} />
-      ) : role === "leitung" ? <Leitung t={t} onExit={() => choose(null)} /> : (
-        <Stage color={FUN.red} style={{ marginTop: -48 }}>
-          <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 24, paddingTop: 96, gap: 18, justifyContent: "center" }}>
-            <FlyIn><Breathe><Logo t={{ ...t, marke: FUN.deep }} size={80} /></Breathe></FlyIn>
-            <FlyIn delay={150}><Text style={{ color: "#FFFFFF", fontSize: 34, fontWeight: "900" }}>Dynamische Patientensimulation</Text></FlyIn>
-            <FlyIn delay={250}><Text style={{ color: "#FFFFFF", fontSize: 17, opacity: 0.9 }}>Übungen für Großschadenslagen im Rettungsdienst</Text></FlyIn>
-            <FlyIn delay={400}><FunButton big label="Ich übe (Helfer)" onPress={() => choose("helfer")} /></FlyIn>
-            <FlyIn delay={450}><FunButton label="Fall des Tages (allein üben)" color={FUN.green} text="#FFFFFF" onPress={() => choose("solo")} /></FlyIn>
-            <FlyIn delay={500}><FunButton label="Ich leite (Praxisanleiter)" color={FUN.purple} text="#FFFFFF" onPress={() => choose("leitung")} /></FlyIn>
-            <View style={{ flexDirection: "row", justifyContent: "center", gap: 24 }}>
-              <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("profil")}>Mein Profil</Text>
-              <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("beobachter")}>Ich beobachte</Text>
-            </View>
-          </ScrollView>
-        </Stage>
-      )}
+      {screen.kind === "helfer" ? <Helfer t={t} server={screen.server} code={screen.code} onExit={home} />
+        : screen.kind === "beobachter" ? <Observe t={t} server={screen.server} code={screen.code} onExit={home} />
+        : screen.kind === "leitung" ? <Leitung t={t} server={screen.server} startNew={screen.startNew} onExit={home} />
+        : screen.kind === "profil" ? <ProfileScreen onExit={home} />
+        : screen.kind === "solo" ? <Solo onExit={home} play={(game) => <Helfer t={t} server={DEFAULT_SERVER} code={game.code} onExit={home} solo={game} />} />
+        : <Start onGo={setScreen} />}
     </View>
   );
 }
 
-function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: SoloGame }) {
+function Start({ onGo }: { onGo: (s: Screen) => void }) {
+  const [server, setServer] = useState(DEFAULT_SERVER);
+  const [code, setCode] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [editServer, setEditServer] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
+  useEffect(() => void lastConnection().then((l) => l && (setServer(l.server), setCode(l.code))), []);
+  // Code auflösen: Übung oder Trupp → mitspielen, Beobachter-Code → Notizen.
+  const go = (c: string) => {
+    setBusy(true);
+    fetch(`${httpBase(server)}/api/code/${c.trim().toUpperCase()}`)
+      .then(async (r) => (r.ok ? r.json() : Promise.reject(new Error((await r.json().catch(() => ({}))).error ?? `Fehler ${r.status}`))))
+      .then((x: { kind: string; code: string }) => onGo(x.kind === "observer" ? { kind: "beobachter", server: server.trim(), code: x.code } : { kind: "helfer", server: server.trim(), code: x.code }),
+        (e: Error) => setError(e.message === "Failed to fetch" ? "Server nicht erreichbar" : e.message))
+      .finally(() => setBusy(false));
+  };
+  // QR-Code aus der Lobby: "dps:<CODE>"
+  const scanned = (raw: string) => {
+    const m = raw.trim().match(/^dps:([A-Z0-9]{6})$/i);
+    if (!m || !scanning) return;
+    setScanning(false);
+    setCode(m[1].toUpperCase());
+    go(m[1]);
+  };
+  const link = (label: string, s: Screen) => <PinLink key={label} label={label} onPress={() => onGo(s)} />;
+  return (
+    <PinScreen fullBleed color={FUN.red} footer={<View style={{ flexDirection: "row", gap: 22, flexWrap: "wrap", justifyContent: "center" }}>
+      {[link("Meine Spiele", { kind: "leitung", server: server.trim(), startNew: false }), link("Fall des Tages", { kind: "solo" }), link("Mein Profil", { kind: "profil" })]}
+    </View>}>
+      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Spielcode</Text>
+      <TextInput value={code} onChangeText={(v) => (setCode(v.toUpperCase()), setError(null))} placeholder="CODE" placeholderTextColor="#999" autoCapitalize="characters" autoCorrect={false}
+        accessibilityLabel="Spielcode" maxLength={6} onSubmitEditing={() => code.length === 6 && go(code)}
+        style={{ height: 64, borderWidth: 3, borderColor: "#CFCAD9", borderRadius: 14, textAlign: "center", fontSize: 30, fontWeight: "900", letterSpacing: 6, color: "#111" }} />
+      {error && <Text style={{ color: light.red, fontWeight: "700", textAlign: "center" }}>{error}</Text>}
+      <FunButton big label={busy ? "Verbinde …" : "Los geht's"} color="#333333" text="#FFFFFF" disabled={code.trim().length !== 6 || busy} onPress={() => go(code)} />
+      {scanning && permission?.granted ? (
+        <CameraView style={{ height: 300, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => scanned(r.data)} />
+      ) : (
+        <FunButton label="QR-Code scannen" color={FUN.blue} text="#FFFFFF" onPress={() => (permission?.granted ? setScanning(true) : requestPermission().then((p) => p.granted && setScanning(true)))} />
+      )}
+      <Text style={{ color: "#666", textAlign: "center", fontWeight: "700" }}>oder</Text>
+      <FunButton label="Neues Spiel starten" color={FUN.purple} text="#FFFFFF" onPress={() => onGo({ kind: "leitung", server: server.trim(), startNew: true })} />
+      {editServer ? <Field t={light} label="Server" value={server} onChange={setServer} />
+        : <Text style={{ color: "#888", fontSize: 12, textAlign: "center" }} accessibilityRole="button" onPress={() => setEditServer(true)}>Server: {server} · ändern</Text>}
+    </PinScreen>
+  );
+}
+
+function Helfer({ t, server, code, onExit, solo }: { t: Theme; server: string; code: string; onExit: () => void; solo?: SoloGame }) {
   const { conn, connect, send } = useConnection();
-  // Fall des Tages: ohne Code-Eingabe; Beitritt und Scan geschehen automatisch, die Übergabe schließt den Fall ab.
+  useEffect(() => void connect(server, code), []);
+  // Fall des Tages: Beitritt und Scan geschehen automatisch, die Übergabe schließt den Fall ab.
   const auto = useRef({ join: false, scan: false, end: false });
-  useEffect(() => void (solo && connect(DEFAULT_SERVER, solo.code)), []);
   useEffect(() => {
     if (!solo || conn.status !== "online") return;
     if (!conn.participant && !auto.current.join) (auto.current.join = true), send({ type: "join", name: "Ich", unit: "rtw1" });
@@ -126,8 +170,13 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
   const w = conn.welcome;
   const min = exerciseMinutes(conn.clock, conn.offset, now);
   let body: ReactNode;
-  if (!w && solo) body = <Text style={{ color: t.quiet, padding: 20 }}>{conn.error ?? "verbinde …"}</Text>;
-  else if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
+  if (!w)
+    body = (
+      <View style={{ padding: 20, gap: 12 }}>
+        <Text style={{ color: conn.error ? t.red : t.quiet }}>{conn.error ?? `verbinde mit ${code} …`}</Text>
+        <Text style={{ color: t.text, fontWeight: "700" }} accessibilityRole="button" onPress={onExit}>‹ Zur Startseite</Text>
+      </View>
+    );
   else if (conn.participant && conn.clock?.status === "ended") body = <Result t={t} result={conn.view?.result ?? null} />;
   else if (conn.participant && conn.clock?.status === "ready") body = <Waiting t={t} name={conn.view?.me?.name ?? ""} trupp={conn.view?.me?.trupp ?? null} title={w.title} />;
   else if (!conn.participant)
@@ -185,6 +234,12 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
               ...head,
               <Button key={a.id} t={t} label={a.title} note={note} disabled={disabled}
                 onPress={() => (send({ type: "start", patient: conn.view!.patient!.id, action: a.id }), setSheet(null))} />,
+              // C10: fehlendes Material von einem anderen Fahrzeug vor Ort holen
+              ...(conn.view!.unitArrived ? missing : []).flatMap(([item]) => {
+                const from = conn.view!.stock?.find((u) => (u.inventory[item] ?? 0) > 0);
+                return from ? [<Button key={`${a.id}-${item}`} t={t} label={`${MATERIAL[item] ?? item} von ${from.title} holen`} note={`dort noch ${from.inventory[item]}`}
+                  onPress={() => send({ type: "fetch", from: from.id, item })} />] : [];
+              }),
             ];
           })}
         </Sheet>
@@ -217,52 +272,15 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
   );
 }
 
-function Connect({ t, status, error, onConnect, onExit }: { t: Theme; status: string; error: string | null; onConnect: (server: string, code: string) => void; onExit: () => void }) {
-  const [server, setServer] = useState(DEFAULT_SERVER);
-  const [code, setCode] = useState("");
-  const [scanning, setScanning] = useState(false);
-  const [permission, requestPermission] = useCameraPermissions();
-  useEffect(() => {
-    lastConnection().then((l) => l && (setServer(l.server), setCode(l.code)));
-  }, []);
-  // QR-Code aus der Lobby: "dps:<CODE>"
-  const scanned = (raw: string) => {
-    const m = raw.trim().match(/^dps:([A-Z0-9]{6})$/i);
-    if (!m || !scanning) return;
-    setScanning(false);
-    setCode(m[1].toUpperCase());
-    onConnect(server.trim(), m[1].toUpperCase());
-  };
-  return (
-    <PinScreen fullBleed footer={<PinLink label="Rolle wechseln" onPress={onExit} />}>
-      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Übung beitreten</Text>
-      {scanning && permission?.granted ? (
-        <CameraView style={{ height: 300, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => scanned(r.data)} />
-      ) : (
-        <FunButton label="QR-Code scannen" color={FUN.blue} text="#FFFFFF" onPress={() => (permission?.granted ? setScanning(true) : requestPermission().then((p) => p.granted && setScanning(true)))} />
-      )}
-      <Text style={{ color: "#666", textAlign: "center", fontWeight: "700" }}>oder Code eingeben</Text>
-      <TextInput value={code} onChangeText={(v) => setCode(v.toUpperCase())} placeholder="Übungscode" placeholderTextColor="#999" autoCapitalize="characters" autoCorrect={false}
-        accessibilityLabel="Übungscode" maxLength={6}
-        style={{ height: 64, borderWidth: 3, borderColor: "#CFCAD9", borderRadius: 14, textAlign: "center", fontSize: 30, fontWeight: "900", letterSpacing: 6, color: "#111" }} />
-      {error && <Text style={{ color: light.red, fontWeight: "700" }}>{error}</Text>}
-      <FunButton big label={status === "connecting" ? "Verbinde …" : "Los geht's"} color="#333333" text="#FFFFFF" disabled={!code || !server} onPress={() => onConnect(server.trim(), code.trim())} />
-      <Field t={light} label="Server" value={server} onChange={setServer} />
-    </PinScreen>
-  );
-}
-
-const ROLE: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
-
 function Join({ t, units, trupp, online, onJoin }: {
-  t: Theme; units: { id: string; title: string }[]; trupp: { name: string; role: string; unit: string } | null; online: boolean; onJoin: (name: string, unit?: string) => void;
+  t: Theme; units: { id: string; title: string }[]; trupp: { name: string; role: Role; unit: string } | null; online: boolean; onJoin: (name: string, unit?: string) => void;
 }) {
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
   return (
     <PinScreen>
       <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Wie heißt du?</Text>
-      {trupp && <Text style={{ color: "#333", fontSize: 16, fontWeight: "700", textAlign: "center" }}>{trupp.name} · {trupp.unit} · {ROLE[trupp.role]}</Text>}
+      {trupp && <Text style={{ color: "#333", fontSize: 16, fontWeight: "700", textAlign: "center" }}>{trupp.name} · {trupp.unit} · {ROLE_TASK[trupp.role]}</Text>}
       <TextInput value={name} onChangeText={setName} placeholder="Name oder Kürzel" placeholderTextColor="#999" autoCorrect={false} accessibilityLabel="Name oder Kürzel" maxLength={30}
         style={{ height: 60, borderWidth: 3, borderColor: "#CFCAD9", borderRadius: 14, textAlign: "center", fontSize: 24, fontWeight: "800", color: "#111" }} />
       {!trupp && (
@@ -321,6 +339,8 @@ function PatientScreen({ t, conn, min, onSheet, onEnd, onAssist }: {
   const busy = v.me?.busy;
   const busyTitle = busy && (conn.welcome!.actions.find((a) => a.id === busy.action)?.title ?? busy.action);
   const exam = Object.entries((f.exam as Record<string, string>) ?? {});
+  // B3: nur zeigen, was die eigene Rolle darf (ohne Trupp-Code darf jeder alles)
+  const may = (what: "triage" | "admit" | "handover") => !roleRule(v.me?.role ?? "behandlung", what, { triaged: !!p.triage });
   // J3: Häkchen, wenn die eigene Maßnahme fertig ist (Vibration kommt aus Helfer).
   // Messung fertig: Wert im passenden Gerät zeigen (EKG-Monitor, Blutdruck, Blutzucker …).
   const lastBusy = useRef<{ id: string; title: string; waiting: boolean } | null>(null);
@@ -422,14 +442,14 @@ function PatientScreen({ t, conn, min, onSheet, onEnd, onAssist }: {
         )}
         {!p.left && <Button t={t} strong label="Maßnahme" disabled={!!busy} onPress={() => onSheet("actions")} />}
         <View style={{ flexDirection: "row", gap: 10 }}>
-          {!p.left && <View style={{ flex: 1 }}><Button t={t} label="Sichten" disabled={!!busy} onPress={() => onSheet("triage")} /></View>}
+          {!p.left && may("triage") && <View style={{ flex: 1 }}><Button t={t} label={p.triage ? "Nachsichten" : "Sichten"} disabled={!!busy} onPress={() => onSheet("triage")} /></View>}
           <View style={{ flex: 1 }}><Button t={t} strong={p.left} label="Scannen" disabled={!!busy} onPress={() => onSheet("scan")} /></View>
         </View>
         {!p.left && (
           <View style={{ flexDirection: "row", gap: 10 }}>
             <View style={{ flex: 1 }}><Button t={t} label="Fragen" onPress={() => onSheet("ask")} /></View>
-            <View style={{ flex: 1 }}><Button t={t} label="Aufnahme" disabled={!!busy} onPress={() => onSheet("admit")} /></View>
-            {v.me?.role !== "sichtung" && <View style={{ flex: 1 }}><Button t={t} label="Übergabe" disabled={!!busy} onPress={() => onSheet("handover")} /></View>}
+            {may("admit") && <View style={{ flex: 1 }}><Button t={t} label="Aufnahme" disabled={!!busy} onPress={() => onSheet("admit")} /></View>}
+            {may("handover") && <View style={{ flex: 1 }}><Button t={t} label="Übergabe" disabled={!!busy} onPress={() => onSheet("handover")} /></View>}
           </View>
         )}
       </View>

@@ -1,20 +1,17 @@
-// Speicher mit der eingebauten SQLite von Node: Konten, Anmeldecodes, Sitzungen, Freigaben, Übungen.
+// Speicher mit der eingebauten SQLite von Node: Geräte-Schlüssel, Freigaben, Übungen.
 import { DatabaseSync } from "node:sqlite";
-import { createHash, randomBytes, randomInt, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, randomInt } from "node:crypto";
 import type { Defs } from "@dps/engine";
 import { addRecord, createExercise, type Exercise, type Header } from "./exercise.ts";
 
 export type Db = DatabaseSync;
 const hash = (s: string) => createHash("sha256").update(s).digest();
-const CODE_MINUTES = 15;
-const MAX_ATTEMPTS = 5;
 
 export function openDb(path: string): Db {
   const db = new DatabaseSync(path);
   db.exec(`
     pragma journal_mode = wal;
-    create table if not exists users (id text primary key, email text unique not null, created integer not null);
-    create table if not exists login_codes (email text primary key, code_hash blob not null, expires integer not null, attempts integer not null, created integer not null);
+    create table if not exists users (id text primary key, created integer not null);
     create table if not exists sessions (token_hash blob primary key, user_id text not null, created integer not null);
     create table if not exists approvals (user_id text not null, item text not null, version integer not null, at integer not null, primary key (user_id, item));
     create table if not exists exercises (code text primary key, owner text not null, header text not null);
@@ -36,38 +33,20 @@ export function openDb(path: string): Db {
   return db;
 }
 
-// Anmeldung per E-Mail-Code: 6 Ziffern, 15 Minuten gültig, höchstens 5 Versuche, neuer Code frühestens nach 1 Minute.
-export function requestLogin(db: Db, email: string, now: number): { code: string } | { error: string } {
-  email = email.toLowerCase();
-  const prev = db.prepare("select created from login_codes where email = ?").get(email) as { created: number } | undefined;
-  if (prev && now - prev.created < 60_000) return { error: "Bitte eine Minute warten" };
-  const code = String(randomInt(0, 1_000_000)).padStart(6, "0");
-  db.prepare("insert or replace into login_codes values (?, ?, ?, 0, ?)").run(email, hash(`${email}:${code}`), now + CODE_MINUTES * 60_000, now);
-  return { code };
-}
-
-export function verifyLogin(db: Db, email: string, code: string, now: number): { token: string; userId: string } | null {
-  email = email.toLowerCase();
-  const row = db.prepare("select code_hash, expires, attempts from login_codes where email = ?").get(email) as
-    | { code_hash: Uint8Array; expires: number; attempts: number }
-    | undefined;
-  if (!row || row.expires < now || row.attempts >= MAX_ATTEMPTS) return null;
-  if (!timingSafeEqual(hash(`${email}:${code}`), row.code_hash)) {
-    db.prepare("update login_codes set attempts = attempts + 1 where email = ?").run(email);
-    return null;
-  }
-  db.prepare("delete from login_codes where email = ?").run(email);
-  db.prepare("insert or ignore into users values (?, ?, ?)").run(crypto.randomUUID(), email, now);
-  const { id } = db.prepare("select id from users where email = ?").get(email) as { id: string };
+// Ohne Konten: Jedes Gerät, das ein Spiel startet, bekommt einen zufälligen Schlüssel. Darüber hängen seine Übungen,
+// eigenen Fälle und Freigaben zusammen; es gibt keine E-Mail und keine Anmeldung.
+export function newDevice(db: Db, now: number): string {
+  const id = crypto.randomUUID();
+  const legacy = (db.prepare("pragma table_info(users)").all() as { name: string }[]).some((c) => c.name === "email"); // ältere Datenbanken
+  if (legacy) db.prepare("insert into users (id, email, created) values (?, ?, ?)").run(id, `geraet:${id}`, now);
+  else db.prepare("insert into users (id, created) values (?, ?)").run(id, now);
   const token = randomBytes(32).toString("base64url");
   db.prepare("insert into sessions values (?, ?, ?)").run(hash(token), id, now);
-  return { token, userId: id };
+  return token;
 }
 
-export function userByToken(db: Db, token: string): { id: string; email: string } | null {
-  return (db.prepare("select u.id, u.email from sessions s join users u on u.id = s.user_id where s.token_hash = ?").get(hash(token)) as
-    | { id: string; email: string }
-    | undefined) ?? null;
+export function userByToken(db: Db, token: string): { id: string } | null {
+  return (db.prepare("select u.id from sessions s join users u on u.id = s.user_id where s.token_hash = ?").get(hash(token)) as { id: string } | undefined) ?? null;
 }
 
 // Freigaben: jeder Praxisanleiter gibt Fälle nur für sich frei, gebunden an die Version.

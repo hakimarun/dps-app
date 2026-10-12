@@ -2,10 +2,32 @@
 import { z } from "zod";
 import { Algorithm, Place, Sk, type Findings } from "./index.ts";
 
-// Trupp-Funktionen: Sichtungstrupps sichten nur (plus lebensrettende Sofortmaßnahmen).
-export const Role = z.enum(["sichtung", "behandlung", "transport"]);
+// Trupp-Funktionen. Einsatzeinheit (EE) im MANV (B3): Sicherungstrupp nimmt Patienten auf und gibt sie ab, der Arzt sichtet
+// bei der Aufnahme, Zelt- und Techniktrupp versorgen. Die älteren Funktionen Sichtung/Behandlung/Transport bleiben für
+// gespeicherte Übungen erhalten.
+export const Role = z.enum(["sichtung", "behandlung", "transport", "arzt", "sicherung", "zelt", "technik"]);
 export type Role = z.infer<typeof Role>;
 export type Trupp = { code: string; name: string; role: Role; unit: string };
+export const EE_ROLES = ["sicherung", "arzt", "zelt", "technik"] as const;
+export const ROLE_LABEL: Record<Role, string> = {
+  sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp",
+  arzt: "Arzt", sicherung: "Sicherungstrupp", zelt: "Zelttrupp", technik: "Techniktrupp",
+};
+export const ROLE_TASK: Record<Role, string> = {
+  sichtung: "nur Sichtung und lebensrettende Sofortmaßnahmen", behandlung: "Behandlung", transport: "Transport und Übergabe",
+  arzt: "Sichtung bei der Aufnahme und ärztliche Versorgung", sicherung: "Patientenaufnahme und -abgabe, lebensrettende Sofortmaßnahmen",
+  zelt: "Versorgung und Nachsichtung", technik: "Versorgung und Nachsichtung",
+};
+// Lebensrettende Sofortmaßnahmen: dürfen alle, auch Trupps ohne Versorgungsauftrag.
+export const SOFORT_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open", "recovery_position"];
+// Wer darf was? null = erlaubt, sonst der Grund für die Ablehnung. triaged: Patient ist schon gesichtet (Nachsichtung).
+export function roleRule(role: Role, what: "triage" | "admit" | "handover" | "treat", ctx: { triaged?: boolean; action?: string } = {}): string | null {
+  const ee = (EE_ROLES as readonly string[]).includes(role);
+  if (what === "treat") return (role === "sichtung" || role === "sicherung") && !SOFORT_ACTIONS.includes(ctx.action ?? "") ? `${ROLE_LABEL[role]}: nur lebensrettende Sofortmaßnahmen, versorgt wird von anderen Trupps` : null;
+  if (what === "triage") return role === "sicherung" ? "Sichten macht der Arzt" : (role === "zelt" || role === "technik") && !ctx.triaged ? "Die Erstsichtung macht der Arzt, nachsichten dürft ihr" : null;
+  if (what === "admit") return ee && role !== "sicherung" ? "Die Aufnahme macht der Sicherungstrupp" : null;
+  return ee && role !== "sicherung" ? "Die Abgabe macht der Sicherungstrupp" : role === "sichtung" ? "Die Übergabe macht ein Behandlungs- oder Transporttrupp" : null;
+}
 
 // Anamnese nach SAMPLER (+ Risikofaktoren): Themen für die Ersatz-Auswahlliste und die Auswertung.
 export const Topic = z.enum(["symptoms", "allergies", "medication", "history", "lastMeal", "event", "risk"]);
@@ -21,6 +43,7 @@ export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("start"), patient: z.string(), action: z.string() }),
   z.object({ type: z.literal("end") }),
   z.object({ type: z.literal("assist"), patient: z.string() }), // bei einer wartenden Zwei-Helfer-Maßnahme mithelfen (C7)
+  z.object({ type: z.literal("fetch"), from: z.string().max(64), item: z.string().max(64) }), // Material von einem anderen Fahrzeug holen (C10)
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
   z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),
   // Patient befragen: freie Frage (KI) oder Thema aus der Auswahlliste (ohne KI).
@@ -41,8 +64,6 @@ export const ClientMsg = z.discriminatedUnion("type", [
 ]);
 
 export const Level = z.enum(["einsteiger", "fortgeschritten", "experte"]);
-export const LoginReq = z.object({ email: z.email().max(200) });
-export const VerifyReq = z.object({ email: z.email().max(200), code: z.string().regex(/^\d{6}$/) });
 export const ApproveReq = z.object({ item: z.string().max(64), approved: z.boolean() });
 export const CreateExerciseReq = z.object({
   scenario: z.string().max(64),
@@ -51,7 +72,8 @@ export const CreateExerciseReq = z.object({
   level: Level,
   trupps: z
     .object({ sichtung: z.number().int().min(0).max(10), behandlung: z.number().int().min(0).max(20), transport: z.number().int().min(0).max(10) })
-    .default({ sichtung: 1, behandlung: 2, transport: 1 }),
+    .default({ sichtung: 0, behandlung: 0, transport: 0 }),
+  einheiten: z.number().int().min(0).max(6).default(0), // Einsatzeinheiten (B3), je EE vier Trupps mit eigenem Code
   // H1/H2: Vorgaben der Stufe einzeln überschreiben
   phaseMinutes: z.number().int().min(5).max(30).optional(),
   random: z.boolean().optional(),
@@ -170,6 +192,7 @@ export type View = {
   unitArrived: boolean;
   vehicles: { id: string; title: string; seats: number; arrived: boolean }[];
   messages: { t: number; text: string }[]; // Nachrichten der Leitung, neueste zuletzt
+  stock: { id: string; title: string; inventory: Record<string, number> }[]; // andere Fahrzeuge vor Ort, zum Material holen (C10)
 };
 
 export type LeitungView = {

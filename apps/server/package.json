@@ -9,7 +9,6 @@
     "@anthropic-ai/sdk": "^0.132.1",
     "@dps/engine": "*",
     "@dps/schema": "*",
-    "nodemailer": "^10.0.16",
     "qrcode": "^1.5.4",
     "ws": "^8.22.0",
     "zod": "^4.6.5"

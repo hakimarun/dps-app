@@ -3,7 +3,8 @@ import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
 import { caseOfDay, control, createExercise, csv, inject, observerView, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
-import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
+import { DatabaseSync } from "node:sqlite";
+import { deleteExercisesBefore, loadExercises, myApprovals, newDevice, openDb, saveExercise, setApproval, userByToken } from "../src/db.ts";
 import { evaluate } from "../src/evaluation.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -80,20 +81,15 @@ test("Live-Lage: Soll-SK, Untertriage, Helfer ohne Kontakt, Ereignisse", () => {
   assert.ok(leitungView(ex, 16 * MIN).events.some((e) => e.text === "P01 wechselt in Phase 2-schock"));
 });
 
-test("Anmeldung: Code nur einmal gültig, höchstens 5 Fehlversuche, kurze Sperre für neue Codes", () => {
+test("Ohne Konten: jedes Gerät bekommt einen eigenen Schlüssel, auch in älteren Datenbanken mit E-Mail-Spalte", () => {
   const db = openDb(":memory:");
-  const r = requestLogin(db, "Anna@Example.org", 0);
-  assert.ok("code" in r);
-  assert.deepEqual(requestLogin(db, "anna@example.org", 30_000), { error: "Bitte eine Minute warten" });
-  const wrong = r.code === "000000" ? "111111" : "000000";
-  assert.equal(verifyLogin(db, "anna@example.org", wrong, 1000), null);
-  const ok = verifyLogin(db, "anna@example.org", r.code, 2000);
-  assert.ok(ok);
-  assert.equal(userByToken(db, ok.token)?.email, "anna@example.org");
-  assert.equal(verifyLogin(db, "anna@example.org", r.code, 3000), null); // schon benutzt
-  const r2 = requestLogin(db, "ben@example.org", 0);
-  for (let i = 0; i < 5; i++) verifyLogin(db, "ben@example.org", "999999" === (r2 as { code: string }).code ? "888888" : "999999", 1000);
-  assert.equal(verifyLogin(db, "ben@example.org", (r2 as { code: string }).code, 2000), null); // gesperrt
+  const a = newDevice(db, 0), b = newDevice(db, 0);
+  assert.notEqual(userByToken(db, a)?.id, userByToken(db, b)?.id);
+  assert.equal(userByToken(db, "erfunden"), null);
+  const old = new DatabaseSync(":memory:");
+  old.exec("create table users (id text primary key, email text unique not null, created integer not null)");
+  old.exec("create table sessions (token_hash blob primary key, user_id text not null, created integer not null)");
+  assert.ok(userByToken(old as never, newDevice(old as never, 0)));
 });
 
 test("Freigaben und Übungen überstehen einen Neustart", () => {

@@ -1,10 +1,9 @@
-// E7: Beobachter-App. Mit dem Beobachter-Code der Übung (ohne Konto) Notizen mit Zeitstempel erfassen,
+// E7: Beobachter-App. Mit dem Beobachter-Code der Übung (über die Startseite, ohne Konto) Notizen mit Zeitstempel erfassen,
 // zu einem Helfer, einem Patienten oder allgemein. Die Notizen landen im Protokoll, im Replay und im Bericht der Person.
 import { useEffect, useState } from "react";
 import { ScrollView, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { ObserverView } from "@dps/schema/protocol";
-import { DEFAULT_SERVER } from "./connection";
 import { api } from "./api";
 import { FunButton, PinLink, PinScreen, STAGE } from "./fun";
 import { Button, Card, Chip, Field, Title, clock, light, type Theme } from "./ui";
@@ -13,30 +12,22 @@ const KEY = "dps:observer";
 type Login = { server: string; code: string; name: string };
 const KINDS = [["note", "Notiz"], ["gut", "Gut"], ["besser", "Besser machen"]] as const;
 
-export function Observe({ t, onExit }: { t: Theme; onExit: () => void }) {
+export function Observe({ t, server, code, onExit }: { t: Theme; server: string; code: string; onExit: () => void }) {
   const [login, setLogin] = useState<Login | null>(null);
-  const [draft, setDraft] = useState<Login>({ server: DEFAULT_SERVER, code: "", name: "" });
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => void AsyncStorage.getItem(KEY).then((v) => v && setDraft(JSON.parse(v)), () => {}), []);
+  const [name, setName] = useState("");
+  useEffect(() => void AsyncStorage.getItem(KEY).then((v) => v && setName(JSON.parse(v).name ?? ""), () => {}), []);
   const start = () => {
-    const l = { ...draft, code: draft.code.trim().toUpperCase(), name: draft.name.trim() };
-    api<ObserverView>({ server: l.server, token: "" }, `/api/observe/${l.code}`).then(
-      () => (AsyncStorage.setItem(KEY, JSON.stringify(l)), setError(null), setLogin(l)),
-      (e: Error) => setError(e.message),
-    );
+    const l = { server, code, name: name.trim() };
+    AsyncStorage.setItem(KEY, JSON.stringify({ name: l.name }));
+    setLogin(l);
   };
-  if (login) return <Notes t={t} login={login} onExit={() => setLogin(null)} />;
+  if (login) return <Notes t={t} login={login} onExit={onExit} />;
   return (
-    <PinScreen fullBleed color={STAGE} footer={<PinLink label="Zurück" onPress={onExit} />}>
+    <PinScreen fullBleed color={STAGE} footer={<PinLink label="Zur Startseite" onPress={onExit} />}>
       <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Beobachten</Text>
-      <Text style={{ color: "#333", textAlign: "center" }}>Den Beobachter-Code bekommst du von der Übungsleitung.</Text>
-      <TextInput value={draft.code} onChangeText={(code) => setDraft({ ...draft, code })} placeholder="CODE" autoCapitalize="characters" maxLength={6}
-        accessibilityLabel="Beobachter-Code"
-        style={{ borderWidth: 2, borderColor: "#CFCAD9", borderRadius: 12, padding: 12, fontSize: 30, fontWeight: "900", letterSpacing: 6, textAlign: "center", color: "#111" }} />
-      <Field t={light} label="Dein Name (steht an deinen Notizen)" value={draft.name} onChange={(name) => setDraft({ ...draft, name })} />
-      {error && <Text style={{ color: "#C0392B", fontWeight: "700", textAlign: "center" }}>{error}</Text>}
-      <FunButton big label="Los geht's" color="#333" text="#FFFFFF" disabled={draft.code.trim().length !== 6 || !draft.name.trim()} onPress={start} />
-      <Field t={light} label="Server" value={draft.server} onChange={(server) => setDraft({ ...draft, server })} />
+      <Text style={{ color: "#333", textAlign: "center" }}>Mit diesem Code schreibst du Notizen zu Helfern und Patienten. Sie erscheinen im Protokoll und im Bericht.</Text>
+      <Field t={light} label="Dein Name (steht an deinen Notizen)" value={name} onChange={setName} />
+      <FunButton big label="Los geht's" color="#333" text="#FFFFFF" disabled={!name.trim()} onPress={start} />
     </PinScreen>
   );
 }

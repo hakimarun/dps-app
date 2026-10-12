@@ -3,7 +3,7 @@
 // Aktionen an ihrer echten Zeit einsortieren. Keine Ein- und Ausgabe hier, das Speichern machen onRecord/onControl.
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { TOPIC_LABEL, type ClientMsg, type LeitungView, type ObserverView, type Role, type Status, type Trupp, type View } from "@dps/schema/protocol";
+import { TOPIC_LABEL, type ClientMsg, type LeitungView, type ObserverView, type Role, type Status, type Trupp, type View, roleRule } from "@dps/schema/protocol";
 import type { Ai } from "./ai.ts";
 import { askPatient } from "./dialog.ts";
 import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
@@ -52,9 +52,7 @@ export const truppOf = (ex: Exercise, participant: string) => ex.trupps!.find((t
 export const roleOf = (ex: Exercise, participant: string): Role => truppOf(ex, participant)?.role ?? "behandlung";
 
 // Sichtungstrupps: nur Sichtung und lebensrettende Sofortmaßnahmen (Blutstillung, Atemweg freimachen).
-const SICHTUNG_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open", "recovery_position"];
-export const allowedActions = (ex: Exercise, role: Role) =>
-  Object.values(ex.defs.actions).filter((a) => role !== "sichtung" || SICHTUNG_ACTIONS.includes(a.id));
+export const allowedActions = (ex: Exercise, role: Role) => Object.values(ex.defs.actions).filter((a) => !roleRule(role, "treat", { action: a.id }));
 
 export const PLACE: Record<string, string> = { fundort: "Fundort", ablage: "Patientenablage", bhp: "Behandlungsplatz", abtransport: "abtransportiert" };
 
@@ -142,9 +140,13 @@ export function submit(
     if (!participant) return { error: "nicht beigetreten" };
     if (st !== "running") return { error: NOT_RUNNING[st] };
     const role = roleOf(ex, participant);
-    if (i.type === "start" && role === "sichtung" && !SICHTUNG_ACTIONS.includes(i.action))
-      return { error: "Sichtungstrupps sichten und leisten nur lebensrettende Sofortmaßnahmen" };
-    if (i.type === "handover" && role === "sichtung") return { error: "Die Übergabe macht ein Behandlungs- oder Transporttrupp" };
+    const rule =
+      i.type === "start" ? roleRule(role, "treat", { action: i.action })
+      : i.type === "triage" ? roleRule(role, "triage", { triaged: !!stateAt(ex, nowT).patients[i.patient]?.triage })
+      : i.type === "admit" ? roleRule(role, "admit")
+      : i.type === "handover" ? roleRule(role, "handover")
+      : null;
+    if (rule) return { error: rule };
     const atT = minutes(ex, msg.at);
     const t = msg.at <= now && atT >= nowT - BUFFER_MINUTES ? atT : nowT;
     event = { ...i, t, participant };
@@ -199,7 +201,7 @@ function findingsFor(ex: Exercise, s: State, p: string) {
 export function viewFor(ex: Exercise, s: State, id: string): View {
   const me = s.participants[id];
   const messages = ex.records.flatMap((r) => (r.event.type === "message" && r.t <= s.t ? [{ t: r.t, text: r.event.text }] : [])).slice(-3);
-  if (!me) return { me: null, patient: null, inventory: {}, unitArrived: false, vehicles: [], messages };
+  if (!me) return { me: null, patient: null, inventory: {}, unitArrived: false, vehicles: [], messages, stock: [] };
   const unit = s.units[me.unit];
   const p = me.patient;
   const ps = p ? s.patients[p] : null;
@@ -216,6 +218,7 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
     unitArrived: s.t >= unit.arrivesAt,
     vehicles: ex.scenario.units.filter((u) => u.seats > 0).map((u) => ({ id: u.id, title: u.title, seats: s.units[u.id].seats, arrived: s.t >= u.arrivesAt })),
     messages,
+    stock: ex.scenario.units.filter((u) => u.id !== me.unit && s.t >= s.units[u.id].arrivesAt).map((u) => ({ id: u.id, title: u.title, inventory: s.units[u.id].inventory })),
   };
 }
 
@@ -287,6 +290,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
       case "end": return `${name(e.participant)}: Maßnahme beendet`;
       case "assist": return `${name(e.participant)} hilft an ${P(e.patient)} mit`;
+      case "fetch": return `${name(e.participant)} holt ${e.item} von ${unit(e.from)}`;
       case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
       case "ask": return `${name(e.participant)} fragt ${P(e.patient)}: „${e.question}“`;
       case "admit": return `${name(e.participant)} nimmt ${P(e.patient)} auf: ${PLACE[e.place]}`;

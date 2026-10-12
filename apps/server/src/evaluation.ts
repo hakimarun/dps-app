@@ -1,7 +1,7 @@
 // Auswertung einer Übung aus dem Protokoll: Team-Sterne, Kennzahlen, Punkte, Abzeichen, Bericht je Helfer.
 // Punktewerte nach der Punktetabelle im Systementwurf (Startwerte, im Pilot kalibrieren).
 import type { Sk } from "@dps/schema";
-import { AXES, type Axis, type Evaluation, type HelperReport, type Role, type Skills, type Team } from "@dps/schema/protocol";
+import { AXES, Role as RoleEnum, type Axis, type Evaluation, type HelperReport, type Role, type Skills, type Team } from "@dps/schema/protocol";
 import { phaseDef, targetSk, type Event } from "@dps/engine";
 import { minutes, released, roleOf, stateAt, truppOf, type Exercise, type Rec, SOLO, SOLO_MINUTES } from "./exercise.ts";
 
@@ -104,7 +104,7 @@ function compute(ex: Exercise, T: number): Evaluation {
   }
 
   // Sichtung: jede Sichtung gegen die Soll-SK zum Zeitpunkt; zusätzlich je Trupp-Funktion (separate Sichtung).
-  const triageByRole: Evaluation["triageByRole"] = { sichtung: { correct: 0, over: 0, under: 0 }, behandlung: { correct: 0, over: 0, under: 0 }, transport: { correct: 0, over: 0, under: 0 } };
+  const triageByRole = Object.fromEntries(RoleEnum.options.map((r) => [r, { correct: 0, over: 0, under: 0 }])) as Evaluation["triageByRole"];
   const firstTriage = new Map<string, { t: number; result: "korrekt" | "übertriage" | "untertriage" }>();
   const lastSk = new Map<string, Sk>();
   for (const r of triages) {

@@ -18,6 +18,7 @@ const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", pau
 const ROLES = [["sichtung", "Sichtungstrupps"], ["behandlung", "Behandlungstrupps"], ["transport", "Transporttrupps"]] as const;
 const ROLE_SHORT: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
+const LEVEL_MINUTES: Record<Level, number> = { einsteiger: 20, fortgeschritten: 15, experte: 12 }; // wie LEVELS im Server
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
 export function Leitung({ t, onExit }: { t: Theme; onExit: () => void }) {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
@@ -106,6 +107,10 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [algorithm, setAlgorithm] = useState("mstart");
   const [level, setLevel] = useState<Level>("fortgeschritten");
   const [trupps, setTrupps] = useState({ sichtung: 1, behandlung: 2, transport: 1 });
+  // H1/H2: Vorgaben der Stufe einzeln überschreiben (null = wie die Stufe)
+  const [vitals, setVitals] = useState<"numbers" | "text">("numbers");
+  const [phaseMinutes, setPhaseMinutes] = useState<number | null>(null);
+  const [random, setRandom] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
   const sc = lib?.scenarios.find((s) => s.id === scenario) ?? lib?.scenarios[0];
   const byId = new Map(lib?.patients.map((p) => [p.id, p]));
@@ -134,6 +139,22 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {LEVELS.map(([id, label]) => <Chip key={id} t={t} label={label} selected={level === id} onPress={() => setLevel(id)} />)}
       </View>
+      <Text style={{ color: t.quiet }}>Vitalwerte auf den Handys</Text>
+      <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+        <Chip t={t} label="Zahlen" selected={vitals === "numbers"} onPress={() => setVitals("numbers")} />
+        <Chip t={t} label="Befundtext wie Papier-dPS" selected={vitals === "text"} onPress={() => setVitals("text")} />
+      </View>
+      <Text style={{ color: t.quiet }}>Phasendauer</Text>
+      <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+        <Chip t={t} label={`wie Stufe (${LEVEL_MINUTES[level]} min)`} selected={phaseMinutes === null} onPress={() => setPhaseMinutes(null)} />
+        {[10, 12, 15, 20, 25].map((m) => <Chip key={m} t={t} label={`${m} min`} selected={phaseMinutes === m} onPress={() => setPhaseMinutes(m)} />)}
+      </View>
+      <Text style={{ color: t.quiet }}>Zufall (z. B. misslungene Entlastungspunktion)</Text>
+      <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+        <Chip t={t} label={`wie Stufe (${level === "experte" ? "an" : "aus"})`} selected={random === null} onPress={() => setRandom(null)} />
+        <Chip t={t} label="an" selected={random === true} onPress={() => setRandom(true)} />
+        <Chip t={t} label="aus" selected={random === false} onPress={() => setRandom(false)} />
+      </View>
       <Text style={{ color: t.quiet }}>Trupps (jeder bekommt einen eigenen Beitrittscode)</Text>
       {ROLES.map(([role, label]) => (
         <View key={role} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
@@ -145,7 +166,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       ))}
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <Button t={t} strong label="Übung anlegen" disabled={!sc || picked.length === 0}
-        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, trupps }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
+        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, trupps, vitals, ...(phaseMinutes ? { phaseMinutes } : {}), ...(random !== null ? { random } : {}) }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
       <Button t={t} label="Abbrechen" onPress={onCancel} />
     </ScrollView>
   );
@@ -215,14 +236,21 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
           <View style={{ flex: 1 }}>
             <Text style={{ color: t.text, fontWeight: "600" }}>{p.id.toUpperCase()} · {p.title}</Text>
             {p.alert ? <Text style={{ color: t.red, fontWeight: "600" }}>{p.alert}</Text> : null}
-            <Text style={{ color: t.quiet }}>Soll {p.target} · Ist {p.triage ?? "–"} · {p.place} · {p.helpers.join(", ") || "kein Helfer"}</Text>
+            <Text style={{ color: t.quiet }}>
+              Soll {p.target} {TREND[p.trend]} · Ist {p.triage ?? "–"} · {p.place} · {p.helpers.join(", ") || "kein Helfer"}
+              {p.lastContact !== null && !p.helpers.length ? ` · letzter Kontakt vor ${Math.floor(exerciseMinutes(w.clock, w.offset, now) - p.lastContact)} min` : ""}
+              {p.lastContact === null ? " · noch kein Kontakt" : ""}
+            </Text>
           </View>
           <Text style={{ color: t.quiet, fontSize: 12 }}>{p.phase}</Text>
         </View>
       ))}
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Helfer ({v?.helpers.length ?? 0})</Text>
       {v?.helpers.map((h) => (
-        <Text key={h.id} style={{ color: t.quiet }}>{h.name} ({h.trupp ?? h.unit}) · {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}</Text>
+        <Text key={h.id} style={{ color: h.idle !== null && h.idle >= IDLE_MIN ? t.text : t.quiet }}>
+          {h.name} ({h.trupp ?? h.unit}) · {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}
+          {h.idle !== null && h.idle >= IDLE_MIN ? ` · seit ${Math.floor(h.idle)} min ohne Maßnahme` : ""}
+        </Text>
       ))}
       {(v?.trupps.length ?? 0) > 0 && <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Trupps</Text>}
       {v?.trupps.map((tr) => (
@@ -405,6 +433,8 @@ function Show({ ev, onClose }: { t: Theme; ev: Evaluation; onClose: () => void }
 }
 
 const OUTCOME_RED = new Set(["verstorben"]);
+const TREND = { besser: "↗ besser", schlechter: "↘ schlechter", gleich: "→" } as const;
+const IDLE_MIN = 3; // ab dann fällt Leerlauf in der Helferliste auf
 
 function EvaluationPanel({ t, session, code, onShow }: { t: Theme; session: Session; code: string; onShow: (ev: Evaluation) => void }) {
   const [ev, setEv] = useState<Evaluation | null>(null);

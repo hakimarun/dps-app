@@ -60,6 +60,10 @@ export default function App() {
             <FlyIn delay={250}><Text style={{ color: "#FFFFFF", fontSize: 17, opacity: 0.9 }}>Übungen für Großschadenslagen im Rettungsdienst</Text></FlyIn>
             <FlyIn delay={400}><FunButton big label="Ich übe (Helfer)" onPress={() => choose("helfer")} /></FlyIn>
             <FlyIn delay={500}><FunButton label="Ich leite (Praxisanleiter)" color={FUN.purple} text="#FFFFFF" onPress={() => choose("leitung")} /></FlyIn>
+            {/* N13 */}
+            <Text style={{ color: "#FFFFFF", opacity: 0.85, fontSize: 13, textAlign: "center", marginTop: 8 }}>
+              Nur für Ausbildung und Übung. Kein Medizinprodukt – nicht im Realeinsatz verwenden.
+            </Text>
           </ScrollView>
         </Stage>
       )}
@@ -224,6 +228,11 @@ function Join({ t, units, trupp, online, onJoin }: {
         </>
       )}
       <Button t={t} strong label="Beitreten" disabled={!online || !name.trim() || (!trupp && !unit)} onPress={() => onJoin(name.trim(), trupp ? undefined : unit)} />
+      {/* N10: vor dem Beitritt informieren */}
+      <Text style={{ color: t.quiet, fontSize: 13 }}>
+        Deine Aktionen und Fragen werden mit diesem Namen protokolliert und nach der Übung ausgewertet. Deinen Bericht siehst nur du und die
+        Übungsleitung. Nimm ein Kürzel, wenn du nicht mit vollem Namen erscheinen willst.
+      </Text>
     </ScrollView>
   );
 }
@@ -277,7 +286,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
     }
     lastBusy.current = busy ? { id: busy.action, title: String(busyTitle) } : null;
   }, [busy?.action]);
-  const hasDevice = (k: DeviceKind) => (k === "ecg" ? !!(f.exam as Record<string, string> | undefined)?.ecg : k === "temp" ? f.temp !== undefined : k === "glucose" ? !!(f.exam as Record<string, string> | undefined)?.glucose : f[k] !== undefined);
+  const hasDevice = (k: DeviceKind) => !p.vitalsText && (k === "ecg" ? !!(f.exam as Record<string, string> | undefined)?.ecg : k === "temp" ? f.temp !== undefined : k === "glucose" ? !!(f.exam as Record<string, string> | undefined)?.glucose : f[k] !== undefined);
   useEffect(() => {
     if (!finished) return;
     const i = setTimeout(() => setFinished(null), 2500);
@@ -306,9 +315,13 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
               <Flash t={t} value={f[k]}>
                 <View style={{ padding: 10 }}>
                   <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
-                  <Text style={{ color: f[k] === undefined ? t.quiet : t.text, fontSize: 22, fontWeight: "600" }}>
-                    {f[k] === undefined ? "–" : `${f[k]}${unit ?? ""}`}
-                  </Text>
+                  {p.vitalsText?.[k] ? (
+                    <Text style={{ color: t.text, fontSize: 16, fontWeight: "600" }}>{p.vitalsText[k]}</Text>
+                  ) : (
+                    <Text style={{ color: f[k] === undefined ? t.quiet : t.text, fontSize: 22, fontWeight: "600" }}>
+                      {f[k] === undefined ? "–" : `${f[k]}${unit ?? ""}`}
+                    </Text>
+                  )}
                 </View>
               </Flash>
             </Pressable>
@@ -326,6 +339,11 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
             <Text style={{ fontWeight: "600" }}>Temperatur: </Text>{String(f.temp).replace(".", ",")} °C  ›
           </Text>
         )}
+        {(["temp", "glucose"] as const).filter((k) => p.vitalsText?.[k]).map((k) => (
+          <Text key={k} style={{ color: t.text }}>
+            <Text style={{ fontWeight: "600" }}>{k === "temp" ? "Temperatur" : "Blutzucker"}: </Text>{p.vitalsText![k]}
+          </Text>
+        ))}
       </ScrollView>
       <View style={{ padding: 20, gap: 10, borderTopWidth: 1, borderColor: t.line }}>
         {finished && !busy && (

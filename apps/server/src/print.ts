@@ -13,7 +13,7 @@ export async function printPage(ex: Exercise): Promise<string> {
         <h1>${id.toUpperCase()}</h1>
         <div class="qr">${await qr(`dps:${ex.code}:${id}`)}</div>
         <p>${esc(ex.defs.patients[id].picture)}</p>
-        <footer>Übung ${ex.code} · nur in dieser Übung gültig · Nummer ohne Kamera: ${Number(id.slice(1))}</footer>
+        <footer>Übungspatient · Übung ${ex.code} · nur in dieser Übung gültig · Nummer ohne Kamera: ${Number(id.slice(1))}</footer>
       </section>`),
   );
   return `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
@@ -31,7 +31,7 @@ export async function printPage(ex: Exercise): Promise<string> {
   @media screen { .hint { padding: 12px 18px; background: #f2f2f2; } }
   @media print { .hint { display: none; } }
 </style></head><body>
-<div class="hint">Drucken oder „Als PDF speichern“ (Strg/Cmd + P). Zettel an der gestrichelten Linie trennen und auf dem Gelände verteilen.</div>
+<div class="hint">Drucken oder „Als PDF speichern“ (Strg/Cmd + P). Zettel an der gestrichelten Linie trennen und auf dem Gelände verteilen. Übungsmaterial – nicht im Realeinsatz verwenden.</div>
 <section class="card join"><h1>${esc(ex.scenario.title)}</h1><div>Beitrittscode für die Helfer-App</div><div class="code">${ex.code}</div>
 <p>${ex.scenario.patients.length} Patienten · Zettel nur für diese Übung</p></section>
 ${ex.trupps!.map((tr) => `<section class="card join"><h1>${esc(tr.name)}</h1><div>${esc(ex.scenario.units.find((u) => u.id === tr.unit)?.title ?? tr.unit)} · ${ROLE[tr.role]}</div><div class="code">${tr.code}</div>

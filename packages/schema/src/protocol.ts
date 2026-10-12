@@ -51,6 +51,10 @@ export const CreateExerciseReq = z.object({
   trupps: z
     .object({ sichtung: z.number().int().min(0).max(10), behandlung: z.number().int().min(0).max(20), transport: z.number().int().min(0).max(10) })
     .default({ sichtung: 1, behandlung: 2, transport: 1 }),
+  // H1/H2: Vorgaben der Stufe einzeln überschreiben
+  phaseMinutes: z.number().int().min(5).max(30).optional(),
+  random: z.boolean().optional(),
+  vitals: z.enum(["numbers", "text"]).default("numbers"),
 });
 export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional() });
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
@@ -103,6 +107,7 @@ export type View = {
   me: { id: string; name: string; unit: string; role: Role; trupp: string | null; busy: { action: string; until: number | null } | null } | null;
   patient: {
     id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean;
+    vitalsText: Record<string, string> | null; // Befundtext statt Zahlen (Vitalwerte-Modus "text"); dann fehlen die Zahlen in findings
     dialog: { q: string; a: string }[]; // eigene Fragen an diesen Patienten
   } | null;
   inventory: Record<string, number>;
@@ -126,8 +131,9 @@ export type LeitungView = {
     lastContact: number | null;
     alert: string | null;
     place: string;
+    trend: "besser" | "schlechter" | "gleich"; // Soll-SK jetzt gegenüber Übungsbeginn
   }[];
-  helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null }[];
+  helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null; idle: number | null }[];
   trupps: (Trupp & { members: string[] })[];
   events: { t: number; text: string }[]; // neueste zuerst
 };

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
 import { control, createExercise, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
-import { loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
+import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
 const MIN = 60000;
@@ -116,4 +116,57 @@ test("Ungültige Client-Nachrichten werden abgelehnt", () => {
   assert.equal(ClientMsg.safeParse({ type: "intent", id: "x", at: 0, intent: { type: "scan" } }).success, false);
   assert.equal(ClientMsg.safeParse({ type: "intent", id: "abcdefgh", at: 0, intent: { type: "triage", patient: "p01", sk: "V" } }).success, false);
   assert.equal(ClientMsg.safeParse({ type: "hello", exercise: "DEMO", participant: null }).success, true);
+});
+
+test("Vitalwerte-Modus Text: Handy bekommt Befundtext statt Zahlen", () => {
+  const ex = createExercise({ ...header, code: "TEXT01", settings: { ...defaultSettings, vitals: "text" } }, lib.defs);
+  control(ex, "start", 0);
+  const p = submit(ex, null, msg({ type: "join", name: "Anna", unit: "rtw1" }, 0), 0).participant!;
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  const v = viewFor(ex, stateAt(ex, 1), p).patient!;
+  assert.equal(v.findings.hr, undefined);
+  assert.equal(v.findings.rr, undefined);
+  assert.equal(v.vitalsText?.hr, "schnell");
+  assert.ok(!/\b115\b/.test(JSON.stringify(v)), "keine Zahl im Datenstrom");
+});
+
+test("Aufbewahrungsfrist: alte Übungen verschwinden samt Protokoll, neue bleiben", () => {
+  const db = openDb(":memory:");
+  const old = saveExercise(db, { ...header, code: "ALT001", created: 1_000 }, lib.defs);
+  saveExercise(db, { ...header, code: "NEU001", created: 5_000 }, lib.defs);
+  control(old, "start", 0);
+  submit(old, null, msg({ type: "join", name: "Anna", unit: "rtw1" }, 0), 0);
+  const records = () => (db.prepare("select count(*) as n from records where code = 'ALT001'").get() as { n: number }).n;
+  assert.ok(records() > 0);
+  assert.deepEqual(deleteExercisesBefore(db, 2_000), ["ALT001"]);
+  assert.deepEqual(loadExercises(db, lib.defs).map((ex) => ex.code), ["NEU001"]);
+  assert.equal(records(), 0);
+});
+
+test("Live-Lage: Trend je Patient und Leerlauf je Helfer", () => {
+  const { ex, p } = joined();
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "measure_bp" }, 2 * MIN), 2 * MIN); // 1 min
+  const early = leitungView(ex, 5 * MIN);
+  assert.equal(early.patients[0].trend, "gleich");
+  assert.equal(early.helpers[0].idle, 2); // Messung endete bei 3 min
+  const late = leitungView(ex, 70 * MIN); // P01 unbehandelt verstorben
+  assert.equal(late.patients[0].trend, "schlechter");
+});
+
+test("Zwischenstand liefert denselben Zustand wie komplettes Neurechnen, auch nach verspäteter Offline-Aktion", () => {
+  const { ex, p } = joined();
+  const fresh = (t: number) => (delete ex.cache, stateAt(ex, t));
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  stateAt(ex, 5); // legt Zwischenstand bei 5 min an
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "tourniquet" }, 6 * MIN), 6 * MIN);
+  const cached = stateAt(ex, 20);
+  assert.deepEqual(cached.patients, fresh(20).patients);
+  stateAt(ex, 30);
+  // Offline gepuffert: Druckverband bei 3 min, kommt erst jetzt an
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "pressure_dressing" }, 3 * MIN), 31 * MIN);
+  const after = stateAt(ex, 40);
+  assert.ok(after.patients.p01.done.includes("pressure_dressing"));
+  assert.deepEqual(after.patients, fresh(40).patients);
+  assert.deepEqual(after.participants, fresh(40).participants);
 });

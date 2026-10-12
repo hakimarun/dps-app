@@ -6,7 +6,7 @@ import { Action, Patient, Scenario, type Sk } from "@dps/schema";
 import { TOPIC_LABEL, type ClientMsg, type LeitungView, type Role, type Status, type Trupp, type View } from "@dps/schema/protocol";
 import type { Ai } from "./ai.ts";
 import { askPatient } from "./dialog.ts";
-import { apply, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
+import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
 
 export type Library = { defs: Defs; scenarios: Record<string, Scenario> };
 
@@ -31,6 +31,8 @@ export type Exercise = Header & {
   truppOf: Map<string, string>; // Teilnehmer -> Trupp-Code
   onRecord?: (r: Rec) => void;
   onControl?: (c: Control) => void;
+  // Zwischenstand: Zustand nach den ersten n Einträgen, fortgeschrieben bis t. Verfällt, wenn ein Eintrag davor einsortiert wird.
+  cache?: { n: number; t: number; s: State };
 };
 
 export function createExercise(h: Header, defs: Defs): Exercise {
@@ -39,6 +41,7 @@ export function createExercise(h: Header, defs: Defs): Exercise {
 
 export function addRecord(ex: Exercise, r: Rec) {
   const i = ex.records.findLastIndex((x) => x.t <= r.t) + 1;
+  if (ex.cache && (i < ex.cache.n || r.t < ex.cache.t)) delete ex.cache; // verspätete Offline-Aktion: neu rechnen
   ex.records.splice(i, 0, r);
   ex.seen.add(r.id);
   if (r.event.type === "join" && r.name) ex.names.set(r.event.participant, r.name);
@@ -87,17 +90,24 @@ export function control(ex: Exercise, type: Control["type"], now: number): strin
 
 // ponytail: rechnet bei jeder Abfrage alles neu (O(Aktionen)); bei Bedarf Zwischenstände cachen.
 export function stateAt(ex: Exercise, t: number, generated?: Event[]): State {
-  const s = initial(ex.scenario, ex.defs, ex.settings, ex.seed);
-  for (const r of ex.records) {
+  // Ohne Ereignisliste vom Zwischenstand weiterrechnen statt das ganze Protokoll neu (sonst quadratisch mit der Übungsdauer).
+  const c = !generated && ex.cache && ex.cache.t <= t ? ex.cache : null;
+  const s = c ? copy(c.s) : initial(ex.scenario, ex.defs, ex.settings, ex.seed);
+  let n = c ? c.n : 0;
+  for (const r of ex.records.slice(n)) {
     if (r.t > t) break;
+    n++;
     const g = tick(s, r.t);
     generated?.push(...g);
     if (!validate(s, r.event)) apply(s, r.event); // nachträglich ungültig gewordene Aktionen fallen weg
   }
   const rest = tick(s, t); // nicht in generated?.push(...) einbetten: ?. würde tick sonst überspringen
   generated?.push(...rest);
+  if (!generated && (!ex.cache || ex.cache.t <= t)) ex.cache = { n, t, s: copy(s) };
   return s;
 }
+// Nur die veränderlichen Teile kopieren; defs und settings sind unveränderlich und werden geteilt.
+const copy = (s: State): State => ({ ...s, patients: structuredClone(s.patients), participants: structuredClone(s.participants), units: structuredClone(s.units) });
 
 const BUFFER_MINUTES = 10; // so weit zurück darf eine gepufferte Aktion liegen
 const NOT_RUNNING: Record<Status, string> = { ready: "Übung noch nicht gestartet", paused: "Übung pausiert", ended: "Übung beendet", running: "" };
@@ -170,6 +180,16 @@ export async function submitAsk(ex: Exercise, participant: string | null, msg: E
   }
 }
 
+// H2: Im Modus "text" bekommt das Handy nur Befundtext, keine Zahlen (auch nicht versteckt im Datenstrom).
+const NUMERIC = ["rr", "hr", "bp", "spo2", "gcs", "recap", "temp"] as const;
+function findingsFor(ex: Exercise, s: State, p: string) {
+  const f = visible(s, p);
+  if (ex.settings.vitals !== "text") return { findings: f, vitalsText: null };
+  const vitalsText = describe(f);
+  const { glucose: _, ...exam } = f.exam ?? {};
+  return { findings: { ...Object.fromEntries(Object.entries(f).filter(([k]) => !(NUMERIC as readonly string[]).includes(k))), exam }, vitalsText };
+}
+
 // Was ein Helfer sehen darf: nur der gescannte Patient, nur aufgedeckte Befunde, kein Titel (der verrät die Diagnose).
 export function viewFor(ex: Exercise, s: State, id: string): View {
   const me = s.participants[id];
@@ -181,7 +201,7 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
     me: { id, name: ex.names.get(id) ?? "", unit: me.unit, role: roleOf(ex, id), trupp: truppOf(ex, id)?.name ?? null, busy: me.busy && { action: me.busy.action, until: me.busy.until } },
     patient: p && ps
       ? {
-          id: p, picture: ex.defs.patients[p].picture, findings: visible(s, p), triage: ps.triage, done: ps.done, place: PLACE[ps.place], left: ps.left,
+          id: p, picture: ex.defs.patients[p].picture, ...findingsFor(ex, s, p), triage: ps.triage, done: ps.done, place: PLACE[ps.place], left: ps.left,
           dialog: ex.records.flatMap((r) => (r.event.type === "ask" && r.event.participant === id && r.event.patient === p ? [{ q: r.event.question, a: r.event.answer }] : [])).slice(-10),
         }
       : null,
@@ -203,6 +223,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
   const action = (id: string) => ex.defs.actions[id]?.title ?? id;
   const unit = (id: string) => ex.scenario.units.find((u) => u.id === id)?.title ?? id;
   const counts: LeitungView["counts"] = { I: 0, II: 0, III: 0, IV: 0, EX: 0, offen: 0 };
+  const start = initial(ex.scenario, ex.defs, ex.settings, ex.seed); // für den Trend: Soll-SK zu Beginn
   const patients = Object.entries(s.patients).map(([id, ps]) => {
     const ph = phaseDef(s, id);
     const target = targetSk(s, id);
@@ -222,10 +243,20 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
             : !ps.triage && t >= 10
               ? "nicht gesichtet"
               : null;
-    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place] };
+    const before = targetSk(start, id);
+    const trend = target === before ? "gleich" : target === "EX" || RANK[target] > RANK[before] ? "schlechter" : "besser"; // verstorben zählt als schlechter
+    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place], trend } as const;
   });
+  // E2: Leerlauf = Zeit seit der letzten Aktion (bei Maßnahmen: seit ihrem Ende)
+  const lastActive = new Map<string, number>();
+  for (const r of ex.records) {
+    if (r.t > t || !("participant" in r.event)) continue;
+    const end = r.event.type === "start" ? r.t + (ex.defs.actions[r.event.action]?.minutes ?? 0) : r.t;
+    lastActive.set(r.event.participant, Math.max(lastActive.get(r.event.participant) ?? 0, end));
+  }
   const helpers = Object.entries(s.participants).map(([id, h]) => ({
     id, name: name(id), unit: unit(h.unit), trupp: truppOf(ex, id)?.name ?? null, role: roleOf(ex, id), patient: h.patient, busy: h.busy ? action(h.busy.action) : null,
+    idle: h.busy ? null : Math.max(0, t - (lastActive.get(id) ?? 0)),
   }));
   const trupps = ex.trupps!.map((tr) => ({ ...tr, unit: unit(tr.unit), members: [...ex.truppOf].filter(([, c]) => c === tr.code).map(([pid]) => name(pid)) }));
   const text = (e: Event): string => {

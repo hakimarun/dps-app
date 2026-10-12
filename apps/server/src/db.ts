@@ -106,6 +106,13 @@ export function loadExercises(db: Db, defs: Defs): Exercise[] {
   });
 }
 
+// N10: Aufbewahrungsfrist – Übungen samt Protokoll löschen, die vor "before" angelegt wurden.
+export function deleteExercisesBefore(db: Db, before: number): string[] {
+  const codes = (db.prepare("select code from exercises where json_extract(header, '$.created') < ?").all(before) as { code: string }[]).map((r) => r.code);
+  for (const code of codes) for (const table of ["records", "controls", "exercises"]) db.prepare(`delete from ${table} where code = ?`).run(code);
+  return codes;
+}
+
 // KI-Entwürfe für die Bibliothek (G8/G9).
 export type Draft = { id: string; owner: string; created: number; brief: string; patient: unknown; report: { ok: boolean; errors: string[]; warnings: string[]; sk: string | null } };
 export function saveDraft(db: Db, d: Draft) {

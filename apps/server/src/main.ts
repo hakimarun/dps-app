@@ -18,7 +18,7 @@ import { fromEnv } from "./ai.ts";
 import { generate, generateFrame } from "./generator.ts";
 import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
-import { approvalCounts, attachPatient, attachedPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
+import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
@@ -35,7 +35,17 @@ type LibScenario = Scenario & { situation?: string };
 const scenarios = lib.scenarios as Record<string, LibScenario>;
 for (const s of loadScenarios(db) as LibScenario[]) scenarios[s.id] = s;
 for (const a of attachedPatients(db)) if (scenarios[a.scenario] && lib.defs.patients[a.patient]) scenarios[a.scenario].patients.push(a.patient);
+// N10: Übungen nach der Aufbewahrungsfrist löschen (RETENTION_DAYS, Standard 180 Tage), beim Start und täglich.
+const RETENTION_MS = Number(process.env.RETENTION_DAYS ?? 180) * 24 * 60 * 60_000;
+const purged = deleteExercisesBefore(db, Date.now() - RETENTION_MS);
+if (purged.length) console.log(`${purged.length} Übungen nach Ablauf der Aufbewahrungsfrist gelöscht`);
 const exercises = new Map(loadExercises(db, lib.defs).map((ex) => [ex.code, ex]));
+setInterval(() => {
+  for (const code of deleteExercisesBefore(db, Date.now() - RETENTION_MS)) {
+    exercises.get(code)?.trupps?.forEach((tr) => truppCodes.delete(tr.code));
+    exercises.delete(code);
+  }
+}, 24 * 60 * 60_000).unref();
 const dialogAi = fromEnv("dialog");
 const generatorAi = fromEnv("generator");
 const readIdeas = (f: string) => (existsSync(new URL(f, ideasDir)) ? JSON.parse(readFileSync(new URL(f, ideasDir), "utf8")) : []);
@@ -243,7 +253,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const code = newCode(taken);
     const ex = saveExercise(db, {
       code, owner: user.id, scenario: { ...sc, patients: r.patients },
-      settings: { algorithm: r.algorithm, ...LEVELS[r.level] }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps,
+      settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps,
     }, lib.defs);
     exercises.set(code, ex);
     indexTrupps(ex);

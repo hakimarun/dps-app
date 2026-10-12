@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { apply, defaultSettings, ecgOf, initial, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
+import { apply, defaultSettings, describe, ecgOf, initial, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
 
 const lib = new URL("../../../library/", import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, lib), "utf8"));
@@ -186,4 +186,12 @@ test("Messgeräte: EKG aus der Herzfrequenz, Blutzucker und Temperatur, sofern d
   assert.equal(visible(p04, "p04").exam?.ecg, "Vorhofflimmern, Tachyarrhythmie");
   assert.equal(visible(run([scan(0, "p01")], 1).s, "p01").exam?.ecg, undefined); // erst nach der Messung
   assert.deepEqual([ecgOf(0), ecgOf(45), ecgOf(80), ecgOf(130)], ["Asystolie (Nulllinie)", "Sinusbradykardie", "Sinusrhythmus", "Sinustachykardie"]);
+});
+
+test("Befundtext statt Zahlen (Papier-dPS)", () => {
+  assert.deepEqual(describe({ rr: 32, hr: 135, radialPulse: false, bp: "80/50", spo2: 88, gcs: 13, recap: 4, temp: 34.2, exam: { glucose: "38 mg/dl" } }), {
+    rr: "sehr schnell", hr: "sehr schnell, Radialispuls nicht tastbar", bp: "niedrig", spo2: "deutlich erniedrigt", gcs: "benommen", recap: "verlängert", temp: "unterkühlt", glucose: "niedrig",
+  });
+  assert.deepEqual(describe({ rr: 16, hr: 80, radialPulse: true, gcs: 15 }), { rr: "normal", hr: "normal", gcs: "wach, orientiert" });
+  assert.deepEqual(describe({ breathing: false, rr: 0, hr: 0 }), { rr: "keine Atmung", hr: "kein Puls" });
 });

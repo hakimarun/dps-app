@@ -2,7 +2,8 @@
 // Gleiches Szenario, gleicher Seed und gleiche Ereignisse ergeben immer denselben Zustand.
 import type { Action, Algorithm, Findings, Patient, Phase, Place, Scenario, Sk } from "@dps/schema";
 
-export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean };
+// vitals: "text" zeigt Befunde wie auf der Papier-dPS ("Puls schnell und schwach") statt Zahlen (H2).
+export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "text" };
 export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15, random: false };
 
 // Zeit t in Minuten seit Übungsstart.
@@ -233,4 +234,23 @@ function draw(s: State): number {
   t = Math.imul(t ^ (t >>> 15), t | 1);
   t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
   return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+}
+
+// H2: Befundtext statt Zahlen, wie auf den Papier-Patientenkarten. Nur für sichtbare Werte.
+export function describe(f: Partial<Findings>): Record<string, string> {
+  const out: Record<string, string> = {};
+  if (f.rr !== undefined) out.rr = f.breathing === false || f.rr === 0 ? "keine Atmung" : f.rr < 10 ? "sehr langsam" : f.rr <= 20 ? "normal" : f.rr <= 30 ? "schnell" : "sehr schnell";
+  if (f.hr !== undefined)
+    out.hr = f.hr === 0 ? "kein Puls" : `${f.hr < 50 ? "sehr langsam" : f.hr < 60 ? "langsam" : f.hr <= 100 ? "normal" : f.hr <= 130 ? "schnell" : "sehr schnell"}${f.radialPulse === false ? ", Radialispuls nicht tastbar" : ""}`;
+  if (f.bp !== undefined) {
+    const sys = Number(f.bp.split("/")[0]);
+    out.bp = !sys ? "nicht messbar" : sys < 90 ? "niedrig" : sys <= 140 ? "normal" : "hoch";
+  }
+  if (f.spo2 !== undefined) out.spo2 = f.spo2 >= 95 ? "normal" : f.spo2 >= 90 ? "leicht erniedrigt" : "deutlich erniedrigt";
+  if (f.gcs !== undefined) out.gcs = f.gcs === 15 ? "wach, orientiert" : f.gcs >= 13 ? "benommen" : f.gcs >= 9 ? "eingetrübt" : "bewusstlos";
+  if (f.recap !== undefined) out.recap = f.recap <= 2 ? "normal" : "verlängert";
+  if (f.temp !== undefined) out.temp = f.temp < 35 ? "unterkühlt" : f.temp > 38 ? "Fieber" : "normal";
+  const bz = Number(f.exam?.glucose?.match(/\d+/)?.[0]);
+  if (bz) out.glucose = bz < 70 ? "niedrig" : bz > 200 ? "hoch" : "normal";
+  return out;
 }

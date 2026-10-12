@@ -141,7 +141,23 @@ export async function generate(ai: Ai, brief: string, actions: Record<string, Ac
 
 // Ganze Szenarien: Die KI entwirft Lage, Einsatzmittel und eine Skizze je Patient; die Patienten selbst
 // entstehen danach einzeln mit generate(), damit jeder Fall dieselbe Prüfung und Freigabe durchläuft.
-const KINDS = ["RTW", "NEF", "KTW"] as const;
+export const KINDS = ["RTW", "NEF", "KTW"] as const;
+export type Kind = (typeof KINDS)[number];
+
+// Fahrzeuge nach Typ mit Beladung und Plätzen aus der Vorlage (z. B. Busunfall); eines trifft bei 0 min ein.
+export function buildUnits(list: { kind: Kind; arrivesAt: number }[], template: Scenario): Scenario["units"] {
+  const like = (kind: string) => template.units.find((u) => u.title.startsWith(kind)) ?? template.units[0];
+  const n: Record<string, number> = {};
+  const units = list
+    .map((u) => {
+      n[u.kind] = (n[u.kind] ?? 0) + 1;
+      const base = like(u.kind);
+      return { id: `${u.kind.toLowerCase()}${n[u.kind]}`, title: `${u.kind} ${n[u.kind]}`, arrivesAt: Math.min(60, Math.max(0, Math.round(u.arrivesAt))), seats: base.seats, inventory: { ...base.inventory } };
+    })
+    .sort((a, b) => a.arrivesAt - b.arrivesAt);
+  if (units.length) units[0].arrivesAt = 0;
+  return units;
+}
 // Grenzen an Listen und Texten: lokale Modelle wiederholen sich sonst, bis das Token-Limit das JSON abschneidet.
 const GenFrame = z.object({
   title: z.string().max(120),
@@ -163,16 +179,7 @@ export async function generateFrame(ai: Ai, brief: string, count: number, templa
     const more = await ai.json("generator", system, `Szenario-Idee: ${brief}\nLage: ${g.situation}\nBisherige Patienten:\n${g.patients.map((p) => `- ${p.brief}`).join("\n")}\n\nGib ${count - g.patients.length} weitere, andere Patienten aus (Titel, Lage und Einsatzmittel wie oben).`, GenFrame, 4000);
     g.patients.push(...more.patients);
   }
-  const like = (kind: string) => template.units.find((u) => u.title.startsWith(kind)) ?? template.units[0];
-  const n: Record<string, number> = {};
-  const units = (g.units.length ? g.units : template.units.map((u) => ({ kind: u.title.slice(0, 3) as (typeof KINDS)[number], arrivesAt: u.arrivesAt })))
-    .map((u) => {
-      n[u.kind] = (n[u.kind] ?? 0) + 1;
-      const base = like(u.kind);
-      return { id: `${u.kind.toLowerCase()}${n[u.kind]}`, title: `${u.kind} ${n[u.kind]}`, arrivesAt: Math.min(60, Math.max(0, Math.round(u.arrivesAt))), seats: base.seats, inventory: { ...base.inventory } };
-    })
-    .sort((a, b) => a.arrivesAt - b.arrivesAt);
-  units[0].arrivesAt = 0;
+  const units = buildUnits(g.units.length ? g.units : template.units.map((u) => ({ kind: u.title.slice(0, 3) as Kind, arrivesAt: u.arrivesAt })), template);
   const scenario = { id: `ki-s${crypto.randomUUID().slice(0, 5)}`, title: g.title, situation: g.situation, patients: [], units };
   return { scenario, briefs: g.patients.slice(0, count).map((p) => `Lage: ${g.situation}\nPatient: ${p.brief}`) };
 }

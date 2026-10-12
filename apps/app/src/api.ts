@@ -5,10 +5,12 @@ import type { Sk } from "@dps/schema";
 export type Session = { server: string; token: string; email: string };
 export type LibPatient = {
   id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number;
-  meta: { category: string; tags: string[]; difficulty: string }; sk: Sk | null; origin: "muster" | "ki"; errors: string[];
+  meta: { category: string; tags: string[]; difficulty: string }; sk: Sk | null; origin: "muster" | "ki" | "eigen"; errors: string[];
+  editable: boolean; // eigener Entwurf: Bearbeiten erzeugt eine neue Version, sonst eine Kopie
 };
 export type LibScenario = {
-  id: string; title: string; patients: string[]; situation: string | null; origin: "muster" | "ki";
+  id: string; title: string; patients: string[]; situation: string | null; origin: "muster" | "ki" | "eigen"; editable: boolean;
+  units: { kind: string; title: string; arrivesAt: number; seats: number }[];
   job: { total: number; done: number; failed: number; error: string | null } | null; // KI erzeugt gerade Patienten
 };
 export type Library = { patients: LibPatient[]; scenarios: LibScenario[] };

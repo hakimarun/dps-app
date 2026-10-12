@@ -27,6 +27,9 @@ export function openDb(path: string): Db {
   // Datenbanken aus Meilenstein 3/4 haben noch keine Trupp-Spalte.
   const cols = db.prepare("pragma table_info(records)").all() as { name: string }[];
   if (!cols.some((c) => c.name === "trupp")) db.exec("alter table records add column trupp text");
+  // Entwürfe aus Meilenstein 6 stammen alle von der KI; eigene Fälle aus dem Editor sind "eigen".
+  const draftCols = db.prepare("pragma table_info(drafts)").all() as { name: string }[];
+  if (!draftCols.some((c) => c.name === "origin")) db.exec("alter table drafts add column origin text not null default 'ki'");
   return db;
 }
 
@@ -114,21 +117,29 @@ export function deleteExercisesBefore(db: Db, before: number): string[] {
 }
 
 // KI-Entwürfe für die Bibliothek (G8/G9).
-export type Draft = { id: string; owner: string; created: number; brief: string; patient: unknown; report: { ok: boolean; errors: string[]; warnings: string[]; sk: string | null } };
+export type Draft = {
+  id: string; owner: string; created: number; brief: string; patient: unknown; report: { ok: boolean; errors: string[]; warnings: string[]; sk: string | null };
+  origin?: "ki" | "eigen"; // aus dem KI-Generator oder dem Formular-Editor
+};
 export function saveDraft(db: Db, d: Draft) {
-  db.prepare("insert into drafts values (?, ?, ?, ?, ?, ?)").run(d.id, d.owner, d.created, d.brief, JSON.stringify(d.patient), JSON.stringify(d.report));
+  db.prepare("insert or replace into drafts (id, owner, created, brief, patient, report, origin) values (?, ?, ?, ?, ?, ?, ?)")
+    .run(d.id, d.owner, d.created, d.brief, JSON.stringify(d.patient), JSON.stringify(d.report), d.origin ?? "ki");
 }
 export function loadDrafts(db: Db): Draft[] {
-  const rows = db.prepare("select * from drafts order by created").all() as { id: string; owner: string; created: number; brief: string; patient: string; report: string }[];
+  const rows = db.prepare("select * from drafts order by created").all() as { id: string; owner: string; created: number; brief: string; patient: string; report: string; origin: "ki" | "eigen" }[];
   return rows.map((r) => ({ ...r, patient: JSON.parse(r.patient), report: JSON.parse(r.report) }));
 }
 
 // KI-Szenarien und nachträglich generierte Patienten (auch für Szenarien aus der Bibliothek).
 export function saveScenario(db: Db, owner: string, brief: string, scenario: { id: string }, now: number) {
-  db.prepare("insert into scenarios values (?, ?, ?, ?, ?)").run(scenario.id, owner, now, brief, JSON.stringify(scenario));
+  db.prepare("insert or replace into scenarios values (?, ?, ?, ?, ?)").run(scenario.id, owner, now, brief, JSON.stringify(scenario));
 }
-export function loadScenarios(db: Db): unknown[] {
-  return (db.prepare("select data from scenarios order by created").all() as { data: string }[]).map((r) => JSON.parse(r.data));
+export function loadScenarios(db: Db): { owner: string; data: unknown }[] {
+  return (db.prepare("select owner, data from scenarios order by created").all() as { owner: string; data: string }[]).map((r) => ({ owner: r.owner, data: JSON.parse(r.data) }));
+}
+// Im Editor gespeicherte Patientenliste ersetzt die nachträglich generierten.
+export function detachPatients(db: Db, scenario: string) {
+  db.prepare("delete from scenario_patients where scenario = ?").run(scenario);
 }
 export function attachPatient(db: Db, scenario: string, patient: string, now: number) {
   db.prepare("insert into scenario_patients values (?, ?, ?)").run(scenario, patient, now);

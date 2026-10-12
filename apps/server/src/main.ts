@@ -11,14 +11,14 @@ import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, LoginReq, ScenarioGenReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
-import { generate, generateFrame } from "./generator.ts";
+import { buildUnits, check, generate, generateFrame } from "./generator.ts";
 import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
-import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
+import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
@@ -31,9 +31,12 @@ const lib = loadLibrary(new URL("../../../library/", import.meta.url));
 const drafts = new Map(loadDrafts(db).map((d) => [d.id, d]));
 for (const d of drafts.values()) if (d.report.ok) lib.defs.patients[d.id] = Patient.parse(d.patient);
 // KI-Szenarien und nachträglich generierte Patienten (auch in Szenarien aus der Bibliothek).
-type LibScenario = Scenario & { situation?: string };
+type LibScenario = Scenario & { situation?: string; owner?: string };
 const scenarios = lib.scenarios as Record<string, LibScenario>;
-for (const s of loadScenarios(db) as LibScenario[]) scenarios[s.id] = s;
+for (const { owner, data } of loadScenarios(db)) {
+  const s = data as LibScenario;
+  scenarios[s.id] = { ...s, owner, patients: s.patients.filter((id) => lib.defs.patients[id]) };
+}
 for (const a of attachedPatients(db)) if (scenarios[a.scenario] && lib.defs.patients[a.patient]) scenarios[a.scenario].patients.push(a.patient);
 // N10: Übungen nach der Aufbewahrungsfrist löschen (RETENTION_DAYS, Standard 180 Tage), beim Start und täglich.
 const RETENTION_MS = Number(process.env.RETENTION_DAYS ?? 180) * 24 * 60 * 60_000;
@@ -177,16 +180,19 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
           approved: mine.get(p.id) === p.version,
           approvals: counts.get(p.id) ?? 0,
           uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
-          meta: p.meta, sk: startSk(p), origin: drafts.has(p.id) ? "ki" : "muster", errors: [] as string[],
+          meta: p.meta, sk: startSk(p), origin: drafts.get(p.id)?.origin ?? "muster", errors: [] as string[], editable: drafts.get(p.id)?.owner === user.id,
         })),
         // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht freigebbar
         ...[...drafts.values()].filter((d) => !d.report.ok).map((d) => ({
           id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, approved: false, approvals: 0, uses: 0,
-          meta: { category: "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: "ki", errors: d.report.errors,
+          meta: { category: d.origin === "eigen" ? "Eigener Entwurf" : "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: d.origin ?? "ki", errors: d.report.errors,
+          editable: d.owner === user.id,
         })),
       ],
       scenarios: Object.values(scenarios).map((s) => ({
-        id: s.id, title: s.title, patients: s.patients, situation: s.situation ?? null, origin: s.id.startsWith("ki-") ? "ki" : "muster", job: jobs.get(s.id) ?? null,
+        id: s.id, title: s.title, patients: s.patients, situation: s.situation ?? null, job: jobs.get(s.id) ?? null,
+        origin: s.id.startsWith("ki-") ? "ki" : s.id.startsWith("eigen-") ? "eigen" : "muster", editable: s.owner === user.id,
+        units: s.units.map((u) => ({ kind: u.title.slice(0, 3), title: u.title, arrivesAt: u.arrivesAt, seats: u.seats })),
       })),
     });
   }
@@ -196,6 +202,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const d = drafts.get(m[1]);
     return send(res, 200, { patient: p, actions: Object.fromEntries(Object.values(lib.defs.actions).map((a) => [a.id, a.title])), report: d?.report ?? null, brief: d?.brief ?? null });
   }
+  if (route === "GET /api/actions") return send(res, 200, Object.values(lib.defs.actions).map((a) => ({ id: a.id, title: a.title, group: a.group })));
   if (route === "GET /api/ideas") return send(res, 200, { cases: readIdeas("cases.json"), scenarios: readIdeas("scenarios.json"), generator: !!generatorAi });
   if (route === "POST /api/generate") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet (AI_GENERATOR, ANTHROPIC_API_KEY oder LOCAL_AI_URL)");
@@ -205,6 +212,37 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     });
     return send(res, 201, { id: d.id, report: d.report });
   }
+  // Formular-Editor (A1): prüfen ohne zu speichern, und speichern als eigener Entwurf.
+  if (route === "POST /api/cases/check") {
+    const { patient } = CaseSaveReq.parse(await body(req));
+    return send(res, 200, check({ ...patient, id: String(patient.id ?? "neu"), version: 1 }, lib.defs.actions));
+  }
+  if (route === "POST /api/cases") {
+    const { patient } = CaseSaveReq.parse(await body(req));
+    const prev = drafts.get(String(patient.id ?? ""));
+    const mine = prev?.owner === user.id; // eigene Entwürfe bekommen eine neue Version, alles andere wird eine Kopie
+    const id = mine ? prev!.id : `eigen-${crypto.randomUUID().slice(0, 6)}`;
+    const raw = { ...patient, id, version: mine ? Number((prev!.patient as { version?: number }).version ?? 1) + 1 : 1 };
+    const report = check(raw, lib.defs.actions);
+    const d: Draft = { id, owner: user.id, created: mine ? prev!.created : Date.now(), brief: `Eigener Fall: ${String(patient.title ?? "")}`, patient: raw, report, origin: "eigen" };
+    saveDraft(db, d);
+    drafts.set(id, d);
+    if (report.ok) lib.defs.patients[id] = Patient.parse(raw);
+    else delete lib.defs.patients[id]; // eine fehlerhafte neue Version ist nicht mehr spielbar
+    return send(res, 201, { id, report });
+  }
+  // Formular-Editor (A4): Szenario aus Lage, Fahrzeugen und Patienten.
+  if (route === "POST /api/scenarios/save") {
+    const r = ScenarioSaveReq.parse(await body(req));
+    const unknown = r.patients.filter((id) => !lib.defs.patients[id]);
+    if (unknown.length) throw new HttpError(400, `unbekannte Patienten: ${unknown.join(", ")}`);
+    const id = r.id && scenarios[r.id]?.owner === user.id ? r.id : `eigen-s${crypto.randomUUID().slice(0, 5)}`;
+    const sc = { id, title: r.title, situation: r.situation, patients: r.patients, units: buildUnits(r.units, scenarios.busunfall ?? Object.values(scenarios)[0]) };
+    saveScenario(db, user.id, "Editor", sc, Date.now());
+    detachPatients(db, id);
+    scenarios[id] = { ...sc, owner: user.id };
+    return send(res, 201, { id });
+  }
   if (route === "POST /api/scenarios") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");
     const { brief, patients } = ScenarioGenReq.parse(await body(req));
@@ -212,7 +250,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
       throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
     });
     saveScenario(db, user.id, brief, scenario, Date.now());
-    scenarios[scenario.id] = scenario;
+    scenarios[scenario.id] = { ...scenario, owner: user.id };
     void fillScenario(scenario.id, briefs, user.id);
     return send(res, 201, { id: scenario.id, patients: briefs.length });
   }

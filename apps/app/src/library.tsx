@@ -5,6 +5,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Findings, Patient, Sk } from "@dps/schema";
 import { api, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
 import { Button, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
+import { CaseEditor, ScenarioEditor } from "./editor";
 
 type Idea = {
   id: string; title: string; category: string; picture: string; course: string; critical: string[]; harmful: string[];
@@ -105,6 +106,7 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
   const [sk, setSk] = useState<Sk | null>(null);
   const [detail, setDetail] = useState<LibPatient | null>(null);
   const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState<Patient | "neu" | null>(null);
   const all = lib.lib?.patients ?? [];
   const shown = all.filter((p) =>
     (status === "alle" || (status === "meine" && p.approved) || (status === "offen" && !p.approved) || (status === "ki" && p.origin === "ki")) &&
@@ -114,6 +116,7 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
         <Title t={t}>Fälle</Title>
         <Text style={{ color: t.quiet }}>{shown.length} von {all.length} · {all.filter((p) => p.approved).length} von dir freigegeben</Text>
+        <Button t={t} label="Neuer Fall (Formular)" onPress={() => setEditing("neu")} />
         <Button t={t} label="Neuer Fall mit KI" disabled={!generator} note={generator ? undefined : "KI-Fallgenerator ist auf dem Server nicht eingerichtet"} onPress={() => setCreating(true)} />
         <Filters t={t} q={q} setQ={setQ} status={status} setStatus={setStatus}
           statuses={[["alle", "Alle"], ["meine", "Von mir freigegeben"], ["offen", "Offen"], ["ki", "KI-Entwürfe"]]}
@@ -134,9 +137,13 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
           </View>
         ))}
       </ScrollView>
-      {detail && (
-        <CaseDetail t={t} session={session} item={detail} onClose={() => setDetail(null)}
+      {detail && !editing && (
+        <CaseDetail t={t} session={session} item={detail} onClose={() => setDetail(null)} onEdit={setEditing}
           onToggle={() => api(session, "/api/library/approve", { item: detail.id, approved: !detail.approved }).then(() => (lib.load(), setDetail(null)))} />
+      )}
+      {editing && (
+        <CaseEditor t={t} session={session} initial={editing === "neu" ? undefined : editing} onClose={() => setEditing(null)}
+          onSaved={() => (setEditing(null), setDetail(null), lib.load())} />
       )}
       {creating && <GenerateSheet t={t} session={session} onClose={() => setCreating(false)} onDone={() => (lib.load(), setCreating(false))} />}
     </>
@@ -172,7 +179,9 @@ function ReportView({ t, report }: { t: Theme; report: Report }) {
   );
 }
 
-function CaseDetail({ t, session, item, onToggle, onClose }: { t: Theme; session: Session; item: LibPatient; onToggle: () => void; onClose: () => void }) {
+function CaseDetail({ t, session, item, onToggle, onClose, onEdit }: {
+  t: Theme; session: Session; item: LibPatient; onToggle: () => void; onClose: () => void; onEdit: (p: Patient) => void;
+}) {
   const [data, setData] = useState<{ patient: Patient; actions: Record<string, string>; report: Report | null } | null>(null);
   useEffect(() => void api<typeof data>(session, `/api/library/${item.id}`).then(setData), [item.id]);
   const a = (id: string) => data?.actions[id] ?? (id === "handover" ? "Übergabe" : id);
@@ -202,6 +211,7 @@ function CaseDetail({ t, session, item, onToggle, onClose }: { t: Theme; session
         </>
       )}
       <Button t={t} strong label={item.approved ? "Freigabe zurückziehen" : "Für meine Übungen freigeben"} disabled={item.errors.length > 0} onPress={onToggle} />
+      {data?.patient && <Button t={t} label={item.editable ? "Bearbeiten (neue Version)" : "Als Kopie bearbeiten"} onPress={() => onEdit(data.patient)} />}
     </Sheet>
   );
 }
@@ -285,6 +295,7 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
   const [open, setOpen] = useState<ScenarioIdea | null>(null);
   const [play, setPlay] = useState<string | null>(null); // spielbares Szenario (id), damit der Fortschritt live bleibt
   const [gen, setGen] = useState<null | { title: string; brief: string; count?: number; scenario?: string }>(null);
+  const [edit, setEdit] = useState<LibScenario | "neu" | null>(null);
   const cases = lib.lib?.patients ?? [];
   const playable = lib.lib?.scenarios ?? [];
   const playing = playable.find((s) => s.id === play);
@@ -297,6 +308,7 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
     <>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
         <Title t={t}>Szenarien</Title>
+        <Button t={t} label="Neues Szenario (Formular)" onPress={() => setEdit("neu")} />
         <Button t={t} label="Neues Szenario mit KI" disabled={!ideas?.generator} note={ideas?.generator ? undefined : "KI-Fallgenerator ist auf dem Server nicht eingerichtet"}
           onPress={() => setGen({ title: "Neues Szenario mit KI", brief: "", count: 6 })} />
         <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>Spielbar · {playable.length}</Text>
@@ -333,7 +345,11 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
             onPress={() => (setGen({ title: `${open.id} ausarbeiten`, brief: scenarioBrief(open, caseTitle), count: Math.min(open.patients, 12) }), setOpen(null))} />
         </Sheet>
       )}
-      {playing && !gen && (
+      {edit && (
+        <ScenarioEditor t={t} session={session} initial={edit === "neu" ? undefined : edit} cases={cases} onClose={() => setEdit(null)}
+          onSaved={(id) => (setEdit(null), setPlay(id), lib.load())} />
+      )}
+      {playing && !gen && !edit && (
         <Sheet t={t} title={playing.title} onClose={() => setPlay(null)}>
           {playing.situation && <Text style={{ color: t.text }}>{playing.situation}</Text>}
           {playing.job && <Text style={{ color: jobLine(t, playing.job).color ?? t.quiet }}>{jobLine(t, playing.job).text}</Text>}
@@ -345,6 +361,7 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
                 lines={[{ text: `SK ${p?.sk ?? "–"} · ${p?.approved ? "✓ von dir freigegeben" : p?.origin === "ki" ? "KI-Entwurf · noch nicht geprüft" : "noch nicht geprüft"}`, color: p?.approved ? t.green : undefined }]} />
             );
           })}
+          <Button t={t} label={playing.editable ? "Bearbeiten" : "Als Kopie bearbeiten"} onPress={() => setEdit(playing)} />
           <Button t={t} strong label="Patient dazugenerieren" disabled={!ideas?.generator} note={ideas?.generator ? undefined : "KI-Fallgenerator ist nicht eingerichtet"}
             onPress={() => setGen({ title: `Patient für „${playing.title}“`, brief: "", scenario: playing.id })} />
         </Sheet>

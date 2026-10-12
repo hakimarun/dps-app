@@ -57,6 +57,15 @@ export const CreateExerciseReq = z.object({
   vitals: z.enum(["numbers", "text"]).default("numbers"),
 });
 export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional() });
+// Formular-Editor (A1/A4): Fall im Bibliotheksformat, geprüft wird auf dem Server.
+export const CaseSaveReq = z.object({ patient: z.record(z.string(), z.unknown()) });
+export const ScenarioSaveReq = z.object({
+  id: z.string().max(64).optional(), // eigenes Szenario überschreiben; sonst neue Kopie
+  title: z.string().trim().min(3).max(120),
+  situation: z.string().trim().max(2000).default(""),
+  units: z.array(z.object({ kind: z.enum(["RTW", "NEF", "KTW"]), arrivesAt: z.number().min(0).max(120) })).min(1).max(20),
+  patients: z.array(z.string().max(64)).min(1).max(100),
+});
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
 

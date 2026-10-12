@@ -1,35 +1,23 @@
 {
-  "id": "i093", "version": 1, "title": "Reizgas mit Latenz",
+  "id": "i093",
+  "version": 1,
+  "title": "Reizgas mit Latenz",
   "picture": "Mann, ca. 45 Jahre, im Arbeitsanzug, kommt zu Fuß aus der Halle zur Sammelstelle. Hustet ab und zu trocken, wirkt sonst fit und ungeduldig. Sagt: „Hab nur kurz was eingeatmet, ich geh gleich wieder rein.“",
-  "profile": {
-    "temperament": "verharmlosend",
-    "speech": "ganze Sätze, winkt ab; ab Phase 3 kurzatmig",
-    "anamnesis": {
-      "symptoms": "Ein bisschen Kratzen im Hals, sonst nichts. Mir geht's gut.",
-      "allergies": "Keine Allergien.",
-      "medication": "Ich nehme nur was gegen Bluthochdruck.",
-      "history": "Bluthochdruck, sonst nichts.",
-      "lastMeal": "Frühstück heute Morgen, so um sieben.",
-      "event": "An einem Kessel ist eine Leitung undicht geworden, es kam so ein gelbbrauner Dampf raus. Ich stand ein paar Minuten daneben, bevor wir rausgegangen sind.",
-      "risk": "Ich rauche seit zwanzig Jahren."
-    },
-    "pitfall": "Will zurück an die Arbeit oder nach Hause und lehnt Transport ab. Reizgase vom Spättyp machen erst nach Stunden schwer krank; er muss sich schonen und klinisch überwacht werden."
-  },
+  "profile": {"temperament": "verharmlosend", "speech": "ganze Sätze, winkt ab; ab Phase 3 kurzatmig", "anamnesis": {"symptoms": "Ein bisschen Kratzen im Hals, sonst nichts. Mir geht's gut.", "allergies": "Keine Allergien.", "medication": "Ich nehme nur was gegen Bluthochdruck.", "history": "Bluthochdruck, sonst nichts.", "lastMeal": "Frühstück heute Morgen, so um sieben.", "event": "An einem Kessel ist eine Leitung undicht geworden, es kam so ein gelbbrauner Dampf raus. Ich stand ein paar Minuten daneben, bevor wir rausgegangen sind.", "risk": "Ich rauche seit zwanzig Jahren."}, "pitfall": "Will zurück an die Arbeit oder nach Hause und lehnt Transport ab. Reizgase vom Spättyp machen erst nach Stunden schwer krank; er muss sich schonen und klinisch überwacht werden."},
   "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Atmung", "Untertriage-Falle"], "difficulty": "experte"},
   "scoring": {"critical": [{"actions": ["upper_body_up"], "within": 15}, {"actions": ["handover"], "within": 60}], "harmful": []},
-  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 97, "hr": 88, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 1, "exam": { "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche", "percussion": "sonor beidseits" } },
+  "base": {"walking": true, "breathing": true, "rr": 18, "spo2": 97, "hr": 88, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 1, "exam": {"auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche", "percussion": "sonor beidseits"}},
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["upper_body_up"], "then": "2-geschont" }], "else": "2" },
-    "2": { "findings": { "rr": 20, "hr": 92, "pain": 2 }, "rules": [{ "when": ["upper_body_up"], "then": "3-geschont" }], "else": "3" },
-    "3": { "findings": { "walking": false, "rr": 26, "spo2": 92, "hr": 105, "bp": "140/90", "pain": 3, "exam": { "auscultation": "feinblasige Rasselgeräusche basal beidseits", "percussion": "sonor beidseits" } }, "rules": [{ "when": ["oxygen", "upper_body_up"], "then": "4-versorgt" }], "else": "4" },
-    "4": { "findings": { "walking": false, "rr": 32, "spo2": 85, "hr": 118, "bp": "145/90", "recap": 3, "pain": 4, "exam": { "auscultation": "feuchte Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf", "percussion": "sonor beidseits" } }, "rules": [{ "when": ["oxygen", "upper_body_up"], "then": "5-versorgt" }], "else": "5" },
-    "5": { "findings": { "walking": false, "rr": 38, "spo2": 76, "hr": 130, "bp": "140/85", "recap": 3, "gcs": 13, "pain": 4, "exam": { "auscultation": "massive feuchte Rasselgeräusche beidseits, rosa schaumiger Auswurf", "percussion": "sonor beidseits" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
-    "intubiert": { "findings": { "walking": false, "rr": 14, "spo2": 88, "hr": 115, "bp": "115/70", "recap": 3, "gcs": 3, "followsCommands": false, "exam": { "auscultation": "feuchte Rasselgeräusche beidseits, unter Beatmung belüftet", "percussion": "sonor beidseits" } } },
-    "tot": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
-    "2-geschont": { "findings": { "walking": false, "rr": 18, "hr": 86 }, "else": "3-geschont" },
-    "3-geschont": { "findings": { "walking": false, "rr": 22, "spo2": 94, "hr": 95, "pain": 2, "exam": { "auscultation": "vereinzelt feinblasige Rasselgeräusche basal", "percussion": "sonor beidseits" } }, "rules": [{ "when": ["oxygen"], "then": "4-versorgt" }], "else": "3" },
-    "4-versorgt": { "findings": { "walking": false, "rr": 22, "spo2": 94, "hr": 98, "bp": "135/85", "pain": 2, "exam": { "auscultation": "feinblasige Rasselgeräusche basal beidseits", "percussion": "sonor beidseits" } } },
-    "5-versorgt": { "findings": { "walking": false, "rr": 28, "spo2": 89, "hr": 112, "bp": "140/85", "recap": 3, "pain": 3, "exam": { "auscultation": "feuchte Rasselgeräusche beidseits", "percussion": "sonor beidseits" } } }
+    "1": {"minutes": 30, "rules": [{"when": ["upper_body_up"], "then": "2-geschont"}], "else": "2"},
+    "2": {"minutes": 30, "findings": {"rr": 20, "hr": 92, "pain": 2}, "rules": [{"when": ["upper_body_up"], "then": "3-geschont"}], "else": "3"},
+    "3": {"findings": {"walking": false, "rr": 26, "spo2": 92, "hr": 105, "bp": "140/90", "pain": 3, "exam": {"auscultation": "feinblasige Rasselgeräusche basal beidseits", "percussion": "sonor beidseits"}}, "rules": [{"when": ["oxygen", "upper_body_up"], "then": "4-versorgt"}], "else": "4"},
+    "4": {"findings": {"walking": false, "rr": 32, "spo2": 85, "hr": 118, "bp": "145/90", "recap": 3, "pain": 4, "exam": {"auscultation": "feuchte Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf", "percussion": "sonor beidseits"}}, "rules": [{"when": ["oxygen", "upper_body_up"], "then": "5-versorgt"}], "else": "5"},
+    "5": {"findings": {"walking": false, "rr": 36, "spo2": 80, "hr": 125, "bp": "140/85", "recap": 3, "gcs": 14, "pain": 4, "exam": {"auscultation": "massive feuchte Rasselgeräusche beidseits, rosa schaumiger Auswurf", "percussion": "sonor beidseits"}}, "rules": [{"when": ["intubation"], "then": "intubiert"}, {"when": ["oxygen", "upper_body_up"], "then": "5-versorgt"}]},
+    "intubiert": {"findings": {"walking": false, "rr": 14, "spo2": 88, "hr": 115, "bp": "115/70", "recap": 3, "gcs": 3, "followsCommands": false, "exam": {"auscultation": "feuchte Rasselgeräusche beidseits, unter Beatmung belüftet", "percussion": "sonor beidseits"}}},
+    "2-geschont": {"minutes": 30, "findings": {"walking": false, "rr": 18, "hr": 86}, "else": "3-geschont"},
+    "3-geschont": {"findings": {"walking": false, "rr": 22, "spo2": 94, "hr": 95, "pain": 2, "exam": {"auscultation": "vereinzelt feinblasige Rasselgeräusche basal", "percussion": "sonor beidseits"}}, "rules": [{"when": ["oxygen"], "then": "4-versorgt"}], "else": "3"},
+    "4-versorgt": {"findings": {"walking": false, "rr": 22, "spo2": 94, "hr": 98, "bp": "135/85", "pain": 2, "exam": {"auscultation": "feinblasige Rasselgeräusche basal beidseits", "percussion": "sonor beidseits"}}},
+    "5-versorgt": {"findings": {"walking": false, "rr": 28, "spo2": 89, "hr": 112, "bp": "140/85", "recap": 3, "pain": 3, "exam": {"auscultation": "feuchte Rasselgeräusche beidseits", "percussion": "sonor beidseits"}}}
   }
 }

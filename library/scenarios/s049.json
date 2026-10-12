@@ -1,14 +1,20 @@
 {
   "id": "s049",
   "title": "Kohlenmonoxid im Wohnhaus",
-  "situation": "Defekte Heizungsanlage, mehrere Bewohner mit Kopfschmerz, ein Kind schläfrig. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Messgerät. Besonderheiten: Unsichtbare Gefahr, Eigengefährdung. Lernziel: CO erkennen trotz normaler Sättigung. Die Idee sieht 12 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Defekte Heizungsanlage, mehrere Bewohner mit Kopfschmerz, ein Kind schläfrig. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Messgerät. Besonderheiten: Unsichtbare Gefahr, Eigengefährdung. Lernziel: CO erkennen trotz normaler Sättigung. 12 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I067-2).",
   "patients": [
     "i067",
     "i048",
     "i051",
     "i029",
     "i091",
-    "p09"
+    "p09",
+    "i067-2",
+    "i048-2",
+    "i051-2",
+    "i029-2",
+    "i091-2",
+    "p09-2"
   ],
   "units": [
     {

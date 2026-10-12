@@ -11,4 +11,7 @@ test("Scan: QR-Codes, Nummern und IDs eigener Fälle", () => {
   assert.deepEqual(parseScan("EIGEN-71A2FC", "ABC123"), { id: "eigen-71a2fc" });
   assert.deepEqual(parseScan("dps:ABC123", "ABC123"), { error: "kein Patienten-Code" }); // Beitritts-QR, kein Patient
   assert.deepEqual(parseScan("hallo", "ABC123"), { error: "kein Patienten-Code" });
+  assert.deepEqual(parseScan("I011", "ABC123"), { id: "i011" }); // Bibliotheksfälle aus den Ideen
+  assert.deepEqual(parseScan("i011-2", "ABC123"), { id: "i011-2" }); // zweite Karte desselben Falls
+  assert.deepEqual(parseScan("dps:ABC123:i011-2", "ABC123"), { id: "i011-2" });
 });

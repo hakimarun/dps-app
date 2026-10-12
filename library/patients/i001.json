@@ -1,6 +1,6 @@
 {
   "id": "i001",
-  "version": 1,
+  "version": 2,
   "title": "Stichverletzung Brustkorb, gehfähig",
   "picture": "Mann, ca. 25 Jahre, kommt selbst zur Sammelstelle gelaufen und hält sich die linke Brustseite. Kleines Loch im Pullover, darunter sickert Blut. Spricht in ganzen Sätzen: „Ist nur ein Kratzer, da hat mich einer mit dem Messer erwischt.“",
   "profile": {
@@ -41,7 +41,9 @@
         "within": 30
       }
     ],
-    "harmful": []
+    "harmful": [
+      "pressure_dressing"
+    ]
   },
   "base": {
     "walking": true,
@@ -71,6 +73,12 @@
             "oxygen"
           ],
           "then": "2-versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "2-verschlossen"
         }
       ],
       "else": "2"
@@ -215,6 +223,36 @@
           "percussion": "links leicht hypersonor"
         }
       }
+    },
+    "2-verschlossen": {
+      "findings": {
+        "walking": false,
+        "rr": 32,
+        "spo2": 88,
+        "hr": 125,
+        "bp": "110/75",
+        "pain": 7,
+        "exam": {
+          "auscultation": "links aufgehoben",
+          "percussion": "links hypersonor",
+          "bodycheck": "Stichwunde links seitlich am Brustkorb luftdicht unter Druckverband, Halsvenen gestaut; sonst unverletzt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        },
+        {
+          "when": [
+            "chest_seal"
+          ],
+          "then": "3-versorgt"
+        }
+      ],
+      "else": "4"
     }
   }
 }

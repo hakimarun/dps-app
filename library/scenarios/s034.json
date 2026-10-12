@@ -1,7 +1,7 @@
 {
   "id": "s034",
   "title": "Gasexplosion in Lebensmittelbetrieb",
-  "situation": "Verpuffung in Großbäckerei, Teile der Halle eingestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Einsturzgefahr. Lernziel: Verbrennungen und Trauma in einer Lage priorisieren. Die Idee sieht 10 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Verpuffung in Großbäckerei, Teile der Halle eingestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Einsturzgefahr. Lernziel: Verbrennungen und Trauma in einer Lage priorisieren. 10 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I061-2).",
   "patients": [
     "i061",
     "i060",
@@ -9,7 +9,10 @@
     "i010",
     "i003",
     "i026",
-    "p06"
+    "p06",
+    "i061-2",
+    "i060-2",
+    "i022-2"
   ],
   "units": [
     {

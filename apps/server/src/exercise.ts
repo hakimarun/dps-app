@@ -36,7 +36,12 @@ export type Exercise = Header & {
   cache?: { n: number; t: number; s: State };
 };
 
+// Mehrfach ausgelegte Fälle: "i011-2" ist die zweite Karte von "i011" mit eigenem Verlauf. Nur auflösen, wenn es die ID selbst nicht gibt.
+export const caseOf = (defs: Defs, id: string) => (defs.patients[id] ? id : id.replace(/-\d+$/, ""));
+
 export function createExercise(h: Header, defs: Defs): Exercise {
+  const copies = h.scenario.patients.filter((id) => !defs.patients[id] && defs.patients[caseOf(defs, id)]);
+  if (copies.length) defs = { ...defs, patients: { ...defs.patients, ...Object.fromEntries(copies.map((id) => [id, { ...defs.patients[caseOf(defs, id)], id }])) } };
   return { ...h, trupps: h.trupps ?? [], defs, records: [], controls: [], seen: new Set(), names: new Map(), truppOf: new Map() };
 }
 

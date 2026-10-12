@@ -1,6 +1,6 @@
 {
   "id": "i011",
-  "version": 1,
+  "version": 2,
   "title": "Eingeklemmter Lkw-Fahrer",
   "picture": "Mann, ca. 50 Jahre, sitzt im verformten Führerhaus, beide Unterschenkel im Fußraum festgeklemmt. Wach, zittert, die Zähne klappern: „Mir ist so kalt. Holt mich hier raus!“",
   "profile": {
@@ -85,7 +85,7 @@
         "rr": 22,
         "hr": 108,
         "pain": 8,
-        "temp": 35.0
+        "temp": 35.5
       },
       "rules": [
         {
@@ -110,8 +110,8 @@
         "hr": 112,
         "bp": "130/80",
         "pain": 9,
-        "temp": 34.3,
-        "gcs": 14
+        "temp": 35.2,
+        "gcs": 15
       },
       "rules": [
         {
@@ -132,14 +132,14 @@
     },
     "4": {
       "findings": {
-        "rr": 18,
-        "hr": 95,
-        "bp": "120/75",
+        "rr": 22,
+        "hr": 115,
+        "bp": "135/80",
         "pain": 8,
-        "temp": 33.5,
-        "gcs": 13,
+        "temp": 34.9,
+        "gcs": 14,
         "exam": {
-          "bodycheck": "Beide Unterschenkel eingeklemmt, rechter fehlgestellt; Zittern hat aufgehört, Haut kalt, verlangsamt"
+          "bodycheck": "Beide Unterschenkel eingeklemmt, rechter fehlgestellt; zittert stark, Haut kalt, Lippen bläulich, antwortet verlangsamt"
         }
       },
       "rules": [

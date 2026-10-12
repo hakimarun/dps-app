@@ -11,8 +11,12 @@
   "start": "1",
   "phases": {
     "1": { "else": "2" },
-    "2": { "findings": { "hr": 112, "bp": "125/80", "exam": { "ecg": "Vorhofflimmern, tachykard, gehäufte VES" } }, "rules": [{ "when": ["ecg", "iv_access"], "then": "3-ueberwacht" }], "else": "3" },
-    "3": { "findings": { "walking": false, "rr": 24, "spo2": 94, "hr": 180, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 3, "exam": { "ecg": "Kammertachykardie" } } },
-    "3-ueberwacht": { "findings": { "hr": 100, "bp": "130/80", "exam": { "ecg": "Vorhofflimmern, normofrequent, vereinzelte VES" } } }
+    "2": { "findings": { "hr": 112, "bp": "125/80", "exam": { "ecg": "Vorhofflimmern, tachykard, gehäufte VES" } }, "rules": [{ "when": ["ecg", "antiarrhythmic"], "then": "3-ueberwacht" }], "else": "3" },
+    "3": { "minutes": 10, "findings": { "walking": false, "rr": 24, "spo2": 94, "hr": 180, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 3, "exam": { "ecg": "Kammertachykardie mit Puls, instabil (RR 80/50)" } }, "rules": [{ "when": ["defibrillation"], "then": "3-kardiovertiert" }], "else": "4-kf" },
+    "4-kf": { "minutes": 10, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "when": ["defibrillation"], "active": ["cpr"], "then": "rosc" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)" } } },
+    "3-ueberwacht": { "findings": { "hr": 100, "bp": "130/80", "exam": { "ecg": "Vorhofflimmern, normofrequent, vereinzelte VES" } } },
+    "3-kardiovertiert": { "findings": { "walking": false, "rr": 18, "spo2": 97, "hr": 100, "bp": "125/80", "radialPulse": true, "recap": 2, "pain": 3, "exam": { "ecg": "Sinusrhythmus nach Kardioversion, vereinzelte VES" } } },
+    "rosc": { "findings": { "walking": false, "breathing": true, "rr": 14, "spo2": 94, "hr": 110, "bp": "100/60", "radialPulse": true, "recap": 3, "gcs": 9, "followsCommands": false, "pain": 0, "exam": { "ecg": "Sinustachykardie nach Defibrillation" } } }
   }
 }

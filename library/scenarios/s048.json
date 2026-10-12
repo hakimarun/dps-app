@@ -1,7 +1,7 @@
 {
   "id": "s048",
   "title": "Balkoneinsturz bei Familienfeier",
-  "situation": "Balkon mit Gästen eingestürzt, Personen aus dem ersten Stock gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Einsturzgefahr, Angehörige. Lernziel: Sturzverletzungen sichten und Angehörige einbinden. Die Idee sieht 12 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Balkon mit Gästen eingestürzt, Personen aus dem ersten Stock gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Einsturzgefahr, Angehörige. Lernziel: Sturzverletzungen sichten und Angehörige einbinden. 12 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I004-2).",
   "patients": [
     "i004",
     "i020",
@@ -10,7 +10,11 @@
     "i018",
     "i085",
     "p04",
-    "p07"
+    "p07",
+    "i004-2",
+    "i020-2",
+    "i053-2",
+    "i047-2"
   ],
   "units": [
     {

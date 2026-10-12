@@ -1,14 +1,23 @@
 {
   "id": "s081",
   "title": "Massenschlägerei auf Volksfest",
-  "situation": "Auseinandersetzung zwischen größeren Gruppen, Polizei trennt die Beteiligten. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Alkohol, Eigengefährdung, Polizeilage. Lernziel: Eigenschutz und SHT unter Alkohol erkennen. Die Idee sieht 15 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Auseinandersetzung zwischen größeren Gruppen, Polizei trennt die Beteiligten. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Alkohol, Eigengefährdung, Polizeilage. Lernziel: Eigenschutz und SHT unter Alkohol erkennen. 15 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I023-2).",
   "patients": [
     "i023",
     "i009",
     "i017",
     "i008",
     "i068",
-    "i082"
+    "i082",
+    "i023-2",
+    "i009-2",
+    "i017-2",
+    "i008-2",
+    "i068-2",
+    "i082-2",
+    "i023-3",
+    "i009-3",
+    "i017-3"
   ],
   "units": [
     {

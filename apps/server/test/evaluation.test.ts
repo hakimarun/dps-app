@@ -231,3 +231,15 @@ test("Vergleich über Durchgänge: Kennzahlen einer Übung in einer Zeile", asyn
   assert.equal(s.firstTriage, 3);
   assert.ok(s.criticalTimely !== null && s.criticalTimely > 0 && s.criticalTimely < 1); // Tourniquet rechtzeitig, Beckengurt verpasst
 });
+
+test("SK IV (abwartend): bei so markierten Fällen zählt IV als korrekt, bei anderen als Untertriage", () => {
+  const { ex, join, act } = exercise(["i027", "p01"]);
+  const a = join("Anna");
+  act(a, 1, { type: "scan", patient: "i027" });
+  act(a, 1, { type: "triage", patient: "i027", sk: "IV" });
+  act(a, 2, { type: "scan", patient: "p01" });
+  act(a, 2, { type: "triage", patient: "p01", sk: "IV" });
+  const ev = evaluate(ex, 3 * MIN);
+  assert.equal(ev.patients.find((p) => p.id === "i027")?.triage, "korrekt");
+  assert.equal(ev.patients.find((p) => p.id === "p01")?.triage, "untertriage");
+});

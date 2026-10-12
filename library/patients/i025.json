@@ -4,7 +4,7 @@
   "profile": { "temperament": "keins", "speech": "spricht nicht", "pitfall": "Atemwege einmal freimachen, Atmung prüfen – ohne Spontanatmung kennzeichnen und weitersichten, im MANV nicht reanimieren, solange Personal für die Lebenden fehlt" },
   "meta": {"category": "Trauma", "tags": ["Atemweg", "Sichtung", "Ethik"], "difficulty": "fortgeschritten"},
   "scoring": {"critical": [{"actions": ["airway_open"], "within": 5}], "harmful": ["cpr"]},
-  "base": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "keine Atmung, auch nach Überstrecken des Kopfes und freiem Mund keine Atembewegung. Kein Puls tastbar. Prellmarken an Kopf und Brust.", "pupils": "beidseits weit, lichtstarr" } },
+  "base": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "keine Atmung, auch nach Überstrecken des Kopfes und freiem Mund keine Atembewegung. Kein Puls tastbar. Prellmarken an Kopf und Brust.", "pupils": "beidseits weit, lichtstarr", "death": "Atem- und Kreislaufstillstand ohne sichere Todeszeichen: keine Totenflecken, keine Leichenstarre, keine mit dem Leben unvereinbare Verletzung. In der Sichtung als tot (EX) kennzeichnen, ärztliche Todesfeststellung erst, wenn die Lebenden versorgt sind." } },
   "start": "1",
   "phases": { "1": { "dead": true } }
 }

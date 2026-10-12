@@ -1,7 +1,7 @@
 {
   "id": "s007",
   "title": "Kleinbus mit Grundschulkindern verunfallt",
-  "situation": "Schulbus-Kleinbus ist von der Straße abgekommen, Eltern treffen an der Einsatzstelle ein. Kräfte laut Planung: 3 RTW, 1 NEF, Kinder-Notarzt anfordern; nach 15 min 2 RTW. Besonderheiten: Kinder, Eltern an der Einsatzstelle. Lernziel: Kindersichtung und Betreuung unbegleiteter Kinder. Die Idee sieht 14 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Schulbus-Kleinbus ist von der Straße abgekommen, Eltern treffen an der Einsatzstelle ein. Kräfte laut Planung: 3 RTW, 1 NEF, Kinder-Notarzt anfordern; nach 15 min 2 RTW. Besonderheiten: Kinder, Eltern an der Einsatzstelle. Lernziel: Kindersichtung und Betreuung unbegleiteter Kinder. 14 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I043-2).",
   "patients": [
     "i043",
     "i048",
@@ -9,7 +9,14 @@
     "i050",
     "i046",
     "i085",
-    "i082"
+    "i082",
+    "i043-2",
+    "i048-2",
+    "i047-2",
+    "i050-2",
+    "i046-2",
+    "i085-2",
+    "i082-2"
   ],
   "units": [
     {

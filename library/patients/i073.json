@@ -16,14 +16,14 @@
     "pitfall": "Fragt ängstlich, ob das giftig ist. Den Gefahrstoff erfragen; die durchnässte Kleidung hält die Aufnahme aufrecht."
   },
   "meta": { "category": "Intoxikation", "tags": ["Gefahrstoff", "Industrie"], "difficulty": "einsteiger" },
-  "scoring": { "critical": [{ "actions": ["rinse"], "within": 15 }, { "actions": ["oxygen"], "within": 30 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["decon_undress"], "within": 15 }, { "actions": ["oxygen"], "within": 30 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 94, "hr": 98, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 14, "followsCommands": true, "pain": 5, "exam": { "auscultation": "vereinzelt Giemen beidseits", "pupils": "mittelweit, prompt lichtreagibel", "ecg": "Sinusrhythmus", "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet, keine Verletzungen" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }], "else": "2" },
-    "2": { "findings": { "rr": 24, "spo2": 93, "hr": 106, "gcs": 13, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }], "else": "3" },
-    "3": { "findings": { "rr": 26, "spo2": 92, "hr": 112, "bp": "125/80", "gcs": 12, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }] },
-    "2-dekon-ohne-o2": { "findings": { "rr": 20, "hr": 92, "gcs": 14, "pain": 4, "exam": { "bodycheck": "entkleidet und abgespült, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } }, "rules": [{ "when": ["oxygen"], "then": "2-dekon" }] },
-    "2-dekon": { "findings": { "rr": 18, "spo2": 97, "hr": 88, "gcs": 15, "pain": 3, "exam": { "auscultation": "vesikulär beidseits", "bodycheck": "entkleidet und abgespült, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } } }
+    "1": { "rules": [{ "when": ["decon_undress", "oxygen"], "then": "2-dekon" }, { "when": ["decon_undress"], "then": "2-dekon-ohne-o2" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "spo2": 93, "hr": 106, "gcs": 13, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["decon_undress", "oxygen"], "then": "2-dekon" }, { "when": ["decon_undress"], "then": "2-dekon-ohne-o2" }], "else": "3" },
+    "3": { "findings": { "rr": 26, "spo2": 92, "hr": 112, "bp": "125/80", "gcs": 12, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["decon_undress", "oxygen"], "then": "2-dekon" }, { "when": ["decon_undress"], "then": "2-dekon-ohne-o2" }] },
+    "2-dekon-ohne-o2": { "findings": { "rr": 20, "hr": 92, "gcs": 14, "pain": 4, "exam": { "bodycheck": "entkleidet, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } }, "rules": [{ "when": ["oxygen"], "then": "2-dekon" }] },
+    "2-dekon": { "findings": { "rr": 18, "spo2": 97, "hr": 88, "gcs": 15, "pain": 3, "exam": { "auscultation": "vesikulär beidseits", "bodycheck": "entkleidet, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } } }
   }
 }

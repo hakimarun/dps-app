@@ -6,16 +6,16 @@
     "pitfall": "die Mutter will weiter kühlen und lässt das Kind nur widerwillig los" },
   "meta": { "category": "Verbrennung", "tags": ["Kind", "Verbrennung", "Hypothermie"], "difficulty": "fortgeschritten" },
   "scoring": { "critical": [{ "actions": ["warm"], "within": 15 }, { "actions": ["analgesia"], "within": 30 }], "harmful": ["cool_large", "rinse"] },
-  "base": { "walking": false, "breathing": true, "rr": 28, "spo2": 98, "hr": 150, "bp": "95/55", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 8, "temp": 36.3,
+  "base": { "walking": false, "breathing": true, "child": true, "rr": 36, "spo2": 98, "hr": 150, "bp": "95/55", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 8, "temp": 36.3,
     "exam": { "burn": "ca. 10 % KOF, 2. Grad (Rötung, Blasen), vordere Brust und rechter Arm, Gesicht frei", "airway": "frei, keine Schwellung im Mund", "bodycheck": "nasse Kleidung, Haut kühl, sonst unverletzt" } },
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["cool_large"], "then": "2-unterkuehlt" }, { "when": ["rinse"], "then": "2-unterkuehlt" }, { "when": ["warm", "analgesia"], "then": "2-versorgt" }, { "when": ["warm"], "then": "2-warm" }], "else": "2-unterkuehlt" },
-    "2-unterkuehlt": { "findings": { "rr": 30, "hr": 160, "recap": 3, "temp": 35.0, "gcs": 14, "exam": { "bodycheck": "nasse Kleidung, Haut kalt und marmoriert, zittert stark" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "3-versorgt" }, { "when": ["warm"], "then": "3-warm" }], "else": "3-unterkuehlt" },
-    "3-unterkuehlt": { "findings": { "rr": 22, "hr": 120, "bp": "80/45", "recap": 4, "temp": 34.0, "gcs": 12, "followsCommands": false, "pain": 6, "exam": { "bodycheck": "Haut kalt und marmoriert, kein Zittern mehr, apathisch" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "3-versorgt" }, { "when": ["warm"], "then": "3-warm" }] },
+    "2-unterkuehlt": { "findings": { "rr": 40, "hr": 160, "recap": 3, "temp": 35.4, "gcs": 14, "exam": { "bodycheck": "nasse Kleidung, Haut kalt und marmoriert, zittert stark" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "3-versorgt" }, { "when": ["warm"], "then": "3-warm" }], "else": "3-unterkuehlt" },
+    "3-unterkuehlt": { "findings": { "rr": 30, "hr": 140, "bp": "90/50", "recap": 3, "temp": 34.8, "gcs": 13, "pain": 6, "exam": { "bodycheck": "Haut kalt und marmoriert, zittert, wird ruhig und schläfrig" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "3-versorgt" }, { "when": ["warm"], "then": "3-warm" }] },
     "2-warm": { "findings": { "hr": 150, "temp": 36.0 }, "rules": [{ "when": ["analgesia"], "then": "2-versorgt" }] },
-    "3-warm": { "findings": { "hr": 150, "temp": 35.4 }, "rules": [{ "when": ["analgesia"], "then": "3-versorgt" }] },
-    "2-versorgt": { "findings": { "rr": 26, "hr": 125, "temp": 36.2, "pain": 3 } },
-    "3-versorgt": { "findings": { "rr": 26, "hr": 130, "temp": 35.6, "pain": 3 } }
+    "3-warm": { "findings": { "hr": 145, "temp": 35.2 }, "rules": [{ "when": ["analgesia"], "then": "3-versorgt" }] },
+    "2-versorgt": { "findings": { "rr": 30, "hr": 125, "temp": 36.2, "pain": 3 } },
+    "3-versorgt": { "findings": { "rr": 30, "hr": 130, "temp": 35.4, "pain": 3 } }
   }
 }

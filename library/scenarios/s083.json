@@ -1,13 +1,19 @@
 {
   "id": "s083",
   "title": "Unfall im Chemieunterricht",
-  "situation": "Reaktion beim Schulversuch, Schüler mit Augen- und Hautreizungen. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kinder, Gefahrstoff. Lernziel: Kinder mit Gefahrstoffkontakt sichten und spülen. Die Idee sieht 11 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Reaktion beim Schulversuch, Schüler mit Augen- und Hautreizungen. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kinder, Gefahrstoff. Lernziel: Kinder mit Gefahrstoffkontakt sichten und spülen. 11 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I094-2).",
   "patients": [
     "i094",
     "i072",
     "i031",
     "i046",
-    "i062"
+    "i062",
+    "i094-2",
+    "i072-2",
+    "i031-2",
+    "i046-2",
+    "i062-2",
+    "i094-3"
   ],
   "units": [
     {

@@ -338,3 +338,13 @@ test("Später entdeckter Patient: Leitung sieht, wann der Zettel ausgelegt wird;
   control(ex, "end", 40 * MIN);
   assert.equal(evaluate(ex, 40 * MIN).critical.timely, 1); // Tourniquet bei 22 min: rechtzeitig, weil P01 erst bei 20 auftauchte
 });
+
+test("Mehrfach ausgelegte Fälle: i-2 ist eine eigene Karte mit eigenem Verlauf", () => {
+  const ex = createExercise({ code: "COPY01", owner: "u1", scenario: { ...lib.scenarios.busunfall, patients: ["p01", "p01-2"] }, settings: defaultSettings, seed: 1, created: 0 }, lib.defs);
+  assert.equal(ex.defs.patients["p01-2"].id, "p01-2");
+  assert.equal(ex.defs.patients["p01-2"].title, lib.defs.patients.p01.title);
+  assert.equal(lib.defs.patients["p01-2"], undefined); // die Bibliothek bleibt unverändert
+  control(ex, "start", 0);
+  const s = stateAt(ex, 1);
+  assert.deepEqual(Object.keys(s.patients).sort(), ["p01", "p01-2"]);
+});

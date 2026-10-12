@@ -1,14 +1,15 @@
 {
   "id": "s025",
   "title": "Harte Landung eines Heißluftballons",
-  "situation": "Ballonkorb auf Acker umgekippt, sieben Insassen. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Unwegsames Gelände, Lange Anfahrt. Lernziel: Kleine Lage im Gelände mit langen Transportwegen. Die Idee sieht 7 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Ballonkorb auf Acker umgekippt, sieben Insassen. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Unwegsames Gelände, Lange Anfahrt. Lernziel: Kleine Lage im Gelände mit langen Transportwegen. 7 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I004-2).",
   "patients": [
     "i004",
     "i053",
     "i018",
     "i019",
     "i057",
-    "p04"
+    "p04",
+    "i004-2"
   ],
   "units": [
     {

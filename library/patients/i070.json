@@ -5,17 +5,19 @@
     "temperament": "keins",
     "speech": "spricht nicht",
     "anamnesis": { "event": "Ich hab mir einen Druck gesetzt, wie immer." },
-    "pitfall": "Atemfrequenz unter 10 heißt SK I. Zuerst Atemweg öffnen und beatmen, das Antidot kommt danach."
+    "pitfall": "Atemfrequenz unter 10 heißt SK I. Zuerst Atemweg öffnen und beatmen, Naloxon kommt danach und wird titriert. Wirkt kürzer als das Opioid: weiter überwachen."
   },
   "meta": { "category": "Intoxikation", "tags": ["Drogen", "Atmung"], "difficulty": "fortgeschritten" },
-  "scoring": { "critical": [{ "actions": ["airway_open"], "within": 5 }, { "actions": ["bag_valve"], "within": 5 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["airway_open"], "within": 5 }, { "actions": ["bag_valve"], "within": 5 }, { "actions": ["naloxone"], "within": 15 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 78, "hr": 56, "bp": "100/60", "radialPulse": true, "recap": 3, "gcs": 5, "followsCommands": false, "temp": 35.9, "exam": { "pupils": "stecknadelkopfgroß, beidseits gleich", "auscultation": "sehr flache Atemzüge, Atemgeräusch beidseits abgeschwächt", "ecg": "Sinusbradykardie", "bodycheck": "Einstichstellen an beiden Ellenbeugen, keine Verletzungen" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "2" },
-    "2": { "findings": { "breathing": false, "rr": 0, "spo2": 60, "hr": 42, "bp": "70/40", "recap": 4, "gcs": 3, "exam": { "auscultation": "kein Atemgeräusch" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "tot" },
+    "1": { "rules": [{ "when": ["naloxone"], "then": "naloxon" }, { "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "2" },
+    "2": { "findings": { "breathing": false, "rr": 0, "spo2": 60, "hr": 42, "bp": "70/40", "recap": 4, "gcs": 3, "exam": { "auscultation": "kein Atemgeräusch" } }, "rules": [{ "when": ["naloxone"], "then": "naloxon-spaet" }, { "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "tot" },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
-    "beatmet": { "findings": { "rr": 12, "spo2": 95, "hr": 80, "bp": "115/70", "recap": 2, "exam": { "auscultation": "unter Beutelbeatmung beidseits belüftet" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "1" },
+    "beatmet": { "findings": { "rr": 12, "spo2": 95, "hr": 80, "bp": "115/70", "recap": 2, "exam": { "auscultation": "unter Beutelbeatmung beidseits belüftet" } }, "rules": [{ "when": ["naloxone"], "then": "naloxon" }, { "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "1" },
+    "naloxon": { "findings": { "rr": 14, "spo2": 95, "hr": 88, "bp": "125/75", "recap": 2, "gcs": 13, "followsCommands": true, "exam": { "pupils": "eng, beidseits gleich", "auscultation": "beidseits belüftet", "ecg": "Sinusrhythmus" } } },
+    "naloxon-spaet": { "findings": { "rr": 12, "spo2": 92, "hr": 92, "bp": "115/70", "recap": 2, "gcs": 10, "exam": { "pupils": "eng, beidseits gleich", "auscultation": "beidseits belüftet", "ecg": "Sinusrhythmus" } } },
     "intubiert": { "findings": { "rr": 12, "spo2": 97, "hr": 84, "bp": "115/70", "recap": 2, "gcs": 3, "exam": { "auscultation": "beatmet, beidseits belüftet" } } }
   }
 }

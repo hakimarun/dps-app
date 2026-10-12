@@ -1,7 +1,7 @@
 {
   "id": "s026",
   "title": "Turbulenzen: Verletzte nach Landung",
-  "situation": "Nach schweren Turbulenzen meldet die Crew Verletzte an Bord, Flugzeug steht am Gate. Kräfte laut Planung: 2 RTW, 1 NEF, Flughafensanitätsdienst. Besonderheiten: Enger Raum, Sprachbarriere. Lernziel: Sichtung in beengtem Raum und Abtransport über das Gate. Die Idee sieht 20 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Nach schweren Turbulenzen meldet die Crew Verletzte an Bord, Flugzeug steht am Gate. Kräfte laut Planung: 2 RTW, 1 NEF, Flughafensanitätsdienst. Besonderheiten: Enger Raum, Sprachbarriere. Lernziel: Sichtung in beengtem Raum und Abtransport über das Gate. 20 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I008-2).",
   "patients": [
     "i008",
     "i009",
@@ -10,7 +10,19 @@
     "i057",
     "i042",
     "i029",
-    "p09"
+    "p09",
+    "i008-2",
+    "i009-2",
+    "i019-2",
+    "i052-2",
+    "i057-2",
+    "i042-2",
+    "i029-2",
+    "p09-2",
+    "i008-3",
+    "i009-3",
+    "i019-3",
+    "i052-3"
   ],
   "units": [
     {

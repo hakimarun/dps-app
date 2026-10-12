@@ -1,13 +1,18 @@
 {
   "id": "s099",
   "title": "Hitzekollaps beim Jugendturnier",
-  "situation": "In heißer Sporthalle kollabieren mehrere Jugendliche. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Hitze, Jugendliche. Lernziel: Hitzeerkrankungen bei Jugendlichen erkennen. Die Idee sieht 10 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "In heißer Sporthalle kollabieren mehrere Jugendliche. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Hitze, Jugendliche. Lernziel: Hitzeerkrankungen bei Jugendlichen erkennen. 10 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I074-2).",
   "patients": [
     "i074",
     "i075",
     "i031",
     "i030",
-    "p09"
+    "p09",
+    "i074-2",
+    "i075-2",
+    "i031-2",
+    "i030-2",
+    "p09-2"
   ],
   "units": [
     {

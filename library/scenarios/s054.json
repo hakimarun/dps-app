@@ -1,7 +1,7 @@
 {
   "id": "s054",
   "title": "Bühnenteil stürzt beim Stadtfest",
-  "situation": "Teil einer Bühnenkonstruktion stürzt in den Zuschauerbereich. Kräfte laut Planung: Sanitätsdienst, 3 RTW, 1 NEF, OrgL. Besonderheiten: Menschenmenge, Einsturzgefahr. Lernziel: Sichtung im Zuschauerbereich mit Schaulustigen. Die Idee sieht 16 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Teil einer Bühnenkonstruktion stürzt in den Zuschauerbereich. Kräfte laut Planung: Sanitätsdienst, 3 RTW, 1 NEF, OrgL. Besonderheiten: Menschenmenge, Einsturzgefahr. Lernziel: Sichtung im Zuschauerbereich mit Schaulustigen. 16 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I010-2).",
   "patients": [
     "i010",
     "i004",
@@ -11,7 +11,14 @@
     "i038",
     "i026",
     "p03",
-    "p07"
+    "p07",
+    "i010-2",
+    "i004-2",
+    "i008-2",
+    "i043-2",
+    "i085-2",
+    "i038-2",
+    "i026-2"
   ],
   "units": [
     {

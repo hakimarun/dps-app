@@ -4,7 +4,7 @@
   "profile": { "temperament": "keins", "speech": "spricht nicht", "anamnesis": { "event": "(keine Angaben möglich)" }, "pitfall": "Nach mSTaRT rot (SK I). Die Prognose schätzt nur der Arzt ab; SK IV ist eine Ressourcenentscheidung und wird bei mehr Kräften zurückgenommen. Vorher Hypoxie und Hypotonie als Ursache der Bewusstlosigkeit ausschließen." },
   "meta": { "category": "Trauma", "tags": ["SHT", "SK IV", "Ethik", "SK IV (abwartend)"], "difficulty": "experte" },
   "scoring": { "critical": [{ "actions": ["pulse_oximetry"], "within": 15 }, { "actions": ["measure_bp"], "within": 15 }, { "actions": ["check_pupils"], "within": 15 }], "harmful": [] },
-  "base": { "walking": false, "breathing": true, "rr": 8, "spo2": 86, "hr": 52, "bp": "185/100", "radialPulse": true, "recap": 2, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "pupils": "beidseits weit, lichtstarr", "bodycheck": "Schwellung und Platzwunde okzipital, Blut aus dem rechten Ohr, Brillenhämatom beidseits, sonst keine Verletzungen tastbar", "auscultation": "beidseits abgeschwächtes Atemgeräusch, flache Atmung", "ecg": "Sinusbradykardie" } },
+  "base": { "walking": false, "breathing": true, "rr": 8, "spo2": 86, "hr": 52, "bp": "185/100", "radialPulse": true, "recap": 2, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "pupils": "beidseits weit, lichtstarr", "bodycheck": "Schwellung und Platzwunde okzipital, Blut aus dem rechten Ohr, Brillenhämatom beidseits, sonst keine Verletzungen tastbar", "auscultation": "beidseits abgeschwächtes Atemgeräusch, flache Atmung", "ecg": "Sinusbradykardie", "death": "Lebt: atmet unregelmäßig, Puls tastbar, keine sicheren Todeszeichen. Prognose bei weiten lichtstarren Pupillen ärztlich abzuschätzen." } },
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "2" },
@@ -12,6 +12,6 @@
     "apnoe": { "findings": { "breathing": false, "rr": 0, "spo2": 55, "hr": 38, "bp": "90/50", "recap": 4 }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "tot" },
     "beatmet": { "findings": { "rr": 12, "spo2": 95, "hr": 56, "bp": "180/95" }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beatmet" }], "else": "apnoe" },
     "intubiert": { "findings": { "rr": 12, "spo2": 97, "hr": 58, "bp": "170/90" } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie", "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet." } } }
   }
 }

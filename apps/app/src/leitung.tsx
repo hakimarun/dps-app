@@ -115,7 +115,8 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [find, setFind] = useState(""); // über 100 Szenarien: suchen statt scrollen
   const sc = lib?.scenarios.find((s) => s.id === scenario) ?? lib?.scenarios[0];
   const shownScenarios = lib?.scenarios.filter((s) => s.id === sc?.id || `${s.title} ${s.situation ?? ""}`.toLowerCase().includes(find.trim().toLowerCase())) ?? [];
-  const byId = new Map(lib?.patients.map((p) => [p.id, p]));
+  const map = new Map(lib?.patients.map((p) => [p.id, p]));
+  const byId = { get: (id: string) => map.get(id) ?? map.get(id.replace(/-\d+$/, "")) }; // "i011-2": zweite Karte von i011
   const playable = (id: string) => !!byId.get(id) && !byId.get(id)!.errors.length;
   useEffect(() => setPicked(sc?.patients.filter(playable) ?? []), [sc?.id, lib]);
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));

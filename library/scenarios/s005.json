@@ -1,7 +1,7 @@
 {
   "id": "s005",
   "title": "Linienbus gegen Lkw innerorts",
-  "situation": "Stadtbus nach Kollision mit Lkw, viele leicht verletzte Fahrgäste im Bus. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL; nach 15 min 3 RTW und KTW. Besonderheiten: Innenstadt, Viele Gehfähige. Lernziel: Gehfähige zügig zur Sammelstelle lenken und nachsichten. Die Idee sieht 28 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Stadtbus nach Kollision mit Lkw, viele leicht verletzte Fahrgäste im Bus. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL; nach 15 min 3 RTW und KTW. Besonderheiten: Innenstadt, Viele Gehfähige. Lernziel: Gehfähige zügig zur Sammelstelle lenken und nachsichten. 28 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I007-2).",
   "patients": [
     "i007",
     "i008",
@@ -12,7 +12,25 @@
     "i086",
     "i029",
     "p08",
-    "p09"
+    "p09",
+    "i007-2",
+    "i008-2",
+    "i019-2",
+    "i018-2",
+    "i021-2",
+    "i057-2",
+    "i086-2",
+    "i029-2",
+    "p08-2",
+    "p09-2",
+    "i007-3",
+    "i008-3",
+    "i019-3",
+    "i018-3",
+    "i021-3",
+    "i057-3",
+    "i086-3",
+    "i029-3"
   ],
   "units": [
     {

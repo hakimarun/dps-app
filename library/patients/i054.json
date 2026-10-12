@@ -11,8 +11,8 @@
     "exam": { "glucose": "118 mg/dl", "pupils": "mittelweit, isokor, prompt", "bodycheck": "keine Verletzungen, keine Prellmarken am Kopf, bewegt alle Extremitäten seitengleich" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "2" },
-    "2": { "findings": { "hr": 96, "bp": "160/85", "exam": { "bodycheck": "keine Verletzungen, zunehmend unruhig, will den Platz verlassen" } }, "rules": [{ "when": ["calm"], "then": "betreut" }] },
+    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }, { "when": ["psnv"], "then": "betreut" }], "else": "2" },
+    "2": { "findings": { "hr": 96, "bp": "160/85", "exam": { "bodycheck": "keine Verletzungen, zunehmend unruhig, will den Platz verlassen" } }, "rules": [{ "when": ["calm"], "then": "betreut" }, { "when": ["psnv"], "then": "betreut" }] },
     "betreut": { "findings": { "hr": 78, "bp": "140/80" } }
   }
 }

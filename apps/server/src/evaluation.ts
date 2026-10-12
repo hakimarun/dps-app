@@ -111,7 +111,9 @@ function compute(ex: Exercise, T: number): Evaluation {
     const { participant: who, patient: id, sk } = r.event;
     const target = targetSk(at(r), id);
     const prev = lastSk.get(id);
-    const result = sk === target ? "korrekt" : RANK[sk] > RANK[target] ? "übertriage" : "untertriage";
+    // Abwartende Behandlung (SK IV, blau): mSTaRT kennt sie nicht, der Fall startet als I; der Arzt darf IV vergeben.
+    const expectant = sk === "IV" && target === "I" && ex.defs.patients[id].meta.tags.includes("SK IV (abwartend)");
+    const result = sk === target || expectant ? "korrekt" : RANK[sk] > RANK[target] ? "übertriage" : "untertriage";
     if (!firstTriage.has(id)) firstTriage.set(id, { t: r.t, result });
     triageByRole[roleOf(ex, who)][result === "korrekt" ? "correct" : result === "übertriage" ? "over" : "under"]++;
     skill(who, "sichtung", result === "korrekt");

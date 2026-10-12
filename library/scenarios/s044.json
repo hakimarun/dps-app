@@ -1,7 +1,7 @@
 {
   "id": "s044",
   "title": "Hotelbrand mit Touristengruppe",
-  "situation": "Brand in Hotel, ausländische Reisegruppe betroffen. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; nach 15 min SEG. Besonderheiten: Sprachbarriere, Nacht, Rauch. Lernziel: Registrierung und Sichtung bei Sprachbarriere. Die Idee sieht 29 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Brand in Hotel, ausländische Reisegruppe betroffen. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; nach 15 min SEG. Besonderheiten: Sprachbarriere, Nacht, Rauch. Lernziel: Registrierung und Sichtung bei Sprachbarriere. 29 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -12,7 +12,26 @@
     "i029",
     "i066",
     "p05",
-    "p06"
+    "p06",
+    "i071-2",
+    "i067-2",
+    "i061-2",
+    "i018-2",
+    "i042-2",
+    "i046-2",
+    "i029-2",
+    "i066-2",
+    "p05-2",
+    "p06-2",
+    "i071-3",
+    "i067-3",
+    "i061-3",
+    "i018-3",
+    "i042-3",
+    "i046-3",
+    "i029-3",
+    "i066-3",
+    "p05-3"
   ],
   "units": [
     {

@@ -1,14 +1,14 @@
 {
-  "id": "i046", "version": 1, "title": "Unbegleitetes Kind, unverletzt",
+  "id": "i046", "version": 2, "title": "Unbegleitetes Kind, unverletzt",
   "picture": "Mädchen, ca. 5 Jahre, steht weinend am Rand und ruft nach seiner Mutter. Keine sichtbaren Verletzungen.",
-  "profile": {"temperament": "ängstlich", "speech": "weint, kurze Sätze; wird ruhig, wenn jemand bei ihm bleibt", "anamnesis": {"symptoms": "Mir tut nichts weh. Ich will zu meiner Mama!", "allergies": "Ich darf keine Nüsse essen.", "medication": "Nein.", "history": "Weiß ich nicht.", "lastMeal": "Ich hab Kekse gegessen.", "event": "Es hat ganz laut geknallt, dann war Mama weg.", "risk": "Ich heiße Mia. Meine Mama heißt Sandra."}, "pitfall": "Ohne feste Betreuung läuft es ab Phase 3 weg, um die Mutter zu suchen (Leitung nimmt die Karte dann aus dem Spiel). Geht mit jedem mit, der freundlich ist. Unverletzte Kinder sind Betreuungsfälle mit hoher Priorität für Registrierung.", "sources": ["mSTaRT (Neidel/Heller 2021)", "DRK-Leitfaden Psychosoziale Notfallversorgung für Kinder"]},
+  "profile": {"temperament": "ängstlich", "speech": "weint, kurze Sätze; wird ruhig, wenn jemand bei ihm bleibt", "anamnesis": {"symptoms": "Mir tut nichts weh. Ich will zu meiner Mama!", "allergies": "Ich darf keine Nüsse essen.", "medication": "Nein.", "history": "Weiß ich nicht.", "lastMeal": "Ich hab Kekse gegessen.", "event": "Es hat ganz laut geknallt, dann war Mama weg.", "risk": "Ich heiße Mia. Meine Mama heißt Sandra."}, "pitfall": "Ohne feste Betreuung läuft es ab Phase 3 weg, um die Mutter zu suchen (Leitung nimmt die Karte dann aus dem Spiel). Geht mit jedem mit, der freundlich ist. Unverletzte Kinder sind Betreuungsfälle mit hoher Priorität: feste Bezugsperson zuweisen (PSNV, Kinderbetreuung) und registrieren; die Registrierung ist im Katalog nicht abbildbar.", "sources": ["mSTaRT (Neidel/Heller 2021)", "DRK-Leitfaden Psychosoziale Notfallversorgung für Kinder"]},
   "meta": {"category": "Pädiatrie", "tags": ["Kind", "Betreuung"], "difficulty": "einsteiger"},
-  "scoring": {"critical": [{"actions": ["body_check"], "within": 15}, {"actions": ["calm"], "within": 15}], "harmful": []},
-  "base": {"walking": true, "breathing": true, "rr": 22, "spo2": 99, "hr": 110, "bp": "100/60", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0, "exam": {"bodycheck": "keine Verletzungen, kleine Schürfung am linken Knie"}},
+  "scoring": {"critical": [{"actions": ["body_check"], "within": 15}, {"actions": ["psnv", "calm"], "within": 15}], "harmful": []},
+  "base": {"child": true, "walking": true, "breathing": true, "rr": 22, "spo2": 99, "hr": 110, "bp": "100/60", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0, "exam": {"bodycheck": "keine Verletzungen, kleine Schürfung am linken Knie"}},
   "start": "1",
   "phases": {
-    "1": {"rules": [{"when": ["calm"], "then": "betreut"}], "else": "2-unruhig"},
-    "2-unruhig": {"findings": {"rr": 26, "hr": 125}, "rules": [{"when": ["calm"], "then": "betreut"}], "else": "3-weggelaufen"},
+    "1": {"rules": [{"when": ["psnv"], "then": "betreut"}, {"when": ["calm"], "then": "betreut"}], "else": "2-unruhig"},
+    "2-unruhig": {"findings": {"rr": 26, "hr": 125}, "rules": [{"when": ["psnv"], "then": "betreut"}, {"when": ["calm"], "then": "betreut"}], "else": "3-weggelaufen"},
     "3-weggelaufen": {"findings": {"rr": 26, "hr": 130}},
     "betreut": {"findings": {"rr": 20, "hr": 100}}
   }

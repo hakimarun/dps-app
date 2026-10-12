@@ -7,14 +7,13 @@
   "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 98, "hr": 105, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "spurtingBleeding": true, "pain": 5, "exam": { "bodycheck": "ca. 5 cm lange Schnittwunde an der Beugeseite des linken Unterarms, pulsierend spritzende Blutung. Sonst keine Verletzungen." } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["pressure_dressing"], "then": "2-versorgt" }, { "when": ["tourniquet"], "then": "2-versorgt" }], "else": "2" },
-    "2": { "findings": { "rr": 24, "hr": 120, "bp": "115/75", "recap": 3 }, "rules": [{ "when": ["pressure_dressing"], "then": "3-versorgt" }, { "when": ["tourniquet"], "then": "3-versorgt" }], "else": "3-schock" },
-    "3-schock": { "findings": { "walking": false, "rr": 28, "spo2": 95, "hr": 140, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }], "else": "4-kreislauf" },
-    "4-kreislauf": { "minutes": 10, "findings": { "walking": false, "rr": 34, "spo2": 90, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 9, "followsCommands": false }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }], "else": "tot" },
-    "4-gestillt": { "findings": { "walking": false, "spurtingBleeding": false, "rr": 26, "spo2": 95, "hr": 125, "bp": "85/55", "recap": 4, "gcs": 14 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "5-stabil" }] },
+    "1": { "rules": [{ "when": ["pressure_dressing"], "then": "2-versorgt" }, { "when": ["tourniquet"], "then": "2-versorgt" }, { "active": ["manual_compression"], "then": "1" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "hr": 120, "bp": "115/75", "recap": 3 }, "rules": [{ "when": ["pressure_dressing"], "then": "3-versorgt" }, { "when": ["tourniquet"], "then": "3-versorgt" }, { "active": ["manual_compression"], "then": "2" }], "else": "3-schock" },
+    "3-schock": { "findings": { "walking": false, "rr": 28, "spo2": 95, "hr": 140, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }, { "active": ["manual_compression"], "then": "3-schock" }], "else": "4-kreislauf" },
+    "4-kreislauf": { "findings": { "walking": false, "rr": 32, "spo2": 92, "hr": 145, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 12, "followsCommands": false }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }] },
+    "4-gestillt": { "findings": { "walking": false, "spurtingBleeding": false, "rr": 26, "spo2": 95, "hr": 125, "bp": "85/55", "recap": 4, "gcs": 14 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "5-stabil" }, { "when": ["io_access", "fluids"], "then": "5-stabil" }] },
     "5-stabil": { "findings": { "walking": false, "spurtingBleeding": false, "rr": 22, "hr": 110, "bp": "100/65", "recap": 3 } },
     "2-versorgt": { "findings": { "spurtingBleeding": false, "hr": 100, "bp": "125/80", "pain": 4 } },
-    "3-versorgt": { "findings": { "spurtingBleeding": false, "rr": 22, "hr": 110, "bp": "115/75", "recap": 3, "pain": 4 } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+    "3-versorgt": { "findings": { "spurtingBleeding": false, "rr": 22, "hr": 110, "bp": "115/75", "recap": 3, "pain": 4 } }
   }
 }

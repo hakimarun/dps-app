@@ -1,14 +1,23 @@
 {
   "id": "s041",
   "title": "Lösemittelaustritt in Lackiererei",
-  "situation": "Lösemittelfass in Halle ausgelaufen, viele Beschäftigte mit Schwindel. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Viele Gehfähige. Lernziel: Dekon und Sammelstelle für viele Leichtbetroffene. Die Idee sieht 15 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Lösemittelfass in Halle ausgelaufen, viele Beschäftigte mit Schwindel. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Viele Gehfähige. Lernziel: Dekon und Sammelstelle für viele Leichtbetroffene. 15 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I073-2).",
   "patients": [
     "i073",
     "i096",
     "i094",
     "i072",
     "i067",
-    "p09"
+    "p09",
+    "i073-2",
+    "i096-2",
+    "i094-2",
+    "i072-2",
+    "i067-2",
+    "p09-2",
+    "i073-3",
+    "i096-3",
+    "i094-3"
   ],
   "units": [
     {

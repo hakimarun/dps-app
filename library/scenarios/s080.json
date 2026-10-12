@@ -1,7 +1,7 @@
 {
   "id": "s080",
   "title": "Explosion auf Bahnhofsvorplatz",
-  "situation": "Explosion unklarer Ursache, Polizei schließt weitere Gefahr nicht aus. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum. Besonderheiten: Eigengefährdung, Zweitereignis möglich, Bereitstellungsraum. Lernziel: Schnelle Rettung aus Gefahrenbereich und Sichtung an sicherem Ort. Die Idee sieht 24 Betroffene vor; enthalten sind 11 typische Fälle.",
+  "situation": "Explosion unklarer Ursache, Polizei schließt weitere Gefahr nicht aus. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum. Besonderheiten: Eigengefährdung, Zweitereignis möglich, Bereitstellungsraum. Lernziel: Schnelle Rettung aus Gefahrenbereich und Sichtung an sicherem Ort. 24 Betroffene aus 11 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I022-2).",
   "patients": [
     "i022",
     "i014",
@@ -13,7 +13,20 @@
     "i025",
     "p01",
     "p02",
-    "p10"
+    "p10",
+    "i022-2",
+    "i014-2",
+    "i024-2",
+    "i016-2",
+    "i061-2",
+    "i003-2",
+    "i027-2",
+    "i025-2",
+    "p01-2",
+    "p02-2",
+    "p10-2",
+    "i022-3",
+    "i014-3"
   ],
   "units": [
     {

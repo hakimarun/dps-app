@@ -1,13 +1,16 @@
 {
   "id": "s029",
   "title": "Kanugruppe im Wildwasser gekentert",
-  "situation": "Jugendgruppe im Wildwasser gekentert, mehrere unterkühlt am Ufer. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserrettung, RTH. Besonderheiten: Kälte, Unwegsames Gelände, Jugendliche. Lernziel: Unterkühlung erkennen und Bergungstod vermeiden. Die Idee sieht 8 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Jugendgruppe im Wildwasser gekentert, mehrere unterkühlt am Ufer. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserrettung, RTH. Besonderheiten: Kälte, Unwegsames Gelände, Jugendliche. Lernziel: Unterkühlung erkennen und Bergungstod vermeiden. 8 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I076-2).",
   "patients": [
     "i076",
     "i077",
     "i079",
     "i019",
-    "i080"
+    "i080",
+    "i076-2",
+    "i077-2",
+    "i079-2"
   ],
   "units": [
     {

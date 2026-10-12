@@ -1,30 +1,21 @@
 {
-  "id": "i094", "version": 1, "title": "Säurespritzer auf Haut und Auge",
+  "id": "i094",
+  "version": 1,
+  "title": "Säurespritzer auf Haut und Auge",
   "picture": "Frau, ca. 35 Jahre, kommt zu Fuß aus der Produktion, hält sich das rechte Auge zu, das stark tränt. Rechter Unterarm gerötet, der Ärmel ist nass. Ruft: „Das brennt wie Feuer, mein Auge!“",
-  "profile": {
-    "temperament": "ängstlich",
-    "speech": "ganze Sätze, weinerlich, fragt immer wieder nach ihrem Auge",
-    "anamnesis": {
-      "symptoms": "Mein rechtes Auge brennt furchtbar, ich krieg es kaum auf. Und der Arm brennt auch.",
-      "allergies": "Ich habe keine Allergien.",
-      "medication": "Ich nehme die Pille, sonst nichts.",
-      "history": "Ich bin gesund.",
-      "lastMeal": "In der Pause vor einer Stunde ein Brot.",
-      "event": "Beim Umfüllen ist mir was aus dem Kanister ins Gesicht und auf den Arm gespritzt. Auf dem Kanister stand irgendwas mit Säure.",
-      "risk": "Ich trage Kontaktlinsen."
-    },
-    "pitfall": "Drängt auf schnellen Transport ins Krankenhaus. Spülen hat Vorrang, auch vor dem Transport; Kontaktlinse und nasse Kleidung müssen raus."
-  },
+  "profile": {"temperament": "ängstlich", "speech": "ganze Sätze, weinerlich, fragt immer wieder nach ihrem Auge", "anamnesis": {"symptoms": "Mein rechtes Auge brennt furchtbar, ich krieg es kaum auf. Und der Arm brennt auch.", "allergies": "Ich habe keine Allergien.", "medication": "Ich nehme die Pille, sonst nichts.", "history": "Ich bin gesund.", "lastMeal": "In der Pause vor einer Stunde ein Brot.", "event": "Beim Umfüllen ist mir was aus dem Kanister ins Gesicht und auf den Arm gespritzt. Auf dem Kanister stand irgendwas mit Säure.", "risk": "Ich trage Kontaktlinsen."}, "pitfall": "Drängt auf schnellen Transport ins Krankenhaus. Spülen hat Vorrang, auch vor dem Transport; Kontaktlinse und nasse Kleidung müssen raus."},
   "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Auge", "Verätzung"], "difficulty": "einsteiger"},
-  "scoring": {"critical": [{"actions": ["rinse"], "within": 5}], "harmful": []},
-  "base": { "walking": true, "breathing": true, "rr": 22, "spo2": 99, "hr": 105, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": { "burn": "Rötung und einzelne kleine Blasen am rechten Unterarm, ca. 2 % KOF, Ärmel mit Flüssigkeit getränkt, stechender Geruch", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge stark gerötet und tränend, Lidkrampf, Kontaktlinse sichtbar; Pupillen soweit beurteilbar isokor" } },
+  "scoring": {"critical": [{"actions": ["rinse"], "within": 5}, {"actions": ["decon_undress"], "within": 15}], "harmful": []},
+  "base": {"walking": true, "breathing": true, "rr": 22, "spo2": 99, "hr": 105, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": {"burn": "Rötung und einzelne kleine Blasen am rechten Unterarm, ca. 2 % KOF, Ärmel mit Flüssigkeit getränkt, stechender Geruch", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge stark gerötet und tränend, Lidkrampf, Kontaktlinse sichtbar; Pupillen soweit beurteilbar isokor"}},
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["rinse"], "then": "gespült" }], "else": "2" },
-    "2": { "findings": { "hr": 110, "pain": 8, "exam": { "burn": "Haut am rechten Unterarm weißlich verfärbt mit Blasen, ca. 3 % KOF, Ärmel weiter nass", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut beginnt sich einzutrüben, starker Lidkrampf; linkes Auge unauffällig" } }, "rules": [{ "when": ["rinse"], "then": "2-gespült" }], "else": "3" },
-    "3": { "findings": { "hr": 115, "pain": 9, "exam": { "burn": "grauweiße, derbe Areale am rechten Unterarm, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut milchig getrübt, sieht rechts nur noch hell und dunkel; linkes Auge unauffällig" } }, "rules": [{ "when": ["rinse"], "then": "3-gespült" }] },
-    "gespült": { "findings": { "rr": 18, "hr": 95, "pain": 4, "exam": { "burn": "Rötung am rechten Unterarm, kleine Blasen, ca. 2 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge gerötet, Kontaktlinse entfernt, Hornhaut klar; Pupillen isokor" } } },
-    "2-gespült": { "findings": { "rr": 20, "hr": 100, "pain": 5, "exam": { "burn": "Haut am rechten Unterarm weißlich mit Blasen, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut leicht getrübt, Auge gerötet; Pupillen isokor" } } },
-    "3-gespült": { "findings": { "rr": 20, "hr": 105, "pain": 6, "exam": { "burn": "grauweiße, derbe Areale am rechten Unterarm, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut milchig getrübt, Sehvermögen rechts stark eingeschränkt" } } }
+    "1": {"rules": [{"when": ["rinse", "decon_undress"], "then": "gespült"}, {"when": ["rinse"], "then": "gespült-ärmel"}], "else": "2"},
+    "2": {"findings": {"hr": 110, "pain": 8, "exam": {"burn": "Haut am rechten Unterarm weißlich verfärbt mit Blasen, ca. 3 % KOF, Ärmel weiter nass", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut beginnt sich einzutrüben, starker Lidkrampf; linkes Auge unauffällig"}}, "rules": [{"when": ["rinse"], "then": "2-gespült"}], "else": "3"},
+    "3": {"findings": {"hr": 115, "pain": 9, "exam": {"burn": "grauweiße, derbe Areale am rechten Unterarm, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut milchig getrübt, sieht rechts nur noch hell und dunkel; linkes Auge unauffällig"}}, "rules": [{"when": ["rinse"], "then": "3-gespült"}]},
+    "gespült": {"findings": {"rr": 18, "hr": 95, "pain": 4, "exam": {"burn": "Rötung am rechten Unterarm, kleine Blasen, ca. 2 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge gerötet, Kontaktlinse entfernt, Hornhaut klar; Pupillen isokor"}}},
+    "gespült-ärmel": {"findings": {"rr": 20, "hr": 100, "pain": 6, "exam": {"burn": "Haut am rechten Unterarm weißlich verfärbt mit Blasen, ca. 3 % KOF, nasser Ärmel klebt weiter auf der Haut", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge gerötet, Kontaktlinse entfernt, Hornhaut klar; Pupillen isokor"}}, "rules": [{"when": ["decon_undress"], "then": "gespült-spät"}]},
+    "gespült-spät": {"findings": {"rr": 18, "hr": 95, "pain": 5, "exam": {"burn": "Haut am rechten Unterarm weißlich verfärbt mit Blasen, ca. 3 % KOF, Ärmel entfernt", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechtes Auge gerötet, Kontaktlinse entfernt, Hornhaut klar; Pupillen isokor"}}},
+    "2-gespült": {"findings": {"rr": 20, "hr": 100, "pain": 5, "exam": {"burn": "Haut am rechten Unterarm weißlich mit Blasen, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut leicht getrübt, Auge gerötet; Pupillen isokor"}}},
+    "3-gespült": {"findings": {"rr": 20, "hr": 105, "pain": 6, "exam": {"burn": "grauweiße, derbe Areale am rechten Unterarm, ca. 3 % KOF", "airway": "frei, keine Heiserkeit, Mund und Rachen unauffällig", "pupils": "rechte Hornhaut milchig getrübt, Sehvermögen rechts stark eingeschränkt"}}}
   }
 }

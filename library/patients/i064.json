@@ -5,7 +5,7 @@
     "anamnesis": { "symptoms": "Ich kann nicht richtig einatmen, alles ist so eng.", "allergies": "Keine Allergien.", "medication": "Ich nehme Schilddrüsentabletten.", "history": "Sonst bin ich gesund.", "lastMeal": "Heute Morgen.", "event": "Meine Kleidung hat Feuer gefangen, das Oberteil ist richtig am Körper verbrannt. Rauch habe ich kaum eingeatmet." },
     "pitfall": "die Atemnot wird als Angst oder Rauchgas gedeutet; Sauerstoff allein reicht auf Dauer nicht, die harte Haut schnürt den Brustkorb ein (Escharotomie durch Arzt/Klinik nötig)" },
   "meta": { "category": "Verbrennung", "tags": ["Verbrennung", "Atmung"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["intubation", "handover"], "within": 45 }, { "actions": ["warm"], "within": 30 }], "harmful": ["cool_large"] },
+  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["intubation"], "within": 45 }, { "actions": ["warm"], "within": 30 }, { "actions": ["handover"], "within": 60 }], "harmful": ["cool_large"] },
   "base": { "walking": false, "breathing": true, "rr": 34, "spo2": 90, "hr": 120, "bp": "140/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "temp": 36.0,
     "exam": { "burn": "ca. 25 % KOF, überwiegend 3. Grad, zirkulär um den Rumpf (Brust, Flanken, Rücken), Haut lederartig und nicht eindrückbar", "airway": "frei, keine Rußspuren, Stimme klar, kein Stridor", "auscultation": "beidseits leises Atemgeräusch, sehr flache Atemzüge, Thorax hebt sich kaum", "percussion": "beidseits sonor" } },
   "start": "1",
@@ -17,6 +17,8 @@
     "2-o2": { "findings": { "rr": 34, "spo2": 93, "hr": 120 }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3-o2" },
     "3-o2": { "findings": { "rr": 38, "spo2": 87, "hr": 132, "exam": { "auscultation": "beidseits sehr leises Atemgeräusch, kaum Thoraxexkursion" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3" },
     "2-kalt": { "findings": { "rr": 38, "spo2": 84, "hr": 135, "temp": 34.8, "exam": { "auscultation": "beidseits sehr leises Atemgeräusch, kaum Thoraxexkursion" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3" },
-    "intubiert": { "findings": { "rr": 14, "spo2": 92, "hr": 115, "bp": "115/70", "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "auscultation": "beidseits belüftet, Beatmung nur mit hohem Druck möglich" } } }
+    "intubiert": { "findings": { "rr": 14, "spo2": 92, "hr": 115, "bp": "115/70", "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "auscultation": "beidseits belüftet, Beatmung nur mit hohem Druck möglich" } }, "else": "intubiert-2" },
+    "intubiert-2": { "findings": { "rr": 14, "spo2": 86, "hr": 128, "bp": "100/60", "recap": 3, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "auscultation": "beidseits leise belüftet, Beatmungsdruck steigt weiter, Thorax hebt sich kaum (Escharotomie in der Klinik nötig)" } }, "else": "intubiert-3" },
+    "intubiert-3": { "findings": { "rr": 14, "spo2": 80, "hr": 138, "bp": "90/55", "recap": 4, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "auscultation": "kaum noch Beatmung möglich, Thorax starr" } } }
   }
 }

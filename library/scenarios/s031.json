@@ -1,13 +1,15 @@
 {
   "id": "s031",
   "title": "Einbruch ins Eis",
-  "situation": "Mehrere Schlittschuhläufer auf einem Weiher eingebrochen, Helfer ebenfalls ins Eis gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Eisrettung. Besonderheiten: Kälte, Eis, Eigengefährdung. Lernziel: Eigenschutz bei Eisrettung und Wärmeerhalt. Die Idee sieht 7 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Mehrere Schlittschuhläufer auf einem Weiher eingebrochen, Helfer ebenfalls ins Eis gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Eisrettung. Besonderheiten: Kälte, Eis, Eigengefährdung. Lernziel: Eigenschutz bei Eisrettung und Wärmeerhalt. 7 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I076-2).",
   "patients": [
     "i076",
     "i077",
     "i079",
     "i043",
-    "i046"
+    "i046",
+    "i076-2",
+    "i077-2"
   ],
   "units": [
     {

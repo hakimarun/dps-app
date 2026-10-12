@@ -1,13 +1,22 @@
 {
   "id": "s067",
   "title": "Hagelsturm über Campingplatz",
-  "situation": "Schwerer Hagel und Sturm auf Campingplatz, Wohnwagen beschädigt. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Unwetter, Viele Gehfähige. Lernziel: Leichtverletztenlage mit wenigen Kräften strukturieren. Die Idee sieht 14 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Schwerer Hagel und Sturm auf Campingplatz, Wohnwagen beschädigt. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Unwetter, Viele Gehfähige. Lernziel: Leichtverletztenlage mit wenigen Kräften strukturieren. 14 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I008-2).",
   "patients": [
     "i008",
     "i019",
     "i043",
     "i046",
-    "p09"
+    "p09",
+    "i008-2",
+    "i019-2",
+    "i043-2",
+    "i046-2",
+    "p09-2",
+    "i008-3",
+    "i019-3",
+    "i043-3",
+    "i046-3"
   ],
   "units": [
     {

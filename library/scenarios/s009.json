@@ -1,7 +1,7 @@
 {
   "id": "s009",
   "title": "Unfall im Straßentunnel",
-  "situation": "Mehrere Fahrzeuge im Tunnel kollidiert, Rauchentwicklung. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; Patientenablage am Portal. Besonderheiten: Tunnel, Rauch, Funkprobleme. Lernziel: Retten aus Gefahrenbereich und Sammelstelle außerhalb des Tunnels. Die Idee sieht 26 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Mehrere Fahrzeuge im Tunnel kollidiert, Rauchentwicklung. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; Patientenablage am Portal. Besonderheiten: Tunnel, Rauch, Funkprobleme. Lernziel: Retten aus Gefahrenbereich und Sammelstelle außerhalb des Tunnels. 26 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -12,7 +12,23 @@
     "i011",
     "i025",
     "p06",
-    "p08"
+    "p08",
+    "i071-2",
+    "i067-2",
+    "i031-2",
+    "i006-2",
+    "i007-2",
+    "i008-2",
+    "i011-2",
+    "i025-2",
+    "p06-2",
+    "p08-2",
+    "i071-3",
+    "i067-3",
+    "i031-3",
+    "i006-3",
+    "i007-3",
+    "i008-3"
   ],
   "units": [
     {

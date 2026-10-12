@@ -1,20 +1,17 @@
 {
-  "id": "i100", "version": 1, "title": "Kombinationsverletzung nach Chemieexplosion",
+  "id": "i100",
+  "version": 1,
+  "title": "Kombinationsverletzung nach Chemieexplosion",
   "picture": "Mann, ca. 35 Jahre, liegt in angesengter, durchnässter Arbeitskleidung. Haut großflächig verbrannt, Gesicht rußgeschwärzt. Reagiert nicht, atmet nur vereinzelt schnappend. Am Handgelenk kein Puls tastbar. Stechender Chemikaliengeruch.",
-  "profile": {
-    "temperament": "keins",
-    "speech": "spricht nicht",
-    "anamnesis": { "event": "Keine Angaben möglich." },
-    "pitfall": "Die Kategorie IV (abwartende Behandlung) vergibt nur der Arzt. Bis dahin Notdekontamination, Wärmeerhalt und Analgesie; die Kombination aus Verbrennung, Trauma und Gefahrstoff macht ein Überleben unwahrscheinlich."
-  },
+  "profile": {"temperament": "keins", "speech": "spricht nicht", "anamnesis": {"event": "Keine Angaben möglich."}, "pitfall": "Die Kategorie IV (abwartende Behandlung) vergibt nur der Arzt. Bis dahin Notdekontamination durch Entkleiden statt großflächigem Abspülen (Auskühlung), Wärmeerhalt, Analgesie und Begleitung; die Kombination aus Verbrennung, Inhalationstrauma, Thorax- und Bauchtrauma und Gefahrstoff macht ein Überleben unwahrscheinlich."},
   "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Verbrennung", "SK IV", "SK IV (abwartend)"], "difficulty": "experte"},
-  "scoring": {"critical": [{"actions": ["rinse"], "within": 15}, {"actions": ["analgesia"], "within": 20}], "harmful": []},
-  "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 140, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 5, "followsCommands": false, "temp": 35.0, "exam": { "burn": "ca. 70 % KOF, überwiegend tiefe, lederartige Verbrennungen an Rumpf, Armen und Beinen; Kleidung angesengt und mit Chemikalie getränkt", "airway": "Ruß in Mund und Nase, versengte Augenbrauen und Nasenhaare, Schleimhäute geschwollen", "bodycheck": "großflächige Verbrennungen, mehrere Splitterwunden am Rumpf, Brustkorb links instabil, Bauch gespannt; Abwehrbewegungen bei Berührung", "pupils": "weit, träge lichtreagibel", "auscultation": "links kaum Atemgeräusch, rechts abgeschwächt", "percussion": "links gedämpft" } },
+  "scoring": {"critical": [{"actions": ["decon_undress"], "within": 15}, {"actions": ["analgesia"], "within": 20}, {"actions": ["warm", "palliative"], "within": 30}], "harmful": ["cool_large"]},
+  "base": {"walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 140, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 6, "followsCommands": false, "temp": 35.0, "exam": {"burn": "ca. 70 % KOF, überwiegend tiefe, lederartige Verbrennungen an Rumpf, Armen und Beinen; Kleidung angesengt und mit Chemikalie getränkt", "airway": "Ruß in Mund und Nase, versengte Augenbrauen und Nasenhaare, Schleimhäute geschwollen", "bodycheck": "großflächige Verbrennungen, mehrere Splitterwunden am Rumpf, Brustkorb links instabil, Bauch gespannt; Abwehrbewegungen bei Berührung", "pupils": "weit, träge lichtreagibel", "auscultation": "links kaum Atemgeräusch, rechts abgeschwächt", "percussion": "links gedämpft"}},
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["analgesia"], "then": "2-begleitet" }], "else": "2" },
-    "2": { "findings": { "rr": 4, "spo2": 60, "hr": 50, "bp": "nicht messbar", "recap": 6, "gcs": 3, "temp": 34.5 }, "else": "tot" },
-    "2-begleitet": { "findings": { "rr": 5, "spo2": 65, "hr": 115, "temp": 34.8, "exam": { "burn": "ca. 70 % KOF, überwiegend tiefe, lederartige Verbrennungen an Rumpf, Armen und Beinen", "airway": "Ruß in Mund und Nase, versengte Augenbrauen und Nasenhaare, Schleimhäute geschwollen", "bodycheck": "großflächige Verbrennungen, mehrere Splitterwunden am Rumpf, Brustkorb links instabil, Bauch gespannt; keine Abwehrbewegungen mehr bei Berührung", "pupils": "weit, träge lichtreagibel", "auscultation": "links kaum Atemgeräusch, rechts abgeschwächt", "percussion": "links gedämpft" } }, "else": "tot" },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+    "1": {"rules": [{"when": ["analgesia"], "then": "2-begleitet"}], "else": "2"},
+    "2": {"findings": {"rr": 4, "spo2": 60, "hr": 50, "bp": "nicht messbar", "recap": 6, "gcs": 3, "temp": 34.5}, "else": "tot"},
+    "2-begleitet": {"findings": {"rr": 5, "spo2": 65, "hr": 115, "temp": 34.8, "exam": {"burn": "ca. 70 % KOF, überwiegend tiefe, lederartige Verbrennungen an Rumpf, Armen und Beinen", "airway": "Ruß in Mund und Nase, versengte Augenbrauen und Nasenhaare, Schleimhäute geschwollen", "bodycheck": "großflächige Verbrennungen, mehrere Splitterwunden am Rumpf, Brustkorb links instabil, Bauch gespannt; keine Abwehrbewegungen mehr bei Berührung", "pupils": "weit, träge lichtreagibel", "auscultation": "links kaum Atemgeräusch, rechts abgeschwächt", "percussion": "links gedämpft"}}, "else": "tot"},
+    "tot": {"dead": true, "findings": {"breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": {"ecg": "Asystolie (Nulllinie)", "death": "keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr; Verbrennung ca. 70 % KOF mit Inhalationstrauma, Thorax- und Bauchtrauma, Tod ärztlich festgestellt"}}}
   }
 }

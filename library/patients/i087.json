@@ -1,18 +1,22 @@
 {
-  "id": "i087", "version": 1, "title": "Vena-cava-Kompressionssyndrom bei Schwangerschaft",
+  "id": "i087", "version": 2, "title": "Vena-cava-Kompressionssyndrom bei Schwangerschaft",
   "picture": "Frau, ca. 30 Jahre, hochschwanger, liegt flach auf dem Rücken auf der Trage. Blass, schwitzt, Lippen grau. Sagt: \"Mir wird ganz schwarz vor Augen.\"",
   "profile": { "temperament": "ängstlich", "speech": "ganze Sätze, leise; in Seitenlage sofort deutlich besser",
     "anamnesis": { "symptoms": "Mir ist so flau, alles dreht sich, und mir ist übel.", "allergies": "Nein.", "medication": "Nur Magnesium und Eisen.", "history": "Ich bin in der 38. Woche, bisher war alles gut.", "lastMeal": "Heute Mittag.", "event": "Mir ist nichts passiert, die haben mich nur zum Ausruhen hier hingelegt.", "risk": "Geht es meinem Baby gut?" },
-    "pitfall": "Bleibt sie flach auf dem Rücken, drückt die Gebärmutter auf die untere Hohlvene. Beine hochlagern hilft nicht, nur die Linksseitenlage." },
+    "pitfall": "Bleibt sie flach auf dem Rücken, drückt die Gebärmutter auf die untere Hohlvene. Beine hochlagern hilft nicht, nur die Linksseitenlage; danach bessert sie sich innerhalb weniger Minuten." },
   "meta": { "category": "Gynäkologie/Geburt", "tags": ["Schwangerschaft", "Lagerung"], "difficulty": "einsteiger" },
-  "scoring": { "critical": [{ "actions": ["recovery_position"], "within": 10 }], "harmful": ["shock_position"] },
+  "scoring": { "critical": [{ "actions": ["left_lateral"], "within": 10 }], "harmful": ["shock_position"] },
   "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 97, "hr": 112, "bp": "85/50", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "pain": 0,
     "exam": { "abdomen": "Bauch weich, Gebärmutter bis an den Rippenbogen, keine Schmerzen", "bodycheck": "unverletzt, blass, kaltschweißig" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["recovery_position"], "then": "seitenlage" }], "else": "2" },
-    "2": { "findings": { "rr": 22, "hr": 120, "bp": "70/40", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["recovery_position"], "then": "seitenlage" }], "else": "3" },
-    "3": { "findings": { "rr": 22, "hr": 125, "bp": "65/35", "radialPulse": false, "recap": 4, "gcs": 12, "followsCommands": false }, "rules": [{ "when": ["recovery_position"], "then": "seitenlage" }] },
+    "1": { "minutes": 5, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "1b" },
+    "1b": { "minutes": 5, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "1c" },
+    "1c": { "minutes": 5, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "2" },
+    "2": { "minutes": 5, "findings": { "rr": 22, "hr": 120, "bp": "70/40", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "2b" },
+    "2b": { "minutes": 5, "findings": { "rr": 22, "hr": 120, "bp": "70/40", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "2c" },
+    "2c": { "minutes": 5, "findings": { "rr": 22, "hr": 120, "bp": "70/40", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }], "else": "3" },
+    "3": { "minutes": 5, "findings": { "rr": 22, "hr": 125, "bp": "65/35", "radialPulse": false, "recap": 4, "gcs": 12, "followsCommands": false }, "rules": [{ "when": ["left_lateral"], "then": "seitenlage" }] },
     "seitenlage": { "findings": { "rr": 16, "hr": 90, "bp": "115/70", "recap": 2, "exam": { "bodycheck": "unverletzt, Gesichtsfarbe wieder rosig" } } }
   }
 }

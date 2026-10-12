@@ -1,6 +1,6 @@
 {
   "id": "i004",
-  "version": 1,
+  "version": 2,
   "title": "Sturz mit Querschnittsymptomatik",
   "picture": "Mann, ca. 55 Jahre, liegt am Fuß einer Treppe auf dem Rücken. Wach und ruhig, bewegt die Arme, aber nicht die Beine: „Ich spüre meine Beine nicht.“ Die Haut an den Beinen ist warm und rosig.",
   "profile": {
@@ -65,7 +65,7 @@
     "pain": 5,
     "temp": 36.0,
     "exam": {
-      "bodycheck": "Druckschmerz und tastbare Stufe an der oberen Brustwirbelsäule; Beine schlaff, keine Bewegung und kein Gefühl ab Brustwarzenhöhe abwärts; Arme frei beweglich; Haut an Beinen warm und rosig",
+      "bodycheck": "Druckschmerz und tastbare Stufe an der oberen Brustwirbelsäule (ca. Th2/3); Beine schlaff, keine Bewegung und kein Gefühl ab Brustwarzenhöhe abwärts; Arme frei beweglich; Haut an Beinen warm und rosig",
       "ecg": "Sinusbradykardie",
       "pupils": "isokor, prompt lichtreagibel"
     }
@@ -88,7 +88,7 @@
       "findings": {
         "hr": 48,
         "bp": "82/50",
-        "temp": 35.4
+        "temp": 35.6
       },
       "rules": [
         {
@@ -107,10 +107,18 @@
         "bp": "72/40",
         "radialPulse": false,
         "recap": 3,
-        "temp": 34.8,
+        "temp": 35.2,
         "gcs": 14
       },
       "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids",
+            "catecholamines"
+          ],
+          "then": "3-stabil"
+        },
         {
           "when": [
             "warm",
@@ -128,10 +136,18 @@
         "bp": "60 palp.",
         "radialPulse": false,
         "recap": 4,
-        "temp": 34.2,
+        "temp": 34.8,
         "gcs": 13
       },
       "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids",
+            "catecholamines"
+          ],
+          "then": "3-stabil"
+        },
         {
           "when": [
             "warm",
@@ -151,9 +167,17 @@
         {
           "when": [
             "iv_access",
-            "fluids"
+            "fluids",
+            "catecholamines"
           ],
           "then": "3-stabil"
+        },
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-volumen"
         }
       ],
       "else": "3-versorgt"
@@ -168,18 +192,43 @@
         {
           "when": [
             "iv_access",
-            "fluids"
+            "fluids",
+            "catecholamines"
           ],
           "then": "3-stabil"
+        },
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-volumen"
         }
       ]
     },
     "3-stabil": {
       "findings": {
-        "hr": 58,
-        "bp": "100/60",
+        "hr": 64,
+        "bp": "110/65",
         "temp": 36.0
       }
+    },
+    "3-volumen": {
+      "findings": {
+        "hr": 54,
+        "bp": "94/58",
+        "temp": 35.8
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids",
+            "catecholamines"
+          ],
+          "then": "3-stabil"
+        }
+      ]
     }
   }
 }

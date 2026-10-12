@@ -1,13 +1,20 @@
 {
   "id": "s072",
   "title": "Unklares Pulver im Postzentrum",
-  "situation": "Weißes Pulver aus einem Paket ausgetreten, Beschäftigte beunruhigt. Kräfte laut Planung: 1 RTW, 1 NEF, Gefahrstoffzug, Polizei. Besonderheiten: Gefahrstoff, Isolierung. Lernziel: Ruhe bewahren, Isolierung und Registrierung. Die Idee sieht 12 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Weißes Pulver aus einem Paket ausgetreten, Beschäftigte beunruhigt. Kräfte laut Planung: 1 RTW, 1 NEF, Gefahrstoffzug, Polizei. Besonderheiten: Gefahrstoff, Isolierung. Lernziel: Ruhe bewahren, Isolierung und Registrierung. 12 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I098-2).",
   "patients": [
     "i098",
     "i029",
     "i091",
     "i081",
-    "p09"
+    "p09",
+    "i098-2",
+    "i029-2",
+    "i091-2",
+    "i081-2",
+    "p09-2",
+    "i098-3",
+    "i029-3"
   ],
   "units": [
     {

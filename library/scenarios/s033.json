@@ -1,7 +1,7 @@
 {
   "id": "s033",
   "title": "Explosion in einem Chemiewerk",
-  "situation": "Explosion in Produktionsanlage, Brand und Austritt unbekannter Stoffe. Kräfte laut Planung: Werkfeuerwehr, 4 RTW, 2 NEF, OrgL, LNA, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Werkfeuerwehr, Explosionsgefahr. Lernziel: Zusammenarbeit mit Werkfeuerwehr und Dekon-Strukturen. Die Idee sieht 32 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Explosion in Produktionsanlage, Brand und Austritt unbekannter Stoffe. Kräfte laut Planung: Werkfeuerwehr, 4 RTW, 2 NEF, OrgL, LNA, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Werkfeuerwehr, Explosionsgefahr. Lernziel: Zusammenarbeit mit Werkfeuerwehr und Dekon-Strukturen. 32 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I022-2).",
   "patients": [
     "i022",
     "i061",
@@ -12,7 +12,29 @@
     "i073",
     "i100",
     "i066",
-    "p06"
+    "p06",
+    "i022-2",
+    "i061-2",
+    "i064-2",
+    "i094-2",
+    "i093-2",
+    "i096-2",
+    "i073-2",
+    "i100-2",
+    "i066-2",
+    "p06-2",
+    "i022-3",
+    "i061-3",
+    "i064-3",
+    "i094-3",
+    "i093-3",
+    "i096-3",
+    "i073-3",
+    "i100-3",
+    "i066-3",
+    "p06-3",
+    "i022-4",
+    "i061-4"
   ],
   "units": [
     {

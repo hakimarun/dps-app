@@ -1,7 +1,7 @@
 {
   "id": "s004",
   "title": "Pkw fährt in Bushaltestelle",
-  "situation": "Pkw ist in eine belebte Bushaltestelle geraten, mehrere Verletzte am Boden. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Schaulustige, Psychische Belastung. Lernziel: Schnelle Sichtung trotz emotional belastender Lage. Die Idee sieht 11 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Pkw ist in eine belebte Bushaltestelle geraten, mehrere Verletzte am Boden. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Schaulustige, Psychische Belastung. Lernziel: Schnelle Sichtung trotz emotional belastender Lage. 11 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I020-2).",
   "patients": [
     "i020",
     "i047",
@@ -11,7 +11,9 @@
     "i085",
     "i025",
     "p01",
-    "p04"
+    "p04",
+    "i020-2",
+    "i047-2"
   ],
   "units": [
     {

@@ -1,7 +1,7 @@
 {
   "id": "s014",
   "title": "Glätteserie auf Bundesstraße",
-  "situation": "Mehrere Fahrzeuge auf überfrierender Nässe verunfallt, verteilt auf 500 Meter. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Glätte, Kälte, Verzögerte Anfahrt. Lernziel: Wärmeerhalt und Reevaluation bei verteilter Einsatzstelle. Die Idee sieht 12 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Mehrere Fahrzeuge auf überfrierender Nässe verunfallt, verteilt auf 500 Meter. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Glätte, Kälte, Verzögerte Anfahrt. Lernziel: Wärmeerhalt und Reevaluation bei verteilter Einsatzstelle. 12 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I011-2).",
   "patients": [
     "i011",
     "i053",
@@ -9,7 +9,12 @@
     "i057",
     "i021",
     "i007",
-    "p07"
+    "p07",
+    "i011-2",
+    "i053-2",
+    "i076-2",
+    "i057-2",
+    "i021-2"
   ],
   "units": [
     {

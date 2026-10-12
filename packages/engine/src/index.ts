@@ -336,7 +336,8 @@ export function targetSk(s: State, id: string): Sk {
   return ph.dead ? "EX" : triage(findings(s, id), s.settings.algorithm);
 }
 
-const breathingDisorder = (f: Findings) => !f.breathing || f.rr < 10 || f.rr > 30 || f.stridor;
+// Kinder: Atemgrenzen nach JumpSTART (Romig 2002), unter 15 oder über 45/min; Erwachsene unter 10 oder über 30/min.
+const breathingDisorder = (f: Findings) => !f.breathing || (f.child ? f.rr < 15 || f.rr > 45 : f.rr < 10 || f.rr > 30) || f.stridor;
 const redFlags = (f: Findings) => breathingDisorder(f) || f.spurtingBleeding || !f.radialPulse || !f.followsCommands;
 
 export function triage(f: Findings, algorithm: Algorithm): Sk {

@@ -1,14 +1,20 @@
 {
   "id": "s088",
   "title": "Sturz auf Treppe bei Feueralarm",
-  "situation": "Bei Räumung der Schule nach Feueralarm stürzen Schüler auf der Treppe. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kinder, Viele Gehfähige. Lernziel: Kleine Kinderlage strukturiert abarbeiten. Die Idee sieht 12 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Bei Räumung der Schule nach Feueralarm stürzen Schüler auf der Treppe. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kinder, Viele Gehfähige. Lernziel: Kleine Kinderlage strukturiert abarbeiten. 12 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I043-2).",
   "patients": [
     "i043",
     "i048",
     "i018",
     "i046",
     "i085",
-    "p09"
+    "p09",
+    "i043-2",
+    "i048-2",
+    "i018-2",
+    "i046-2",
+    "i085-2",
+    "p09-2"
   ],
   "units": [
     {

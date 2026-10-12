@@ -1,7 +1,7 @@
 {
   "id": "s016",
   "title": "Straßenbahn kollidiert mit Pkw",
-  "situation": "Straßenbahn erfasst Pkw an einer Kreuzung, Fahrgäste gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Innenstadt, Viele Gehfähige. Lernziel: Gehfähige an Sammelstelle führen, Liegende zuerst sichten. Die Idee sieht 8 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Straßenbahn erfasst Pkw an einer Kreuzung, Fahrgäste gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Innenstadt, Viele Gehfähige. Lernziel: Gehfähige an Sammelstelle führen, Liegende zuerst sichten. 8 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I007-2).",
   "patients": [
     "i007",
     "i053",
@@ -9,7 +9,8 @@
     "i019",
     "i052",
     "i091",
-    "p09"
+    "p09",
+    "i007-2"
   ],
   "units": [
     {

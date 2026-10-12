@@ -1,7 +1,7 @@
 {
   "id": "s079",
   "title": "Fahrzeug in Menschenmenge",
-  "situation": "Fahrzeug in Menschenmenge gefahren, Polizei sichert ab. Kräfte laut Planung: 4 RTW, 3 NEF, OrgL, LNA; nach 15 min SEG und 6 RTW. Besonderheiten: Eigengefährdung, Polizeilage, Psychische Belastung. Lernziel: Großlage mit Sicherheitsabschnitt und Einsatzabschnitten. Die Idee sieht 33 Betroffene vor; enthalten sind 14 typische Fälle.",
+  "situation": "Fahrzeug in Menschenmenge gefahren, Polizei sichert ab. Kräfte laut Planung: 4 RTW, 3 NEF, OrgL, LNA; nach 15 min SEG und 6 RTW. Besonderheiten: Eigengefährdung, Polizeilage, Psychische Belastung. Lernziel: Großlage mit Sicherheitsabschnitt und Einsatzabschnitten. 33 Betroffene aus 14 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I020-2).",
   "patients": [
     "i020",
     "i004",
@@ -16,7 +16,26 @@
     "p03",
     "p04",
     "p07",
-    "p10"
+    "p10",
+    "i020-2",
+    "i004-2",
+    "i048-2",
+    "i047-2",
+    "i053-2",
+    "i012-2",
+    "i081-2",
+    "i046-2",
+    "i027-2",
+    "i026-2",
+    "p03-2",
+    "p04-2",
+    "p07-2",
+    "p10-2",
+    "i020-3",
+    "i004-3",
+    "i048-3",
+    "i047-3",
+    "i053-3"
   ],
   "units": [
     {

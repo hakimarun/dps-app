@@ -1,7 +1,7 @@
 {
   "id": "s078",
   "title": "Bedrohungslage im Einkaufszentrum",
-  "situation": "Polizei meldet Bedrohungslage, Gebäude wird geräumt, Verletzte an Sammelpunkten. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum. Besonderheiten: Eigengefährdung, Unklare Lage, Bereitstellungsraum. Lernziel: Arbeiten in sicherem Bereich und Patientensammelstellen. Die Idee sieht 23 Betroffene vor; enthalten sind 11 typische Fälle.",
+  "situation": "Polizei meldet Bedrohungslage, Gebäude wird geräumt, Verletzte an Sammelpunkten. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum. Besonderheiten: Eigengefährdung, Unklare Lage, Bereitstellungsraum. Lernziel: Arbeiten in sicherem Bereich und Patientensammelstellen. 23 Betroffene aus 11 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I001-2).",
   "patients": [
     "i001",
     "i013",
@@ -13,7 +13,19 @@
     "i025",
     "p01",
     "p02",
-    "p09"
+    "p09",
+    "i001-2",
+    "i013-2",
+    "i014-2",
+    "i024-2",
+    "i018-2",
+    "i081-2",
+    "i085-2",
+    "i025-2",
+    "p01-2",
+    "p02-2",
+    "p09-2",
+    "i001-3"
   ],
   "units": [
     {

@@ -1,7 +1,7 @@
 {
   "id": "s046",
   "title": "Kellerbrand im Hochhaus",
-  "situation": "Kellerbrand, Rauch zieht ins Treppenhaus eines Hochhauses. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL. Besonderheiten: Rauch, Viele Gehfähige, Hochhaus. Lernziel: Viele Rauchgasbetroffene, Untertriage durch CO vermeiden. Die Idee sieht 28 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Kellerbrand, Rauch zieht ins Treppenhaus eines Hochhauses. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL. Besonderheiten: Rauch, Viele Gehfähige, Hochhaus. Lernziel: Viele Rauchgasbetroffene, Untertriage durch CO vermeiden. 28 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -9,7 +9,28 @@
     "i033",
     "i049",
     "i051",
-    "p09"
+    "p09",
+    "i071-2",
+    "i067-2",
+    "i031-2",
+    "i033-2",
+    "i049-2",
+    "i051-2",
+    "p09-2",
+    "i071-3",
+    "i067-3",
+    "i031-3",
+    "i033-3",
+    "i049-3",
+    "i051-3",
+    "p09-3",
+    "i071-4",
+    "i067-4",
+    "i031-4",
+    "i033-4",
+    "i049-4",
+    "i051-4",
+    "p09-4"
   ],
   "units": [
     {

@@ -3,16 +3,16 @@
   "picture": "Frau, ca. 22 Jahre, sitzt vornübergebeugt und stützt die Arme auf die Knie. Atmet schnell, die Ausatmung pfeift hörbar. Spricht nur einzelne Worte: „Luft … keine … Luft.“",
   "profile": { "temperament": "ängstlich", "speech": "nur einzelne Worte, ab Phase 2 kaum noch", "anamnesis": { "symptoms": "Brust … zu.", "allergies": "Hausstaub … Katzen.", "medication": "Spray … liegt im Bus.", "history": "Asthma … seit Kind.", "event": "Rauch … eingeatmet." }, "pitfall": "Panik und schnelle Atmung verleiten zur Tütenrückatmung wie bei Hyperventilation; das verschlechtert die Atmung." },
   "meta": { "category": "Internistisch", "tags": ["Atmung", "Abgrenzung"], "difficulty": "einsteiger" },
-  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["iv_access"], "within": 30 }], "harmful": ["bag_rebreathing", "shock_position"] },
+  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["bronchodilator"], "within": 15 }], "harmful": ["bag_rebreathing", "shock_position"] },
   "base": { "walking": false, "breathing": true, "rr": 34, "spo2": 89, "hr": 125, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "exam": { "auscultation": "beidseits exspiratorisches Giemen und Brummen, stark verlängertes Exspirium", "percussion": "beidseits hypersonor", "bodycheck": "keine Verletzungen, Einsatz der Atemhilfsmuskulatur, leichter Rußgeruch" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["shock_position"], "then": "3" }, { "when": ["oxygen", "iv_access"], "then": "versorgt" }, { "when": ["oxygen"], "then": "2-o2" }], "else": "2" },
-    "2": { "findings": { "rr": 38, "spo2": 84, "hr": 140, "bp": "150/90", "gcs": 14 }, "rules": [{ "when": ["oxygen", "iv_access"], "then": "versorgt" }], "else": "3" },
-    "2-o2": { "findings": { "rr": 30, "spo2": 93, "hr": 128 }, "rules": [{ "when": ["iv_access"], "then": "versorgt" }], "else": "2" },
+    "1": { "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["shock_position"], "then": "3" }, { "when": ["oxygen", "bronchodilator"], "then": "versorgt" }, { "when": ["bronchodilator"], "then": "2-o2" }, { "when": ["oxygen"], "then": "2-o2" }], "else": "2" },
+    "2": { "findings": { "rr": 38, "spo2": 84, "hr": 140, "bp": "150/90", "gcs": 14 }, "rules": [{ "when": ["oxygen", "bronchodilator"], "then": "versorgt" }], "else": "3" },
+    "2-o2": { "findings": { "rr": 30, "spo2": 93, "hr": 128 }, "rules": [{ "when": ["oxygen", "bronchodilator"], "then": "versorgt" }], "else": "2" },
     "3": { "findings": { "rr": 9, "spo2": 76, "hr": 150, "bp": "130/80", "gcs": 10, "followsCommands": false, "exam": { "auscultation": "kaum Atemgeräusch beidseits (stille Lunge)" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "3" }], "else": "tot" },
     "versorgt": { "findings": { "rr": 24, "spo2": 95, "hr": 112, "bp": "135/85", "exam": { "auscultation": "leises exspiratorisches Giemen" } } },
     "intubiert": { "findings": { "rr": 12, "spo2": 90, "hr": 130, "bp": "110/70", "gcs": 3, "followsCommands": false, "exam": { "auscultation": "leises Atemgeräusch, Giemen, hohe Beatmungsdrücke" } } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie", "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet." } } }
   }
 }

@@ -1,7 +1,7 @@
 {
   "id": "s057",
   "title": "Pyrotechnik und Panik im Stadion",
-  "situation": "Pyrotechnik im Fanblock löst Panik aus, Rauch und Stürze auf der Tribüne. Kräfte laut Planung: Sanitätsdienst, 3 RTW, 1 NEF, OrgL. Besonderheiten: Rauch, Menschenmenge, Polizeilage. Lernziel: Sichtung unter Polizeischutz in Menschenmengen. Die Idee sieht 28 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Pyrotechnik im Fanblock löst Panik aus, Rauch und Stürze auf der Tribüne. Kräfte laut Planung: Sanitätsdienst, 3 RTW, 1 NEF, OrgL. Besonderheiten: Rauch, Menschenmenge, Polizeilage. Lernziel: Sichtung unter Polizeischutz in Menschenmengen. 28 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I060-2).",
   "patients": [
     "i060",
     "i071",
@@ -9,7 +9,28 @@
     "i018",
     "i082",
     "i068",
-    "p09"
+    "p09",
+    "i060-2",
+    "i071-2",
+    "i031-2",
+    "i018-2",
+    "i082-2",
+    "i068-2",
+    "p09-2",
+    "i060-3",
+    "i071-3",
+    "i031-3",
+    "i018-3",
+    "i082-3",
+    "i068-3",
+    "p09-3",
+    "i060-4",
+    "i071-4",
+    "i031-4",
+    "i018-4",
+    "i082-4",
+    "i068-4",
+    "p09-4"
   ],
   "units": [
     {

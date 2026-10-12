@@ -1,7 +1,7 @@
 {
   "id": "s010",
   "title": "Wohnmobil gegen Reisebus auf Passstraße",
-  "situation": "Kollision auf Bergstraße, Bus droht abzurutschen. Kräfte laut Planung: 2 RTW, 1 NEF, 2 RTH; Bergwacht nachfordern. Besonderheiten: Bergstraße, Lange Anfahrt, Eigengefährdung. Lernziel: Ressourcenmangel überbrücken und Lufttransport planen. Die Idee sieht 20 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Kollision auf Bergstraße, Bus droht abzurutschen. Kräfte laut Planung: 2 RTW, 1 NEF, 2 RTH; Bergwacht nachfordern. Besonderheiten: Bergstraße, Lange Anfahrt, Eigengefährdung. Lernziel: Ressourcenmangel überbrücken und Lufttransport planen. 20 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I020-2).",
   "patients": [
     "i020",
     "i006",
@@ -12,7 +12,17 @@
     "i027",
     "i026",
     "p02",
-    "p04"
+    "p04",
+    "i020-2",
+    "i006-2",
+    "i056-2",
+    "i053-2",
+    "i018-2",
+    "i034-2",
+    "i027-2",
+    "i026-2",
+    "p02-2",
+    "p04-2"
   ],
   "units": [
     {

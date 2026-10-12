@@ -1,19 +1,221 @@
 {
-  "id": "i039", "version": 1, "title": "Plötzlicher stärkster Kopfschmerz",
+  "id": "i039",
+  "version": 2,
+  "title": "Plötzlicher stärkster Kopfschmerz",
   "picture": "Mann, ca. 45 Jahre, in Einsatzkleidung, geht langsam und hält sich mit beiden Händen den Hinterkopf. Blinzelt ins Licht. „Mir ist beim Tragen was in den Kopf geschossen. So schlimm war es noch nie.“",
-  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, spricht leise und gepresst; ab Phase 3 verlangsamt", "anamnesis": { "symptoms": "Es hat im Hinterkopf geknallt wie ein Schlag, seitdem dröhnt es. Das Licht tut weh, mir ist übel.", "allergies": "Keine.", "medication": "Ich nehme Ramipril für den Blutdruck, wenn ich dran denke.", "history": "Hoher Blutdruck, sonst nichts.", "lastMeal": "Heute Morgen.", "event": "Wir haben eine schwere Patientin auf der Trage über die Böschung hochgetragen, da ist es passiert.", "risk": "Ich rauche." }, "pitfall": "Will weiterarbeiten: „Nur Verspannung, gebt mir eine Kopfschmerztablette, ich muss zurück zu meinem Trupp.“" },
-  "meta": { "category": "Neurologisch", "tags": ["Kopfschmerz", "Einsatzkraft", "Untertriage-Falle"], "difficulty": "fortgeschritten" },
-  "scoring": { "critical": [{ "actions": ["check_pupils"], "within": 15 }, { "actions": ["measure_bp"], "within": 15 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
-  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 97, "hr": 88, "bp": "180/100", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 10, "exam": { "pupils": "isokor, prompt, lichtempfindlich", "bodycheck": "keine Verletzungen, Nacken noch frei beweglich", "ecg": "Sinusrhythmus" } },
+  "profile": {
+    "temperament": "verharmlosend",
+    "speech": "ganze Sätze, spricht leise und gepresst; ab Phase 3 verlangsamt",
+    "anamnesis": {
+      "symptoms": "Es hat im Hinterkopf geknallt wie ein Schlag, seitdem dröhnt es. Das Licht tut weh, mir ist übel.",
+      "allergies": "Keine.",
+      "medication": "Ich nehme Ramipril für den Blutdruck, wenn ich dran denke.",
+      "history": "Hoher Blutdruck, sonst nichts.",
+      "lastMeal": "Heute Morgen.",
+      "event": "Wir haben eine schwere Patientin auf der Trage über die Böschung hochgetragen, da ist es passiert.",
+      "risk": "Ich rauche."
+    },
+    "pitfall": "Will weiterarbeiten: „Nur Verspannung, gebt mir eine Kopfschmerztablette, ich muss zurück zu meinem Trupp.“"
+  },
+  "meta": {
+    "category": "Neurologisch",
+    "tags": [
+      "Kopfschmerz",
+      "Einsatzkraft",
+      "Untertriage-Falle"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "check_pupils"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "measure_bp"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 45
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 18,
+    "spo2": 97,
+    "hr": 88,
+    "bp": "180/100",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 10,
+    "exam": {
+      "pupils": "isokor, prompt, lichtempfindlich",
+      "bodycheck": "keine Verletzungen, Nacken noch frei beweglich",
+      "ecg": "Sinusrhythmus"
+    }
+  },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["upper_body_up", "analgesia", "iv_access"], "then": "2-versorgt" }], "else": "2" },
-    "2": { "findings": { "walking": false, "rr": 20, "hr": 80, "bp": "190/105", "gcs": 14, "exam": { "bodycheck": "Nackensteife, hat erbrochen, keine Verletzungen" } }, "rules": [{ "when": ["upper_body_up", "analgesia", "iv_access"], "then": "3-versorgt" }], "else": "3" },
-    "3": { "findings": { "walking": false, "rr": 16, "spo2": 95, "hr": 64, "bp": "200/110", "gcs": 10, "followsCommands": false, "exam": { "pupils": "rechts weiter als links, rechts träge", "bodycheck": "Nackensteife, erbricht erneut, keine Verletzungen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
-    "4": { "findings": { "walking": false, "rr": 8, "spo2": 86, "hr": 52, "bp": "215/115", "gcs": 6, "followsCommands": false, "exam": { "pupils": "rechts weit und lichtstarr, links eng", "bodycheck": "Nackensteife, Strecksynergismen auf Schmerzreiz" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
-    "2-versorgt": { "findings": { "walking": false, "hr": 84, "bp": "150/90", "pain": 5 } },
-    "3-versorgt": { "findings": { "walking": false, "hr": 78, "bp": "150/90", "gcs": 14, "pain": 5, "exam": { "bodycheck": "Nackensteife, hat erbrochen, keine Verletzungen" } } },
-    "intubiert": { "findings": { "walking": false, "rr": 12, "spo2": 97, "hr": 60, "bp": "160/90", "gcs": 3, "followsCommands": false, "pain": 0 } },
-    "tot": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "upper_body_up",
+            "analgesia"
+          ],
+          "then": "2-versorgt"
+        },
+        {
+          "when": [
+            "upper_body_up",
+            "antihypertensive"
+          ],
+          "active": [],
+          "then": "2-versorgt"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "walking": false,
+        "rr": 20,
+        "hr": 80,
+        "bp": "190/105",
+        "gcs": 14,
+        "exam": {
+          "bodycheck": "Nackensteife, hat erbrochen, keine Verletzungen"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "upper_body_up",
+            "analgesia"
+          ],
+          "then": "3-versorgt"
+        },
+        {
+          "when": [
+            "upper_body_up",
+            "antihypertensive"
+          ],
+          "active": [],
+          "then": "3-versorgt"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "walking": false,
+        "rr": 16,
+        "spo2": 95,
+        "hr": 64,
+        "bp": "200/110",
+        "gcs": 10,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "rechts weiter als links, rechts träge",
+          "bodycheck": "Nackensteife, erbricht erneut, keine Verletzungen"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "walking": false,
+        "rr": 8,
+        "spo2": 86,
+        "hr": 52,
+        "bp": "215/115",
+        "gcs": 6,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "rechts weit und lichtstarr, links eng",
+          "bodycheck": "Nackensteife, Strecksynergismen auf Schmerzreiz"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ],
+      "else": "tot"
+    },
+    "2-versorgt": {
+      "findings": {
+        "walking": false,
+        "hr": 84,
+        "bp": "160/95",
+        "pain": 5
+      }
+    },
+    "3-versorgt": {
+      "findings": {
+        "walking": false,
+        "hr": 78,
+        "bp": "160/95",
+        "gcs": 14,
+        "pain": 5,
+        "exam": {
+          "bodycheck": "Nackensteife, hat erbrochen, keine Verletzungen"
+        }
+      }
+    },
+    "intubiert": {
+      "findings": {
+        "walking": false,
+        "rr": 12,
+        "spo2": 97,
+        "hr": 60,
+        "bp": "160/90",
+        "gcs": 3,
+        "followsCommands": false,
+        "pain": 0
+      }
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "walking": false,
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "ecg": "Asystolie",
+          "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet."
+        }
+      }
+    }
   }
 }

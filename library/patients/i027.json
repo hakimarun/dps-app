@@ -3,13 +3,13 @@
   "picture": "Mann, ca. 45 Jahre, liegt auf dem Rücken, quer über Brustkorb und Bauch breite Reifenspuren, der Brustkorb bewegt sich ungleich. Reagiert nicht, schnappt nur vereinzelt nach Luft. Haut grau-weiß, kalt und feucht.",
   "profile": { "temperament": "keins", "speech": "spricht nicht", "anamnesis": { "event": "(keine Angaben möglich)" }, "pitfall": "Nach mSTaRT rot (SK I). Nur der Arzt darf SK IV (abwartende Behandlung) vergeben und muss bei mehr Kräften neu bewerten. Bindet der Fall mehrere Helfer, fehlen sie bei Patienten mit Überlebenschance." },
   "meta": { "category": "Trauma", "tags": ["Ethik", "SK IV", "Schock", "SK IV (abwartend)"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["calm", "warm"], "within": 15 }], "harmful": ["cpr", "intubation"] },
-  "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 48, "bp": "50 palp.", "radialPulse": false, "recap": 6, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "bodycheck": "Instabiler Thorax beidseits, Prellmarken und Reifenspuren über Brustkorb und Oberbauch, Bauch prall gespannt, Becken instabil", "auscultation": "Beidseits kaum Atemgeräusch", "percussion": "links hypersonor, rechts gedämpft", "abdomen": "bretthart, zunehmend aufgetrieben", "pelvis": "instabil", "pupils": "beidseits weit, träge", "ecg": "Sinusbradykardie, breite Kammerkomplexe" } },
+  "scoring": { "critical": [{ "actions": ["palliative"], "within": 15 }], "harmful": ["cpr", "intubation"] },
+  "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 48, "bp": "50 palp.", "radialPulse": false, "recap": 6, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "bodycheck": "Instabiler Thorax beidseits, Prellmarken und Reifenspuren über Brustkorb und Oberbauch, Bauch prall gespannt, Becken instabil", "auscultation": "Beidseits kaum Atemgeräusch", "percussion": "links hypersonor, rechts gedämpft", "abdomen": "bretthart, zunehmend aufgetrieben", "pelvis": "instabil", "pupils": "beidseits weit, träge", "ecg": "Sinusbradykardie, breite Kammerkomplexe", "death": "Lebt noch: vereinzelte Schnappatmung, Karotispuls schwach tastbar, keine sicheren Todeszeichen. Rumpftrauma nach Befund nicht überlebbar." } },
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["iv_access", "fluids"], "then": "2-volumen" }], "else": "2" },
     "2": { "findings": { "rr": 4, "spo2": 60, "hr": 36, "bp": "nicht messbar", "exam": { "ecg": "Bradykardie mit breiten Kammerkomplexen" } }, "else": "tot" },
     "2-volumen": { "findings": { "rr": 5, "spo2": 65, "hr": 44, "bp": "50 palp." }, "else": "tot" },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie", "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet; Tod bei nicht mit dem Leben vereinbarem Rumpftrauma ärztlich feststellbar." } } }
   }
 }

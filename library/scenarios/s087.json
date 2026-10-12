@@ -1,13 +1,18 @@
 {
   "id": "s087",
   "title": "Gasaustritt im Hochschullabor",
-  "situation": "Gasaustritt in einem Hochschullabor, Studierende mit Reizsymptomen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff. Lernziel: Reizgas mit Latenz nicht unterschätzen. Die Idee sieht 10 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Gasaustritt in einem Hochschullabor, Studierende mit Reizsymptomen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff. Lernziel: Reizgas mit Latenz nicht unterschätzen. 10 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I093-2).",
   "patients": [
     "i093",
     "i092",
     "i094",
     "i073",
-    "i031"
+    "i031",
+    "i093-2",
+    "i092-2",
+    "i094-2",
+    "i073-2",
+    "i031-2"
   ],
   "units": [
     {

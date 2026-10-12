@@ -1,13 +1,21 @@
 {
   "id": "s090",
   "title": "Stromausfall im Pflegeheim",
-  "situation": "Pflegeheim ohne Strom, mehrere Bewohner heimbeatmet. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Stromerzeuger. Besonderheiten: Stromausfall, Bettlägerige. Lernziel: Technikabhängige Patienten priorisieren. Die Idee sieht 13 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Pflegeheim ohne Strom, mehrere Bewohner heimbeatmet. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr mit Stromerzeuger. Besonderheiten: Stromausfall, Bettlägerige. Lernziel: Technikabhängige Patienten priorisieren. 13 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I058-2).",
   "patients": [
     "i058",
     "i054",
     "i055",
     "i033",
-    "i077"
+    "i077",
+    "i058-2",
+    "i054-2",
+    "i055-2",
+    "i033-2",
+    "i077-2",
+    "i058-3",
+    "i054-3",
+    "i055-3"
   ],
   "units": [
     {

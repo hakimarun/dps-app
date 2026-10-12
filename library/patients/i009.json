@@ -1,6 +1,6 @@
 {
   "id": "i009",
-  "version": 1,
+  "version": 2,
   "title": "Kopfanprall mit freiem Intervall",
   "picture": "Junge, ca. 16 Jahre, steht und reibt sich den Kopf. Beule an der linken Schläfe. „Ich war kurz weg, aber jetzt geht's wieder. Nur Kopfweh.“",
   "profile": {
@@ -163,7 +163,8 @@
           ],
           "then": "intubiert"
         }
-      ]
+      ],
+      "else": "5"
     },
     "intubiert": {
       "findings": {
@@ -190,6 +191,45 @@
         "radialPulse": false,
         "gcs": 3,
         "followsCommands": false
+      }
+    },
+    "5": {
+      "findings": {
+        "walking": false,
+        "rr": 7,
+        "spo2": 80,
+        "hr": 44,
+        "bp": "200/105",
+        "gcs": 4,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "beidseits weit und lichtstarr",
+          "motor": "Strecksynergismen beidseits auf Schmerzreiz",
+          "bodycheck": "Schwellung an der linken Schläfe; unregelmäßige, langsame Atmung"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert-spaet"
+        }
+      ],
+      "else": "tot"
+    },
+    "intubiert-spaet": {
+      "findings": {
+        "walking": false,
+        "rr": 14,
+        "spo2": 96,
+        "hr": 50,
+        "bp": "190/100",
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "beidseits weit und lichtstarr"
+        }
       }
     }
   }

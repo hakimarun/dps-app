@@ -1,7 +1,7 @@
 {
   "id": "s061",
   "title": "Sturzflut in einer Ortschaft",
-  "situation": "Starkregen löst Sturzflut aus, Häuser überflutet, Menschen auf Dächern. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, Wasserrettung, RTH mit Winde. Besonderheiten: Hochwasser, Stromausfall, Erschwerte Zufahrt. Lernziel: Lange Lagen mit Evakuierung und begrenzter Zufahrt. Die Idee sieht 26 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Starkregen löst Sturzflut aus, Häuser überflutet, Menschen auf Dächern. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, Wasserrettung, RTH mit Winde. Besonderheiten: Hochwasser, Stromausfall, Erschwerte Zufahrt. Lernziel: Lange Lagen mit Evakuierung und begrenzter Zufahrt. 26 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I076-2).",
   "patients": [
     "i076",
     "i079",
@@ -11,7 +11,24 @@
     "i055",
     "i067",
     "i080",
-    "p05"
+    "p05",
+    "i076-2",
+    "i079-2",
+    "i035-2",
+    "i033-2",
+    "i058-2",
+    "i055-2",
+    "i067-2",
+    "i080-2",
+    "p05-2",
+    "i076-3",
+    "i079-3",
+    "i035-3",
+    "i033-3",
+    "i058-3",
+    "i055-3",
+    "i067-3",
+    "i080-3"
   ],
   "units": [
     {

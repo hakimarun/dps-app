@@ -1,6 +1,6 @@
 {
   "id": "i010",
-  "version": 1,
+  "version": 2,
   "title": "Lange Einklemmung unter Trümmern",
   "picture": "Frau, ca. 60 Jahre, liegt auf dem Rücken, beide Beine unter einem Betonteil. Wach, Lippen trocken: „Ich hab so Durst. Wie lange dauert das noch?“",
   "profile": {
@@ -15,7 +15,7 @@
       "event": "Das Haus ist eingestürzt, ich liege hier seit heute Nacht.",
       "risk": "Herzschwäche."
     },
-    "pitfall": "„Holt mich doch einfach raus, mir geht's gut.“ Die Feuerwehr befreit sie am Ende von Phase 2 (ca. 30 min); die Gefahr beginnt mit der Befreiung."
+    "pitfall": "„Holt mich doch einfach raus, mir geht's gut.“ Die Feuerwehr befreit sie am Ende von Phase 2 (ca. 30 min); die Gefahr beginnt mit der Befreiung. Vor der Befreiung Zugang und Infusion zügig laufen lassen (in der Praxis 1–2 l), EKG anlegen."
   },
   "meta": {
     "category": "Trauma",
@@ -64,7 +64,7 @@
     "temp": 35.8,
     "exam": {
       "bodycheck": "Beide Beine ab Mitte Oberschenkel unter Betonteil eingeklemmt, nicht einsehbar; Oberkörper und Arme unverletzt; Schleimhäute trocken",
-      "ecg": "Sinustachykardie, T-Wellen leicht überhöht"
+      "ecg": "Sinustachykardie, sonst unauffällig"
     }
   },
   "start": "1",
@@ -171,11 +171,17 @@
       },
       "rules": [
         {
+          "when": [
+            "defibrillation"
+          ],
+          "then": "5-rosc"
+        },
+        {
           "when": [],
-          "then": "4-flimmern",
           "active": [
             "cpr"
-          ]
+          ],
+          "then": "4-flimmern"
         }
       ],
       "else": "tot"
@@ -193,6 +199,23 @@
         "followsCommands": false,
         "exam": {
           "ecg": "Asystolie"
+        }
+      }
+    },
+    "5-rosc": {
+      "findings": {
+        "breathing": true,
+        "rr": 12,
+        "spo2": 90,
+        "hr": 125,
+        "bp": "80/45",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "bodycheck": "befreit; beide Beine geschwollen, blau-livide verfärbt",
+          "ecg": "Sinustachykardie, breite QRS-Komplexe, hohe spitze T-Wellen"
         }
       }
     }

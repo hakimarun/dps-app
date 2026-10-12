@@ -1,7 +1,7 @@
 {
   "id": "s085",
   "title": "Dacheinsturz in Turnhalle",
-  "situation": "Dach der Schulturnhalle unter Schneelast eingestürzt. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, THW. Besonderheiten: Einsturzgefahr, Kinder, Kälte. Lernziel: Verschüttete Kinder und Einsatzabschnitte. Die Idee sieht 17 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Dach der Schulturnhalle unter Schneelast eingestürzt. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL, THW. Besonderheiten: Einsturzgefahr, Kinder, Kälte. Lernziel: Verschüttete Kinder und Einsatzabschnitte. 17 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I048-2).",
   "patients": [
     "i048",
     "i047",
@@ -10,7 +10,16 @@
     "i043",
     "i046",
     "i026",
-    "p04"
+    "p04",
+    "i048-2",
+    "i047-2",
+    "i050-2",
+    "i010-2",
+    "i043-2",
+    "i046-2",
+    "i026-2",
+    "p04-2",
+    "i048-3"
   ],
   "units": [
     {

@@ -1,38 +1,21 @@
 {
-  "id": "i096", "version": 1, "title": "Bewusstloser am Rand des Gefahrstoffbereichs",
+  "id": "i096",
+  "version": 1,
+  "title": "Bewusstloser am Rand des Gefahrstoffbereichs",
   "picture": "Mann, ca. 40 Jahre, liegt auf dem Rücken direkt am Absperrband, Kleidung durchnässt, stechender Geruch. Reagiert nicht auf Ansprache, atmet schnarchend.",
-  "profile": {
-    "temperament": "keins",
-    "speech": "spricht nicht",
-    "anamnesis": { "event": "Keine Angaben möglich." },
-    "pitfall": "Lebensrettende Maßnahmen und Notdekontamination laufen parallel: Atemweg freimachen, gleichzeitig die nasse Kleidung herunter. Wer erst vollständig dekontaminiert, verliert den Atemweg."
-  },
+  "profile": {"temperament": "keins", "speech": "spricht nicht", "anamnesis": {"event": "Keine Angaben möglich."}, "pitfall": "Lebensrettende Maßnahmen und Notdekontamination laufen parallel: Atemweg freimachen, gleichzeitig die nasse Kleidung herunter. Wer erst vollständig dekontaminiert, verliert den Atemweg."},
   "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Atemweg", "Eigenschutz"], "difficulty": "experte"},
-  "scoring": {"critical": [{"actions": ["airway_open", "wendl", "airway_hold", "recovery_position"], "within": 15}, {"actions": ["rinse"], "within": 15}], "harmful": []},
-  "base": { "walking": false, "breathing": true, "rr": 10, "spo2": 86, "hr": 115, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 6, "followsCommands": false, "exam": { "pupils": "mittelweit, träge lichtreagibel", "bodycheck": "keine äußeren Verletzungen; Kleidung mit stechend riechender Flüssigkeit durchnässt, Haut darunter gerötet" } },
+  "scoring": {"critical": [{"actions": ["airway_open", "wendl", "airway_hold", "recovery_position"], "within": 15}, {"actions": ["decon_undress"], "within": 15}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 10, "spo2": 86, "hr": 115, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 6, "followsCommands": false, "exam": {"pupils": "mittelweit, träge lichtreagibel", "bodycheck": "keine äußeren Verletzungen; Kleidung mit stechend riechender Flüssigkeit durchnässt, Haut darunter gerötet"}},
   "start": "1",
   "phases": {
-    "1": { "rules": [
-      { "when": ["airway_open", "rinse"], "then": "2-versorgt" },
-      { "when": ["wendl", "rinse"], "then": "2-versorgt" },
-      { "when": ["recovery_position", "rinse"], "then": "2-versorgt" },
-      { "when": ["rinse"], "active": ["airway_hold"], "then": "2-versorgt" },
-      { "when": ["airway_open"], "then": "2-atemweg" },
-      { "when": ["wendl"], "then": "2-atemweg" },
-      { "when": ["recovery_position"], "then": "2-atemweg" },
-      { "active": ["airway_hold"], "then": "2-atemweg" }
-    ], "else": "2-verlegt" },
-    "2-verlegt": { "findings": { "rr": 6, "spo2": 72, "hr": 135, "bp": "110/70", "recap": 3, "gcs": 4, "stridor": true }, "rules": [
-      { "when": ["airway_open"], "then": "2-atemweg" },
-      { "when": ["wendl"], "then": "2-atemweg" },
-      { "when": ["recovery_position"], "then": "2-atemweg" },
-      { "active": ["airway_hold"], "then": "2-atemweg" }
-    ], "else": "tot" },
-    "2-atemweg": { "findings": { "rr": 14, "spo2": 90, "hr": 110, "exam": { "pupils": "mittelweit, träge lichtreagibel", "bodycheck": "Kleidung weiter durchnässt, Haut darunter deutlich gerötet, Muskelzittern" } }, "rules": [{ "when": ["rinse"], "then": "3-versorgt" }], "else": "3-vergiftet" },
-    "2-versorgt": { "findings": { "rr": 14, "spo2": 93, "hr": 105, "gcs": 7, "exam": { "pupils": "mittelweit, lichtreagibel", "bodycheck": "entkleidet und abgespült, Haut gerötet, keine Verletzungen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3-versorgt" },
-    "3-versorgt": { "findings": { "rr": 14, "spo2": 94, "hr": 100, "bp": "135/80", "gcs": 7, "exam": { "pupils": "mittelweit, lichtreagibel", "bodycheck": "entkleidet und abgespült, Haut gerötet, keine Verletzungen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }] },
-    "3-vergiftet": { "findings": { "rr": 8, "spo2": 84, "hr": 55, "bp": "85/50", "recap": 4, "gcs": 4, "exam": { "pupils": "weit, träge lichtreagibel", "bodycheck": "Kleidung weiter durchnässt, Haut großflächig gerötet, einzelne Krampfanfälle" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
-    "intubiert": { "findings": { "rr": 12, "spo2": 96, "hr": 90, "bp": "110/70", "gcs": 3, "exam": { "pupils": "eng unter Narkose", "bodycheck": "intubiert, keine Verletzungen" } } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+    "1": {"rules": [{"when": ["airway_open", "decon_undress"], "then": "2-versorgt"}, {"when": ["wendl", "decon_undress"], "then": "2-versorgt"}, {"when": ["recovery_position", "decon_undress"], "then": "2-versorgt"}, {"when": ["decon_undress"], "active": ["airway_hold"], "then": "2-versorgt"}, {"when": ["airway_open"], "then": "2-atemweg"}, {"when": ["wendl"], "then": "2-atemweg"}, {"when": ["recovery_position"], "then": "2-atemweg"}, {"active": ["airway_hold"], "then": "2-atemweg"}], "else": "2-verlegt"},
+    "2-verlegt": {"findings": {"rr": 6, "spo2": 72, "hr": 135, "bp": "110/70", "recap": 3, "gcs": 4, "stridor": true}, "rules": [{"when": ["airway_open"], "then": "2-atemweg"}, {"when": ["wendl"], "then": "2-atemweg"}, {"when": ["recovery_position"], "then": "2-atemweg"}, {"active": ["airway_hold"], "then": "2-atemweg"}], "else": "tot"},
+    "2-atemweg": {"findings": {"rr": 14, "spo2": 90, "hr": 110, "exam": {"pupils": "mittelweit, träge lichtreagibel", "bodycheck": "Kleidung weiter durchnässt, Haut darunter deutlich gerötet, Muskelzittern"}}, "rules": [{"when": ["decon_undress"], "then": "3-versorgt"}], "else": "3-vergiftet"},
+    "2-versorgt": {"findings": {"rr": 14, "spo2": 93, "hr": 105, "gcs": 7, "exam": {"pupils": "mittelweit, lichtreagibel", "bodycheck": "entkleidet, Haut gerötet, keine Verletzungen"}}, "rules": [{"when": ["intubation"], "then": "intubiert"}], "else": "3-versorgt"},
+    "3-versorgt": {"findings": {"rr": 14, "spo2": 94, "hr": 100, "bp": "135/80", "gcs": 7, "exam": {"pupils": "mittelweit, lichtreagibel", "bodycheck": "entkleidet, Haut gerötet, keine Verletzungen"}}, "rules": [{"when": ["intubation"], "then": "intubiert"}]},
+    "3-vergiftet": {"findings": {"rr": 8, "spo2": 84, "hr": 55, "bp": "85/50", "recap": 4, "gcs": 4, "exam": {"pupils": "weit, träge lichtreagibel", "bodycheck": "Kleidung weiter durchnässt, Haut großflächig gerötet, einzelne Krampfanfälle"}}, "rules": [{"when": ["intubation"], "then": "intubiert"}], "else": "tot"},
+    "intubiert": {"findings": {"rr": 12, "spo2": 96, "hr": 90, "bp": "110/70", "gcs": 3, "exam": {"pupils": "eng unter Narkose", "bodycheck": "intubiert, keine Verletzungen"}}},
+    "tot": {"dead": true, "findings": {"breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": {"ecg": "Asystolie (Nulllinie)", "death": "keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr; Vergiftung mit unbekanntem Gefahrstoff, Tod ärztlich festgestellt"}}}
   }
 }

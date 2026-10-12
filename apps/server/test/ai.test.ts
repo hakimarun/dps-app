@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { z } from "zod";
 import type { Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { control, createExercise, loadLibrary, stateAt, submit, submitAsk, viewFor } from "../src/exercise.ts";
+import { caseOf, control, createExercise, loadLibrary, stateAt, submit, submitAsk, viewFor } from "../src/exercise.ts";
 import { evaluate } from "../src/evaluation.ts";
 import { local, type Ai } from "../src/ai.ts";
 import { check, generate, generateFrame, toPatient, type GenPatient } from "../src/generator.ts";
@@ -246,7 +246,7 @@ test("Bibliothek: jeder Fall besteht die Fallprüfung, jedes Szenario kennt sein
     if (want) assert.equal(r.sk, want === "IV" ? "I" : want, `${p.id}: Sichtung zu Beginn wie in der Idee`); // mSTaRT kennt kein IV
   }
   for (const s of Object.values(lib.scenarios)) {
-    for (const id of s.patients) assert.ok(lib.defs.patients[id], `${s.id}: Patient ${id} fehlt`);
+    for (const id of s.patients) assert.ok(lib.defs.patients[caseOf(lib.defs, id)], `${s.id}: Patient ${id} fehlt`);
     assert.ok(s.units.some((u) => u.arrivesAt === 0), `${s.id}: ein Fahrzeug ist von Anfang an da`);
   }
 });

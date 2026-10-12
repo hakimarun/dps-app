@@ -1,19 +1,255 @@
 {
-  "id": "i033", "version": 1, "title": "Atemnot bei Herzschwäche",
+  "id": "i033",
+  "version": 2,
+  "title": "Atemnot bei Herzschwäche",
   "picture": "Frau, ca. 80 Jahre, sitzt kerzengerade auf einem Stuhl und hält sich an der Lehne fest. Atmet schnell und brodelnd, Lippen bläulich, beide Unterschenkel dick geschwollen. „Meine Tabletten sind noch in der Wohnung!“",
-  "profile": { "temperament": "ängstlich", "speech": "kurze Sätze, muss nach wenigen Worten Luft holen", "anamnesis": { "symptoms": "Ich krieg im Liegen gar keine Luft. Seit gestern wird es immer schlimmer.", "allergies": "Keine.", "medication": "Wassertabletten, was fürs Herz und einen Blutverdünner. Die liegen alle noch in der Wohnung, seit zwei Tagen hab ich keine genommen.", "history": "Mein Herz ist schwach, ich hatte vor drei Jahren einen Infarkt.", "lastMeal": "Eine Suppe in der Turnhalle.", "event": "Wir mussten am Dienstag aus dem Haus raus, wegen dem Hochwasser." }, "pitfall": "Will sich keinesfalls hinlegen und wehrt sich gegen Flachlagerung. Klagt wiederholt: „Ich ersticke!“" },
-  "meta": { "category": "Internistisch", "tags": ["Atmung", "Herz", "Evakuierung"], "difficulty": "fortgeschritten" },
-  "scoring": { "critical": [{ "actions": ["upper_body_up"], "within": 15 }, { "actions": ["oxygen"], "within": 15 }], "harmful": ["shock_position", "fluids"] },
-  "base": { "walking": false, "breathing": true, "rr": 32, "spo2": 86, "hr": 115, "bp": "175/100", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "exam": { "auscultation": "feuchte Rasselgeräusche beidseits bis über die Lungenmitte", "percussion": "basal gedämpft beidseits", "bodycheck": "Beinödeme beidseits bis zum Knie, gestaute Halsvenen, keine Verletzungen", "ecg": "Vorhofflimmern, Tachyarrhythmie" } },
+  "profile": {
+    "temperament": "ängstlich",
+    "speech": "kurze Sätze, muss nach wenigen Worten Luft holen",
+    "anamnesis": {
+      "symptoms": "Ich krieg im Liegen gar keine Luft. Seit gestern wird es immer schlimmer.",
+      "allergies": "Keine.",
+      "medication": "Wassertabletten, was fürs Herz und einen Blutverdünner. Die liegen alle noch in der Wohnung, seit zwei Tagen hab ich keine genommen.",
+      "history": "Mein Herz ist schwach, ich hatte vor drei Jahren einen Infarkt.",
+      "lastMeal": "Eine Suppe in der Turnhalle.",
+      "event": "Wir mussten am Dienstag aus dem Haus raus, wegen dem Hochwasser."
+    },
+    "pitfall": "Will sich keinesfalls hinlegen und wehrt sich gegen Flachlagerung. Klagt wiederholt: „Ich ersticke!“"
+  },
+  "meta": {
+    "category": "Internistisch",
+    "tags": [
+      "Atmung",
+      "Herz",
+      "Evakuierung"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "upper_body_up"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "oxygen"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "nitrate"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": [
+      "shock_position",
+      "fluids"
+    ]
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 32,
+    "spo2": 86,
+    "hr": 115,
+    "bp": "175/100",
+    "radialPulse": true,
+    "recap": 3,
+    "gcs": 15,
+    "followsCommands": true,
+    "exam": {
+      "auscultation": "feuchte Rasselgeräusche beidseits bis über die Lungenmitte",
+      "percussion": "basal gedämpft beidseits",
+      "bodycheck": "Beinödeme beidseits bis zum Knie, gestaute Halsvenen, keine Verletzungen",
+      "ecg": "Vorhofflimmern, Tachyarrhythmie"
+    }
+  },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["shock_position"], "then": "3" }, { "when": ["fluids"], "then": "3" }, { "when": ["oxygen", "upper_body_up"], "then": "2-versorgt" }], "else": "2" },
-    "2": { "findings": { "rr": 34, "spo2": 82, "hr": 125, "bp": "185/105" }, "rules": [{ "when": ["shock_position"], "then": "3" }, { "when": ["fluids"], "then": "3" }, { "when": ["oxygen", "upper_body_up"], "then": "2-versorgt" }], "else": "3" },
-    "3": { "findings": { "rr": 36, "spo2": 76, "hr": 135, "bp": "150/90", "recap": 4, "gcs": 13, "exam": { "auscultation": "grobblasige Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "when": ["oxygen", "upper_body_up", "iv_access"], "then": "2-versorgt" }], "else": "4" },
-    "4": { "findings": { "rr": 8, "spo2": 68, "hr": 140, "bp": "95/60", "recap": 4, "gcs": 8, "followsCommands": false, "exam": { "auscultation": "grobblasige Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
-    "2-versorgt": { "findings": { "rr": 26, "spo2": 91, "hr": 108, "bp": "160/95" }, "rules": [{ "when": ["shock_position"], "then": "3" }, { "when": ["fluids"], "then": "3" }], "else": "3-versorgt" },
-    "3-versorgt": { "findings": { "rr": 22, "spo2": 94, "hr": 100, "bp": "150/90", "exam": { "auscultation": "feuchte Rasselgeräusche basal beidseits" } } },
-    "intubiert": { "findings": { "rr": 14, "spo2": 92, "hr": 120, "bp": "110/70", "gcs": 3, "followsCommands": false } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "shock_position"
+          ],
+          "then": "2"
+        },
+        {
+          "when": [
+            "fluids"
+          ],
+          "then": "2"
+        },
+        {
+          "when": [
+            "oxygen",
+            "upper_body_up"
+          ],
+          "then": "2-versorgt"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 34,
+        "spo2": 82,
+        "hr": 125,
+        "bp": "185/105"
+      },
+      "rules": [
+        {
+          "when": [
+            "shock_position"
+          ],
+          "then": "3"
+        },
+        {
+          "when": [
+            "fluids"
+          ],
+          "then": "3"
+        },
+        {
+          "when": [
+            "oxygen",
+            "upper_body_up"
+          ],
+          "then": "2-versorgt"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "rr": 36,
+        "spo2": 76,
+        "hr": 135,
+        "bp": "150/90",
+        "recap": 4,
+        "gcs": 13,
+        "exam": {
+          "auscultation": "grobblasige Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        },
+        {
+          "when": [
+            "oxygen",
+            "upper_body_up",
+            "nitrate"
+          ],
+          "then": "3-gebessert"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "rr": 8,
+        "spo2": 68,
+        "hr": 140,
+        "bp": "95/60",
+        "recap": 4,
+        "gcs": 8,
+        "followsCommands": false,
+        "exam": {
+          "auscultation": "grobblasige Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ],
+      "else": "tot"
+    },
+    "2-versorgt": {
+      "findings": {
+        "rr": 26,
+        "spo2": 91,
+        "hr": 108,
+        "bp": "160/95"
+      },
+      "rules": [
+        {
+          "when": [
+            "shock_position"
+          ],
+          "then": "2"
+        },
+        {
+          "when": [
+            "fluids"
+          ],
+          "then": "2"
+        }
+      ],
+      "else": "3-versorgt"
+    },
+    "3-gebessert": {
+      "findings": {
+        "rr": 28,
+        "spo2": 89,
+        "hr": 118,
+        "bp": "155/90",
+        "recap": 3,
+        "exam": {
+          "auscultation": "feuchte Rasselgeräusche beidseits bis zur Lungenmitte"
+        }
+      }
+    },
+    "3-versorgt": {
+      "findings": {
+        "rr": 22,
+        "spo2": 94,
+        "hr": 100,
+        "bp": "150/90",
+        "exam": {
+          "auscultation": "feuchte Rasselgeräusche basal beidseits"
+        }
+      }
+    },
+    "intubiert": {
+      "findings": {
+        "rr": 14,
+        "spo2": 92,
+        "hr": 120,
+        "bp": "110/70",
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "ecg": "Asystolie",
+          "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet."
+        }
+      }
+    }
   }
 }

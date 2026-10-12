@@ -1,7 +1,7 @@
 {
   "id": "s068",
   "title": "Tornado über Gewerbegebiet",
-  "situation": "Tornado zerstört Hallen im Gewerbegebiet, Trümmer verteilt. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA, THW; nach 15 min SEG. Besonderheiten: Einsturzgefahr, Weitläufige Einsatzstelle, Stromausfall. Lernziel: Abschnittsbildung bei verteilten Schadensstellen. Die Idee sieht 30 Betroffene vor; enthalten sind 12 typische Fälle.",
+  "situation": "Tornado zerstört Hallen im Gewerbegebiet, Trümmer verteilt. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA, THW; nach 15 min SEG. Besonderheiten: Einsturzgefahr, Weitläufige Einsatzstelle, Stromausfall. Lernziel: Abschnittsbildung bei verteilten Schadensstellen. 30 Betroffene aus 12 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I010-2).",
   "patients": [
     "i010",
     "i005",
@@ -14,7 +14,25 @@
     "i026",
     "p01",
     "p02",
-    "p04"
+    "p04",
+    "i010-2",
+    "i005-2",
+    "i020-2",
+    "i014-2",
+    "i004-2",
+    "i003-2",
+    "i028-2",
+    "i027-2",
+    "i026-2",
+    "p01-2",
+    "p02-2",
+    "p04-2",
+    "i010-3",
+    "i005-3",
+    "i020-3",
+    "i014-3",
+    "i004-3",
+    "i003-3"
   ],
   "units": [
     {

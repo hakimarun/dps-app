@@ -1,14 +1,29 @@
 {
   "id": "s066",
   "title": "Hitzewelle mit Stromausfall im Pflegeheim",
-  "situation": "Mehrtägige Hitze und Stromausfall, viele Bewohner geschwächt. Kräfte laut Planung: 3 RTW, 1 NEF, SEG. Besonderheiten: Hitze, Stromausfall, Bettlägerige. Lernziel: Stille Verschlechterung bei Älteren erkennen. Die Idee sieht 21 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Mehrtägige Hitze und Stromausfall, viele Bewohner geschwächt. Kräfte laut Planung: 3 RTW, 1 NEF, SEG. Besonderheiten: Hitze, Stromausfall, Bettlägerige. Lernziel: Stille Verschlechterung bei Älteren erkennen. 21 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I055-2).",
   "patients": [
     "i055",
     "i058",
     "i054",
     "i074",
     "i033",
-    "i040"
+    "i040",
+    "i055-2",
+    "i058-2",
+    "i054-2",
+    "i074-2",
+    "i033-2",
+    "i040-2",
+    "i055-3",
+    "i058-3",
+    "i054-3",
+    "i074-3",
+    "i033-3",
+    "i040-3",
+    "i055-4",
+    "i058-4",
+    "i054-4"
   ],
   "units": [
     {

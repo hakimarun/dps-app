@@ -5,7 +5,7 @@
     "anamnesis": { "symptoms": "Der Bauch drückt links oben, und mir ist etwas schwindelig.", "allergies": "Nein, keine Allergien.", "medication": "Ich nehme Bisoprolol, einen Betablocker, und eine Wassertablette.", "history": "Ich habe hohen Blutdruck, sonst bin ich gesund.", "lastMeal": "Zu Mittag habe ich gegessen, vor drei Stunden.", "event": "Mir ist einer hinten drauf gefahren, der Gurt hat ordentlich gedrückt." },
     "pitfall": "normaler Puls trotz Blutung; nennt den Betablocker nur auf direkte Frage nach Medikamenten" },
   "meta": { "category": "Geriatrie", "tags": ["Senior", "Schock", "Untertriage-Falle"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["measure_bp"], "within": 15 }, { "actions": ["examine_abdomen"], "within": 15 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["measure_bp"], "within": 15 }, { "actions": ["examine_abdomen"], "within": 15 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 95, "hr": 72, "bp": "105/70", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "pain": 5,
     "exam": { "abdomen": "Gurtmarke quer über dem Oberbauch, Druckschmerz und Abwehrspannung linker Oberbauch", "ecg": "Sinusrhythmus 72/min", "bodycheck": "Gurtmarke über linker Schulter und Oberbauch, sonst unverletzt, Haut blass und kühl" } },
   "start": "1",

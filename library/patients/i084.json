@@ -1,5 +1,5 @@
 {
-  "id": "i084", "version": 1, "title": "Akute Psychose nach abgesetzter Medikation",
+  "id": "i084", "version": 2, "title": "Akute Psychose nach abgesetzter Medikation",
   "picture": "Mann, ca. 30 Jahre, läuft unruhig hin und her und spricht mit Personen, die nicht da sind. Folgt einfachen Aufforderungen nur zögerlich. Keine sichtbaren Verletzungen.",
   "profile": { "temperament": "verwirrt", "speech": "sprunghaft, misstrauisch, antwortet oft an der Frage vorbei",
     "anamnesis": { "symptoms": "Die reden die ganze Zeit über mich. Hören Sie das nicht?", "allergies": "Nein.", "medication": "Meine Tabletten sind im Haus geblieben, seit drei Tagen hab ich keine. Olanzapin.", "history": "Ich war schon zweimal in der Psychiatrie.", "lastMeal": "Hier gab's Suppe, die hab ich nicht gegessen. Da ist was drin.", "event": "Wir mussten mitten in der Nacht raus aus dem Haus.", "risk": "Wenn die näher kommen, wehre ich mich." },
@@ -12,7 +12,8 @@
   "phases": {
     "1": { "rules": [{ "when": ["calm"], "then": "ruhig" }], "else": "2" },
     "2": { "findings": { "rr": 22, "hr": 115, "bp": "150/90" }, "rules": [{ "when": ["calm"], "then": "ruhig" }], "else": "3" },
-    "3": { "findings": { "rr": 24, "hr": 125, "bp": "160/95" }, "rules": [{ "when": ["calm"], "then": "ruhig" }] },
+    "3": { "findings": { "rr": 24, "hr": 125, "bp": "160/95" }, "rules": [{ "when": ["sedation"], "then": "sediert" }, { "when": ["calm"], "then": "ruhig" }] },
+    "sediert": { "findings": { "walking": false, "rr": 16, "hr": 88, "bp": "130/80", "gcs": 13 } },
     "ruhig": { "findings": { "rr": 18, "hr": 92, "bp": "135/85" } }
   }
 }

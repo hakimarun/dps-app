@@ -1,13 +1,15 @@
 {
   "id": "s073",
   "title": "Pflanzenschutzmittel-Unfall",
-  "situation": "Feldarbeiter nach Ausbringen von Pflanzenschutzmittel mit Vergiftungszeichen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Ländlicher Raum, Sprachbarriere. Lernziel: Typische Vergiftungszeichen und Eigenschutz. Die Idee sieht 7 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Feldarbeiter nach Ausbringen von Pflanzenschutzmittel mit Vergiftungszeichen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Ländlicher Raum, Sprachbarriere. Lernziel: Typische Vergiftungszeichen und Eigenschutz. 7 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I095-2).",
   "patients": [
     "i095",
     "i096",
     "i073",
     "i094",
-    "i042"
+    "i042",
+    "i095-2",
+    "i096-2"
   ],
   "units": [
     {

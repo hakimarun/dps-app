@@ -3,17 +3,19 @@
   "picture": "Frau, ca. 50 Jahre, unverletzt, setzt sich auf dem Weg zur Sammelstelle unvermittelt auf den Boden. Atmet sehr schnell, hält sich die rechte Brustseite. Der linke Unterschenkel ist dicker als der rechte. „Ich krieg keine Luft, ich sterbe!“",
   "profile": { "temperament": "ängstlich", "speech": "kurze, hastige Sätze", "anamnesis": { "symptoms": "Es sticht beim Einatmen in der Brust, und ich krieg keine Luft. Die Wade tut seit gestern weh.", "allergies": "Keine.", "medication": "Ich nehme die Pille und was gegen Migräne.", "history": "Ich hatte mal Krampfadern, sonst nichts.", "lastMeal": "Heute Morgen an der Raststätte.", "event": "Wir sind seit gestern Abend im Bus unterwegs, ich habe kaum die Beine bewegt.", "risk": "Ich rauche." }, "pitfall": "Wirkt wie Panik; Helfer halten es für Hyperventilation. Keine Verletzung, die die Atemnot erklärt." },
   "meta": { "category": "Internistisch", "tags": ["Atmung", "Abgrenzung"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["pulse_oximetry"], "within": 15 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["pulse_oximetry"], "within": 15 }, { "actions": ["acs_meds"], "within": 30 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 36, "spo2": 88, "hr": 122, "bp": "115/75", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "exam": { "auscultation": "vesikulär beidseits, keine Nebengeräusche", "percussion": "sonor beidseits", "bodycheck": "keine Verletzungen; linker Unterschenkel geschwollen, überwärmt und druckschmerzhaft an der Wade; gestaute Halsvenen", "ecg": "Sinustachykardie" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["oxygen", "iv_access"], "then": "2-versorgt" }], "else": "2" },
-    "2": { "findings": { "rr": 38, "spo2": 83, "hr": 138, "bp": "105/70" }, "rules": [{ "when": ["oxygen", "iv_access"], "then": "2-versorgt" }], "else": "3" },
-    "3": { "findings": { "rr": 40, "spo2": 79, "hr": 145, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 13, "exam": { "ecg": "Sinustachykardie, Rechtsschenkelblock" } }, "rules": [{ "when": ["oxygen", "iv_access"], "then": "3-versorgt" }], "else": "4" },
-    "4": { "findings": { "rr": 40, "spo2": 72, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 8, "followsCommands": false, "exam": { "ecg": "Sinustachykardie, Rechtsschenkelblock" } }, "else": "tot" },
+    "1": { "rules": [{ "when": ["oxygen", "acs_meds"], "then": "2-versorgt" }, { "when": ["oxygen"], "then": "2-o2" }], "else": "2" },
+    "2": { "findings": { "rr": 38, "spo2": 83, "hr": 138, "bp": "105/70" }, "rules": [{ "when": ["oxygen", "acs_meds"], "then": "2-versorgt" }], "else": "3" },
+    "2-o2": { "findings": { "rr": 32, "spo2": 92, "hr": 128, "bp": "110/70" }, "rules": [{ "when": ["acs_meds"], "then": "2-versorgt" }], "else": "3" },
+    "3": { "findings": { "rr": 40, "spo2": 79, "hr": 145, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 13, "exam": { "ecg": "Sinustachykardie, Rechtsschenkelblock, SI-QIII-Typ" } }, "rules": [{ "when": ["oxygen", "catecholamines"], "then": "3-versorgt" }], "else": "4" },
+    "4": { "findings": { "rr": 40, "spo2": 72, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 8, "followsCommands": false, "exam": { "ecg": "Sinustachykardie, Rechtsschenkelblock, SI-QIII-Typ" } }, "rules": [{ "when": ["oxygen", "catecholamines"], "then": "4-knapp" }], "else": "tot" },
     "2-versorgt": { "findings": { "rr": 28, "spo2": 93, "hr": 115, "bp": "115/75" }, "else": "3-stabil" },
     "3-stabil": { "findings": { "rr": 26, "spo2": 93, "hr": 112, "bp": "110/70" } },
-    "3-versorgt": { "findings": { "rr": 32, "spo2": 88, "hr": 130, "bp": "90/60", "recap": 3, "gcs": 14 } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "3-versorgt": { "findings": { "rr": 32, "spo2": 88, "hr": 130, "bp": "90/60", "radialPulse": true, "recap": 3, "gcs": 14 } },
+    "4-knapp": { "findings": { "rr": 34, "spo2": 84, "hr": 138, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 11 } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie", "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet." } } }
   }
 }

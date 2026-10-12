@@ -1,5 +1,5 @@
 {
-  "id": "i079", "version": 1, "title": "Beinahe-Ertrinken mit verzögerter Atemstörung",
+  "id": "i079", "version": 2, "title": "Beinahe-Ertrinken mit verzögerter Atemstörung",
   "picture": "Mädchen, ca. 15 Jahre, sitzt nach der Rettung aus dem See erschöpft und nass am Ufer, hustet immer wieder, atmet schnell. Sagt: \"Mir geht's gut, ich bin wieder fit.\" Schafft es aber nicht aufzustehen.",
   "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, unterbrochen von Husten, ab Phase 3 nur kurze Sätze",
     "anamnesis": { "symptoms": "Ich muss nur ein bisschen husten, und mir ist kalt.", "allergies": "Nein, keine Allergien.", "medication": "Nein, ich nehme nichts.", "history": "Ich bin gesund, ich kann eigentlich gut schwimmen.", "lastMeal": "Mittags hatte ich Pommes.", "event": "Ich hab Wasser geschluckt und bin kurz untergegangen, dann hat mich jemand rausgezogen.", "risk": "Ich will eigentlich nur nach Hause." },
@@ -11,9 +11,10 @@
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["oxygen"], "then": "2-o2" }], "else": "2" },
-    "2": { "findings": { "rr": 30, "spo2": 90, "hr": 115, "exam": { "auscultation": "feinblasige Rasselgeräusche beidseits basal, häufiger Husten" } }, "rules": [{ "when": ["oxygen"], "then": "3-o2" }], "else": "3" },
-    "3": { "findings": { "rr": 34, "spo2": 85, "hr": 125, "recap": 3, "gcs": 14, "exam": { "auscultation": "Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["oxygen"], "then": "3-o2" }], "else": "4" },
-    "4": { "findings": { "rr": 38, "spo2": 78, "hr": 135, "recap": 3, "gcs": 12, "followsCommands": false, "exam": { "auscultation": "Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["intubation"], "then": "beatmet" }] },
+    "2": { "findings": { "rr": 30, "spo2": 92, "hr": 112, "exam": { "auscultation": "feinblasige Rasselgeräusche beidseits basal, häufiger Husten" } }, "rules": [{ "when": ["oxygen"], "then": "3-o2" }], "else": "3" },
+    "3": { "findings": { "rr": 32, "spo2": 89, "hr": 120, "exam": { "auscultation": "feinblasige Rasselgeräusche bis in die Lungenmitte beidseits, quälender Husten" } }, "rules": [{ "when": ["oxygen"], "then": "3-o2" }], "else": "4" },
+    "4": { "findings": { "rr": 36, "spo2": 84, "hr": 130, "recap": 3, "gcs": 14, "exam": { "auscultation": "Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["intubation"], "then": "beatmet" }, { "when": ["oxygen"], "then": "4-o2" }] },
+    "4-o2": { "findings": { "rr": 28, "spo2": 90, "hr": 118, "recap": 3, "exam": { "auscultation": "Rasselgeräusche über allen Lungenabschnitten, schaumiger Auswurf" } }, "rules": [{ "when": ["intubation"], "then": "beatmet" }] },
     "2-o2": { "findings": { "rr": 22, "spo2": 96, "hr": 100 }, "else": "stabil" },
     "3-o2": { "findings": { "rr": 26, "spo2": 92, "hr": 110, "exam": { "auscultation": "feinblasige Rasselgeräusche beidseits basal" } } },
     "stabil": { "findings": { "rr": 20, "spo2": 97, "hr": 95 } },

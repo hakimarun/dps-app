@@ -1,13 +1,28 @@
 {
   "id": "s071",
   "title": "Reizstoff in einer Diskothek",
-  "situation": "Reizstoff in einer Disco versprüht, viele Gäste mit Augenbrennen. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Menschenmenge, Viele Gehfähige. Lernziel: Viele Leichtbetroffene ohne Übertriage. Die Idee sieht 20 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Reizstoff in einer Disco versprüht, viele Gäste mit Augenbrennen. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Menschenmenge, Viele Gehfähige. Lernziel: Viele Leichtbetroffene ohne Übertriage. 20 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I072-2).",
   "patients": [
     "i072",
     "i031",
     "i018",
     "i068",
-    "p09"
+    "p09",
+    "i072-2",
+    "i031-2",
+    "i018-2",
+    "i068-2",
+    "p09-2",
+    "i072-3",
+    "i031-3",
+    "i018-3",
+    "i068-3",
+    "p09-3",
+    "i072-4",
+    "i031-4",
+    "i018-4",
+    "i068-4",
+    "p09-4"
   ],
   "units": [
     {

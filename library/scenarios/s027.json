@@ -1,7 +1,7 @@
 {
   "id": "s027",
   "title": "Kollision eines Ausflugsschiffs",
-  "situation": "Ausflugsschiff nach Kollision mit Frachtkahn, Personen im Wasser. Kräfte laut Planung: Wasserrettung, 3 RTW, 2 NEF, OrgL; Anlegestelle als Ablage. Besonderheiten: Wasser, Kälte, Wasserrettung. Lernziel: Wasserrettung und Patientenablage an Land koordinieren. Die Idee sieht 28 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Ausflugsschiff nach Kollision mit Frachtkahn, Personen im Wasser. Kräfte laut Planung: Wasserrettung, 3 RTW, 2 NEF, OrgL; Anlegestelle als Ablage. Besonderheiten: Wasser, Kälte, Wasserrettung. Lernziel: Wasserrettung und Patientenablage an Land koordinieren. 28 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I076-2).",
   "patients": [
     "i076",
     "i077",
@@ -12,7 +12,25 @@
     "i080",
     "p05",
     "p07",
-    "p09"
+    "p09",
+    "i076-2",
+    "i077-2",
+    "i079-2",
+    "i008-2",
+    "i053-2",
+    "i046-2",
+    "i080-2",
+    "p05-2",
+    "p07-2",
+    "p09-2",
+    "i076-3",
+    "i077-3",
+    "i079-3",
+    "i008-3",
+    "i053-3",
+    "i046-3",
+    "i080-3",
+    "p05-3"
   ],
   "units": [
     {

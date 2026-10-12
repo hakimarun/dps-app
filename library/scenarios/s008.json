@@ -1,14 +1,19 @@
 {
   "id": "s008",
   "title": "Tanklastzug-Unfall mit Brand",
-  "situation": "Tanklastzug und Pkw nach Kollision in Brand, Gefahrgutkennzeichnung sichtbar. Kräfte laut Planung: 2 RTW, 1 NEF; Bereitstellungsraum außerhalb Gefahrenbereich. Besonderheiten: Gefahrstoff, Brand, Eigengefährdung. Lernziel: Eigenschutz und Gefahrenbereich vor Patientenkontakt. Die Idee sieht 11 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Tanklastzug und Pkw nach Kollision in Brand, Gefahrgutkennzeichnung sichtbar. Kräfte laut Planung: 2 RTW, 1 NEF; Bereitstellungsraum außerhalb Gefahrenbereich. Besonderheiten: Gefahrstoff, Brand, Eigengefährdung. Lernziel: Eigenschutz und Gefahrenbereich vor Patientenkontakt. 11 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I061-2).",
   "patients": [
     "i061",
     "i064",
     "i071",
     "i073",
     "i066",
-    "p06"
+    "p06",
+    "i061-2",
+    "i064-2",
+    "i071-2",
+    "i073-2",
+    "i066-2"
   ],
   "units": [
     {

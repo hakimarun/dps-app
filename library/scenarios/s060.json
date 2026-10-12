@@ -1,7 +1,7 @@
 {
   "id": "s060",
   "title": "Mischintoxikationen auf einer Rave-Party",
-  "situation": "Mehrere Partygäste mit Drogen-Symptomen, teils aggressiv. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 2 NEF, Polizei. Besonderheiten: Drogen, Eigengefährdung, Nacht. Lernziel: Intoxikationen und Eigenschutz. Die Idee sieht 16 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Mehrere Partygäste mit Drogen-Symptomen, teils aggressiv. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 2 NEF, Polizei. Besonderheiten: Drogen, Eigengefährdung, Nacht. Lernziel: Intoxikationen und Eigenschutz. 16 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I069-2).",
   "patients": [
     "i069",
     "i070",
@@ -9,7 +9,16 @@
     "i074",
     "i084",
     "i037",
-    "p05"
+    "p05",
+    "i069-2",
+    "i070-2",
+    "i068-2",
+    "i074-2",
+    "i084-2",
+    "i037-2",
+    "p05-2",
+    "i069-3",
+    "i070-3"
   ],
   "units": [
     {

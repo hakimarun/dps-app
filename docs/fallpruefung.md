@@ -1,38 +1,60 @@
 # Fachliche Prüfliste für die Bibliotheksfälle i001–i100
 
-Die 100 Fälle aus den Fall-Ideen (`library/ideas/cases.json`) sind als spielbare Fälle in `library/patients/` umgesetzt.
-Jeder besteht die automatische Fallprüfung; die Sichtung zu Beginn nach mSTaRT entspricht der Idee (Ideen mit SK IV starten als I, mSTaRT kennt kein IV).
-Medizinisch ist das ein Entwurf: Bitte vor dem Einsatz von Praxisanleiter oder Ärztin/Arzt prüfen lassen. Die Punkte unten haben die Autoren selbst als unsicher markiert.
+Die 100 Fälle aus den Fall-Ideen (`library/ideas/cases.json`) sind als spielbare Fälle in `library/patients/` umgesetzt
+und in einem zweiten Durchgang fachlich überarbeitet. Jeder besteht die automatische Fallprüfung; die Sichtung zu Beginn
+entspricht der Idee (ein Test hält das fest). Trotzdem gilt: vor dem Einsatz von Praxisanleiter oder Ärztin/Arzt prüfen lassen.
 
-## Wiederkehrende Grenzen des Maßnahmenkatalogs
+## Was der zweite Durchgang geändert hat
 
-- Ärztliche Maßnahmen ohne eigene Maßnahme (Antidote, Antikonvulsiva, Adrenalin i.m., Bronchodilatation, Sedierung, Antiarrhythmika, Defibrillation) stehen ersatzweise als „Zugang legen“ oder „Narkose/Intubation“ – fachlich unscharf.
-- Nicht abbildbar: Todesfeststellung, ärztliche Sichtung, palliative Begleitung, PSNV-Übergabe, Dekontamination durch Entkleiden, Amputatversorgung, Helmabnahme, Fremdkörperfixierung, Linksseitenlage, Geburtsbegleitung, CO-Messung (SpCO), Registrierung.
-- Infusion ist fest 500 ml; gewichtsangepasste Gabe für Kinder und i.o.-Zugang fehlen.
-- mSTaRT nutzt Erwachsenen-Grenzwerte, bei Säuglingen und Kleinkindern wurden Werte so gesetzt, dass die Soll-Sichtung herauskommt.
+- **Maßnahmenkatalog** von 42 auf 71 Maßnahmen erweitert, u. a. ärztliche Medikamente (Atropin, Naloxon, Benzodiazepin, Adrenalin i.m.,
+  Bronchodilatator, Sedierung, Katecholamine, Antiarrhythmikum, ASS/Heparin, Nitrat, Blutdrucksenkung), Defibrillation, i.o.-Zugang,
+  kindgerechte Infusion, manuelle Kompression (auch als Sofortmaßnahme), Helmabnahme, CO-Messung, BE-FAST, Todesfeststellung,
+  Linksseitenlage, Fremdkörper fixieren, Amputat versorgen, beide Augen abdecken, Entkleiden (Grobdekontamination), Geburt begleiten,
+  Neugeborenes versorgen, PSNV, Palliativbegleitung, Schatten/Trinken. Alle Ersatzlösungen der ersten Fassung sind ersetzt.
+- **Kindersichtung:** Fälle mit „Kind“-Markierung werden mit kindgerechten Atemgrenzen gesichtet (JumpSTART, unter 15 oder über 45/min);
+  „befolgt Aufforderungen“ heißt bei Kindern „reagiert altersgerecht“. Die Kinderfälle tragen jetzt realistische Werte.
+- **SK IV (abwartend):** Bei so markierten Fällen zählt eine IV-Sichtung durch den Arzt als korrekt (I ebenso); mSTaRT selbst kennt kein IV.
+- **Verläufe** nach den Prüfpunkten der ersten Fassung korrigiert (unten je Fall).
+
+## Bleibende Grenzen
+
+- Nicht als Maßnahme abbildbar: ärztliche Sichtung, Fremd- und Medikamentenanamnese (nur im Gespräch), Registrierung/Isolierung,
+  Hochlagerung einer Extremität, Repositionsversuch, Rettung mit der Feuerwehr abstimmen, Escharotomie, Heimbeatmung übernehmen,
+  schriftliche Kommunikation, Kennzeichnen und weitersichten.
+- Schädliche Varianten einer erlaubten Maßnahme (z. B. Helmabnahme allein, Amputat auf Eis, mehrere Liter Volumen) lassen sich nicht
+  von der richtigen Ausführung unterscheiden.
+- Kritische Maßnahmen gelten unabhängig vom Verlauf; Maßnahmen, die nur bei einem bedingten Ereignis nötig sind (z. B. Antikonvulsivum
+  bei einem möglichen zweiten Anfall, i042/i051), stehen deshalb nicht in der Kritischliste.
+- Ein Fall ist ein Patient: das Neugeborene in i088 steht als Befund bei der Mutter.
+
+## Fälle i001–i013
+- i001 Chest Seal als Zwischenschritt bestätigt (S3), luftdichter Druckverband führt zur Spannung und ist schädlich; i002 Helmabnahme kritisch, O₂ erst nach Helmabnahme; i003 Amputat versorgen kritisch statt Analgesie; i004 Läsion Th2/3, Katecholamine stabilisieren, Volumen allein nur teilweise, mildere Auskühlung; i005 Fremdkörper fixieren, Herausziehen erst nach Unruhephase, Kompression überbrückt; i006 Beutelbeatmung überbrückt bis zur Intubation; i007/i013 permissive Hypotonie bestätigt; i009 kein stabiler Endzustand ohne OP, Einklemmung; i010 EKG erst nach Reperfusion auffällig, Defibrillation führt zu ROSC, Hinweis 1–2 l in der Praxis; i011 Auskühlung ~1 °C/h
+- weiter nicht abbildbar: Helmabnahme durch nur eine Person als schädlich (i002), Amputat auf Eis als schädlich (i003), Rettungsabstimmung mit der Feuerwehr (i011), zweite Infusion (i010)
+
+## Fälle i014–i026
+- i014 manuelle Kompression kritisch und überbrückend, Nachblutung nach Tamponade ohne Druckverband als eigene Phase; i015 Kompression als Alternative zum Chest Seal, Luftembolie-Logik bestätigt; i016 beide Augen abdecken kritisch, Spülen bei perforierender Verletzung bleibt schädlich; i017 Flachlagerung/Vakuummatratze bleibt schädlich (Atemweg vor Immobilisation, S3); i020 Schock Grad III plausibel, ohne Transport Nachblutung statt Stabilität; i021/i022 einfacher Pneu bzw. Blast Lung passend; i023 Cushing-Trias passend; i024 Tod gestrichen, endet im Schock; i025/i026 Todeszeichen-Befunde, Todesfeststellung kritisch, Livores/Starre stimmig
+- weiter nicht abbildbar: Hochlagerung (i018), Repositionsversuch (i019), schriftliche Kommunikation (i022), Eigenschutz (i023), Kennzeichnen und weitersichten (i025)
+
+## Fälle i027–i039
+- i027 Palliativbegleitung kritisch, Reanimation/Intubation schädlich (nicht überlebbar, bindet Kräfte); i028 Intubation bei GCS 3 nicht schädlich (S3), SK IV entscheidet der Arzt; i029 AV-Block tritt immer auf, Schrittmacher/Katecholamine stabilisieren, ASS/Heparin kritisch; i030/i035 ohne Tod im Übungszeitraum (Verlauf über Stunden); i031 Bronchodilatator; i032 Adrenalin i.m., im Schock zusätzlich Volumen; i033 Verschlechterung durch Volumen/Schocklagerung entschärft; i034 LAE mit Heparin und Katecholaminen, EKG SI-QIII; i036 Ziel-RR bei GI-Blutung bestätigt; i037 Antikonvulsivum ohne Zugang (i.m./i.n.); i038 BE-FAST kritisch; i039 Stabilisierung über Oberkörperhochlage und Analgesie
+
+## Fälle i040–i052 (Kinder)
+- Kinderfälle (i043–i051) mit „Kind“-Markierung und altersgerechten Werten, Sichtung nach JumpSTART-Atemgrenzen; Infusion kindgerecht, 500 ml beim Säugling schädlich (i049), früher i.o.-Zugang im Hinweis
+- i040 BE-FAST kritisch, Rückfall später; i041 Volumen nur vorübergehend, Katecholamine stabilisieren; i042 Status epilepticus ohne Antikonvulsivum; i044/i048 Intubation ab GCS 8, Tod erst nach ~75 min; i045 Fremdkörperentfernung über „Atemweg freimachen“ (Rückenschläge/Kompressionen nach ERC); i047 kompensierter statt dekompensierter Schock bei isolierter Femurfraktur; i050 manuelle Kompression; i051 kein Rückfall bei jedem Durchlauf, Fiebersenkung nur für das Wohlbefinden, Betreuung der Eltern kritisch; i052 langsamere Eintrübung, Intubation
+- bewusst so gelassen: Antikonvulsivum bei i042/i051 nicht kritisch, weil der Anfall nur bedingt auftritt und die Auswertung kritische Maßnahmen unabhängig vom Verlauf zählt
+
+## Fälle i053–i065
+- i056 Übergabe bis 45 min kritisch (Milzruptur braucht OP); i058 spätes Beuteln ohne volles Erwachen; i059 Reanimation/Intubation schädlich (Patientenverfügung), Palliativbegleitung + PSNV kritisch; i061 Verbrennungsschock ohne frühen RR-Abfall; i062 Kind mit altersgerechten Werten, mildere Auskühlung; i063 Antiarrhythmikum, VT mit Defibrillation; i064 Intubation ohne Escharotomie verschlechtert sich weiter; i065 Palliativ/PSNV kritisch, Todesfeststellung
+- weiter nicht abbildbar: Fremdanamnese (i054), Medikamentenanamnese (i056), Heimbeatmung übernehmen (i058), Escharotomie (i064)
+
+## Fälle i066–i078
+- i066 Todesfeststellung, Fechterstellung als Hitzeeffekt statt Totenstarre; i067 CO-Messung kritisch, keine Bewusstlosigkeit mehr nach Verlassen der Quelle; i068 Glukose allein hebt den GCS; i069 Sedierung statt Intubation, Antikonvulsivum im Krampf, realistischer Temperaturanstieg; i070 Naloxon kritisch, Hinweis auf kurze Wirkdauer; i071 Schwellung trotz O₂, CO-Messung kritisch; i073 Entkleiden statt Spülen; i074 Abkühlrate ~0,1 °C/min, Antikonvulsivum; i076 langsameres Auskühlen, Afterdrop, Schocklagerung schädlich (Leitlinie horizontal); i077 Afterdrop statt sicherem Kammerflimmern, EKG Stadium II, ERC-Regel unter 30 °C
+- weiter nicht abbildbar: Augen reiben/Salben als schädlich (i072)
 
 ## Fälle i079–i091
-- Nicht abbildbar: Todesfeststellung (i080), PSNV-Übergabe (i081, i083, i085), Geburtsbegleitung/Neugeborenenversorgung (i088), antikonvulsive Therapie (i090); Linksseitenlage ersatzweise stabile Seitenlage (i086, i087, i090)
-- Prüfen: i087 Besserung erst am Phasenende (Idee: sofort); i089 ohne Volumen tot nach ~30 min (zu aggressiv?); i086 unbehandelt schwerer Schock statt Tod; i090 Narkose als Ersatz für Antikonvulsiva?; i079 Tempo der verzögerten Atemstörung; i088 Neugeborenes nur als Text
-- mSTaRT-Grenzfälle: i085 AF bewusst ≤ 30, i084 befolgt Aufforderungen, damit SK III bleibt
+- i079 verzögerte Atemstörung langsamer, O₂ bessert teilweise; i080 Todesfeststellung kritisch, Reanimation schädlich (ERC); i081/i083/i085 PSNV kritisch; i084 Sedierung durch Notarzt in der Eskalation; i086 Linksseitenlage, Volumen in Rückenlage wirkt schlechter, kein Tod innerhalb einer Stunde (Plazentalösung); i087 Linksseitenlage kritisch, Phasen 5 min, Besserung rasch; i088 Geburt begleiten und Neugeborenes versorgen kritisch; i089 langsamerer Verlauf, i.o. als Alternative, Volumen nur Überbrückung; i090 Antikonvulsivum statt Narkose als Ersatz (Magnesium zuerst im Hinweis)
+- Neugeborenes in i088 weiterhin nur als Text im Befund der Mutter (ein zweiter Patient bräuchte eine eigene Karte)
+
 ## Fälle i092–i100 (CBRN)
-- Nicht abbildbar: Dekontamination durch Entkleiden (i092, i096, i097, i098), Antidot Atropin (i095), Todesfeststellung (i099), ärztliche Sichtung/palliative Begleitung (i100); Augen-/Wasserdekon als „Spülen“ (rinse)
-- Prüfen: Zeitverlauf Lungenödem nach Chlor/Nitrosegasen (i092, i093); i095 Stabilisierung nur über Intubation (Atropin implizit), Spülen nur mit Schutzausrüstung; i096 unbekannter Stoff generisch genug?; i097 Verschlechterung der Durchblutung ohne Schiene gewollt?; i098 Tütenrückatmung als schädlich markieren?; i099 Beschreibung Livores und H₂S-Geruch; i100 Spülen bei 70 % KOF (Auskühlung), Analgesie bei GCS 5 als kritisch, SK IV ausreichend begründet?
-## Fälle i027–i039
-- Nicht abbildbar: ärztliche Sichtung (i027, i028), 12-Kanal-EKG (→ EKG), Bronchodilatation (i031), Adrenalin i.m. (i032), Antikonvulsiva (i037), BE-FAST (i038); Notarzt-Medikamente stehen ersatzweise als „Zugang legen“ (i029, i031, i032, i037, i039) – fachlich unscharf, eigene Maßnahmen wären besser
-- Prüfen: i027/i028 Reanimation/Intubation als schädlich bei SK IV (Ressourcenfrage); i029 AV-Block III, Schrittmacher stabilisiert, ASS/Heparin fehlen; i030 Hypoglykämie ohne Tod; i033 Volumen/Schocklagerung führt sofort zur Verschlechterung (zugespitzt); i034 LAE-Verlauf; i035 Ketoazidose ohne Tod, EKG-Kaliumzeichen; i036 Ziel-RR 85/55; i038 nicht gehfähig wegen Beinparese (sonst SK III); i039 Blutdrucksenkung nur über Zugang
-## Fälle i001–i013
-- Nicht abbildbar: Helmabnahme (i002), Amputatversorgung (i003), Fremdkörperfixierung (i005, ersatzweise Verband), Crush-Management/Befreiung mit Feuerwehr (i010, i011), großzügige Volumengabe als schädlich (nur eine Infusion à 500 ml)
-- Prüfen: i001/i002 Chest Seal ohne Punktion als Zwischenstabilisierung; i004 neurogener Schock (Höhe, Bradykardie), stabile Seitenlage als schädlich, keine Katecholamine; i005 Selbstherausziehen ohne Fixierung (zugespitzt), Tourniquet hoch am Oberschenkel; i006 nur Intubation rettet bei Erschöpfung; i007/i013 permissive Hypotonie; i009 Seitenlage + O₂ als stabiler Endzustand mit GCS 8; i010 EKG-Verlauf, eine Infusion als „vorbereitet“ (Praxis 1–2 l); i011 Auskühlung auf 33,5 °C in 60 min; i003 Analgesie als Ersatz-kritisch
-## Fälle i066–i078
-- Nicht abbildbar: CO-Messung SpCO (i067, i071), Naloxon (i070), ärztliche Sedierung (i069, ersatzweise Intubation), Trinken/Schatten (i075), Todesfeststellung (i066)
-- Prüfen: i071 (behoben: Schwellung schreitet trotz Sauerstoff fort, Übergabe ist kritisch); i067 Verschlechterung nach Verlassen der CO-Quelle untypisch; i069 Intubation als Ersatz für Sedierung, Temperaturverlauf; i077 Schocklagerung → Kammerflimmern (zugespitzt), Rhythmus Stadium II; i068 BZ-Verlauf, Endzustand GCS 7; i074 Abkühlrate, Wärmeerhalt als schädlich; i076 Erwärmungsrate, Schocklagerung als schädlich (Afterdrop); i066 Hitzestarre vs. Totenstarre
-## Fälle i040–i052
-- Nicht abbildbar: BE-FAST (i040), Eigenschutz/Isolierung (i041), Übersetzungshilfe (i042), Registrierung (i043, i046), Traktionsschiene (i047, ersatzweise Schiene/Vakuummatratze), i.o.-Zugang und gewichtsangepasste Infusion für Säuglinge (i049), Medikamentenanamnese nur im Gespräch (i052)
-- Prüfen: mSTaRT bei Säuglingen/Kleinkindern (i044, i049, i051) – AF 28–30 und „befolgt Aufforderungen“ als „reagiert auf Ansprache“ gesetzt, Erwachsenen-Grenzwerte fachlich fragwürdig; i049 Infusion 500 ml für Säugling, großflächig Kühlen; i051 Fieberkrampf-Rezidiv immer, Analgesie als Fiebersenkung; i040 Rückfall in Phase 3 zugespitzt; i044/i048 unbehandelt tot nach ~60 min; i052 Hirndruckverlauf bei Vorhofflimmern; i045 Bolusgeschehen über Atemweg freimachen; i041 Stabilisierung ohne Antibiotika optimistisch; i047 Schock bei kindlicher Femurfraktur
-## Fälle i053–i065
-- Nicht abbildbar: Fremdanamnese (i054, im Profil hinterlegt), Medikamentenanamnese (i056), Heimbeatmung/Strom (i058), ärztliche Sichtung/palliative Begleitung (i059, i065), Kühlung beenden (i062), Escharotomie (i064), Antiarrhythmika/Defibrillation (i063)
-- Prüfen: i054 nur Variante „Demenz stabil“; i056 Puls unter Betablocker, Tod ohne Transport nach ~75 min; i058 Erwachen nach Beutelbeatmung optimistisch; i059 Reanimation/Intubation als schädlich (Patientenverfügung)?; i060 kurzes Kühlen als Spülen; i061 Werte bei 27 % KOF; i062 Kind mit Erwachsenenalgorithmus, Auskühlung drastisch; i063 VT ohne Tod; i064 Intubation ohne Escharotomie als Rettung; i065 AF 32 bewusst für SK I
-## Fälle i014–i026
-- Nicht abbildbar: manuelle Kompression (i014), Augenabdeckung beidseits (i016, ersatzweise Wundverband), Hochlagerung (i018), Repositionsversuch (i019), schriftliche Kommunikation bei Hörverlust (i022), Eigenschutz/Arzt hinzuziehen (i023), Kennzeichnen und weitersichten (i025), Todesfeststellung (i026)
-- Prüfen: i014 sehr kurzer Verlauf, Nachblutung ohne Druckverband nach Wundtamponade; i015 Chest Seal am Hals gegen Luftembolie (Improvisation), Dekompensation unter ASS; i016 Spülen bei steckendem Splitter als schädlich (nicht aus der Idee); i017 Vakuummatratze/Flachlagerung als schädlich trotz S3-Immobilisation?; i020 RR 80/50 bei isolierter Femurfraktur beidseits, Stabilisierung ohne Transport optimistisch; i021/i022 kein Spannungspneu modelliert; i023 Cushing-Reflex, Alkoholgeruch; i024 Tod nach ~40 min durch Unterarmblutung drastisch?; i026 Leichenstarre setzt Stunden voraus
+- i092 Lungenödem wie in der Idee, Tod erst nach 75 min, Bronchodilatator gegen Giemen; i093 Spättyp zeitgerafft ohne Tod; i094 Entkleiden kritisch, sonst tiefere Verätzung; i095 Atropin + Entkleiden + O₂ stabilisieren, ohne Dekontamination Rückfall; i096 Entkleiden statt Spülen; i097 Entkleiden und Wärmeerhalt kritisch, Durchblutungsstörung ohne Schiene bestätigt (S3); i098 Tütenrückatmung schädlich, Entkleiden kritisch; i099 Liegezeit und Totenzeichen stimmig, H₂S-Hinweis; i100 Entkleiden statt Spülen, großflächiges Kühlen schädlich, SK IV begründet (ABSI ~13)
+- weiter nicht abbildbar: Isolieren und Registrieren (i098), ärztliche Sichtung (i100)

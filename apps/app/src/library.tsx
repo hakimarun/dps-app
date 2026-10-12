@@ -393,7 +393,7 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
           {playing.job && <Text style={{ color: jobLine(t, playing.job).color ?? t.quiet }}>{jobLine(t, playing.job).text}</Text>}
           <Text style={{ color: t.quiet }}>Neue KI-Patienten sind spielbar, sobald sie die automatische Prüfung bestehen; fehlerhafte stehen unter „Fälle“ mit Prüfbericht.</Text>
           {playing.patients.map((id) => {
-            const p = byId.get(id);
+            const p = byId.get(id) ?? byId.get(id.replace(/-\d+$/, "")); // "i011-2": zweite Karte von i011
             return (
               <Row key={id} t={t} color={p?.sk ? skColor(t, p.sk) : t.line} title={`${id.toUpperCase()} ${p?.title ?? ""}`} onPress={() => {}}
                 lines={[{ text: `SK ${p?.sk ?? "–"} · ${p ? ORIGIN_CASE[p.origin] : ""}` }]} />

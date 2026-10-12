@@ -1,20 +1,21 @@
 {
-  "id": "i088", "version": 1, "title": "Einsetzende Geburt (Austreibungsphase)",
+  "id": "i088", "version": 2, "title": "Einsetzende Geburt (Austreibungsphase)",
   "picture": "Frau, ca. 25 Jahre, hochschwanger, liegt auf einer Matte in der Notunterkunft. Hose nass, stöhnt alle zwei Minuten laut auf und presst mit. Ruft: \"Es kommt, ich muss drücken!\"",
   "profile": { "temperament": "ängstlich", "speech": "zwischen den Wehen ganze Sätze, während der Wehe nur Stöhnen",
     "anamnesis": { "symptoms": "Die Wehen kommen alle zwei Minuten, und ich muss so pressen.", "allergies": "Nein.", "medication": "Nur Eisentabletten.", "history": "Es ist mein drittes Kind, die anderen kamen beide schnell. Ich bin in der 39. Woche.", "lastMeal": "Gestern Abend.", "event": "Vor einer halben Stunde ist die Fruchtblase geplatzt, das Wasser war klar.", "risk": "Ich schaffe es nicht mehr ins Krankenhaus." },
-    "pitfall": "Eine normale Geburt ist kein Notfall, bindet aber zwei Helfer und braucht Hebamme oder Arzt. Das Neugeborene kühlt ohne Wärmeerhalt schnell aus." },
+    "pitfall": "Eine normale Geburt ist kein Notfall, bindet aber zwei Helfer und braucht Hebamme oder Arzt. Das Neugeborene kühlt ohne Abtrocknen und Wärmeerhalt schnell aus. Es wird hier im Befund der Mutter beschrieben, nicht als eigener Patient." },
   "meta": { "category": "Gynäkologie/Geburt", "tags": ["Geburt", "Neugeborenes"], "difficulty": "fortgeschritten" },
-  "scoring": { "critical": [{ "actions": ["calm"], "within": 15 }, { "actions": ["warm"], "within": 30 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["birth_assist"], "within": 15 }, { "actions": ["newborn_care", "warm"], "within": 30 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 98, "hr": 100, "bp": "125/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 8,
     "exam": { "abdomen": "Wehen alle 2 Minuten, Gebärmutter in der Wehe hart, dazwischen weich", "bodycheck": "unverletzt, Fruchtwasser klar, Kopf in der Wehe in der Scheide sichtbar" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["warm"], "then": "2-vorbereitet" }], "else": "2" },
-    "2": { "findings": { "hr": 110, "pain": 9, "exam": { "abdomen": "Gebärmutter fest, in Nabelhöhe", "bodycheck": "Kind geboren, schreit, nass, liegt ungeschützt auf der Matte; Nabelschnur noch nicht abgenabelt; geringe Blutung" } }, "rules": [{ "when": ["warm"], "then": "3-warm" }], "else": "3-kalt" },
+    "1": { "rules": [{ "when": ["birth_assist", "newborn_care"], "then": "2-vorbereitet" }, { "when": ["birth_assist"], "then": "2-begleitet" }], "else": "2" },
+    "2": { "findings": { "hr": 110, "pain": 9, "exam": { "abdomen": "Gebärmutter fest, in Nabelhöhe", "bodycheck": "Kind geboren, schreit, nass, liegt ungeschützt auf der Matte; Nabelschnur noch nicht abgenabelt; geringe Blutung" } }, "rules": [{ "when": ["newborn_care"], "then": "3-warm" }, { "when": ["warm"], "then": "3-warm" }], "else": "3-kalt" },
+    "2-begleitet": { "findings": { "hr": 105, "pain": 9, "exam": { "abdomen": "Gebärmutter fest, in Nabelhöhe", "bodycheck": "Kind kontrolliert geboren, schreit, liegt nass auf dem Bauch der Mutter; Nabelschnur noch nicht abgenabelt; geringe Blutung" } }, "rules": [{ "when": ["newborn_care"], "then": "3-warm" }, { "when": ["warm"], "then": "3-warm" }], "else": "3-kalt" },
     "2-vorbereitet": { "findings": { "hr": 105, "pain": 9, "exam": { "abdomen": "Gebärmutter fest, in Nabelhöhe", "bodycheck": "Kind geboren, schreit kräftig, abgetrocknet und in Decke auf dem Bauch der Mutter; geringe Blutung" } }, "else": "3-warm" },
     "3-warm": { "findings": { "rr": 18, "hr": 92, "bp": "120/75", "pain": 3, "exam": { "abdomen": "Gebärmutter fest, unterhalb des Nabels", "bodycheck": "Kind rosig, warm, trinkt an der Brust; Plazenta geboren, geringe Blutung" } } },
-    "3-kalt": { "findings": { "rr": 18, "hr": 95, "bp": "120/75", "pain": 3, "exam": { "abdomen": "Gebärmutter fest, unterhalb des Nabels", "bodycheck": "Kind schreit schwach, Hände und Füße bläulich, fühlt sich kühl an; geringe Blutung" } }, "rules": [{ "when": ["warm"], "then": "3-warm" }], "else": "4-kalt" },
-    "4-kalt": { "findings": { "rr": 18, "hr": 95, "bp": "120/75", "pain": 3, "exam": { "abdomen": "Gebärmutter fest, unterhalb des Nabels", "bodycheck": "Kind kaum noch aktiv, schlaff, kalt, Haut fleckig blass" } }, "rules": [{ "when": ["warm"], "then": "3-warm" }] }
+    "3-kalt": { "findings": { "rr": 18, "hr": 95, "bp": "120/75", "pain": 3, "exam": { "abdomen": "Gebärmutter fest, unterhalb des Nabels", "bodycheck": "Kind schreit schwach, Hände und Füße bläulich, fühlt sich kühl an; geringe Blutung" } }, "rules": [{ "when": ["newborn_care"], "then": "3-warm" }, { "when": ["warm"], "then": "3-warm" }], "else": "4-kalt" },
+    "4-kalt": { "findings": { "rr": 18, "hr": 95, "bp": "120/75", "pain": 3, "exam": { "abdomen": "Gebärmutter fest, unterhalb des Nabels", "bodycheck": "Kind kaum noch aktiv, schlaff, kalt, Haut fleckig blass" } }, "rules": [{ "when": ["newborn_care"], "then": "3-warm" }, { "when": ["warm"], "then": "3-warm" }] }
   }
 }

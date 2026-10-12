@@ -10,12 +10,12 @@ export const TOPICS: [string, string][] = [
 export const NUMS: [string, string][] = [["rr", "AF /min"], ["hr", "HF /min"], ["bp", "RR mmHg, z. B. 120/80"], ["spo2", "SpO₂ %"], ["recap", "Rekap s"], ["gcs", "GCS 3–15"], ["pain", "Schmerz 0–10"], ["temp", "Temperatur °C"]];
 export const BOOLS: [string, string][] = [
   ["walking", "gehfähig"], ["breathing", "atmet"], ["radialPulse", "Radialispuls tastbar"], ["followsCommands", "befolgt Aufforderungen"],
-  ["spurtingBleeding", "spritzende Blutung"], ["stridor", "Stridor"], ["lethalInjury", "tödliche Verletzung"],
+  ["spurtingBleeding", "spritzende Blutung"], ["stridor", "Stridor"], ["lethalInjury", "tödliche Verletzung"], ["child", "Kind (kindgerechte Sichtung)"],
 ];
 export const EXAMS: [string, string][] = [
   ["ecg", "EKG, z. B. Sinustachykardie, STEMI, Kammerflimmern"], ["glucose", "Blutzucker, z. B. 38 mg/dl"], ["auscultation", "Auskultation"],
   ["percussion", "Perkussion"], ["pupils", "Pupillen"], ["motor", "Motorik"], ["pelvis", "Becken"], ["abdomen", "Bauch"], ["burn", "Verbrennung"],
-  ["airway", "Atemweg"], ["bodycheck", "Bodycheck"],
+  ["airway", "Atemweg"], ["bodycheck", "Bodycheck"], ["spco", "CO-Messung"], ["befast", "BE-FAST"], ["death", "Todeszeichen"],
 ];
 
 // Formularzustand: alles als Text, damit halbe Eingaben nicht verloren gehen. "" heißt leer bzw. unverändert.
@@ -66,6 +66,9 @@ export function fromPatient(p: Patient): Form {
   };
 }
 
+// "Kind" nur speichern, wenn angekreuzt; Erwachsenen-Fälle bleiben ohne das Feld.
+const bools = ({ child, ...rest }: Record<string, boolean>) => ({ ...rest, ...(child ? { child: true } : {}) });
+
 // Formular → Bibliotheksformat; leere Felder fallen weg.
 export function toPatient(f: Form): Record<string, unknown> {
   const clean = (o: Record<string, string>) => Object.fromEntries(Object.entries(o).filter(([, v]) => v.trim() !== "").map(([k, v]) => [k, v.trim()]));
@@ -76,7 +79,7 @@ export function toPatient(f: Form): Record<string, unknown> {
     profile: { ...f.extra, temperament: f.temperament.trim(), pitfall: f.pitfall.trim(), anamnesis: clean(f.anamnesis) },
     meta: { category: f.category, difficulty: f.difficulty, tags: f.tags.split(",").map((x) => x.trim()).filter(Boolean) },
     scoring: { critical: f.critical.filter((c) => c.actions.length).map((c) => ({ actions: c.actions, within: num(c.within) ?? 15 })), harmful: f.harmful },
-    base: { ...nums(f.nums), ...f.bools, exam: clean(f.exam) },
+    base: { ...nums(f.nums), ...bools(f.bools), exam: clean(f.exam) },
     start: f.phases[0]?.id ?? "1",
     phases: Object.fromEntries(f.phases.map((ph) => [ph.id, {
       ...(num(ph.minutes) ? { minutes: num(ph.minutes) } : {}),

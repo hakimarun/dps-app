@@ -1,7 +1,7 @@
 {
   "id": "s063",
   "title": "Erdrutsch auf Wohngebiet",
-  "situation": "Hangrutsch verschüttet mehrere Häuser. Kräfte laut Planung: 2 RTW, 1 NEF, THW, Ortungstechnik. Besonderheiten: Verschüttete, Nachrutschgefahr. Lernziel: Verschüttetenrettung über Stunden planen. Die Idee sieht 12 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Hangrutsch verschüttet mehrere Häuser. Kräfte laut Planung: 2 RTW, 1 NEF, THW, Ortungstechnik. Besonderheiten: Verschüttete, Nachrutschgefahr. Lernziel: Verschüttetenrettung über Stunden planen. 12 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I010-2).",
   "patients": [
     "i010",
     "i077",
@@ -9,7 +9,12 @@
     "i026",
     "i004",
     "i053",
-    "p04"
+    "p04",
+    "i010-2",
+    "i077-2",
+    "i059-2",
+    "i026-2",
+    "i004-2"
   ],
   "units": [
     {

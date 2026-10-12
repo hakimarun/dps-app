@@ -1,14 +1,18 @@
 {
   "id": "s018",
   "title": "Notbremsung im vollen Pendlerzug",
-  "situation": "Schnellbremsung eines vollen Pendlerzuges, viele gestürzte Fahrgäste. Kräfte laut Planung: 2 RTW, 1 KTW. Besonderheiten: Gleisbereich, Viele Gehfähige. Lernziel: Leichtverletztenlage strukturieren, keine Übertriage. Die Idee sieht 10 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Schnellbremsung eines vollen Pendlerzuges, viele gestürzte Fahrgäste. Kräfte laut Planung: 2 RTW, 1 KTW. Besonderheiten: Gleisbereich, Viele Gehfähige. Lernziel: Leichtverletztenlage strukturieren, keine Übertriage. 10 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I008-2).",
   "patients": [
     "i008",
     "i019",
     "i018",
     "i091",
     "i052",
-    "p09"
+    "p09",
+    "i008-2",
+    "i019-2",
+    "i018-2",
+    "i091-2"
   ],
   "units": [
     {

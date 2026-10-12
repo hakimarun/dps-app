@@ -1,6 +1,6 @@
 {
   "id": "i005",
-  "version": 1,
+  "version": 2,
   "title": "Pfählungsverletzung Oberschenkel",
   "picture": "Frau, ca. 35 Jahre, sitzt am Boden. Ein Metallstab steckt im linken Bein oberhalb des Knies, kaum Blut. Sie greift immer wieder nach dem Stab: „Zieht das raus, zieht das sofort raus!“",
   "profile": {
@@ -29,8 +29,7 @@
     "critical": [
       {
         "actions": [
-          "wound_dressing",
-          "pressure_dressing"
+          "impaled_fix"
         ],
         "within": 15
       },
@@ -65,13 +64,7 @@
       "rules": [
         {
           "when": [
-            "wound_dressing"
-          ],
-          "then": "2-fixiert"
-        },
-        {
-          "when": [
-            "pressure_dressing"
+            "impaled_fix"
           ],
           "then": "2-fixiert"
         },
@@ -82,7 +75,7 @@
           "then": "2-beruhigt"
         }
       ],
-      "else": "2-herausgezogen"
+      "else": "2-unruhig"
     },
     "2-beruhigt": {
       "findings": {
@@ -92,18 +85,12 @@
       "rules": [
         {
           "when": [
-            "wound_dressing"
-          ],
-          "then": "2-fixiert"
-        },
-        {
-          "when": [
-            "pressure_dressing"
+            "impaled_fix"
           ],
           "then": "2-fixiert"
         }
       ],
-      "else": "2-herausgezogen"
+      "else": "2-unruhig"
     },
     "2-fixiert": {
       "findings": {
@@ -157,6 +144,13 @@
             "wound_packing"
           ],
           "then": "3-abgebunden"
+        },
+        {
+          "when": [],
+          "active": [
+            "manual_compression"
+          ],
+          "then": "3-komprimiert"
         }
       ],
       "else": "3-schock"
@@ -264,6 +258,60 @@
           "bodycheck": "Blutung am linken Oberschenkel gestillt"
         }
       }
+    },
+    "2-unruhig": {
+      "findings": {
+        "rr": 26,
+        "hr": 112,
+        "pain": 8,
+        "exam": {
+          "bodycheck": "Metallstab im linken Oberschenkel innen, sie zerrt daran; frische Blutung an der Eintrittsstelle; Fußpulse tastbar, Fuß warm"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "impaled_fix"
+          ],
+          "then": "2-fixiert"
+        }
+      ],
+      "else": "2-herausgezogen"
+    },
+    "3-komprimiert": {
+      "findings": {
+        "spurtingBleeding": false,
+        "rr": 28,
+        "hr": 125,
+        "bp": "100/65",
+        "recap": 3,
+        "pain": 9,
+        "exam": {
+          "bodycheck": "Wunde innen am linken Oberschenkel wird abgedrückt, Blutung steht nur unter Kompression"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "tourniquet"
+          ],
+          "then": "3-abgebunden"
+        },
+        {
+          "when": [
+            "wound_packing"
+          ],
+          "then": "3-abgebunden"
+        },
+        {
+          "when": [],
+          "active": [
+            "manual_compression"
+          ],
+          "then": "3-komprimiert"
+        }
+      ],
+      "else": "3-schock"
     }
   }
 }

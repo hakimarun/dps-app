@@ -1,14 +1,15 @@
 {
   "id": "s006",
   "title": "Motorradgruppe in Kurve verunglückt",
-  "situation": "Drei Motorräder einer Gruppe kollidieren in einer Kurve, ein Beifahrer leblos. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Ländlicher Raum, Lange Anfahrt. Lernziel: Priorisierung bei kleiner Lage und weit entfernten Kliniken. Die Idee sieht 7 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Drei Motorräder einer Gruppe kollidieren in einer Kurve, ein Beifahrer leblos. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Ländlicher Raum, Lange Anfahrt. Lernziel: Priorisierung bei kleiner Lage und weit entfernten Kliniken. 7 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I002-2).",
   "patients": [
     "i002",
     "i012",
     "i019",
     "i025",
     "p01",
-    "p07"
+    "p07",
+    "i002-2"
   ],
   "units": [
     {

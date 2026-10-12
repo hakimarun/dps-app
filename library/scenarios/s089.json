@@ -1,7 +1,7 @@
 {
   "id": "s089",
   "title": "Krankenhausevakuierung bei Hochwasser",
-  "situation": "Krankenhaus muss wegen Hochwasser geräumt werden, Intensivpatienten betroffen. Kräfte laut Planung: 6 RTW, 3 NEF, ITW, OrgL, LNA. Besonderheiten: Hochwasser, Beatmete Patienten, Lange Lage. Lernziel: Transportkapazitäten priorisieren und Übergaben organisieren. Die Idee sieht 31 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Krankenhaus muss wegen Hochwasser geräumt werden, Intensivpatienten betroffen. Kräfte laut Planung: 6 RTW, 3 NEF, ITW, OrgL, LNA. Besonderheiten: Hochwasser, Beatmete Patienten, Lange Lage. Lernziel: Transportkapazitäten priorisieren und Übergaben organisieren. 31 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I058-2).",
   "patients": [
     "i058",
     "i033",
@@ -9,7 +9,31 @@
     "i054",
     "i055",
     "i088",
-    "i049"
+    "i049",
+    "i058-2",
+    "i033-2",
+    "i036-2",
+    "i054-2",
+    "i055-2",
+    "i088-2",
+    "i049-2",
+    "i058-3",
+    "i033-3",
+    "i036-3",
+    "i054-3",
+    "i055-3",
+    "i088-3",
+    "i049-3",
+    "i058-4",
+    "i033-4",
+    "i036-4",
+    "i054-4",
+    "i055-4",
+    "i088-4",
+    "i049-4",
+    "i058-5",
+    "i033-5",
+    "i036-5"
   ],
   "units": [
     {

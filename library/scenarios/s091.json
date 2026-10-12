@@ -1,14 +1,20 @@
 {
   "id": "s091",
   "title": "Brand in einem Dialysezentrum",
-  "situation": "Brand im Dialysezentrum während laufender Behandlungen. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Rauch, Vorerkrankte. Lernziel: Vorerkrankte Patienten evakuieren und sichten. Die Idee sieht 12 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Brand im Dialysezentrum während laufender Behandlungen. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Rauch, Vorerkrankte. Lernziel: Vorerkrankte Patienten evakuieren und sichten. 12 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
     "i033",
     "i054",
     "i029",
-    "i053"
+    "i053",
+    "i071-2",
+    "i067-2",
+    "i033-2",
+    "i054-2",
+    "i029-2",
+    "i053-2"
   ],
   "units": [
     {

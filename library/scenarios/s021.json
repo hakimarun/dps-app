@@ -1,14 +1,17 @@
 {
   "id": "s021",
   "title": "Gedränge am Bahnsteig nach Spiel",
-  "situation": "Überfüllter Bahnsteig nach Fußballspiel, mehrere Personen ins Gleis gedrängt worden, Zugverkehr gestoppt. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Menschenmenge, Alkohol. Lernziel: Sichtung inmitten einer Menschenmenge. Die Idee sieht 9 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Überfüllter Bahnsteig nach Fußballspiel, mehrere Personen ins Gleis gedrängt worden, Zugverkehr gestoppt. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Menschenmenge, Alkohol. Lernziel: Sichtung inmitten einer Menschenmenge. 9 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I068-2).",
   "patients": [
     "i068",
     "i023",
     "i018",
     "i008",
     "i082",
-    "p09"
+    "p09",
+    "i068-2",
+    "i023-2",
+    "i018-2"
   ],
   "units": [
     {

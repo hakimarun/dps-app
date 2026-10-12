@@ -1,14 +1,24 @@
 {
   "id": "s084",
   "title": "Brand in einer Kindertagesstätte",
-  "situation": "Brand in Kita, Kinder werden von Erziehern ins Freie gebracht. Kräfte laut Planung: 2 RTW, 1 NEF, Kinder-Notarzt; nach 15 min 2 RTW. Besonderheiten: Kinder, Rauch, Eltern an der Einsatzstelle. Lernziel: Kindersichtung, Registrierung und Elternbetreuung. Die Idee sieht 16 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Brand in Kita, Kinder werden von Erziehern ins Freie gebracht. Kräfte laut Planung: 2 RTW, 1 NEF, Kinder-Notarzt; nach 15 min 2 RTW. Besonderheiten: Kinder, Rauch, Eltern an der Einsatzstelle. Lernziel: Kindersichtung, Registrierung und Elternbetreuung. 16 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i062",
     "i051",
     "i046",
     "i085",
-    "i045"
+    "i045",
+    "i071-2",
+    "i062-2",
+    "i051-2",
+    "i046-2",
+    "i085-2",
+    "i045-2",
+    "i071-3",
+    "i062-3",
+    "i051-3",
+    "i046-3"
   ],
   "units": [
     {

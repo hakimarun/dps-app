@@ -1,7 +1,7 @@
 {
   "id": "s100",
   "title": "Massensturz beim Radrennen",
-  "situation": "Massensturz im Hauptfeld bei hoher Geschwindigkeit. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 1 NEF, RTH. Besonderheiten: Weitläufige Strecke, Schaulustige. Lernziel: Sichtung auf langer Strecke mit Sanitätsdienst. Die Idee sieht 17 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Massensturz im Hauptfeld bei hoher Geschwindigkeit. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 1 NEF, RTH. Besonderheiten: Weitläufige Strecke, Schaulustige. Lernziel: Sichtung auf langer Strecke mit Sanitätsdienst. 17 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I009-2).",
   "patients": [
     "i009",
     "i012",
@@ -9,7 +9,17 @@
     "i021",
     "i006",
     "i008",
-    "p07"
+    "p07",
+    "i009-2",
+    "i012-2",
+    "i019-2",
+    "i021-2",
+    "i006-2",
+    "i008-2",
+    "p07-2",
+    "i009-3",
+    "i012-3",
+    "i019-3"
   ],
   "units": [
     {

@@ -1,13 +1,17 @@
 {
   "id": "s098",
   "title": "Pferdepanik beim Reitturnier",
-  "situation": "Pferde scheuen und laufen in den Zuschauerbereich. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Tiere, Kinder. Lernziel: Stumpfes Trauma bei scheinbar Leichtverletzten. Die Idee sieht 9 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Pferde scheuen und laufen in den Zuschauerbereich. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Tiere, Kinder. Lernziel: Stumpfes Trauma bei scheinbar Leichtverletzten. 9 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I007-2).",
   "patients": [
     "i007",
     "i047",
     "i008",
     "i057",
-    "p08"
+    "p08",
+    "i007-2",
+    "i047-2",
+    "i008-2",
+    "i057-2"
   ],
   "units": [
     {

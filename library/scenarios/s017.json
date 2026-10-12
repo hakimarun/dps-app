@@ -1,7 +1,7 @@
 {
   "id": "s017",
   "title": "Regionalzug gegen Traktor am Bahnübergang",
-  "situation": "Regionalzug nach Kollision teilweise entgleist, Traktorfahrer eingeklemmt. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; nach 15 min 4 RTW. Besonderheiten: Gleisbereich, Ländlicher Raum. Lernziel: Einsatzstelle in Gleisbereich sichern lassen und Kräfte bündeln. Die Idee sieht 24 Betroffene vor; enthalten sind 10 typische Fälle.",
+  "situation": "Regionalzug nach Kollision teilweise entgleist, Traktorfahrer eingeklemmt. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL; nach 15 min 4 RTW. Besonderheiten: Gleisbereich, Ländlicher Raum. Lernziel: Einsatzstelle in Gleisbereich sichern lassen und Kräfte bündeln. 24 Betroffene aus 10 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I011-2).",
   "patients": [
     "i011",
     "i006",
@@ -12,7 +12,21 @@
     "i029",
     "i026",
     "p07",
-    "p08"
+    "p08",
+    "i011-2",
+    "i006-2",
+    "i007-2",
+    "i012-2",
+    "i057-2",
+    "i008-2",
+    "i029-2",
+    "i026-2",
+    "p07-2",
+    "p08-2",
+    "i011-3",
+    "i006-3",
+    "i007-3",
+    "i012-3"
   ],
   "units": [
     {

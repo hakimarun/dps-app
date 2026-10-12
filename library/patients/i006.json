@@ -1,6 +1,6 @@
 {
   "id": "i006",
-  "version": 1,
+  "version": 2,
   "title": "Rippenserienfraktur mit instabilem Thorax",
   "picture": "Mann, ca. 50 Jahre, sitzt auf dem Fahrersitz und presst die Hand gegen die rechte Brustseite. Ein Teil der Brustwand sinkt beim Einatmen ein, statt sich zu heben. Atmet schnell und flach, spricht nur kurze Sätze: „Tut so weh … beim Atmen.“",
   "profile": {
@@ -221,6 +221,13 @@
             "intubation"
           ],
           "then": "intubiert"
+        },
+        {
+          "when": [],
+          "active": [
+            "bag_valve"
+          ],
+          "then": "4-beatmet"
         }
       ],
       "else": "tot"
@@ -256,6 +263,33 @@
         "followsCommands": false,
         "pain": 0
       }
+    },
+    "4-beatmet": {
+      "findings": {
+        "rr": 14,
+        "spo2": 88,
+        "hr": 128,
+        "bp": "110/65",
+        "recap": 3,
+        "gcs": 9,
+        "followsCommands": false
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        },
+        {
+          "when": [],
+          "active": [
+            "bag_valve"
+          ],
+          "then": "4-beatmet"
+        }
+      ],
+      "else": "4"
     }
   }
 }

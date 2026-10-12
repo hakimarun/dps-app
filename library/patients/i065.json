@@ -5,7 +5,7 @@
     "anamnesis": { "symptoms": "Ich friere, und das Schlucken tut weh.", "allergies": "Keine.", "medication": "Tabletten für den Blutdruck.", "history": "Hoher Blutdruck, sonst nichts.", "lastMeal": "Heute Abend.", "event": "Ich bin aus dem brennenden Zimmer nicht rausgekommen, bis die Feuerwehr kam.", "risk": "Ich möchte meiner Frau noch etwas sagen." },
     "pitfall": "wirkt durch das klare Gespräch weniger schwer verletzt; nach ärztlicher Entscheidung SK IV braucht er trotzdem Analgesie, Wärme und Begleitung" },
   "meta": { "category": "Verbrennung", "tags": ["Verbrennung", "SK IV", "Ethik", "SK IV (abwartend)"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["analgesia"], "within": 30 }, { "actions": ["warm"], "within": 30 }], "harmful": ["cool_large"] },
+  "scoring": { "critical": [{ "actions": ["analgesia"], "within": 30 }, { "actions": ["warm"], "within": 30 }, { "actions": ["palliative", "psnv"], "within": 45 }], "harmful": ["cool_large"] },
   "base": { "walking": false, "breathing": true, "rr": 32, "spo2": 92, "hr": 125, "bp": "110/70", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "pain": 4, "temp": 35.8,
     "exam": { "burn": "ca. 90 % KOF, überwiegend 3. Grad, auch zirkulär an Rumpf und Gliedmaßen", "airway": "Ruß im Mund, versengte Nasenhaare, heiser, Schleimhaut geschwollen", "auscultation": "beidseits leises Giemen" } },
   "start": "1",
@@ -17,6 +17,6 @@
     "2-palliativ": { "minutes": 30, "findings": { "rr": 30, "spo2": 89, "hr": 125, "bp": "95/60", "stridor": true, "temp": 35.6, "pain": 1, "exam": { "airway": "zunehmend heiser, inspiratorischer Stridor" } }, "else": "3-palliativ" },
     "3-palliativ": { "minutes": 30, "findings": { "rr": 30, "spo2": 84, "hr": 130, "bp": "75/45", "radialPulse": false, "recap": 5, "stridor": true, "gcs": 13, "temp": 35.2, "pain": 1, "exam": { "airway": "deutlicher Stridor, Zunge geschwollen" } }, "else": "4-palliativ" },
     "4-palliativ": { "minutes": 30, "findings": { "rr": 10, "spo2": 72, "hr": 140, "bp": "60 palp.", "radialPulse": false, "recap": 6, "stridor": true, "gcs": 8, "followsCommands": false, "temp": 34.8, "pain": 0, "exam": { "airway": "fast vollständig verlegt" } }, "else": "tot" },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "stridor": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "stridor": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "death": "keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr; Verbrennung ca. 90 % KOF mit Inhalationstrauma, Tod ärztlich festgestellt" } } }
   }
 }

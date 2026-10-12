@@ -22,9 +22,11 @@
     "2-aspiration": { "findings": { "rr": 26, "spo2": 86, "hr": 112, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "3" },
     "3": { "findings": { "rr": 32, "spo2": 79, "hr": 128, "bp": "100/60", "recap": 3, "gcs": 6, "temp": 34.9, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "tot" },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
-    "3-aspiration-versorgt": { "findings": { "rr": 22, "spo2": 91, "hr": 104, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche" } } },
-    "2-seitenlage": { "findings": { "spo2": 95, "hr": 92, "temp": 35.5 }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }], "else": "3-seitenlage" },
-    "3-seitenlage": { "findings": { "spo2": 95, "hr": 88, "gcs": 7, "temp": 35.0, "exam": { "glucose": "48 mg/dl" } }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }] },
-    "stabil": { "findings": { "spo2": 96, "hr": 86, "gcs": 10, "temp": 35.8, "exam": { "glucose": "112 mg/dl" } } }
+    "3-aspiration-versorgt": { "findings": { "rr": 22, "spo2": 91, "hr": 104, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["glucose"], "then": "aspiration-glukose" }] },
+    "aspiration-glukose": { "findings": { "rr": 20, "spo2": 92, "hr": 98, "gcs": 9, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche", "glucose": "108 mg/dl" } } },
+    "2-seitenlage": { "findings": { "spo2": 95, "hr": 92, "temp": 35.5 }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }, { "when": ["glucose"], "then": "stabil-kuehl" }], "else": "3-seitenlage" },
+    "3-seitenlage": { "findings": { "spo2": 95, "hr": 88, "gcs": 7, "temp": 35.0, "exam": { "glucose": "48 mg/dl" } }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }, { "when": ["glucose"], "then": "stabil-kuehl" }] },
+    "stabil-kuehl": { "findings": { "spo2": 95, "hr": 88, "gcs": 10, "temp": 34.9, "exam": { "glucose": "110 mg/dl" } }, "rules": [{ "when": ["warm"], "then": "stabil" }] },
+    "stabil": { "findings": { "spo2": 96, "hr": 86, "gcs": 10, "temp": 35.6, "exam": { "glucose": "112 mg/dl" } } }
   }
 }

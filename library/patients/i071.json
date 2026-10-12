@@ -42,6 +42,12 @@
       },
       {
         "actions": [
+          "spco"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
           "handover"
         ],
         "within": 45
@@ -66,7 +72,8 @@
       "airway": "Ruß in Nase und Mund, Nasenhaare angesengt, keine Schwellung, Stimme klar",
       "burn": "keine Verbrennungen der Haut",
       "bodycheck": "Ruß im Gesicht, keine Verletzungen",
-      "ecg": "Sinusrhythmus"
+      "ecg": "Sinusrhythmus",
+      "spco": "SpCO 12 % (Raucher, Grundwert sonst um 5 %)"
     }
   },
   "start": "1",
@@ -89,7 +96,8 @@
         "hr": 108,
         "pain": 4,
         "exam": {
-          "airway": "Ruß in Nase und Mund, Rachen gerötet, Stimme heiser"
+          "airway": "Ruß in Nase und Mund, Rachen gerötet, Stimme heiser",
+          "spco": "SpCO 13 %"
         }
       },
       "rules": [
@@ -112,7 +120,8 @@
         "pain": 5,
         "exam": {
           "airway": "Rachen geschwollen, Stimme heiser, inspiratorischer Stridor",
-          "auscultation": "Giemen beidseits"
+          "auscultation": "Giemen beidseits",
+          "spco": "SpCO 12 %"
         }
       },
       "rules": [
@@ -135,7 +144,8 @@
         "stridor": false,
         "pain": 0,
         "exam": {
-          "airway": "intubiert, Ruß in Nase und Mund"
+          "airway": "intubiert, Ruß in Nase und Mund",
+          "spco": "SpCO 5 % unter Beatmung mit 100 % Sauerstoff"
         }
       }
     },
@@ -145,7 +155,8 @@
         "spo2": 98,
         "hr": 92,
         "exam": {
-          "airway": "Ruß in Nase und Mund, Stimme leicht heiser"
+          "airway": "Ruß in Nase und Mund, Stimme leicht heiser",
+          "spco": "SpCO 8 % unter Sauerstoff"
         }
       },
       "else": "3-sauerstoff"
@@ -158,7 +169,8 @@
         "stridor": true,
         "pain": 3,
         "exam": {
-          "airway": "Rachen geschwollen, Stimme deutlich heiser, leiser inspiratorischer Stridor – Schwellung nimmt trotz Sauerstoff zu"
+          "airway": "Rachen geschwollen, Stimme deutlich heiser, leiser inspiratorischer Stridor – Schwellung nimmt trotz Sauerstoff zu",
+          "spco": "SpCO 5 % unter Sauerstoff"
         }
       },
       "rules": [

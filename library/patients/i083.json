@@ -1,18 +1,18 @@
 {
-  "id": "i083", "version": 1, "title": "Unfallverursacher mit Suizidgedanken",
+  "id": "i083", "version": 2, "title": "Unfallverursacher mit Suizidgedanken",
   "picture": "Mann, ca. 35 Jahre, sitzt am Straßenrand und weint. Keine sichtbaren Verletzungen. Sagt immer wieder: \"Ich hab alles kaputt gemacht, ich will nicht mehr leben.\"",
   "profile": { "temperament": "ängstlich", "speech": "leise, stockend, weint; ab Phase 2 steht er auf und will weg",
     "anamnesis": { "symptoms": "Mir tut nichts weh. Ich will einfach nicht mehr.", "allergies": "Nein.", "medication": "Ich nehme seit ein paar Monaten Sertralin.", "history": "Ich hatte letztes Jahr eine Depression.", "lastMeal": "Ich hab heute nichts gegessen.", "event": "Ich hab nur kurz aufs Handy geschaut, dann bin ich in den Bus gefahren. Das ist alles meine Schuld.", "risk": "Am besten laufe ich einfach auf die Straße." },
     "pitfall": "Äußert konkrete Gedanken an Selbsttötung. Wer ihn allein lässt oder ihm Vorwürfe macht, riskiert, dass er auf die Fahrbahn läuft." },
   "meta": { "category": "Psychiatrie", "tags": ["Psyche", "Selbstgefährdung"], "difficulty": "fortgeschritten" },
-  "scoring": { "critical": [{ "actions": ["calm"], "within": 10 }, { "actions": ["handover"], "within": 30 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["calm"], "within": 10 }, { "actions": ["psnv", "handover"], "within": 30 }], "harmful": [] },
   "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 98, "hr": 100, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 1,
     "exam": { "bodycheck": "Gurtmarke über der linken Schulter, sonst unverletzt", "pupils": "mittelweit, seitengleich, prompt" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "2" },
-    "2": { "findings": { "rr": 22, "hr": 112, "bp": "150/90" }, "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "3" },
-    "3": { "findings": { "rr": 24, "hr": 120, "bp": "150/90", "pain": 4, "exam": { "bodycheck": "beim Weglaufen auf der Fahrbahn gestürzt: Schürfwunden an Händen und Knien, Prellung der rechten Hüfte, Gurtmarke über der linken Schulter" } }, "rules": [{ "when": ["calm"], "then": "3-betreut" }] },
+    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }, { "when": ["psnv"], "then": "betreut" }], "else": "2" },
+    "2": { "findings": { "rr": 22, "hr": 112, "bp": "150/90" }, "rules": [{ "when": ["calm"], "then": "betreut" }, { "when": ["psnv"], "then": "betreut" }], "else": "3" },
+    "3": { "findings": { "rr": 24, "hr": 120, "bp": "150/90", "pain": 4, "exam": { "bodycheck": "beim Weglaufen auf der Fahrbahn gestürzt: Schürfwunden an Händen und Knien, Prellung der rechten Hüfte, Gurtmarke über der linken Schulter" } }, "rules": [{ "when": ["calm"], "then": "3-betreut" }, { "when": ["psnv"], "then": "3-betreut" }] },
     "betreut": { "findings": { "rr": 16, "hr": 88, "bp": "130/80" } },
     "3-betreut": { "findings": { "rr": 18, "hr": 95, "bp": "135/85", "pain": 4, "exam": { "bodycheck": "beim Weglaufen auf der Fahrbahn gestürzt: Schürfwunden an Händen und Knien, Prellung der rechten Hüfte, Gurtmarke über der linken Schulter" } } }
   }

@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { apply, defaultSettings, describe, ecgOf, initial, liveFindings, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
+import { apply, defaultSettings, describe, ecgOf, initial, liveFindings, targetSk, tick, triage, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
 
 const lib = new URL("../../../library/", import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, lib), "utf8"));
@@ -266,4 +266,12 @@ test("Zufallselemente: später entdeckte Patienten und Verlaufsvarianten", () =>
   assert.ok(a.every((x) => x >= 0.8 && x <= 1.2));
   assert.deepEqual(a, paces(1, true)); // reproduzierbar
   assert.notDeepEqual(a, b);
+});
+
+test("Sichtung Kinder: kindgerechte Atemgrenzen (JumpSTART), sonst wie mSTaRT", () => {
+  const f = { walking: false, breathing: true, rr: 40, hr: 140, radialPulse: true, gcs: 15, followsCommands: true, lethalInjury: false, spurtingBleeding: false, stridor: false, exam: {} };
+  assert.equal(triage(f, "mstart"), "I"); // Erwachsener: über 30/min
+  assert.equal(triage({ ...f, child: true }, "mstart"), "II"); // Kind: 40/min ist noch in Ordnung
+  assert.equal(triage({ ...f, child: true, rr: 50 }, "mstart"), "I");
+  assert.equal(triage({ ...f, child: true, rr: 12 }, "mstart"), "I");
 });

@@ -1,13 +1,18 @@
 {
   "id": "s058",
   "title": "Standbrand auf dem Weihnachtsmarkt",
-  "situation": "Gasflasche an einem Imbissstand in Brand geraten. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kälte, Menschenmenge. Lernziel: Kleine Verbrennungslage mit Gehfähigen. Die Idee sieht 10 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Gasflasche an einem Imbissstand in Brand geraten. Kräfte laut Planung: 2 RTW, 1 NEF. Besonderheiten: Kälte, Menschenmenge. Lernziel: Kleine Verbrennungslage mit Gehfähigen. 10 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I060-2).",
   "patients": [
     "i060",
     "i061",
     "i062",
     "i071",
-    "p09"
+    "p09",
+    "i060-2",
+    "i061-2",
+    "i062-2",
+    "i071-2",
+    "p09-2"
   ],
   "units": [
     {

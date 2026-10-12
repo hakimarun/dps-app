@@ -16,7 +16,7 @@ import { Patient, type Scenario, type Sk } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, withCallsigns, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, caseOf, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, withCallsigns, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate, summary } from "./evaluation.ts";
 import { attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, userByToken, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
@@ -414,7 +414,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const sc = lib.scenarios[r.scenario];
     if (!sc) throw new HttpError(400, "unbekanntes Szenario");
     // Ohne Freigabe: spielbar ist jeder Fall, der die automatische Prüfung bestanden hat (nur solche stehen in lib.defs).
-    const missing = r.patients.filter((id) => !lib.defs.patients[id]);
+    const missing = r.patients.filter((id) => !lib.defs.patients[caseOf(lib.defs, id)]);
     if (missing.length) throw new HttpError(400, `nicht spielbar (Prüfung nicht bestanden oder unbekannt): ${missing.join(", ")}`);
     const taken = (c: string) => codeTaken(c) || trupps.some((t) => t.code === c);
     // Trupps: Transporttrupps auf Fahrzeuge mit Plätzen verteilen, die übrigen reihum auf alle Einheiten.
@@ -573,7 +573,7 @@ function broadcast(ex: Exercise, withClock = false) {
     if (!c.watch && !c.participant) continue;
     const me = ev?.helpers.find((h) => h.id === c.participant);
     const own = c.watch ? null : viewFor(ex, s, c.participant!);
-    if (own?.patient) own.patient.image = imageUrl(own.patient.id);
+    if (own?.patient) own.patient.image = imageUrl(caseOf(lib.defs, own.patient.id)); // Mehrfachkarten zeigen das Bild des Falls
     const view = own && { ...own, result: ev && me ? { team: ev.team, me } : null };
     const json = JSON.stringify(c.watch ? { type: "leitung", view: leitungView(ex, now) } : { type: "view", view: view! });
     if (json !== c.last) (c.last = json), ws.send(json);

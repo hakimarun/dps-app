@@ -1,7 +1,7 @@
 {
   "id": "s013",
   "title": "Pkw in Fußgängerzone",
-  "situation": "Pkw nach mutmaßlichem medizinischem Notfall des Fahrers in Fußgängerzone, Polizei prüft die Lage. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL; Bereitstellungsraum nach Polizeifreigabe. Besonderheiten: Unklare Lage, Schaulustige. Lernziel: Unklare Ursache – Eigenschutz und Rücksprache mit Polizei vor Patientenkontakt. Die Idee sieht 18 Betroffene vor; enthalten sind 11 typische Fälle.",
+  "situation": "Pkw nach mutmaßlichem medizinischem Notfall des Fahrers in Fußgängerzone, Polizei prüft die Lage. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL; Bereitstellungsraum nach Polizeifreigabe. Besonderheiten: Unklare Lage, Schaulustige. Lernziel: Unklare Ursache – Eigenschutz und Rücksprache mit Polizei vor Patientenkontakt. 18 Betroffene aus 11 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I030-2).",
   "patients": [
     "i030",
     "i020",
@@ -13,7 +13,14 @@
     "i081",
     "i085",
     "p01",
-    "p04"
+    "p04",
+    "i030-2",
+    "i020-2",
+    "i047-2",
+    "i052-2",
+    "i053-2",
+    "i008-2",
+    "i089-2"
   ],
   "units": [
     {

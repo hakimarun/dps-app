@@ -1,7 +1,7 @@
 {
   "id": "s097",
   "title": "Unfall an einer Achterbahn",
-  "situation": "Zug einer Achterbahn nach technischem Defekt abrupt gestoppt. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr Höhenrettung. Besonderheiten: Höhe, Kinder, Schwierige Zugänglichkeit. Lernziel: Patienten in der Höhe sichten und Rettung planen. Die Idee sieht 16 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Zug einer Achterbahn nach technischem Defekt abrupt gestoppt. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr Höhenrettung. Besonderheiten: Höhe, Kinder, Schwierige Zugänglichkeit. Lernziel: Patienten in der Höhe sichten und Rettung planen. 16 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I021-2).",
   "patients": [
     "i021",
     "i043",
@@ -9,7 +9,16 @@
     "i004",
     "i029",
     "i085",
-    "p08"
+    "p08",
+    "i021-2",
+    "i043-2",
+    "i019-2",
+    "i004-2",
+    "i029-2",
+    "i085-2",
+    "p08-2",
+    "i021-3",
+    "i043-3"
   ],
   "units": [
     {

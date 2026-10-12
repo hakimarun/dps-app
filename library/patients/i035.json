@@ -10,7 +10,7 @@
     "1": { "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["iv_access", "fluids"], "then": "2-versorgt" }], "else": "2" },
     "2": { "findings": { "rr": 34, "hr": 132, "bp": "90/55", "gcs": 12, "exam": { "glucose": "580 mg/dl" } }, "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["iv_access", "fluids"], "then": "2-versorgt" }], "else": "3" },
     "3": { "findings": { "rr": 30, "spo2": 96, "hr": 142, "bp": "75/45", "radialPulse": false, "recap": 4, "gcs": 9, "followsCommands": false, "exam": { "glucose": "610 mg/dl" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "2" }], "else": "4" },
-    "4": { "findings": { "rr": 26, "spo2": 94, "hr": 148, "bp": "65/40", "radialPulse": false, "recap": 5, "gcs": 6, "followsCommands": false, "exam": { "glucose": "640 mg/dl", "ecg": "Sinustachykardie, VES" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3" }] },
+    "4": { "findings": { "rr": 26, "spo2": 94, "hr": 148, "bp": "65/40", "radialPulse": false, "recap": 5, "gcs": 6, "followsCommands": false, "exam": { "glucose": "640 mg/dl", "ecg": "Sinustachykardie, hohe spitze T-Wellen, VES" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3" }] },
     "2-versorgt": { "findings": { "rr": 28, "hr": 110, "bp": "110/70", "recap": 2, "gcs": 14, "exam": { "glucose": "480 mg/dl" } }, "else": "3-versorgt" },
     "3-versorgt": { "findings": { "rr": 26, "hr": 104, "bp": "115/70", "recap": 2, "gcs": 15, "exam": { "glucose": "430 mg/dl" } } }
   }

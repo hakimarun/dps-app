@@ -14,6 +14,6 @@
     "2-versorgt": { "findings": { "hr": 108, "bp": "105/70" }, "else": "3-versorgt" },
     "3-versorgt": { "findings": { "rr": 24, "hr": 115, "bp": "95/60", "recap": 3 } },
     "4-knapp": { "findings": { "rr": 26, "spo2": 94, "hr": 128, "bp": "85/55", "recap": 4, "gcs": 14 } },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie", "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet." } } }
   }
 }

@@ -1,14 +1,24 @@
 {
   "id": "s093",
   "title": "Brand auf psychiatrischer Station",
-  "situation": "Brand auf geschlossener Station, Patienten unruhig. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Rauch, Psychische Erkrankungen, Eigengefährdung. Lernziel: Sichtung bei eingeschränkter Kooperation. Die Idee sieht 16 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Brand auf geschlossener Station, Patienten unruhig. Kräfte laut Planung: 2 RTW, 1 NEF, Polizei. Besonderheiten: Rauch, Psychische Erkrankungen, Eigengefährdung. Lernziel: Sichtung bei eingeschränkter Kooperation. 16 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i084",
     "i083",
     "i082",
     "i060",
-    "p09"
+    "p09",
+    "i071-2",
+    "i084-2",
+    "i083-2",
+    "i082-2",
+    "i060-2",
+    "p09-2",
+    "i071-3",
+    "i084-3",
+    "i083-3",
+    "i082-3"
   ],
   "units": [
     {

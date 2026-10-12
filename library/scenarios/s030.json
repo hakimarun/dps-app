@@ -1,7 +1,7 @@
 {
   "id": "s030",
   "title": "Strömungsunfall am Badesee",
-  "situation": "Mehrere Schwimmer gerieten in Not, Panik am Ufer. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserwacht. Besonderheiten: Sommer, Schaulustige. Lernziel: Beinahe-Ertrinken nicht unterschätzen. Die Idee sieht 8 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Mehrere Schwimmer gerieten in Not, Panik am Ufer. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserwacht. Besonderheiten: Sommer, Schaulustige. Lernziel: Beinahe-Ertrinken nicht unterschätzen. 8 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I079-2).",
   "patients": [
     "i079",
     "i076",
@@ -9,7 +9,8 @@
     "i043",
     "i085",
     "p05",
-    "p09"
+    "p09",
+    "i079-2"
   ],
   "units": [
     {

@@ -1,7 +1,7 @@
 {
   "id": "s024",
   "title": "Hubschrauberabsturz beim Flugtag",
-  "situation": "Hubschrauber bei Flugvorführung in Zuschauernähe abgestürzt. Kräfte laut Planung: Vorort-Sanitätsdienst, 3 RTW, 2 NEF, OrgL. Besonderheiten: Großveranstaltung, Kraftstoff, Schaulustige. Lernziel: Sanitätsdienst und Rettungsdienst verzahnen. Die Idee sieht 16 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Hubschrauber bei Flugvorführung in Zuschauernähe abgestürzt. Kräfte laut Planung: Vorort-Sanitätsdienst, 3 RTW, 2 NEF, OrgL. Besonderheiten: Großveranstaltung, Kraftstoff, Schaulustige. Lernziel: Sanitätsdienst und Rettungsdienst verzahnen. 16 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I061-2).",
   "patients": [
     "i061",
     "i022",
@@ -11,7 +11,14 @@
     "i085",
     "i066",
     "p01",
-    "p06"
+    "p06",
+    "i061-2",
+    "i022-2",
+    "i020-2",
+    "i012-2",
+    "i047-2",
+    "i085-2",
+    "i066-2"
   ],
   "units": [
     {

@@ -1,13 +1,14 @@
 {
   "id": "s035",
   "title": "Unfall an einer Güllegrube",
-  "situation": "Landwirt in Güllegrube gestürzt, Helfer hinterhergestiegen, weitere Personen mit Übelkeit. Kräfte laut Planung: 1 RTW, 1 NEF, Feuerwehr mit Atemschutz. Besonderheiten: Gefahrstoff, Eigengefährdung, Ländlicher Raum. Lernziel: Kein Zutritt ohne Atemschutz – Eigenschutz vor Rettung. Die Idee sieht 6 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Landwirt in Güllegrube gestürzt, Helfer hinterhergestiegen, weitere Personen mit Übelkeit. Kräfte laut Planung: 1 RTW, 1 NEF, Feuerwehr mit Atemschutz. Besonderheiten: Gefahrstoff, Eigengefährdung, Ländlicher Raum. Lernziel: Kein Zutritt ohne Atemschutz – Eigenschutz vor Rettung. 6 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I099-2).",
   "patients": [
     "i099",
     "i096",
     "i073",
     "i067",
-    "i081"
+    "i081",
+    "i099-2"
   ],
   "units": [
     {

@@ -1,13 +1,16 @@
 {
   "id": "s075",
   "title": "Kontamination in Forschungseinrichtung",
-  "situation": "Zwischenfall mit radioaktivem Material, Beschäftigte möglicherweise kontaminiert. Kräfte laut Planung: 1 RTW, 1 NEF, Strahlenschutz, Gefahrstoffzug. Besonderheiten: Strahlung, Dekontamination. Lernziel: Notfallversorgung hat Vorrang vor Dekon. Die Idee sieht 8 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Zwischenfall mit radioaktivem Material, Beschäftigte möglicherweise kontaminiert. Kräfte laut Planung: 1 RTW, 1 NEF, Strahlenschutz, Gefahrstoffzug. Besonderheiten: Strahlung, Dekontamination. Lernziel: Notfallversorgung hat Vorrang vor Dekon. 8 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I097-2).",
   "patients": [
     "i097",
     "i003",
     "i081",
     "i098",
-    "i008"
+    "i008",
+    "i097-2",
+    "i003-2",
+    "i081-2"
   ],
   "units": [
     {

@@ -1,13 +1,28 @@
 {
   "id": "s086",
   "title": "Lebensmittelvergiftung auf Klassenfahrt",
-  "situation": "Viele Schüler einer Klassenfahrt mit Erbrechen und Durchfall. Kräfte laut Planung: 2 RTW, 1 KTW, 1 NEF. Besonderheiten: Kinder, Infektionsschutz. Lernziel: Massenanfall leichter Fälle, Infektionsschutz. Die Idee sieht 20 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Viele Schüler einer Klassenfahrt mit Erbrechen und Durchfall. Kräfte laut Planung: 2 RTW, 1 KTW, 1 NEF. Besonderheiten: Kinder, Infektionsschutz. Lernziel: Massenanfall leichter Fälle, Infektionsschutz. 20 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I049-2).",
   "patients": [
     "i049",
     "i046",
     "i030",
     "i041",
-    "p09"
+    "p09",
+    "i049-2",
+    "i046-2",
+    "i030-2",
+    "i041-2",
+    "p09-2",
+    "i049-3",
+    "i046-3",
+    "i030-3",
+    "i041-3",
+    "p09-3",
+    "i049-4",
+    "i046-4",
+    "i030-4",
+    "i041-4",
+    "p09-4"
   ],
   "units": [
     {

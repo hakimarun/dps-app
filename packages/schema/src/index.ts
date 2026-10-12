@@ -17,7 +17,8 @@ const findingFields = {
   radialPulse: z.boolean(),
   recap: z.number().min(0), // Rekapillarisierung in s
   gcs: z.number().int().min(3).max(15),
-  followsCommands: z.boolean(),
+  followsCommands: z.boolean(), // bei Kindern: reagiert altersgerecht (AVPU A, V oder P angemessen)
+  child: z.boolean(), // Kind: Sichtung mit kindgerechten Atemgrenzen (JumpSTART)
   spurtingBleeding: z.boolean(),
   stridor: z.boolean(),
   pain: z.number().int().min(0).max(10),
@@ -32,6 +33,7 @@ export const Findings = z.object({
   spurtingBleeding: findingFields.spurtingBleeding.default(false),
   stridor: findingFields.stridor.default(false),
   spo2: findingFields.spo2.optional(),
+  child: findingFields.child.optional(),
   bp: findingFields.bp.optional(),
   recap: findingFields.recap.optional(),
   pain: findingFields.pain.optional(),

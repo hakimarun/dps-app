@@ -1,6 +1,6 @@
 {
   "id": "i003",
-  "version": 1,
+  "version": 2,
   "title": "Fingeramputation an Maschine",
   "picture": "Mann, ca. 45 Jahre, in Arbeitskleidung, kommt zu Fuß. Die rechte Hand ist in ein Tuch gewickelt, das langsam durchblutet. An zwei Fingern fehlen die vorderen Glieder. Hält eine Plastiktüte mit den abgetrennten Teilen hoch: „Können Sie die wieder annähen?“",
   "profile": {
@@ -36,9 +36,9 @@
       },
       {
         "actions": [
-          "analgesia"
+          "amputate_care"
         ],
-        "within": 45
+        "within": 30
       }
     ],
     "harmful": []
@@ -56,7 +56,7 @@
     "followsCommands": true,
     "pain": 8,
     "exam": {
-      "bodycheck": "Rechte Hand: Zeige- und Mittelfinger im Mittelglied glatt abgetrennt, sickernde Blutung, Fingerstümpfe sonst sauber; Amputate in einer Plastiktüte; sonst unverletzt"
+      "bodycheck": "Rechte Hand: Zeige- und Mittelfinger im Mittelglied glatt abgetrennt, sickernde Blutung, Fingerstümpfe sonst sauber; Amputate ungekühlt in einer Plastiktüte; sonst unverletzt"
     }
   },
   "start": "1",

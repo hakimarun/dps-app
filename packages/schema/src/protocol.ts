@@ -20,7 +20,7 @@ export const ROLE_TASK: Record<Role, string> = {
   fuehrung: "Verstärkung bei der Leitstelle anfordern, Transportreihenfolge freigeben, alle Maßnahmen",
 };
 // Lebensrettende Sofortmaßnahmen: dürfen alle, auch Trupps ohne Versorgungsauftrag.
-export const SOFORT_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open", "recovery_position"];
+export const SOFORT_ACTIONS = ["tourniquet", "pressure_dressing", "manual_compression", "airway_open", "recovery_position"];
 // Wer darf was? null = erlaubt, sonst der Grund für die Ablehnung. triaged: Patient ist schon gesichtet (Nachsichtung).
 export function roleRule(role: Role, what: "triage" | "admit" | "handover" | "treat" | "lead", ctx: { triaged?: boolean; action?: string } = {}): string | null {
   if (what === "lead") return role === "fuehrung" ? null : "Verstärkung und Transportfreigabe macht die Führung";

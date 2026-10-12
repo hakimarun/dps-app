@@ -1,7 +1,7 @@
 {
   "id": "s036",
   "title": "Gerüsteinsturz auf Baustelle",
-  "situation": "Baugerüst eingestürzt, Arbeiter unter Gerüstteilen, kaum Deutschkenntnisse. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr; nach 15 min 2 RTW. Besonderheiten: Sprachbarriere, Einsturzgefahr. Lernziel: Sichtung mit Sprachbarriere und Einklemmung. Die Idee sieht 13 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Baugerüst eingestürzt, Arbeiter unter Gerüstteilen, kaum Deutschkenntnisse. Kräfte laut Planung: 2 RTW, 1 NEF, Feuerwehr; nach 15 min 2 RTW. Besonderheiten: Sprachbarriere, Einsturzgefahr. Lernziel: Sichtung mit Sprachbarriere und Einklemmung. 13 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I004-2).",
   "patients": [
     "i004",
     "i010",
@@ -10,7 +10,12 @@
     "i042",
     "i026",
     "p03",
-    "p04"
+    "p04",
+    "i004-2",
+    "i010-2",
+    "i012-2",
+    "i005-2",
+    "i042-2"
   ],
   "units": [
     {

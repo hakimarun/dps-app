@@ -1,7 +1,7 @@
 {
   "id": "s040",
   "title": "Kranunfall im Hafen",
-  "situation": "Containerkran-Ausleger auf Abfertigungsbereich gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 1 RTW. Besonderheiten: Weitläufiges Gelände, Sprachbarriere. Lernziel: Lagekundung auf großem Gelände. Die Idee sieht 9 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Containerkran-Ausleger auf Abfertigungsbereich gestürzt. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 1 RTW. Besonderheiten: Weitläufiges Gelände, Sprachbarriere. Lernziel: Lagekundung auf großem Gelände. 9 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I010-2).",
   "patients": [
     "i010",
     "i020",
@@ -10,7 +10,8 @@
     "i042",
     "i026",
     "p01",
-    "p10"
+    "p10",
+    "i010-2"
   ],
   "units": [
     {

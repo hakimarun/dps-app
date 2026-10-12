@@ -1,7 +1,7 @@
 {
   "id": "s062",
   "title": "Baum stürzt auf Festzelt",
-  "situation": "Orkanböe wirft Baum auf ein Festzelt. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL. Besonderheiten: Sturm, Einsturzgefahr. Lernziel: Sichtung unter Einsturzgefahr und weiterem Sturm. Die Idee sieht 21 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Orkanböe wirft Baum auf ein Festzelt. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL. Besonderheiten: Sturm, Einsturzgefahr. Lernziel: Sichtung unter Einsturzgefahr und weiterem Sturm. 21 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I010-2).",
   "patients": [
     "i010",
     "i004",
@@ -10,7 +10,20 @@
     "i057",
     "i026",
     "p03",
-    "p07"
+    "p07",
+    "i010-2",
+    "i004-2",
+    "i008-2",
+    "i009-2",
+    "i057-2",
+    "i026-2",
+    "p03-2",
+    "p07-2",
+    "i010-3",
+    "i004-3",
+    "i008-3",
+    "i009-3",
+    "i057-3"
   ],
   "units": [
     {

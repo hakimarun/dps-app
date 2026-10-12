@@ -1,7 +1,7 @@
 {
   "id": "s020",
   "title": "Güterzug mit Gefahrgut entgleist",
-  "situation": "Güterzug neben Wohngebiet entgleist, Kesselwagen undicht, Anwohner mit Reizsymptomen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug; Bereitstellungsraum gegen den Wind. Besonderheiten: Gefahrstoff, Evakuierung, Windrichtung. Lernziel: Bereitstellung gegen den Wind und Dekon vor Transport. Die Idee sieht 18 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Güterzug neben Wohngebiet entgleist, Kesselwagen undicht, Anwohner mit Reizsymptomen. Kräfte laut Planung: 2 RTW, 1 NEF, Gefahrstoffzug; Bereitstellungsraum gegen den Wind. Besonderheiten: Gefahrstoff, Evakuierung, Windrichtung. Lernziel: Bereitstellung gegen den Wind und Dekon vor Transport. 18 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I092-2).",
   "patients": [
     "i092",
     "i093",
@@ -9,7 +9,18 @@
     "i072",
     "i073",
     "i033",
-    "i055"
+    "i055",
+    "i092-2",
+    "i093-2",
+    "i031-2",
+    "i072-2",
+    "i073-2",
+    "i033-2",
+    "i055-2",
+    "i092-3",
+    "i093-3",
+    "i031-3",
+    "i072-3"
   ],
   "units": [
     {

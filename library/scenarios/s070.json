@@ -1,14 +1,32 @@
 {
   "id": "s070",
   "title": "Chlorgas im Hallenbad",
-  "situation": "Fehldosierung in der Wasseraufbereitung, Badegäste mit Atemnot. Kräfte laut Planung: 3 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Kinder, Nässe und Kälte. Lernziel: Reizgaslage mit Kindern und Spätfolgen. Die Idee sieht 24 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Fehldosierung in der Wasseraufbereitung, Badegäste mit Atemnot. Kräfte laut Planung: 3 RTW, 1 NEF, Gefahrstoffzug. Besonderheiten: Gefahrstoff, Kinder, Nässe und Kälte. Lernziel: Reizgaslage mit Kindern und Spätfolgen. 24 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I092-2).",
   "patients": [
     "i092",
     "i093",
     "i031",
     "i045",
     "i085",
-    "i076"
+    "i076",
+    "i092-2",
+    "i093-2",
+    "i031-2",
+    "i045-2",
+    "i085-2",
+    "i076-2",
+    "i092-3",
+    "i093-3",
+    "i031-3",
+    "i045-3",
+    "i085-3",
+    "i076-3",
+    "i092-4",
+    "i093-4",
+    "i031-4",
+    "i045-4",
+    "i085-4",
+    "i076-4"
   ],
   "units": [
     {

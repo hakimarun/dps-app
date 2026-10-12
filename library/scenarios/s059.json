@@ -1,13 +1,24 @@
 {
   "id": "s059",
   "title": "Hitze beim Stadtmarathon",
-  "situation": "Mehrere Läufer kollabieren bei hohen Temperaturen auf der Zielgeraden. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 1 NEF. Besonderheiten: Hitze, Weitläufige Strecke. Lernziel: Hitzschlag erkennen und vor Ort kühlen. Die Idee sieht 16 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Mehrere Läufer kollabieren bei hohen Temperaturen auf der Zielgeraden. Kräfte laut Planung: Sanitätsdienst, 2 RTW, 1 NEF. Besonderheiten: Hitze, Weitläufige Strecke. Lernziel: Hitzschlag erkennen und vor Ort kühlen. 16 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I074-2).",
   "patients": [
     "i074",
     "i075",
     "i029",
     "i030",
-    "i018"
+    "i018",
+    "i074-2",
+    "i075-2",
+    "i029-2",
+    "i030-2",
+    "i018-2",
+    "i074-3",
+    "i075-3",
+    "i029-3",
+    "i030-3",
+    "i018-3",
+    "i074-4"
   ],
   "units": [
     {

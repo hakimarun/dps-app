@@ -1,13 +1,16 @@
 {
   "id": "s065",
   "title": "Blitzeinschlag in Wandergruppe",
-  "situation": "Blitz schlägt in der Nähe einer Wandergruppe ein, mehrere Personen am Boden. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Gewitter, Unwegsames Gelände. Lernziel: Besonderheiten der Sichtung nach Blitzschlag. Die Idee sieht 8 Betroffene vor; enthalten sind 5 typische Fälle.",
+  "situation": "Blitz schlägt in der Nähe einer Wandergruppe ein, mehrere Personen am Boden. Kräfte laut Planung: 2 RTW, 1 NEF, RTH. Besonderheiten: Gewitter, Unwegsames Gelände. Lernziel: Besonderheiten der Sichtung nach Blitzschlag. 8 Betroffene aus 5 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I078-2).",
   "patients": [
     "i078",
     "i063",
     "i060",
     "i081",
-    "p05"
+    "p05",
+    "i078-2",
+    "i063-2",
+    "i060-2"
   ],
   "units": [
     {

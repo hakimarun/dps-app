@@ -8,19 +8,22 @@
       "event": "Ich hab so 'ne Pille genommen, und dann noch eine.",
       "risk": "Ich nehm das öfter auf Festivals."
     },
-    "pitfall": "Schlägt nach Helfern. Eigenschutz geht vor, ggf. Polizei. Agitation ist lebensgefährlich: Überhitzung und Herz im Blick behalten, keine Fixierung in Bauchlage."
+    "pitfall": "Schlägt nach Helfern. Eigenschutz geht vor, ggf. Polizei. Agitation ist lebensgefährlich: Überhitzung und Herz im Blick behalten, keine Fixierung in Bauchlage. Kühlen allein reicht nicht, solange er weiter tobt: Die ärztliche Sedierung senkt Wärmebildung, Puls und Blutdruck."
   },
   "meta": { "category": "Intoxikation", "tags": ["Drogen", "Eigenschutz", "Hitze"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["cool_large"], "within": 30 }, { "actions": ["intubation"], "within": 45 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["cool_large"], "within": 30 }, { "actions": ["sedation"], "within": 30 }], "harmful": [] },
   "base": { "walking": false, "breathing": true, "rr": 28, "spo2": 96, "hr": 145, "bp": "175/105", "radialPulse": true, "recap": 2, "gcs": 12, "followsCommands": false, "temp": 38.9, "exam": { "pupils": "beidseits sehr weit, lichtreagibel", "ecg": "Sinustachykardie", "glucose": "104 mg/dl", "bodycheck": "Haut heiß und schweißnass, Muskeln angespannt, Schürfwunden an beiden Händen" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "2" },
-    "2": { "findings": { "rr": 32, "spo2": 94, "hr": 165, "bp": "190/110", "temp": 40.3 }, "rules": [{ "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "3" },
-    "3": { "findings": { "rr": 36, "spo2": 84, "hr": 170, "bp": "200/115", "gcs": 5, "temp": 41.0, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß" } }, "rules": [{ "when": ["intubation"], "then": "narkose" }], "else": "4" },
-    "4": { "findings": { "rr": 8, "spo2": 75, "hr": 180, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 3, "temp": 41.5, "exam": { "ecg": "Kammertachykardie" } }, "else": "tot" },
+    "1": { "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "2" },
+    "2": { "findings": { "rr": 32, "spo2": 94, "hr": 160, "bp": "190/110", "temp": 39.8 }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "3-gekuehlt" }], "else": "3" },
+    "3": { "findings": { "rr": 36, "spo2": 84, "hr": 170, "bp": "200/115", "gcs": 5, "temp": 40.6, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["anticonvulsant", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["anticonvulsant"], "then": "sediert" }], "else": "4" },
+    "4": { "findings": { "rr": 8, "spo2": 75, "hr": 180, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 3, "temp": 41.2, "exam": { "ecg": "Kammertachykardie" } }, "else": "tot" },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
-    "2-gekuehlt": { "findings": { "rr": 24, "hr": 130, "bp": "160/95", "temp": 38.3 }, "rules": [{ "when": ["intubation"], "then": "narkose" }] },
-    "narkose": { "findings": { "rr": 14, "spo2": 98, "hr": 110, "bp": "140/85", "gcs": 3, "temp": 38.6, "exam": { "bodycheck": "Haut warm, Muskulatur entspannt, Schürfwunden an beiden Händen" } } }
+    "2-gekuehlt": { "findings": { "rr": 28, "hr": 150, "bp": "180/105", "temp": 39.2, "exam": { "bodycheck": "Haut feucht gekühlt, tobt weiter, Muskeln angespannt, Schürfwunden an beiden Händen" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }], "else": "3-gekuehlt" },
+    "3-gekuehlt": { "findings": { "rr": 30, "hr": 155, "bp": "185/110", "temp": 39.5, "exam": { "bodycheck": "Haut feucht gekühlt, tobt weiter, Muskeln angespannt, Schürfwunden an beiden Händen" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }] },
+    "sediert": { "findings": { "rr": 16, "spo2": 96, "hr": 120, "bp": "155/90", "gcs": 10, "temp": 39.4, "exam": { "bodycheck": "schläfrig, Muskulatur entspannt, Haut heiß, Schürfwunden an beiden Händen" } }, "rules": [{ "when": ["cool_large"], "then": "sediert-gekuehlt" }] },
+    "sediert-gekuehlt": { "findings": { "rr": 16, "spo2": 96, "hr": 108, "bp": "145/85", "gcs": 10, "temp": 38.3, "exam": { "bodycheck": "schläfrig, Muskulatur entspannt, Haut warm, Schürfwunden an beiden Händen" } } },
+    "narkose": { "findings": { "rr": 14, "spo2": 98, "hr": 110, "bp": "140/85", "gcs": 3, "temp": 38.8, "exam": { "bodycheck": "Haut warm, Muskulatur entspannt, Schürfwunden an beiden Händen" } } }
   }
 }

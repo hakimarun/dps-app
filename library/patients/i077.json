@@ -8,20 +8,23 @@
       "history": "Ich vergesse manchmal Sachen, sagt meine Tochter.",
       "medication": "Ich nehme was fürs Herz."
     },
-    "pitfall": "Fehlendes Zittern ist ein schlechtes Zeichen. Schonend und horizontal bewegen, kein ruckartiges Umlagern, Beine nicht hochlagern."
+    "pitfall": "Fehlendes Zittern ist ein schlechtes Zeichen. Schonend und horizontal bewegen, kein ruckartiges Umlagern, Beine nicht hochlagern: Kaltes Blut aus den Beinen senkt die Kerntemperatur weiter (Afterdrop), unter 28 °C droht Kammerflimmern."
   },
   "meta": { "category": "Umwelt", "tags": ["Hypothermie", "Senior"], "difficulty": "experte" },
   "scoring": { "critical": [{ "actions": ["warm"], "within": 15 }, { "actions": ["vacuum_mattress"], "within": 30 }, { "actions": ["handover"], "within": 45 }], "harmful": ["shock_position"] },
-  "base": { "walking": false, "breathing": true, "rr": 10, "spo2": 90, "hr": 42, "bp": "95/60", "radialPulse": true, "recap": 4, "gcs": 10, "followsCommands": false, "temp": 29.5, "exam": { "ecg": "Sinusbradykardie", "pupils": "mittelweit, träge lichtreagibel", "glucose": "88 mg/dl", "auscultation": "leise, vesikulär beidseits", "bodycheck": "Haut eiskalt, Gelenke steif, keine Verletzungen" } },
+  "base": { "walking": false, "breathing": true, "rr": 10, "spo2": 90, "hr": 42, "bp": "95/60", "radialPulse": true, "recap": 4, "gcs": 10, "followsCommands": false, "temp": 29.5, "exam": { "ecg": "Sinusbradykardie, Osborn-Wellen (J-Wellen), verlängertes QT", "pupils": "mittelweit, träge lichtreagibel", "glucose": "88 mg/dl", "auscultation": "leise, vesikulär beidseits", "bodycheck": "Haut eiskalt, Gelenke steif, keine Verletzungen" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }, { "when": ["warm"], "then": "2-gewaermt" }], "else": "2" },
-    "2": { "findings": { "rr": 8, "spo2": 86, "hr": 36, "bp": "80/50", "radialPulse": false, "recap": 5, "gcs": 6, "temp": 28.6 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }, { "when": ["warm"], "then": "3-gewaermt" }], "else": "3" },
-    "3": { "findings": { "rr": 6, "spo2": 82, "hr": 30, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 4, "temp": 27.9, "exam": { "ecg": "Vorhofflimmern" } }, "else": "kammerflimmern" },
+    "1": { "rules": [{ "when": ["shock_position"], "then": "afterdrop" }, { "when": ["warm"], "then": "2-gewaermt" }], "else": "2" },
+    "2": { "findings": { "rr": 8, "spo2": 86, "hr": 38, "bp": "85/50", "radialPulse": false, "recap": 5, "gcs": 7, "temp": 29.0 }, "rules": [{ "when": ["shock_position"], "then": "afterdrop" }, { "when": ["warm"], "then": "3-gewaermt" }], "else": "3" },
+    "3": { "findings": { "rr": 6, "spo2": 82, "hr": 32, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 5, "temp": 28.4, "exam": { "ecg": "Vorhofflimmern, langsam übergeleitet, Osborn-Wellen" } }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }, { "when": ["warm"], "then": "4-gewaermt" }] },
+    "afterdrop": { "findings": { "rr": 7, "spo2": 84, "hr": 34, "bp": "75/45", "radialPulse": false, "recap": 5, "gcs": 6, "temp": 28.3, "exam": { "ecg": "Vorhofflimmern mit ventrikulären Extrasystolen, Osborn-Wellen" } }, "rules": [{ "when": ["warm"], "then": "afterdrop-gewaermt" }] },
+    "afterdrop-gewaermt": { "findings": { "rr": 7, "spo2": 85, "hr": 36, "bp": "80/45", "radialPulse": false, "recap": 5, "gcs": 6, "temp": 28.4, "exam": { "ecg": "Vorhofflimmern, vereinzelte ventrikuläre Extrasystolen, Osborn-Wellen" } } },
     "kammerflimmern": { "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "active": ["cpr"], "then": "reanimation" }], "else": "tot" },
-    "reanimation": { "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "active": ["cpr"], "then": "reanimation" }], "else": "tot" },
+    "reanimation": { "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "exam": { "ecg": "Kammerflimmern, unter 30 °C nach höchstens 3 Schocks keine weiteren bis zur Erwärmung" } }, "rules": [{ "active": ["cpr"], "then": "reanimation" }], "else": "tot" },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
-    "2-gewaermt": { "findings": { "hr": 44, "gcs": 10, "temp": 29.6 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }], "else": "3-gewaermt" },
-    "3-gewaermt": { "findings": { "rr": 10, "hr": 42, "bp": "90/55", "gcs": 9, "temp": 29.4 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }] }
+    "2-gewaermt": { "findings": { "hr": 42, "gcs": 10, "temp": 29.4 }, "rules": [{ "when": ["shock_position"], "then": "afterdrop" }], "else": "3-gewaermt" },
+    "3-gewaermt": { "findings": { "rr": 9, "hr": 40, "bp": "90/55", "gcs": 9, "temp": 29.3 }, "rules": [{ "when": ["shock_position"], "then": "afterdrop" }] },
+    "4-gewaermt": { "findings": { "rr": 6, "spo2": 83, "hr": 32, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 5, "temp": 28.3, "exam": { "ecg": "Vorhofflimmern, langsam übergeleitet, Osborn-Wellen" } }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }] }
   }
 }

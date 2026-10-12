@@ -1,7 +1,7 @@
 {
   "id": "s011",
   "title": "Kleintransporter mit Erntehelfern",
-  "situation": "Überladener Transporter umgekippt, Betroffene sprechen kaum Deutsch. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 1 RTW. Besonderheiten: Sprachbarriere, Ländlicher Raum. Lernziel: Sichtung und Kommunikation trotz Sprachbarriere. Die Idee sieht 9 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Überladener Transporter umgekippt, Betroffene sprechen kaum Deutsch. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 1 RTW. Besonderheiten: Sprachbarriere, Ländlicher Raum. Lernziel: Sichtung und Kommunikation trotz Sprachbarriere. 9 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I042-2).",
   "patients": [
     "i042",
     "i004",
@@ -9,7 +9,9 @@
     "i019",
     "i008",
     "i049",
-    "p07"
+    "p07",
+    "i042-2",
+    "i004-2"
   ],
   "units": [
     {

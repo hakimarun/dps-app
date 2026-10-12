@@ -1,7 +1,7 @@
 {
   "id": "s019",
   "title": "Brand im U-Bahn-Tunnel",
-  "situation": "Zug steht nach Brand im Tunnel, Fahrgäste flüchten über die Gleise. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA; Sammelstellen an beiden Ausgängen. Besonderheiten: Rauch, Tunnel, Dunkelheit. Lernziel: Mehrere Sammelstellen koordinieren, Rauchgasopfer nachsichten. Die Idee sieht 32 Betroffene vor; enthalten sind 11 typische Fälle.",
+  "situation": "Zug steht nach Brand im Tunnel, Fahrgäste flüchten über die Gleise. Kräfte laut Planung: 4 RTW, 2 NEF, OrgL, LNA; Sammelstellen an beiden Ausgängen. Besonderheiten: Rauch, Tunnel, Dunkelheit. Lernziel: Mehrere Sammelstellen koordinieren, Rauchgasopfer nachsichten. 32 Betroffene aus 11 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -13,7 +13,28 @@
     "i085",
     "p05",
     "p06",
-    "p09"
+    "p09",
+    "i071-2",
+    "i067-2",
+    "i031-2",
+    "i061-2",
+    "i008-2",
+    "i018-2",
+    "i081-2",
+    "i085-2",
+    "p05-2",
+    "p06-2",
+    "p09-2",
+    "i071-3",
+    "i067-3",
+    "i031-3",
+    "i061-3",
+    "i008-3",
+    "i018-3",
+    "i081-3",
+    "i085-3",
+    "p05-3",
+    "p06-3"
   ],
   "units": [
     {

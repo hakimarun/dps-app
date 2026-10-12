@@ -1,7 +1,7 @@
 {
   "id": "s042",
   "title": "Nächtlicher Brand im Mehrfamilienhaus",
-  "situation": "Treppenhausbrand, Bewohner flüchten über Balkone und Leitern. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Nacht, Rauch, Kälte. Lernziel: Rauchgasopfer sichten und CO-Gefahr erkennen. Die Idee sieht 14 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Treppenhausbrand, Bewohner flüchten über Balkone und Leitern. Kräfte laut Planung: 2 RTW, 1 NEF; nach 15 min 2 RTW. Besonderheiten: Nacht, Rauch, Kälte. Lernziel: Rauchgasopfer sichten und CO-Gefahr erkennen. 14 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -11,7 +11,12 @@
     "i062",
     "i046",
     "i066",
-    "p06"
+    "p06",
+    "i071-2",
+    "i067-2",
+    "i031-2",
+    "i018-2",
+    "i061-2"
   ],
   "units": [
     {

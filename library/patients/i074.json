@@ -16,12 +16,14 @@
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "2" },
-    "2": { "findings": { "rr": 32, "spo2": 88, "hr": 155, "bp": "90/50", "gcs": 5, "temp": 41.6, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß und trocken" } }, "rules": [{ "when": ["cool_large"], "then": "3-spaet-gekuehlt" }], "else": "3" },
+    "2": { "findings": { "rr": 32, "spo2": 88, "hr": 155, "bp": "90/50", "gcs": 5, "temp": 41.6, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß und trocken" } }, "rules": [{ "when": ["cool_large", "anticonvulsant"], "then": "3-spaet-gekuehlt" }, { "when": ["cool_large"], "then": "3-krampfend-gekuehlt" }], "else": "3" },
     "3": { "findings": { "rr": 34, "spo2": 85, "hr": 160, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 4, "temp": 42.0, "exam": { "bodycheck": "schlaff, Haut heiß, marmoriert" } }, "rules": [{ "when": ["cool_large", "iv_access", "fluids"], "then": "3-spaet-gekuehlt" }], "else": "tot" },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
-    "3-spaet-gekuehlt": { "findings": { "rr": 26, "spo2": 93, "hr": 130, "bp": "95/55", "gcs": 8, "temp": 39.5 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-gekuehlt" }] },
-    "2-gekuehlt": { "findings": { "rr": 24, "hr": 120, "bp": "105/65", "gcs": 13, "temp": 39.0 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }], "else": "3-gekuehlt" },
-    "3-gekuehlt": { "findings": { "rr": 22, "hr": 115, "bp": "95/60", "gcs": 13, "temp": 38.4 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }] },
-    "stabil": { "findings": { "rr": 20, "hr": 100, "bp": "115/70", "gcs": 14, "followsCommands": true, "temp": 38.2 } }
+    "3-krampfend-gekuehlt": { "findings": { "rr": 30, "spo2": 87, "hr": 150, "bp": "90/50", "gcs": 4, "temp": 40.4, "exam": { "bodycheck": "krampft weiter, Haut feucht gekühlt" } }, "rules": [{ "when": ["anticonvulsant"], "then": "3-spaet-gekuehlt" }] },
+    "3-spaet-gekuehlt": { "findings": { "rr": 26, "spo2": 93, "hr": 130, "bp": "95/55", "gcs": 8, "temp": 40.2, "exam": { "bodycheck": "krampft nicht mehr, Haut feucht gekühlt" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-gekuehlt" }], "else": "4-spaet-gekuehlt" },
+    "4-spaet-gekuehlt": { "findings": { "rr": 24, "spo2": 93, "hr": 125, "bp": "90/55", "gcs": 9, "temp": 39.2 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-gekuehlt" }] },
+    "2-gekuehlt": { "findings": { "rr": 24, "hr": 125, "bp": "105/65", "gcs": 12, "temp": 39.6 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }], "else": "3-gekuehlt" },
+    "3-gekuehlt": { "findings": { "rr": 22, "hr": 115, "bp": "95/60", "gcs": 13, "temp": 38.6 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }] },
+    "stabil": { "findings": { "rr": 20, "hr": 100, "bp": "115/70", "gcs": 14, "followsCommands": true, "temp": 38.4 } }
   }
 }

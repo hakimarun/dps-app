@@ -5,13 +5,13 @@
     "anamnesis": { "history": "(Angehörige) „Sie ist herzkrank und hat Nierenprobleme, seit Monaten bettlägerig.“", "medication": "(Angehörige) „Sie nimmt einen Blutverdünner und viele Herztabletten.“", "risk": "(Angehörige) „In der Patientenverfügung steht: keine Wiederbelebung, keine Beatmung.“" },
     "pitfall": "Angehörige sind verzweifelt und fordern abwechselnd „Tun Sie doch etwas!“ und „Lassen Sie sie in Ruhe!“; die Entscheidung über SK IV trifft der Arzt, nicht das Alter allein" },
   "meta": { "category": "Geriatrie", "tags": ["Senior", "SK IV", "Ethik", "SK IV (abwartend)"], "difficulty": "experte" },
-  "scoring": { "critical": [{ "actions": ["calm", "analgesia", "warm"], "within": 10 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["palliative", "calm", "analgesia", "warm"], "within": 10 }, { "actions": ["psnv"], "within": 20 }], "harmful": ["cpr", "intubation"] },
   "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 130, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 4, "followsCommands": false, "pain": 0,
     "exam": { "pupils": "rechts weit, lichtstarr", "pelvis": "instabil", "auscultation": "links aufgehoben, rechts leise", "percussion": "links gedämpft", "bodycheck": "instabiler Brustkorb links, Kopfplatzwunde mit Schädelfehlstellung, offene Oberschenkelfraktur rechts, Becken instabil, Haut kalt und marmoriert" } },
   "start": "1",
   "phases": {
     "1": { "minutes": 8, "else": "2" },
     "2": { "minutes": 5, "findings": { "rr": 3, "spo2": 55, "hr": 40, "bp": "nicht messbar", "gcs": 3, "exam": { "ecg": "Sinusbradykardie, breite Kammerkomplexe" } }, "else": "tot" },
-    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "pupils": "beidseits weit, lichtstarr" } } }
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "pupils": "beidseits weit, lichtstarr", "death": "keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr; mit dem Leben nicht vereinbare Verletzungen, Reanimation laut Patientenverfügung nicht gewünscht; Tod ärztlich festgestellt (sichere Todeszeichen erst später)" } } }
   }
 }

@@ -1,7 +1,7 @@
 {
   "id": "s028",
   "title": "Brand auf einer Flussfähre",
-  "situation": "Brand im Maschinenraum einer Fähre, Fahrgäste an Deck und im Wasser. Kräfte laut Planung: Wasserrettung, 3 RTW, 1 NEF, OrgL. Besonderheiten: Wasser, Rauch, Kälte. Lernziel: Rauchgas- und Unterkühlungsopfer parallel versorgen. Die Idee sieht 21 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Brand im Maschinenraum einer Fähre, Fahrgäste an Deck und im Wasser. Kräfte laut Planung: Wasserrettung, 3 RTW, 1 NEF, OrgL. Besonderheiten: Wasser, Rauch, Kälte. Lernziel: Rauchgas- und Unterkühlungsopfer parallel versorgen. 21 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i067",
@@ -10,7 +10,20 @@
     "i079",
     "i031",
     "i066",
-    "p06"
+    "p06",
+    "i071-2",
+    "i067-2",
+    "i061-2",
+    "i076-2",
+    "i079-2",
+    "i031-2",
+    "i066-2",
+    "p06-2",
+    "i071-3",
+    "i067-3",
+    "i061-3",
+    "i076-3",
+    "i079-3"
   ],
   "units": [
     {

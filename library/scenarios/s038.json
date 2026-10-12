@@ -1,7 +1,7 @@
 {
   "id": "s038",
   "title": "Staubexplosion in einer Mühle",
-  "situation": "Staubexplosion in Getreidemühle, Brand und Verschüttete. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL. Besonderheiten: Brand, Einsturzgefahr. Lernziel: Verbrennungslage mit begrenzten Zentrumsbetten. Die Idee sieht 15 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "situation": "Staubexplosion in Getreidemühle, Brand und Verschüttete. Kräfte laut Planung: 3 RTW, 2 NEF, OrgL. Besonderheiten: Brand, Einsturzgefahr. Lernziel: Verbrennungslage mit begrenzten Zentrumsbetten. 15 Betroffene aus 8 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I061-2).",
   "patients": [
     "i061",
     "i064",
@@ -10,7 +10,14 @@
     "i010",
     "i071",
     "i066",
-    "p06"
+    "p06",
+    "i061-2",
+    "i064-2",
+    "i065-2",
+    "i022-2",
+    "i010-2",
+    "i071-2",
+    "i066-2"
   ],
   "units": [
     {

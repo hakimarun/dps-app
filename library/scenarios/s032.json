@@ -1,7 +1,7 @@
 {
   "id": "s032",
   "title": "Partyboot-Unfall bei Nacht",
-  "situation": "Partyboot nach Kollision mit Steg beschädigt, alkoholisierte Gäste teils im Wasser. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserrettung. Besonderheiten: Nacht, Alkohol, Wasser. Lernziel: Alkoholisierte Patienten sorgfältig auf Verletzungen sichten. Die Idee sieht 11 Betroffene vor; enthalten sind 7 typische Fälle.",
+  "situation": "Partyboot nach Kollision mit Steg beschädigt, alkoholisierte Gäste teils im Wasser. Kräfte laut Planung: 2 RTW, 1 NEF, Wasserrettung. Besonderheiten: Nacht, Alkohol, Wasser. Lernziel: Alkoholisierte Patienten sorgfältig auf Verletzungen sichten. 11 Betroffene aus 7 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I068-2).",
   "patients": [
     "i068",
     "i023",
@@ -9,7 +9,11 @@
     "i076",
     "i008",
     "i082",
-    "p03"
+    "p03",
+    "i068-2",
+    "i023-2",
+    "i079-2",
+    "i076-2"
   ],
   "units": [
     {

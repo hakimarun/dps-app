@@ -1,14 +1,18 @@
 {
   "id": "s064",
   "title": "Lawine im Skigebiet",
-  "situation": "Lawine erfasst Skifahrergruppe abseits der Piste. Kräfte laut Planung: Bergwacht, 2 RTH, 1 RTW. Besonderheiten: Kälte, Lawinengefahr, Alpines Gelände. Lernziel: Zeitkritische Ortung und Hypothermie. Die Idee sieht 10 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "situation": "Lawine erfasst Skifahrergruppe abseits der Piste. Kräfte laut Planung: Bergwacht, 2 RTH, 1 RTW. Besonderheiten: Kälte, Lawinengefahr, Alpines Gelände. Lernziel: Zeitkritische Ortung und Hypothermie. 10 Betroffene aus 6 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I077-2).",
   "patients": [
     "i077",
     "i076",
     "i004",
     "i012",
     "i026",
-    "p05"
+    "p05",
+    "i077-2",
+    "i076-2",
+    "i004-2",
+    "i012-2"
   ],
   "units": [
     {

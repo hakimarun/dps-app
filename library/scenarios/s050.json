@@ -1,7 +1,7 @@
 {
   "id": "s050",
   "title": "Brand in einer Gemeinschaftsunterkunft",
-  "situation": "Brand in Unterkunft für Geflüchtete, viele Familien mit Kindern. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL, SEG Betreuung. Besonderheiten: Sprachbarriere, Kinder, Nacht. Lernziel: Kindersichtung und Registrierung mit Sprachbarriere. Die Idee sieht 23 Betroffene vor; enthalten sind 9 typische Fälle.",
+  "situation": "Brand in Unterkunft für Geflüchtete, viele Familien mit Kindern. Kräfte laut Planung: 3 RTW, 1 NEF, OrgL, SEG Betreuung. Besonderheiten: Sprachbarriere, Kinder, Nacht. Lernziel: Kindersichtung und Registrierung mit Sprachbarriere. 23 Betroffene aus 9 Fallverläufen; Fälle sind mehrfach ausgelegt (z. B. I071-2).",
   "patients": [
     "i071",
     "i062",
@@ -11,7 +11,21 @@
     "i084",
     "i088",
     "i090",
-    "p06"
+    "p06",
+    "i071-2",
+    "i062-2",
+    "i049-2",
+    "i046-2",
+    "i042-2",
+    "i084-2",
+    "i088-2",
+    "i090-2",
+    "p06-2",
+    "i071-3",
+    "i062-3",
+    "i049-3",
+    "i046-3",
+    "i042-3"
   ],
   "units": [
     {

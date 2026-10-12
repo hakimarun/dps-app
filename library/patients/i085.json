@@ -1,17 +1,17 @@
 {
-  "id": "i085", "version": 1, "title": "Panische Mutter",
+  "id": "i085", "version": 2, "title": "Panische Mutter",
   "picture": "Frau, ca. 35 Jahre, unverletzt, schreit nach ihrem Kind: \"Wo ist mein Sohn? Ich will zu ihm!\" Läuft zwischen den liegenden Verletzten hin und her, atmet schnell.",
   "profile": { "temperament": "panisch", "speech": "schreit, abgehackt; nach Betreuung ruhiger",
     "anamnesis": { "symptoms": "Mir kribbeln die Hände, ich krieg keine Luft!", "allergies": "Nein.", "medication": "Nein.", "history": "Nein, ich bin gesund.", "lastMeal": "Heute Morgen.", "event": "Wir saßen im Bus, dann hat es geknallt. Sie haben mir Jonas weggenommen!", "risk": "Ich bleibe nicht hier sitzen." },
     "pitfall": "Ihr Sohn wird bereits versorgt. Ihre Unruhe steckt andere Betroffene an. Eine feste Bezugsperson und Kontakt zum Kind beruhigen sie." },
   "meta": { "category": "Psychiatrie", "tags": ["Psyche", "Betreuung", "Kind"], "difficulty": "einsteiger" },
-  "scoring": { "critical": [{ "actions": ["calm"], "within": 10 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["calm", "psnv"], "within": 10 }], "harmful": [] },
   "base": { "walking": true, "breathing": true, "rr": 26, "spo2": 99, "hr": 115, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0,
     "exam": { "bodycheck": "unverletzt, Kribbeln in beiden Händen" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["calm"], "then": "ruhig" }], "else": "2" },
-    "2": { "findings": { "rr": 30, "hr": 125, "exam": { "bodycheck": "unverletzt, Kribbeln in Händen und um den Mund, Finger verkrampfen" } }, "rules": [{ "when": ["calm"], "then": "ruhig" }] },
+    "1": { "rules": [{ "when": ["calm"], "then": "ruhig" }, { "when": ["psnv"], "then": "ruhig" }], "else": "2" },
+    "2": { "findings": { "rr": 30, "hr": 125, "exam": { "bodycheck": "unverletzt, Kribbeln in Händen und um den Mund, Finger verkrampfen" } }, "rules": [{ "when": ["calm"], "then": "ruhig" }, { "when": ["psnv"], "then": "ruhig" }] },
     "ruhig": { "findings": { "rr": 16, "hr": 90, "bp": "130/80", "exam": { "bodycheck": "unverletzt" } } }
   }
 }

@@ -1,27 +1,17 @@
 {
-  "id": "i098", "version": 1, "title": "Unklares Pulver",
+  "id": "i098",
+  "version": 1,
+  "title": "Unklares Pulver",
   "picture": "Frau, ca. 40 Jahre, steht im Büro und hält einen geöffneten Brief weit von sich. Feiner weißer Staub auf Händen und Bluse. Wirkt sehr besorgt, fragt immer wieder: „Ist das Milzbrand? Muss ich jetzt sterben?“",
-  "profile": {
-    "temperament": "ängstlich",
-    "speech": "ganze Sätze, schnell, fragt ständig nach",
-    "anamnesis": {
-      "symptoms": "Eigentlich nichts, aber mir ist ganz flau vor Angst. Juckt das schon?",
-      "allergies": "Ich bin allergisch gegen Hausstaub.",
-      "medication": "Ich nehme Schilddrüsentabletten.",
-      "history": "Schilddrüsenunterfunktion, sonst nichts.",
-      "lastMeal": "Vor einer Stunde einen Joghurt.",
-      "event": "Der Brief hatte keinen Absender. Als ich ihn aufgemacht habe, ist das weiße Zeug rausgerieselt.",
-      "risk": "Keine."
-    },
-    "pitfall": "Will sich die Hände waschen, den Staub von der Bluse klopfen oder nach Hause gehen. Ruhe bewahren, Eigenschutz, die Patientin isolieren und registrieren, Ausbreitung verhindern und die Gefahrenabwehr abwarten."
-  },
+  "profile": {"temperament": "ängstlich", "speech": "ganze Sätze, schnell, fragt ständig nach", "anamnesis": {"symptoms": "Eigentlich nichts, aber mir ist ganz flau vor Angst. Juckt das schon?", "allergies": "Ich bin allergisch gegen Hausstaub.", "medication": "Ich nehme Schilddrüsentabletten.", "history": "Schilddrüsenunterfunktion, sonst nichts.", "lastMeal": "Vor einer Stunde einen Joghurt.", "event": "Der Brief hatte keinen Absender. Als ich ihn aufgemacht habe, ist das weiße Zeug rausgerieselt.", "risk": "Keine."}, "pitfall": "Will sich die Hände waschen, den Staub von der Bluse klopfen oder nach Hause gehen. Ruhe bewahren, Eigenschutz, die Patientin isolieren und registrieren, Ausbreitung verhindern und die Gefahrenabwehr abwarten."},
   "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Betreuung"], "difficulty": "einsteiger"},
-  "scoring": {"critical": [{"actions": ["calm"], "within": 15}], "harmful": []},
-  "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 99, "hr": 105, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0, "exam": { "bodycheck": "keine Verletzungen; feiner weißer Staub an Händen, Unterarmen und Bluse, Haut darunter unauffällig", "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche" } },
+  "scoring": {"critical": [{"actions": ["calm"], "within": 15}, {"actions": ["decon_undress"], "within": 30}], "harmful": ["bag_rebreathing"]},
+  "base": {"walking": true, "breathing": true, "rr": 20, "spo2": 99, "hr": 105, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0, "exam": {"bodycheck": "keine Verletzungen; feiner weißer Staub an Händen, Unterarmen und Bluse, Haut darunter unauffällig", "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche"}},
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["calm"], "then": "beruhigt" }], "else": "2" },
-    "2": { "findings": { "rr": 28, "spo2": 100, "hr": 118, "bp": "150/95", "exam": { "bodycheck": "keine Verletzungen; weißer Staub an Händen und Bluse; Kribbeln in den Händen und um den Mund, Finger verkrampft", "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche" } }, "rules": [{ "when": ["calm"], "then": "beruhigt" }] },
-    "beruhigt": { "findings": { "rr": 16, "hr": 88, "bp": "135/85" } }
+    "1": {"rules": [{"when": ["calm", "decon_undress"], "then": "beruhigt-entkleidet"}, {"when": ["calm"], "then": "beruhigt"}], "else": "2"},
+    "2": {"findings": {"rr": 28, "spo2": 100, "hr": 118, "bp": "150/95", "exam": {"bodycheck": "keine Verletzungen; weißer Staub an Händen und Bluse; Kribbeln in den Händen und um den Mund, Finger verkrampft", "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche"}}, "rules": [{"when": ["calm", "decon_undress"], "then": "beruhigt-entkleidet"}, {"when": ["calm"], "then": "beruhigt"}]},
+    "beruhigt": {"findings": {"rr": 16, "hr": 88, "bp": "135/85"}, "rules": [{"when": ["decon_undress"], "then": "beruhigt-entkleidet"}]},
+    "beruhigt-entkleidet": {"findings": {"rr": 16, "hr": 88, "bp": "135/85", "exam": {"bodycheck": "keine Verletzungen; Bluse vorsichtig ausgezogen und verpackt, kein Staub mehr auf der Haut sichtbar", "auscultation": "vesikuläres Atemgeräusch beidseits, keine Nebengeräusche"}}}
   }
 }

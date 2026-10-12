@@ -10,6 +10,7 @@ import { Badge, Button, Card, Chip, Field, Logo, Stars, Title, clock, light, skC
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
+import { ReplaySheet, exportCsv } from "./replay";
 
 type ExerciseInfo = { code: string; title: string; status: Status; patients: string[] };
 type Clock = Extract<ServerMsg, { type: "clock" }>;
@@ -221,9 +222,11 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   const st = w.clock?.status ?? v?.status ?? "ready";
   const [counting, setCounting] = useState(false);
   const [show, setShow] = useState<Evaluation | null>(null);
+  const [replaying, setReplaying] = useState(false);
   const ctl = (type: "start" | "pause" | "resume" | "end") => api(session, `/api/exercises/${code}/control`, { type }).catch((e: Error) => setError(e.message));
   // J2: Vor dem Start die Lobby (auch für den Beamer), Start mit Countdown 3-2-1.
   if (show) return <Show t={t} ev={show} onClose={() => setShow(null)} />;
+  if (replaying) return <ReplaySheet t={t} session={session} code={code} onClose={() => setReplaying(false)} />;
   if (counting) return <Countdown t={t} onDone={() => (setCounting(false), ctl("start"))} />;
   if (st === "ready")
     return <Lobby t={t} session={session} code={code} view={v} error={w.error ?? error} onStart={() => setCounting(true)} onBack={onBack} onEnd={() => ctl("end")} />;
@@ -253,7 +256,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
       </View>
       <View style={{ paddingHorizontal: 20, gap: 12 }}>
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
-      {st === "ended" && <EvaluationPanel t={t} session={session} code={code} onShow={setShow} />}
+      {st === "ended" && <EvaluationPanel t={t} session={session} code={code} onShow={setShow} onReplay={() => setReplaying(true)} />}
       <View style={{ flexDirection: "row", gap: 6 }}>{(["I", "II", "III", "EX", "offen"] as const).map(skCell)}</View>
       {v?.patients.map((p) => (
         <Card key={p.id} t={t} color={p.triage ? skColor(t, p.triage) : t.line}>
@@ -474,7 +477,7 @@ const OUTCOME_RED = new Set(["verstorben"]);
 const TREND = { besser: "↗ besser", schlechter: "↘ schlechter", gleich: "→" } as const;
 const IDLE_MIN = 3; // ab dann fällt Leerlauf in der Helferliste auf
 
-function EvaluationPanel({ t, session, code, onShow }: { t: Theme; session: Session; code: string; onShow: (ev: Evaluation) => void }) {
+function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; session: Session; code: string; onShow: (ev: Evaluation) => void; onReplay: () => void }) {
   const [ev, setEv] = useState<Evaluation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const load = () => void api<Evaluation>(session, `/api/exercises/${code}/evaluation`).then(setEv, (e: Error) => setError(e.message));
@@ -484,6 +487,11 @@ function EvaluationPanel({ t, session, code, onShow }: { t: Theme; session: Sess
   return (
     <View style={{ gap: 10, borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 14 }}>
       <FunButton label="Auswertung zeigen (Beamer)" color={FUN.purple} text="#FFFFFF" onPress={() => onShow(ev)} />
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        <View style={{ flex: 1 }}><Button t={t} label="Replay" onPress={onReplay} /></View>
+        <View style={{ flex: 1 }}><Button t={t} label="Protokoll (CSV)" onPress={() => exportCsv(session, code).catch((e: Error) => setError(e.message))} /></View>
+      </View>
+      {error && <Text style={{ color: t.red }}>{error}</Text>}
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Text style={{ color: t.text, fontWeight: "700", fontSize: 20 }}>Auswertung</Text>
         <Stars t={t} stars={ev.team.stars} />

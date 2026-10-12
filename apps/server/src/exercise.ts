@@ -299,3 +299,38 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       return { t: e.t, type: e.type, text: text(e), patient: "patient" in e ? e.patient : null, who: who && name(who), trupp: who && (truppOf(ex, who)?.name ?? null) };
     });
 }
+
+// F4: Replay nach der Übung: je Minute die Lage aller Patienten (Phase, Soll- und Ist-SK, Ort), dazu alle Ereignisse.
+export function replay(ex: Exercise, now: number) {
+  const end = minutes(ex, now);
+  const frames = [];
+  // ponytail: rechnet jede Minute ab Start neu (O(Minuten × Aktionen)); reicht für Übungen von wenigen Stunden.
+  for (let m = 0; m <= Math.ceil(end); m++) {
+    const t = Math.min(m, end);
+    const s = stateAt(ex, t, []);
+    frames.push({
+      t,
+      patients: Object.entries(s.patients).map(([id, ps]) => {
+        const ph = phaseDef(s, id);
+        return { id, phase: ps.phase, triage: ps.triage, target: targetSk(s, id), place: PLACE[ps.place], dead: !!ph.dead, left: !!(ph.left || ps.left) };
+      }),
+    });
+  }
+  const patients = ex.scenario.patients.map((id) => ({ id, title: ex.defs.patients[id].title }));
+  return { code: ex.code, title: ex.scenario.title, end, patients, frames, events: timeline(ex, end) };
+}
+
+// F6: Ereignisprotokoll als CSV. Semikolon und BOM, damit Excel mit deutschen Einstellungen es direkt öffnet.
+// Namen und Fragen stammen von Helfern: Zellen mit = + - @ am Anfang entschärfen, sonst rechnet die Tabelle sie als Formel.
+export function csv(ex: Exercise, now: number): string {
+  const cell = (v: string) => {
+    const s = /^[=+\-@\t\r]/.test(v) ? `'${v}` : v;
+    return /[;"\r\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s;
+  };
+  const mmss = (t: number) => { const s = Math.round(t * 60); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+  const rows = [
+    ["Minute", "Ereignis", "Patient", "Helfer", "Trupp", "Text"],
+    ...timeline(ex, minutes(ex, now)).map((e) => [mmss(e.t), e.type, e.patient?.toUpperCase() ?? "", e.who ?? "", e.trupp ?? "", e.text]),
+  ];
+  return "﻿" + rows.map((r) => r.map(cell).join(";")).join("\r\n") + "\r\n";
+}

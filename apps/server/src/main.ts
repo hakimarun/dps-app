@@ -16,7 +16,7 @@ import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
+import { allowedActions, control, csv, leitungView, loadLibrary, minutes, released, replay, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
@@ -336,6 +336,11 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const ex = exercises.get(m[1]);
     if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
     return send(res, 200, evaluate(ex, Date.now()));
+  }
+  if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/(replay|export\.csv)$/))) {
+    const ex = exercises.get(m[1]);
+    if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
+    return m[2] === "replay" ? send(res, 200, replay(ex, Date.now())) : send(res, 200, csv(ex, Date.now()), "text/csv");
   }
   if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/control$/))) {
     const ex = exercises.get(m[1]);

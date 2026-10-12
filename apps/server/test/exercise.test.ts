@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { control, createExercise, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
+import { control, createExercise, csv, replay, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -169,4 +169,18 @@ test("Zwischenstand liefert denselben Zustand wie komplettes Neurechnen, auch na
   assert.ok(after.patients.p01.done.includes("pressure_dressing"));
   assert.deepEqual(after.patients, fresh(40).patients);
   assert.deepEqual(after.participants, fresh(40).participants);
+});
+
+test("Replay: je Minute die Lage, Phasenwechsel sichtbar; CSV mit entschärften Formeln", () => {
+  const { ex, p } = joined(running(), "=HYPERLINK(\"x\")");
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  const r = replay(ex, 20 * MIN);
+  assert.equal(r.frames.length, 21);
+  assert.equal(r.frames[0].patients[0].phase, lib.defs.patients.p01.start);
+  assert.notEqual(r.frames[20].patients[0].phase, r.frames[0].patients[0].phase);
+  assert.ok(r.events.some((e) => e.type === "scan"));
+  const lines = csv(ex, 20 * MIN).split("\r\n");
+  assert.ok(lines[0].startsWith("﻿Minute;Ereignis"));
+  assert.ok(lines.some((l) => l.startsWith("0:00;join;;\"'=HYPERLINK(\"\"x\"\")\";")), lines.join("\n"));
+  assert.ok(lines.some((l) => l.startsWith("1:00;scan;P01;")));
 });

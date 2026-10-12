@@ -54,8 +54,7 @@ npm run build:web
 npm run server
 ```
 
-- **Vor Ort im WLAN:** Laptop und Handys im selben Netz, Helfer öffnen `http://<IP des Laptops>:3000`. Ohne HTTPS erlauben
-  Handy-Browser keine Kamera; Patienten- und Übungscodes werden dann eingetippt (die Zettel tragen dafür Nummern und Codes).
+- **Vor Ort im WLAN:** siehe „Betrieb ohne Internet“ unten.
 - **Im Internet mit HTTPS** (Kamera und QR-Scan im Browser): Server hinter einen Reverse-Proxy mit Zertifikat, z. B. Caddy:
 
   ```text
@@ -65,8 +64,29 @@ npm run server
   ```
 
   WebSocket läuft über dieselbe Adresse (`wss://`), die App erkennt sie automatisch.
-- **Daten:** alles steckt in `data/dps.sqlite` (Konten, Freigaben, Übungen, Protokolle); vor und nach dem Pilot sichern.
+- **Daten:** alles steckt in `data/dps.sqlite` (Geräteschlüssel, Freigaben, Übungen, Protokolle); vor und nach dem Pilot sichern.
 - **Last:** `apps/server/test/load.test.ts` simuliert 12 Helfer über 60 Minuten; eine Aktualisierung dauert wenige Millisekunden.
+
+## Betrieb ohne Internet (Laptop + WLAN-Router vor Ort)
+
+Alles läuft auf einem Laptop oder Mini-PC; ein WLAN-Router ohne Internetanschluss verbindet die Handys.
+
+```bash
+npm install          # einmal vorher, mit Internet
+npm run offline      # baut die Web-App und startet den Server mit HTTPS
+```
+
+- Beim Start zeigt der Server die Adresse für die Helfer (z. B. `https://192.168.8.20:3000`) und einen QR-Code dazu im Terminal.
+- **Zertifikatswarnung:** Ohne Internet gibt es kein öffentliches Zertifikat. Der Server erzeugt beim ersten Start ein eigenes für seine
+  WLAN-Adressen (`data/tls/`, neu bei anderem Netz). Jedes Handy bestätigt die Warnung einmal („Details/Erweitert → trotzdem öffnen“).
+  HTTPS ist nötig, weil Handy-Browser Kamera (QR-Scan) und Mikrofon nur so freigeben. Ohne HTTPS (`npm run server`) geht alles außer
+  QR-Scan und Spracheingabe; Codes und Patientennummern werden dann eingetippt.
+- **QR-Scan** braucht kein Internet: Die Erkennung liefert der eigene Server mit aus.
+- **KI** nur lokal: Ollama auf dem Laptop, z. B. `AI_DIALOG=local AI_GENERATOR=local LOCAL_AI_URL=http://localhost:11434 LOCAL_AI_MODEL=dps-gemma3 npm run offline`.
+  Ohne KI antworten Patienten aus ihrem Gesprächsprofil (Vorschläge im Chat). Claude braucht Internet.
+- **Sprache:** Vorlesen funktioniert offline. Die Spracheingabe nutzt die Spracherkennung des Browsers; Chrome braucht dafür Internet,
+  ohne bleibt Tippen.
+- Übungsdaten liegen in `data/`, nichts verlässt das Gerät.
 
 ## KI (optional)
 

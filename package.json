@@ -10,7 +10,8 @@
     "test": "node --test",
     "typecheck": "tsc",
     "server": "node apps/server/src/main.ts",
-    "build:web": "npm run build:web -w @dps/app"
+    "build:web": "npm run build:web -w @dps/app",
+    "offline": "npm run build:web && node apps/server/src/main.ts --https"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

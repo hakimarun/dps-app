@@ -19,6 +19,12 @@ import { httpBase } from "./src/api";
 import { parseScan } from "./src/scan";
 import { Leitung } from "./src/leitung";
 
+// N3: QR-Scan ohne Internet. Ohne eingebaute Barcode-Erkennung (z. B. iPhone) lädt expo-camera die Erkennung (zxing-wasm)
+// sonst vom CDN; im Web-Build liefert der eigene Server die Datei aus (build:web kopiert sie nach dist).
+if (Platform.OS === "web" && !__DEV__)
+  void import("barcode-detector").then(({ setZXingModuleOverrides }) =>
+    setZXingModuleOverrides({ locateFile: (path: string, prefix: string) => (path.endsWith(".wasm") ? "/zxing_reader.wasm" : prefix + path) }));
+
 const VITALS: [string, string, string?][] = [["AF", "rr"], ["HF", "hr"], ["RR", "bp"], ["SpO₂", "spo2", " %"], ["GCS", "gcs"], ["Rekap", "recap", " s"]];
 const EXAM: Record<string, string> = {
   auscultation: "Auskultation", percussion: "Perkussion", pupils: "Pupillen", motor: "Motorik", pelvis: "Becken",

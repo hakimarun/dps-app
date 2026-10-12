@@ -1,6 +1,8 @@
 // Übungsserver: REST für die Spielleitung (Geräteschlüssel statt Konten), WebSocket für Helfer und Live-Lage.
-//   node apps/server/src/main.ts --port 3000 --data data
-import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+//   node apps/server/src/main.ts --port 3000 --data data [--https]
+//   --https: selbst signiertes Zertifikat für die WLAN-Adressen (Betrieb ohne Internet, N3), damit Handys Kamera und Mikrofon freigeben.
+import { createServer, type IncomingMessage, type RequestListener, type ServerResponse } from "node:http";
+import { createServer as createHttpsServer } from "node:https";
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { extname, join, resolve as resolvePath, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,10 +22,11 @@ import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore,
 import { printPage, reportPage } from "./print.ts";
 import { suggestFeedback } from "./feedback.ts";
 import { imageGenFromEnv } from "./images.ts";
+import { lanAddresses, selfSigned } from "./tls.ts";
 
-const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
+const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" }, https: { type: "boolean", default: false } } });
 const webDir = resolvePath(opt.web ?? fileURLToPath(new URL("../../app/dist/", import.meta.url)));
-const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".ico": "image/x-icon", ".svg": "image/svg+xml", ".ttf": "font/ttf", ".woff2": "font/woff2" };
+const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".ico": "image/x-icon", ".svg": "image/svg+xml", ".ttf": "font/ttf", ".woff2": "font/woff2", ".wasm": "application/wasm" };
 mkdirSync(opt.data, { recursive: true });
 const db = openDb(join(opt.data, "dps.sqlite"));
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -480,7 +483,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   throw new HttpError(404, "nicht gefunden");
 }
 
-const http = createServer((req, res) => {
+const handler: RequestListener = (req, res) => {
   // Bearer-Token statt Cookies, darum ist "*" hier unbedenklich.
   res.setHeader("access-control-allow-origin", "*");
   res.setHeader("access-control-allow-headers", "authorization, content-type");
@@ -490,7 +493,7 @@ const http = createServer((req, res) => {
     else if (e instanceof z.ZodError) send(res, 400, { error: "ungültige Eingabe" });
     else (console.error(e), send(res, 500, { error: "Serverfehler" }));
   });
-});
+};
 
 // WebSocket: Helfer (hello) und Leitung (watch).
 type Client = { ex: Exercise | null; trupp: Trupp | null; participant: string | null; watch: boolean; last: string };
@@ -565,11 +568,18 @@ function broadcast(ex: Exercise, withClock = false) {
   }
 }
 
+const http = opt.https ? createHttpsServer(selfSigned(join(opt.data, "tls")), handler) : createServer(handler);
 new WebSocketServer({ server: http }).on("connection", (ws) => {
   clients.set(ws, { ex: null, trupp: null, participant: null, watch: false, last: "" });
   ws.on("message", (raw) => onMessage(ws, String(raw)));
   ws.on("close", () => clients.delete(ws));
 });
 setInterval(() => new Set([...clients.values()].map((c) => c.ex).filter((ex) => ex !== null)).forEach((ex) => broadcast(ex)), 1000);
-http.listen(Number(opt.port), () =>
-  console.log(`dPS-Server auf Port ${opt.port}, ${exercises.size} Übungen, KI-Dialog: ${dialogAi?.name ?? "aus"}, KI-Generator: ${generatorAi?.name ?? "aus"}`));
+http.listen(Number(opt.port), async () => {
+  console.log(`dPS-Server auf Port ${opt.port}, ${exercises.size} Übungen, KI-Dialog: ${dialogAi?.name ?? "aus"}, KI-Generator: ${generatorAi?.name ?? "aus"}`);
+  // Adresse für die Helfer im WLAN vor Ort, dazu ein QR-Code zum Abscannen mit der Handy-Kamera
+  const urls = lanAddresses().map((ip) => `${opt.https ? "https" : "http"}://${ip}:${opt.port}`);
+  if (!urls.length) return;
+  console.log(`Helfer öffnen im WLAN: ${urls.join("  ")}${opt.https ? "  (Zertifikatswarnung einmal bestätigen)" : ""}`);
+  console.log(await QRCode.toString(urls[0], { type: "terminal", small: true }));
+});

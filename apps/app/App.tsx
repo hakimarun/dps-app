@@ -8,7 +8,7 @@ import type { Sk } from "@dps/schema";
 import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
-import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, STAGE, Stage, Tile } from "./src/fun";
+import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
 import { httpBase } from "./src/api";
 import { parseScan } from "./src/scan";
@@ -186,19 +186,21 @@ function Connect({ t, status, error, onConnect, onExit }: { t: Theme; status: st
     onConnect(server.trim(), m[1].toUpperCase());
   };
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
-      <Title t={t}>Übung beitreten</Title>
+    <PinScreen fullBleed footer={<PinLink label="Rolle wechseln" onPress={onExit} />}>
+      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Übung beitreten</Text>
       {scanning && permission?.granted ? (
-        <CameraView style={{ height: 320, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => scanned(r.data)} />
+        <CameraView style={{ height: 300, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => scanned(r.data)} />
       ) : (
-        <Button t={t} strong color={t.marke} label="QR-Code aus der Lobby scannen" onPress={() => (permission?.granted ? setScanning(true) : requestPermission().then((p) => p.granted && setScanning(true)))} />
+        <FunButton label="QR-Code scannen" color={FUN.blue} text="#FFFFFF" onPress={() => (permission?.granted ? setScanning(true) : requestPermission().then((p) => p.granted && setScanning(true)))} />
       )}
-      <Field t={t} label="Server" value={server} onChange={setServer} />
-      <Field t={t} label="Übungscode" value={code} onChange={(v) => setCode(v.toUpperCase())} />
-      {error && <Text style={{ color: t.red }}>{error}</Text>}
-      <Button t={t} strong label={status === "connecting" ? "Verbinde …" : "Verbinden"} disabled={!code || !server} onPress={() => onConnect(server.trim(), code.trim())} />
-      <Button t={t} label="Rolle wechseln" onPress={onExit} />
-    </ScrollView>
+      <Text style={{ color: "#666", textAlign: "center", fontWeight: "700" }}>oder Code eingeben</Text>
+      <TextInput value={code} onChangeText={(v) => setCode(v.toUpperCase())} placeholder="Übungscode" placeholderTextColor="#999" autoCapitalize="characters" autoCorrect={false}
+        accessibilityLabel="Übungscode" maxLength={6}
+        style={{ height: 64, borderWidth: 3, borderColor: "#CFCAD9", borderRadius: 14, textAlign: "center", fontSize: 30, fontWeight: "900", letterSpacing: 6, color: "#111" }} />
+      {error && <Text style={{ color: light.red, fontWeight: "700" }}>{error}</Text>}
+      <FunButton big label={status === "connecting" ? "Verbinde …" : "Los geht's"} color="#333333" text="#FFFFFF" disabled={!code || !server} onPress={() => onConnect(server.trim(), code.trim())} />
+      <Field t={light} label="Server" value={server} onChange={setServer} />
+    </PinScreen>
   );
 }
 
@@ -210,25 +212,26 @@ function Join({ t, units, trupp, online, onJoin }: {
   const [name, setName] = useState("");
   const [unit, setUnit] = useState("");
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
-      <Title t={t}>Beitreten</Title>
-      {trupp && <Text style={{ color: t.text, fontSize: 17 }}>{trupp.name} · {trupp.unit} · {ROLE[trupp.role]}</Text>}
-      <Field t={t} label="Name oder Kürzel" value={name} onChange={setName} />
+    <PinScreen>
+      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Wie heißt du?</Text>
+      {trupp && <Text style={{ color: "#333", fontSize: 16, fontWeight: "700", textAlign: "center" }}>{trupp.name} · {trupp.unit} · {ROLE[trupp.role]}</Text>}
+      <TextInput value={name} onChangeText={setName} placeholder="Name oder Kürzel" placeholderTextColor="#999" autoCorrect={false} accessibilityLabel="Name oder Kürzel" maxLength={30}
+        style={{ height: 60, borderWidth: 3, borderColor: "#CFCAD9", borderRadius: 14, textAlign: "center", fontSize: 24, fontWeight: "800", color: "#111" }} />
       {!trupp && (
         <>
-          <Text style={{ color: t.quiet }}>Einheit</Text>
+          <Text style={{ color: "#666", fontWeight: "700" }}>Einheit</Text>
           <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-            {units.map((u) => <Chip key={u.id} t={t} label={u.title} selected={unit === u.id} onPress={() => setUnit(u.id)} />)}
+            {units.map((u) => <Chip key={u.id} t={light} label={u.title} selected={unit === u.id} onPress={() => setUnit(u.id)} />)}
           </View>
         </>
       )}
-      <Button t={t} strong label="Beitreten" disabled={!online || !name.trim() || (!trupp && !unit)} onPress={() => onJoin(name.trim(), trupp ? undefined : unit)} />
+      <FunButton big label="Beitreten" color="#333333" text="#FFFFFF" disabled={!online || !name.trim() || (!trupp && !unit)} onPress={() => onJoin(name.trim(), trupp ? undefined : unit)} />
       {/* N10: vor dem Beitritt informieren */}
-      <Text style={{ color: t.quiet, fontSize: 13 }}>
+      <Text style={{ color: "#666", fontSize: 13 }}>
         Deine Aktionen und Fragen werden mit diesem Namen protokolliert und nach der Übung ausgewertet. Deinen Bericht siehst nur du und die
         Übungsleitung. Nimm ein Kürzel, wenn du nicht mit vollem Namen erscheinen willst.
       </Text>
-    </ScrollView>
+    </PinScreen>
   );
 }
 
@@ -310,7 +313,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {VITALS.map(([label, k, unit]) => (
             <Pressable key={`${p.id}-${k}`} disabled={!CARD_DEVICE[k] || !hasDevice(CARD_DEVICE[k])} onPress={() => setDevice(CARD_DEVICE[k])}
-              accessibilityRole={CARD_DEVICE[k] && hasDevice(CARD_DEVICE[k]) ? "button" : undefined} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10 }}>
+              accessibilityRole={CARD_DEVICE[k] && hasDevice(CARD_DEVICE[k]) ? "button" : undefined} style={{ width: "31%", backgroundColor: t.card, borderRadius: 14, borderBottomWidth: 3, borderColor: t.edge }}>
               <Flash t={t} value={f[k]}>
                 <View style={{ padding: 10 }}>
                   <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
@@ -481,7 +484,7 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
   };
   const bubble = (mine: boolean, children: ReactNode, key: string) => (
     <View key={key} style={{ alignSelf: mine ? "flex-end" : "flex-start", maxWidth: "82%", paddingHorizontal: 14, paddingVertical: 10, borderRadius: 18,
-      borderBottomRightRadius: mine ? 4 : 18, borderBottomLeftRadius: mine ? 18 : 4, backgroundColor: mine ? t.text : t.tint }}>
+      borderBottomRightRadius: mine ? 4 : 18, borderBottomLeftRadius: mine ? 18 : 4, backgroundColor: mine ? t.accent : t.card }}>
       {children}
     </View>
   );
@@ -500,10 +503,10 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
       <ScrollView ref={scroll} onContentSizeChange={() => scroll.current?.scrollToEnd()} contentContainerStyle={{ padding: 16, gap: 8 }}>
         {!dialog.length && !waiting && <Text style={{ color: t.quiet, textAlign: "center", marginTop: 24 }}>Sprich den Patienten an – höflich und in ganzen Sätzen kommst du am weitesten.</Text>}
         {dialog.flatMap((d, i) => [
-          bubble(true, <Text style={{ color: t.bg, fontSize: 16 }}>{d.q}</Text>, `q${i}`),
+          bubble(true, <Text style={{ color: "#FFFFFF", fontSize: 16 }}>{d.q}</Text>, `q${i}`),
           bubble(false, <Text style={{ color: d.a === SILENT ? t.quiet : t.text, fontSize: 16, fontStyle: d.a === SILENT ? "italic" : "normal" }}>{d.a}</Text>, `a${i}`),
         ])}
-        {waiting && bubble(true, <Text style={{ color: t.bg, fontSize: 16 }}>{waiting.q}</Text>, "wq")}
+        {waiting && bubble(true, <Text style={{ color: "#FFFFFF", fontSize: 16 }}>{waiting.q}</Text>, "wq")}
         {waiting && bubble(false, <Typing t={t} />, "wa")}
         {error && <Text style={{ color: t.red, textAlign: "center" }}>{error}</Text>}
       </ScrollView>

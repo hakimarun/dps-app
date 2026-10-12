@@ -259,8 +259,20 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
     idle: h.busy ? null : Math.max(0, t - (lastActive.get(id) ?? 0)),
   }));
   const trupps = ex.trupps!.map((tr) => ({ ...tr, unit: unit(tr.unit), members: [...ex.truppOf].filter(([, c]) => c === tr.code).map(([pid]) => name(pid)) }));
+  const events = timeline(ex, t, generated).reverse().slice(0, 30).map((e) => ({ t: e.t, text: e.text }));
+  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, events };
+}
+
+// Alle Ereignisse bis t mit Text, aufsteigend: Aktionen der Helfer und echte Phasenwechsel der Patienten.
+// Gemeinsame Grundlage für Live-Lage, Replay (F4) und CSV-Export (F6).
+export type TimelineEvent = { t: number; type: Event["type"]; text: string; patient: string | null; who: string | null; trupp: string | null };
+export function timeline(ex: Exercise, t: number, generated?: Event[]): TimelineEvent[] {
+  if (!generated) stateAt(ex, t, (generated = []));
+  const name = (id: string) => ex.names.get(id) ?? "?";
+  const action = (id: string) => ex.defs.actions[id]?.title ?? id;
+  const unit = (id: string) => ex.scenario.units.find((u) => u.id === id)?.title ?? id;
+  const P = (p: string) => p.toUpperCase();
   const text = (e: Event): string => {
-    const P = (p: string) => p.toUpperCase();
     switch (e.type) {
       case "join": return `${name(e.participant)} tritt bei (${truppOf(ex, e.participant)?.name ?? unit(e.unit)})`;
       case "scan": return `${name(e.participant)} scannt ${P(e.patient)}`;
@@ -274,15 +286,16 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
     }
   };
   // Nur echte Phasenwechsel; die Engine meldet auch erneute Regelprüfungen in derselben Phase.
-  const prev: Record<string, string> = Object.fromEntries(Object.keys(s.patients).map((id) => [id, ex.defs.patients[id].start]));
+  const prev: Record<string, string> = Object.fromEntries(ex.scenario.patients.map((id) => [id, ex.defs.patients[id].start]));
   const changes = generated.filter((e) => {
     if (e.type !== "phase" || prev[e.patient] === e.to) return false;
     prev[e.patient] = e.to;
     return true;
   });
-  const events = [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...changes]
-    .sort((a, b) => b.t - a.t)
-    .slice(0, 30)
-    .map((e) => ({ t: e.t, text: text(e) }));
-  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, events };
+  return [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...changes]
+    .sort((a, b) => a.t - b.t)
+    .map((e) => {
+      const who = "participant" in e ? e.participant : null;
+      return { t: e.t, type: e.type, text: text(e), patient: "patient" in e ? e.patient : null, who: who && name(who), trupp: who && (truppOf(ex, who)?.name ?? null) };
+    });
 }

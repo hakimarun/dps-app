@@ -4,7 +4,8 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Image, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Findings, Patient, Sk } from "@dps/schema";
 import { api, httpBase, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
-import { Button, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
+import { Button, Card, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
+import { SHAPES, TILE } from "./fun";
 import { CaseEditor, ScenarioEditor } from "./editor";
 
 type Idea = {
@@ -67,13 +68,25 @@ function ChipRow({ children }: { children: ReactNode }) {
 
 function Row({ t, color, title, lines, onPress }: { t: Theme; color: string; title: string; lines: { text: string; color?: string }[]; onPress: () => void }) {
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={{ flexDirection: "row", gap: 10, paddingVertical: 8, borderBottomWidth: 1, borderColor: t.line }}>
-      <View style={{ width: 5, borderRadius: 2, backgroundColor: color }} />
-      <View style={{ flex: 1, gap: 2 }}>
-        <Text style={{ color: t.text, fontWeight: "600" }}>{title}</Text>
+    <View style={{ marginTop: 8 }}>
+      <Card t={t} color={color} onPress={onPress}>
+        <Text style={{ color: t.text, fontWeight: "800" }}>{title}</Text>
         {lines.map((l, i) => <Text key={i} style={{ color: l.color ?? t.quiet, fontSize: 13 }}>{l.text}</Text>)}
+      </Card>
+    </View>
+  );
+}
+
+// Kategorie-Überschrift als bunte Kachel mit Symbol (Farbe fest je Kategorie).
+function Group({ label, count }: { label: string; count: number }) {
+  const i = [...label].reduce((a, c) => a + c.charCodeAt(0), 0) % 4;
+  return (
+    <View style={{ flexDirection: "row", marginTop: 16, marginBottom: 2 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: TILE[i], borderRadius: 10, paddingHorizontal: 12, paddingVertical: 6 }}>
+        <Text style={{ color: "#FFFFFF", fontSize: 15 }}>{SHAPES[i]}</Text>
+        <Text style={{ color: "#FFFFFF", fontWeight: "900" }}>{label} · {count}</Text>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
@@ -124,7 +137,7 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
         {lib.error && <Text style={{ color: t.red }}>{lib.error}</Text>}
         {groupBy(shown, (p) => p.meta.category).map(([category, items]) => (
           <View key={category}>
-            <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>{category} · {items.length}</Text>
+            <Group label={category} count={items.length} />
             {items.map((p) => (
               <Row key={p.id} t={t} color={p.sk ? skColor(t, p.sk) : t.line} title={`${p.id.toUpperCase()} ${p.title}`} onPress={() => setDetail(p)}
                 lines={[
@@ -284,7 +297,7 @@ function IdeaList({ t, session, ideas, onGenerated }: { t: Theme; session: Sessi
         <Filters t={t} q={q} setQ={setQ} cats={[...new Set(all.map((i) => i.category))].sort()} cat={cat} setCat={setCat} sk={sk} setSk={setSk} />
         {groupBy(shown, (i) => i.category).map(([category, items]) => (
           <View key={category}>
-            <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>{category} · {items.length}</Text>
+            <Group label={category} count={items.length} />
             {items.map((i) => (
               <Row key={i.id} t={t} color={skColor(t, i.sk)} title={`${i.id} ${i.title}`} onPress={() => setOpen(i)}
                 lines={[{ text: `SK ${i.sk} · ${DIFF[i.difficulty] ?? i.difficulty} · ${i.tags.join(", ")}` }]} />
@@ -331,12 +344,12 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
         <Button t={t} label="Neues Szenario (Formular)" onPress={() => setEdit("neu")} />
         <Button t={t} label="Neues Szenario mit KI" disabled={!ideas?.generator} note={ideas?.generator ? undefined : "KI-Fallgenerator ist auf dem Server nicht eingerichtet"}
           onPress={() => setGen({ title: "Neues Szenario mit KI", brief: "", count: 6 })} />
-        <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>Spielbar · {playable.length}</Text>
+        <Text style={{ color: t.text, fontWeight: "900", fontSize: 20, marginTop: 12 }}>Spielbar · {playable.length}</Text>
         {playable.map((s) => (
           <Row key={s.id} t={t} color={s.origin === "ki" ? t.gold : t.line} title={s.title} onPress={() => setPlay(s.id)}
             lines={[{ text: `${s.patients.length} Patienten · ${s.origin === "ki" ? "KI-Szenario" : "Muster"}` }, ...(s.job ? [jobLine(t, s.job)] : [])]} />
         ))}
-        <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>Ideen · {shown.length} von {all.length}</Text>
+        <Text style={{ color: t.text, fontWeight: "900", fontSize: 20, marginTop: 12 }}>Ideen · {shown.length} von {all.length}</Text>
         <Field t={t} label="Suche (Titel, Lage, Besonderheit)" value={q} onChange={setQ} />
         <ChipRow>
           <Chip t={t} label="Alle Kategorien" selected={!cat} onPress={() => setCat(null)} />
@@ -344,7 +357,7 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
         </ChipRow>
         {groupBy(shown, (s) => s.category).map(([category, items]) => (
           <View key={category}>
-            <Text style={{ color: t.text, fontWeight: "700", marginTop: 8 }}>{category} · {items.length}</Text>
+            <Group label={category} count={items.length} />
             {items.map((s) => (
               <Row key={s.id} t={t} color={t.line} title={`${s.id} ${s.title}`} onPress={() => setOpen(s)}
                 lines={[{ text: `${s.patients} Patienten · ${mix(s.mix)} · ${DIFF[s.difficulty] ?? s.difficulty}` }]} />

@@ -6,8 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Badge, Button, Chip, Field, Logo, Stars, Title, clock, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
-import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
+import { Badge, Button, Card, Chip, Field, Logo, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
+import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
 
@@ -15,6 +15,7 @@ type ExerciseInfo = { code: string; title: string; status: Status; patients: str
 type Clock = Extract<ServerMsg, { type: "clock" }>;
 
 const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", paused: "pausiert", ended: "beendet" };
+const STATUS_COLOR: Record<Status, string> = { ready: FUN.blue, running: FUN.green, paused: FUN.gold, ended: FUN.purple };
 const ROLES = [["sichtung", "Sichtungstrupps"], ["behandlung", "Behandlungstrupps"], ["transport", "Transporttrupps"]] as const;
 const ROLE_SHORT: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
@@ -38,23 +39,25 @@ function Login({ t, onLogin, onExit }: { t: Theme; onLogin: (s: Session) => void
   const [error, setError] = useState<string | null>(null);
   const run = (p: Promise<unknown>) => (setError(null), p.catch((e: Error) => setError(e.message)));
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
-      <Title t={t}>Anmelden</Title>
-      <Text style={{ color: t.quiet }}>Praxisanleiter und Ärzte melden sich mit einem Code per E-Mail an.</Text>
-      <Field t={t} label="Server" value={server} onChange={setServer} />
-      <Field t={t} label="E-Mail" value={email} onChange={setEmail} keyboard="email-address" />
-      <Button t={t} strong={!sent} label={sent ? "Code erneut anfordern" : "Code anfordern"} disabled={!email.includes("@")}
-        onPress={() => run(api({ server, token: "" }, "/api/login", { email: email.trim() }).then(() => setSent(true)))} />
+    <PinScreen fullBleed color={FUN.red} footer={<PinLink label="Rolle wechseln" onPress={onExit} />}>
+      <Text style={{ color: "#111", fontSize: 24, fontWeight: "900", textAlign: "center" }}>Übungsleitung</Text>
+      <Text style={{ color: "#666", textAlign: "center" }}>Praxisanleiter und Ärzte melden sich mit einem Code per E-Mail an.</Text>
+      <Field t={light} label="E-Mail" value={email} onChange={setEmail} keyboard="email-address" />
+      {!sent && (
+        <FunButton label="Code anfordern" color="#333333" text="#FFFFFF" disabled={!email.includes("@")}
+          onPress={() => run(api({ server, token: "" }, "/api/login", { email: email.trim() }).then(() => setSent(true)))} />
+      )}
       {sent && (
         <>
-          <Field t={t} label="Code aus der E-Mail" value={code} onChange={setCode} keyboard="number-pad" />
-          <Button t={t} strong label="Anmelden" disabled={!/^\d{6}$/.test(code)}
+          <Field t={light} label="Code aus der E-Mail" value={code} onChange={setCode} keyboard="number-pad" />
+          <FunButton big label="Anmelden" color="#333333" text="#FFFFFF" disabled={!/^\d{6}$/.test(code)}
             onPress={() => run(api<{ token: string }>({ server, token: "" }, "/api/verify", { email: email.trim(), code }).then(({ token }) => onLogin({ server, token, email: email.trim() })))} />
+          <Button t={light} label="Code erneut anfordern" onPress={() => run(api({ server, token: "" }, "/api/login", { email: email.trim() }))} />
         </>
       )}
-      {error && <Text style={{ color: t.red }}>{error}</Text>}
-      <Button t={t} label="Rolle wechseln" onPress={onExit} />
-    </ScrollView>
+      {error && <Text style={{ color: light.red, fontWeight: "700" }}>{error}</Text>}
+      <Field t={light} label="Server" value={server} onChange={setServer} />
+    </PinScreen>
   );
 }
 
@@ -64,9 +67,18 @@ function Home({ t, session, onLogout, onExit }: { t: Theme; session: Session; on
   if (open) return <ExerciseScreen t={t} session={session} code={open} onBack={() => setOpen(null)} />;
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: "row", gap: 8, paddingHorizontal: 20, paddingBottom: 8 }}>
-        <Chip t={t} label="Übungen" selected={tab === "uebungen"} onPress={() => setTab("uebungen")} />
-        <Chip t={t} label="Bibliothek" selected={tab === "bibliothek"} onPress={() => setTab("bibliothek")} />
+      {/* Kopfleiste wie bei Kahoot: Bühnenfarbe bis unter die Statusleiste, Logo und weiße Reiter */}
+      <View style={{ backgroundColor: STAGE, marginTop: -48, paddingTop: 56, paddingBottom: 14, paddingHorizontal: 20, marginBottom: 12,
+        borderBottomLeftRadius: 22, borderBottomRightRadius: 22, flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <Logo t={{ ...light, marke: FUN.red }} size={34} />
+        <View style={{ flexDirection: "row", gap: 8, flex: 1, justifyContent: "flex-end" }}>
+          {([["uebungen", "Übungen"], ["bibliothek", "Bibliothek"]] as const).map(([id, label]) => (
+            <Pressable key={id} accessibilityRole="button" accessibilityState={{ selected: tab === id }} onPress={() => setTab(id)}
+              style={{ paddingHorizontal: 16, paddingVertical: 10, borderRadius: 22, backgroundColor: tab === id ? "#FFFFFF" : "rgba(255,255,255,0.18)" }}>
+              <Text style={{ color: tab === id ? STAGE : "#FFFFFF", fontWeight: "900" }}>{label}</Text>
+            </Pressable>
+          ))}
+        </View>
       </View>
       <View style={{ flex: 1 }}>{tab === "bibliothek" ? <LibraryScreen t={t} session={session} /> : <Exercises t={t} session={session} onOpen={setOpen} />}</View>
       <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 20, borderTopWidth: 1, borderColor: t.line }}>
@@ -88,12 +100,13 @@ function Exercises({ t, session, onOpen }: { t: Theme; session: Session; onOpen:
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
       <Title t={t}>Übungen</Title>
-      <Button t={t} strong label="Neue Übung" onPress={() => setCreating(true)} />
+      <FunButton label="+ Neue Übung" color={FUN.purple} text="#FFFFFF" onPress={() => setCreating(true)} />
       {list?.map((ex) => (
-        <Pressable key={ex.code} accessibilityRole="button" onPress={() => onOpen(ex.code)} style={{ borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 12, gap: 4 }}>
-          <Text style={{ color: t.text, fontWeight: "600", fontSize: 16 }}>{ex.code} · {ex.title}</Text>
+        <Card key={ex.code} t={t} color={STATUS_COLOR[ex.status]} onPress={() => onOpen(ex.code)}>
+          <Text style={{ color: t.text, fontWeight: "900", fontSize: 18, letterSpacing: 1 }}>{ex.code}</Text>
+          <Text style={{ color: t.text, fontWeight: "600" }}>{ex.title}</Text>
           <Text style={{ color: t.quiet }}>{STATUS[ex.status]} · {ex.patients.length} Patienten</Text>
-        </Pressable>
+        </Card>
       ))}
       {list?.length === 0 && <Text style={{ color: t.quiet }}>Noch keine Übungen.</Text>}
     </ScrollView>
@@ -214,57 +227,82 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   if (counting) return <Countdown t={t} onDone={() => (setCounting(false), ctl("start"))} />;
   if (st === "ready")
     return <Lobby t={t} session={session} code={code} view={v} error={w.error ?? error} onStart={() => setCounting(true)} onBack={onBack} onEnd={() => ctl("end")} />;
+  // Schrift passend zur Kachel: Gelb und helles EX (dunkles Design) brauchen dunkle Schrift.
+  const ink = (k: Sk | "offen") => (k === "offen" ? t.text : k === "II" ? "#111111" : k === "EX" ? t.bg : "#FFFFFF");
   const skCell = (k: Sk | "offen") => (
-    <View key={k} style={{ flex: 1, borderWidth: 2, borderColor: k === "offen" ? t.line : skColor(t, k), borderRadius: 8, padding: 6, alignItems: "center" }}>
-      <Text style={{ color: t.text, fontWeight: "600" }}>{k} {v?.counts[k] ?? 0}</Text>
+    <View key={k} style={{ flex: 1, borderRadius: 14, backgroundColor: t.edge, paddingBottom: 4 }}>
+      <View style={{ borderRadius: 14, padding: 8, alignItems: "center", backgroundColor: k === "offen" ? t.card : skColor(t, k) }}>
+        <Text style={{ color: ink(k), fontWeight: "900", fontSize: 24 }}>{v?.counts[k] ?? 0}</Text>
+        <Text style={{ color: ink(k), fontWeight: "800" }}>{k}</Text>
+      </View>
     </View>
   );
+  const heading = (label: string) => <Text style={{ color: t.text, fontSize: 20, fontWeight: "900", marginTop: 8 }}>{label}</Text>;
   return (
-    <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingBottom: 20 }}>
-      <Text style={{ color: t.text, fontWeight: "600" }} accessibilityRole="button" onPress={onBack}>‹ Übungen</Text>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "baseline" }}>
-        <Title t={t}>Lage {code}</Title>
-        <Text style={{ color: t.quiet }}>{clock(exerciseMinutes(w.clock, w.offset, now) * 60000)} · {STATUS[st]}</Text>
+    <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 20 }}>
+      {/* Kopfleiste in Bühnenfarbe wie auf der Startseite */}
+      <View style={{ backgroundColor: STAGE, marginTop: -48, paddingTop: 56, paddingBottom: 16, paddingHorizontal: 20, gap: 6, borderBottomLeftRadius: 22, borderBottomRightRadius: 22 }}>
+        <Text style={{ color: "#FFFFFF", fontWeight: "700" }} accessibilityRole="button" onPress={onBack}>‹ Übungen</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
+          <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "900" }} accessibilityRole="header">Lage {code}</Text>
+          <View style={{ backgroundColor: "#FFFFFF", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 }}>
+            <Text style={{ color: STAGE, fontWeight: "900" }}>{clock(exerciseMinutes(w.clock, w.offset, now) * 60000)} · {STATUS[st]}</Text>
+          </View>
+        </View>
+        <Text style={{ color: "#FFFFFF", opacity: 0.85 }}>{v?.title ?? "verbinde …"}</Text>
       </View>
-      <Text style={{ color: t.quiet }}>{v?.title ?? "verbinde …"}</Text>
+      <View style={{ paddingHorizontal: 20, gap: 12 }}>
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
       {st === "ended" && <EvaluationPanel t={t} session={session} code={code} onShow={setShow} />}
       <View style={{ flexDirection: "row", gap: 6 }}>{(["I", "II", "III", "EX", "offen"] as const).map(skCell)}</View>
       {v?.patients.map((p) => (
-        <View key={p.id} style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-          <View style={{ width: 5, alignSelf: "stretch", borderRadius: 2, backgroundColor: p.triage ? skColor(t, p.triage) : t.line }} />
-          <View style={{ flex: 1 }}>
-            <Text style={{ color: t.text, fontWeight: "600" }}>{p.id.toUpperCase()} · {p.title}</Text>
-            {p.alert ? <Text style={{ color: t.red, fontWeight: "600" }}>{p.alert}</Text> : null}
-            <Text style={{ color: t.quiet }}>
-              Soll {p.target} {TREND[p.trend]} · Ist {p.triage ?? "–"} · {p.place} · {p.helpers.join(", ") || "kein Helfer"}
-              {p.lastContact !== null && !p.helpers.length ? ` · letzter Kontakt vor ${Math.floor(exerciseMinutes(w.clock, w.offset, now) - p.lastContact)} min` : ""}
-              {p.lastContact === null ? " · noch kein Kontakt" : ""}
-            </Text>
+        <Card key={p.id} t={t} color={p.triage ? skColor(t, p.triage) : t.line}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
+            <Text style={{ color: t.text, fontWeight: "900", flexShrink: 1 }}>{p.id.toUpperCase()} · {p.title}</Text>
+            <Text style={{ color: t.quiet, fontSize: 12 }}>{p.phase}</Text>
           </View>
-          <Text style={{ color: t.quiet, fontSize: 12 }}>{p.phase}</Text>
-        </View>
+          {p.alert ? <Text style={{ color: t.red, fontWeight: "700" }}>{p.alert}</Text> : null}
+          <Text style={{ color: t.quiet }}>
+            Soll {p.target} {TREND[p.trend]} · Ist {p.triage ?? "–"} · {p.place} · {p.helpers.join(", ") || "kein Helfer"}
+            {p.lastContact !== null && !p.helpers.length ? ` · letzter Kontakt vor ${Math.floor(exerciseMinutes(w.clock, w.offset, now) - p.lastContact)} min` : ""}
+            {p.lastContact === null ? " · noch kein Kontakt" : ""}
+          </Text>
+        </Card>
       ))}
-      <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Helfer ({v?.helpers.length ?? 0})</Text>
-      {v?.helpers.map((h) => (
-        <Text key={h.id} style={{ color: h.idle !== null && h.idle >= IDLE_MIN ? t.text : t.quiet }}>
-          {h.name} ({h.trupp ?? h.unit}) · {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}
-          {h.idle !== null && h.idle >= IDLE_MIN ? ` · seit ${Math.floor(h.idle)} min ohne Maßnahme` : ""}
-        </Text>
-      ))}
-      {(v?.trupps.length ?? 0) > 0 && <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Trupps</Text>}
-      {v?.trupps.map((tr) => (
-        <Text key={tr.code} style={{ color: t.quiet }}>
-          <Text style={{ color: t.text, fontWeight: "700" }}>{tr.code}</Text> · {tr.name} · {tr.unit} · {tr.members.join(", ") || "noch niemand"}
-        </Text>
-      ))}
-      <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Ereignisse</Text>
-      {v?.events.slice(0, 15).map((e, i) => <Text key={i} style={{ color: t.quiet }}>{clock(e.t * 60000)} {e.text}</Text>)}
+      {heading(`Helfer (${v?.helpers.length ?? 0})`)}
+      {v?.helpers.map((h) => {
+        const idle = h.idle !== null && h.idle >= IDLE_MIN;
+        return (
+          <Card key={h.id} t={t} color={idle ? t.text : h.patient ? t.accent : t.line}>
+            <Text style={{ color: t.text, fontWeight: "800" }}>{h.name} <Text style={{ color: t.quiet, fontWeight: "400" }}>({h.trupp ?? h.unit})</Text></Text>
+            <Text style={{ color: idle ? t.text : t.quiet }}>
+              {h.patient?.toUpperCase() ?? "ohne Patient"}{h.busy ? ` · ${h.busy}` : ""}{idle ? ` · seit ${Math.floor(h.idle!)} min ohne Maßnahme` : ""}
+            </Text>
+          </Card>
+        );
+      })}
+      {(v?.trupps.length ?? 0) > 0 && heading("Trupps")}
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+        {v?.trupps.map((tr) => (
+          <View key={tr.code} style={{ flexGrow: 1, minWidth: 160, borderRadius: 14, padding: 12, backgroundColor: t.accent, gap: 2 }}>
+            <Text style={{ color: "#FFFFFF", fontWeight: "900" }}>{tr.name} · {tr.code}</Text>
+            <Text style={{ color: "#FFFFFF", opacity: 0.9 }}>{tr.unit} · {tr.members.join(", ") || "noch niemand"}</Text>
+          </View>
+        ))}
+      </View>
+      {heading("Ereignisse")}
+      <View style={{ backgroundColor: t.card, borderRadius: 14, padding: 12, gap: 4 }}>
+        {v?.events.slice(0, 15).map((e, i) => (
+          <Text key={i} style={{ color: t.quiet }}><Text style={{ color: t.text, fontWeight: "800", fontVariant: ["tabular-nums"] }}>{clock(e.t * 60000)}</Text>  {e.text}</Text>
+        ))}
+        {!v?.events.length && <Text style={{ color: t.quiet }}>noch nichts passiert</Text>}
+      </View>
       <View style={{ gap: 10, marginTop: 8 }}>
         {st === "running" && <Button t={t} strong label="Pausieren" onPress={() => ctl("pause")} />}
         {st === "paused" && <Button t={t} strong label="Fortsetzen" onPress={() => ctl("resume")} />}
         <Button t={t} label="QR-Zettel drucken" onPress={() => Linking.openURL(`${httpBase(session.server)}/print/${code}`)} />
         {st !== "ended" && <Button t={t} label="Übung beenden" onPress={() => ctl("end")} />}
+      </View>
       </View>
     </ScrollView>
   );

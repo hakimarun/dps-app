@@ -4,8 +4,15 @@ import { AccessibilityInfo, Animated, Easing, Pressable, ScrollView, Text, TextI
 import type { Sk } from "@dps/schema";
 
 // marke: warmes Rot (J1), nur in Lobby, Bibliothek und Auswertung – im Einsatz ist Rot der Sichtung vorbehalten.
-export const light = { bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828", gold: "#B8860B", marke: "#C8202F" };
-export const dark = { bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350", gold: "#FFD54F", marke: "#E5484D" };
+// accent: Lila wie die Bühne (Kahoot-Stil) für Hauptknöpfe und Auswahl; card/edge: Fläche und dunklere Unterkante der 3D-Knöpfe.
+export const light = {
+  bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828", gold: "#B8860B", marke: "#C8202F",
+  accent: "#46178F", accentEdge: "#2A0D57", card: "#F3F1F7", edge: "#CFCAD9",
+};
+export const dark = {
+  bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350", gold: "#FFD54F", marke: "#E5484D",
+  accent: "#6B35C9", accentEdge: "#33186A", card: "#1C1A22", edge: "#050407",
+};
 export type Theme = typeof light;
 
 export const SK: Record<Sk, { label: string; light: string | null; dark: string | null }> = {
@@ -23,32 +30,39 @@ export const clock = (ms: number) => {
 };
 
 export function Title({ t, children }: { t: Theme; children: ReactNode }) {
-  return <Text style={{ color: t.text, fontSize: 28, fontWeight: "700" }}>{children}</Text>;
+  return <Text style={{ color: t.text, fontSize: 30, fontWeight: "900", letterSpacing: -0.3 }}>{children}</Text>;
 }
 
 export function Field({ t, label, value, onChange, keyboard }: { t: Theme; label: string; value: string; onChange: (v: string) => void; keyboard?: "email-address" | "number-pad" }) {
   return (
     <View style={{ gap: 6 }}>
-      <Text style={{ color: t.quiet }}>{label}</Text>
+      <Text style={{ color: t.quiet, fontWeight: "700", fontSize: 13 }}>{label}</Text>
       <TextInput value={value} onChangeText={onChange} autoCapitalize="none" autoCorrect={false} accessibilityLabel={label} keyboardType={keyboard}
-        style={{ minHeight: 48, borderWidth: 1, borderColor: t.line, borderRadius: 10, paddingHorizontal: 12, color: t.text, fontSize: 17 }} />
+        style={{ minHeight: 50, borderWidth: 2, borderColor: t.edge, borderRadius: 12, paddingHorizontal: 14, color: t.text, fontSize: 17, fontWeight: "600", backgroundColor: t.card }} />
     </View>
   );
 }
 
+// Klobiger 3D-Knopf wie bei Kahoot: dunklere Unterkante, beim Drücken sinkt er ein.
+// strong = Hauptaktion (lila), color = Bedeutungsfarbe (z. B. Sichtungskategorie) als Rand und Hauch.
 export function Button({ t, label, note, onPress, disabled, strong, color }: {
   t: Theme; label: string; note?: string; onPress: () => void; disabled?: boolean; strong?: boolean; color?: string | null;
 }) {
-  const border = color ?? t.text;
+  const edge = strong ? t.accentEdge : color ?? t.edge;
+  const fg = strong ? "#FFFFFF" : t.text;
+  const align = color !== undefined ? "left" : "center";
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: strong ? 56 : 48, borderRadius: 12, paddingHorizontal: 16, justifyContent: "center", opacity: disabled ? 0.4 : pressed ? 0.7 : 1,
-        borderWidth: strong || color !== undefined ? 2 : 1, borderColor: strong || color !== undefined ? border : t.line,
-        backgroundColor: color ? `${color}2E` : "transparent",
-      })}>
-      <Text style={{ color: t.text, fontSize: strong ? 17 : 16, fontWeight: strong ? "600" : "400", textAlign: color !== undefined ? "left" : "center" }}>{label}</Text>
-      {note && <Text style={{ color: t.quiet, fontSize: 12, textAlign: "center" }}>{note}</Text>}
+    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress}>
+      {({ pressed }) => (
+        <View style={{ borderRadius: 14, backgroundColor: edge, paddingBottom: pressed ? 1 : 4, marginTop: pressed ? 3 : 0, opacity: disabled ? 0.45 : 1 }}>
+          <View style={{ borderRadius: 14, backgroundColor: strong ? t.accent : t.card, overflow: "hidden" }}>
+            <View style={{ minHeight: strong ? 56 : 48, paddingHorizontal: 16, paddingVertical: 6, justifyContent: "center", backgroundColor: color ? `${color}2E` : "transparent", borderWidth: color ? 2 : 0, borderColor: color ?? "transparent", borderRadius: 14 }}>
+              <Text style={{ color: fg, fontSize: strong ? 18 : 16, fontWeight: strong ? "900" : "700", textAlign: align }}>{label}</Text>
+              {note && <Text style={{ color: strong ? "rgba(255,255,255,0.8)" : t.quiet, fontSize: 12, textAlign: align }}>{note}</Text>}
+            </View>
+          </View>
+        </View>
+      )}
     </Pressable>
   );
 }
@@ -56,9 +70,14 @@ export function Button({ t, label, note, onPress, disabled, strong, color }: {
 // Auswahl-Pille (Filter, Einheit, Einstellungen).
 export function Chip({ t, label, selected, onPress, disabled }: { t: Theme; label: string; selected: boolean; onPress: () => void; disabled?: boolean }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress}
-      style={{ minHeight: 44, paddingHorizontal: 14, justifyContent: "center", borderRadius: 22, opacity: disabled ? 0.4 : 1, borderWidth: selected ? 2 : 1, borderColor: selected ? t.text : t.line }}>
-      <Text style={{ color: t.text, fontWeight: selected ? "600" : "400" }}>{label}</Text>
+    <Pressable accessibilityRole="button" accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress} style={{ maxWidth: "100%" }}>
+      {({ pressed }) => (
+        <View style={{ borderRadius: 22, backgroundColor: selected ? t.accentEdge : t.edge, paddingBottom: pressed ? 1 : 3, marginTop: pressed ? 2 : 0, opacity: disabled ? 0.4 : 1 }}>
+          <View style={{ minHeight: 42, paddingHorizontal: 15, paddingVertical: 6, justifyContent: "center", borderRadius: 22, backgroundColor: selected ? t.accent : t.card }}>
+            <Text style={{ color: selected ? "#FFFFFF" : t.text, fontWeight: selected ? "800" : "600" }}>{label}</Text>
+          </View>
+        </View>
+      )}
     </Pressable>
   );
 }
@@ -66,8 +85,18 @@ export function Chip({ t, label, selected, onPress, disabled }: { t: Theme; labe
 export function Sheet({ t, title, onClose, children }: { t: Theme; title: string; onClose: () => void; children: ReactNode }) {
   return (
     <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.bg, paddingTop: 48 }}>
-      <ScrollView contentContainerStyle={{ padding: 20, gap: 10 }}>
-        <Title t={t}>{title}</Title>
+      {/* Kopf bleibt beim Scrollen stehen, Schließen immer sichtbar oben rechts */}
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 20, paddingBottom: 10 }}>
+        <View style={{ width: 8, alignSelf: "stretch", borderRadius: 4, backgroundColor: t.accent }} />
+        <View style={{ flex: 1 }}><Title t={t}>{title}</Title></View>
+        <Pressable onPress={onClose} accessibilityRole="button" accessibilityLabel="Schließen" hitSlop={8}
+          style={({ pressed }) => ({ width: 48, height: 48, borderRadius: 24, backgroundColor: t.edge, paddingBottom: pressed ? 0 : 4, marginTop: pressed ? 4 : 0 })}>
+          <View style={{ flex: 1, borderRadius: 24, backgroundColor: t.accent, alignItems: "center", justifyContent: "center" }}>
+            <Text style={{ color: "#FFFFFF", fontSize: 22, fontWeight: "900" }}>✕</Text>
+          </View>
+        </Pressable>
+      </View>
+      <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 0, gap: 10 }}>
         {children}
         <Button t={t} label="Schließen" onPress={onClose} />
       </ScrollView>
@@ -152,5 +181,21 @@ export function Logo({ t, size = 56 }: { t: Theme; size?: number }) {
     <View accessibilityLabel="dPS" style={{ width: size * 1.6, height: size, borderRadius: size / 4, backgroundColor: t.marke, alignItems: "center", justifyContent: "center" }}>
       <Text style={{ color: "#FFFFFF", fontSize: size * 0.45, fontWeight: "800", letterSpacing: 1 }}>dPS</Text>
     </View>
+  );
+}
+
+// 3D-Karte für Listen (Übungen, Bibliothek): farbiger Streifen links, sinkt beim Antippen ein.
+export function Card({ t, color, onPress, children }: { t: Theme; color: string; onPress?: () => void; children: ReactNode }) {
+  return (
+    <Pressable accessibilityRole={onPress ? "button" : undefined} onPress={onPress} disabled={!onPress}>
+      {({ pressed }) => (
+        <View style={{ borderRadius: 14, backgroundColor: t.edge, paddingBottom: pressed ? 1 : 4, marginTop: pressed ? 3 : 0 }}>
+          <View style={{ flexDirection: "row", borderRadius: 14, backgroundColor: t.card, overflow: "hidden" }}>
+            <View style={{ width: 10, backgroundColor: color }} />
+            <View style={{ flex: 1, padding: 12, gap: 3 }}>{children}</View>
+          </View>
+        </View>
+      )}
+    </Pressable>
   );
 }

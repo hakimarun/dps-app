@@ -1,8 +1,8 @@
 // Kahoot-Gefühl für Lobby, Countdown, Auswertung und Startseite (J1–J5): kräftige Farben, Symbolformen,
 // bewegter Hintergrund, 3D-Knöpfe, Konfetti. Nie im Einsatzmodus (J6); "Bewegung reduzieren" schaltet alles ab.
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
-import { Animated, Dimensions, Easing, Pressable, Text, View, type ViewStyle } from "react-native";
-import { useReducedMotion } from "./ui";
+import { Animated, Dimensions, Easing, Pressable, ScrollView, Text, View, type ViewStyle } from "react-native";
+import { Logo, light, useReducedMotion } from "./ui";
 
 // Spielfarben: Markenrot plus drei Kontrastfarben (nur außerhalb des Einsatzes, wo Farben keine Sichtung bedeuten).
 export const FUN = { red: "#E21B3C", blue: "#1368CE", gold: "#D89E00", green: "#26890C", purple: "#46178F", deep: "#8E0F25" };
@@ -196,3 +196,27 @@ export function Dots({ color = W }: { color?: string }) {
     </View>
   );
 }
+
+// "Game-PIN"-Seite wie bei Kahoot: Bühne, Logo, weiße Karte. Inhalte der Karte nutzen das helle Theme (light).
+// fullBleed: bis an den oberen Rand (unter die Statusleiste), wenn darüber keine Kopfzeile steht.
+export function PinScreen({ color = STAGE, children, footer, fullBleed }: { color?: string; children: ReactNode; footer?: ReactNode; fullBleed?: boolean }) {
+  return (
+    <Stage color={color} style={fullBleed ? { marginTop: -48 } : undefined}>
+      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 20, paddingTop: fullBleed ? 68 : 20, gap: 18 }}>
+        <View style={{ alignItems: "center" }}><FlyIn><Logo t={{ ...light, marke: FUN.red }} size={56} /></FlyIn></View>
+        <FlyIn delay={120} from={60}>
+          <View style={{ backgroundColor: W, borderRadius: 22, padding: 18, gap: 12, alignSelf: "center", width: "100%", maxWidth: 440,
+            shadowColor: "#000", shadowOpacity: 0.25, shadowRadius: 16, shadowOffset: { width: 0, height: 8 }, elevation: 6 }}>
+            {children}
+          </View>
+        </FlyIn>
+        {footer && <View style={{ alignItems: "center", gap: 8 }}>{footer}</View>}
+      </ScrollView>
+    </Stage>
+  );
+}
+
+// Weißer Link unter der Karte, z. B. "Rolle wechseln".
+export const PinLink = ({ label, onPress }: { label: string; onPress: () => void }) => (
+  <Text accessibilityRole="button" onPress={onPress} style={{ color: W, fontWeight: "800", fontSize: 16, padding: 8 }}>{label}</Text>
+);

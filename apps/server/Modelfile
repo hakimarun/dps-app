@@ -1,0 +1,4 @@
+# Lokales Modell für dPS: gemma3:4b mit 16k Kontext (der Fallgenerator braucht mehr als die 4096 Token von Ollama).
+# ollama create dps-gemma3 -f apps/server/Modelfile
+FROM gemma3:4b
+PARAMETER num_ctx 16384

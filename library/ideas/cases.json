@@ -1,0 +1,2474 @@
+[
+  {
+    "id": "i001",
+    "title": "Stichverletzung Brustkorb, gehfähig",
+    "category": "Trauma",
+    "picture": "Junger Mann geht selbstständig zur Sammelstelle, hält sich die linke Brustseite, kleines blutendes Loch im Pullover. Spricht in ganzen Sätzen, Atemfrequenz 22/min.",
+    "course": "Phase 2 zunehmende Atemnot und Tachykardie, Phase 3 Atemfrequenz über 30/min und Radialispuls schwach.",
+    "critical": [
+      "Reevaluation mit Auskultation bis 15 min",
+      "Transportpriorität anheben bei Verschlechterung bis 30 min"
+    ],
+    "harmful": [
+      "Vollständig luftdichter Verband ohne Überwachung"
+    ],
+    "sk": "III",
+    "trap": "Penetrierende Rumpfverletzungen sind trotz Gehfähigkeit hochriskant – engmaschig nachsichten.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Thorax",
+      "Penetrierend",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Ventilierter Thoraxverschluss (Chest Seal)"
+    ]
+  },
+  {
+    "id": "i002",
+    "title": "Motorradfahrer mit Thoraxtrauma",
+    "category": "Trauma",
+    "picture": "Motorradfahrer liegt mit Helm neben dem Krad, atmet schnell und flach mit 34/min, stöhnt bei jedem Atemzug.",
+    "course": "Ohne Maßnahmen zunehmende Hypoxie, Phase 2 Bewusstseinstrübung.",
+    "critical": [
+      "Sauerstoffgabe bis 15 min",
+      "Auskultation und Entlastungsbereitschaft bis 15 min",
+      "Helmabnahme zu zweit bei Atemwegsproblemen"
+    ],
+    "harmful": [
+      "Helmabnahme durch eine Person ohne HWS-Stabilisierung"
+    ],
+    "sk": "I",
+    "trap": "Erhöhte Atemfrequenz allein reicht für SK I – nicht auf sichtbare Verletzungen warten.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Thorax",
+      "Atmung",
+      "Motorrad"
+    ],
+    "newActions": [
+      "Helmabnahme (2 Helfer)"
+    ]
+  },
+  {
+    "id": "i003",
+    "title": "Fingeramputation an Maschine",
+    "category": "Trauma",
+    "picture": "Arbeiter kommt zu Fuß, Hand in ein Tuch gewickelt, zwei Fingerglieder fehlen, Blutung sickernd. Ein Kollege trägt die abgetrennten Teile in einer Tüte.",
+    "course": "Stabil mit starken Schmerzen; ohne Kühlung verliert das Amputat an Replantationsfähigkeit.",
+    "critical": [
+      "Druckverband bis 15 min",
+      "Amputat trocken und indirekt gekühlt asservieren bis 30 min"
+    ],
+    "harmful": [
+      "Amputat direkt auf Eis oder in Wasser legen"
+    ],
+    "sk": "III",
+    "trap": "Spektakuläre Verletzung, aber SK III – Amputat korrekt mitgeben, Replantationszentrum anfahren.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Blutung",
+      "Amputation",
+      "Hand"
+    ],
+    "newActions": [
+      "Amputatversorgung"
+    ]
+  },
+  {
+    "id": "i004",
+    "title": "Sturz mit Querschnittsymptomatik",
+    "category": "Trauma",
+    "picture": "Mann liegt nach Treppensturz auf dem Rücken, wach und kooperativ, kann die Beine nicht bewegen. Haut warm, Puls langsam.",
+    "course": "Langsamer Blutdruckabfall, zunehmende Auskühlung.",
+    "critical": [
+      "Achsengerechte Immobilisation vor jeder Umlagerung",
+      "Blutdruckmessung bis 15 min",
+      "Wärmeerhalt bis 30 min"
+    ],
+    "harmful": [
+      "Selbstständiges Aufsetzen lassen",
+      "Unkoordinierte Umlagerung"
+    ],
+    "sk": "II",
+    "trap": "Warme Haut und langsamer Puls trotz Schock – neurogener Schock sieht anders aus als Blutungsschock.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Wirbelsäule",
+      "Schock"
+    ],
+    "newActions": [
+      "Wirbelsäulenimmobilisation",
+      "Vakuummatratze"
+    ]
+  },
+  {
+    "id": "i005",
+    "title": "Pfählungsverletzung Oberschenkel",
+    "category": "Trauma",
+    "picture": "Frau sitzt am Boden, ein Metallstab steckt im Oberschenkel, kaum äußere Blutung. Sie will den Stab selbst herausziehen.",
+    "course": "Stabil, solange der Fremdkörper belassen wird; bei Entfernung starke Blutung.",
+    "critical": [
+      "Fremdkörper fixieren bis 15 min",
+      "Analgesie bis 30 min"
+    ],
+    "harmful": [
+      "Fremdkörper entfernen"
+    ],
+    "sk": "II",
+    "trap": "Pfählende Fremdkörper werden belassen und fixiert, nie präklinisch entfernt.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Fremdkörper",
+      "Blutung"
+    ],
+    "newActions": [
+      "Fremdkörperfixierung"
+    ]
+  },
+  {
+    "id": "i006",
+    "title": "Rippenserienfraktur mit instabilem Thorax",
+    "category": "Trauma",
+    "picture": "Autofahrer sitzt im Fahrzeug, hält sich die rechte Brustseite, ein Teil der Brustwand bewegt sich beim Einatmen nach innen. Atemfrequenz 32/min.",
+    "course": "Zunehmende Erschöpfung und Hypoxie, Phase 3 Bewusstseinstrübung.",
+    "critical": [
+      "Sauerstoffgabe bis 15 min",
+      "Pulsoxymetrie bis 15 min",
+      "Analgesie bis 30 min"
+    ],
+    "harmful": [
+      "Flachlagerung bei wachem Patienten"
+    ],
+    "sk": "I",
+    "trap": "Paradoxe Atmung erkennen; Analgesie ist hier auch Atemtherapie.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Thorax",
+      "Atmung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i007",
+    "title": "Lenkradanprall mit Oberbauchschmerz",
+    "category": "Trauma",
+    "picture": "Fahrerin sitzt neben ihrem Auto, Schmerzen im rechten Oberbauch, Gurtmarke, blass. Atemfrequenz 22/min, Radialispuls schnell, aber tastbar.",
+    "course": "Phase 2 zunehmende Tachykardie, Phase 3 Radialispuls nicht mehr tastbar und Eintrübung.",
+    "critical": [
+      "Bauch untersuchen bis 15 min",
+      "i.v.-Zugang bis 30 min",
+      "Transport in Traumazentrum bis 45 min"
+    ],
+    "harmful": [
+      "Großzügige Volumengabe bis zur Normotonie"
+    ],
+    "sk": "II",
+    "trap": "Prellmarke und Tachykardie ernst nehmen – SK II kann zur SK I werden.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Bauch",
+      "Schock",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i008",
+    "title": "Stark blutende Kopfplatzwunde",
+    "category": "Trauma",
+    "picture": "Mann läuft mit blutverschmiertem Gesicht umher und ruft um Hilfe, Wunde an der Stirn, spricht klar und orientiert.",
+    "course": "Blutung steht unter Druckverband, Zustand bleibt stabil.",
+    "critical": [
+      "Druckverband bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Viel sichtbares Blut verleitet zur Übertriage – Kriterien prüfen, nicht den Eindruck.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Blutung",
+      "Kopf",
+      "Übertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i009",
+    "title": "Kopfanprall mit freiem Intervall",
+    "category": "Trauma",
+    "picture": "Jugendlicher war kurz bewusstlos, geht jetzt selbstständig, hat eine Beule an der Schläfe und Kopfschmerzen.",
+    "course": "Phase 2 Erbrechen und stärkere Kopfschmerzen, Phase 3 Eintrübung und einseitig weite Pupille.",
+    "critical": [
+      "Pupillenkontrolle bei jeder Reevaluation",
+      "Priorität anheben bei Eintrübung bis 30 min"
+    ],
+    "harmful": [
+      "Ohne Reevaluation entlassen"
+    ],
+    "sk": "III",
+    "trap": "Kurze Bewusstlosigkeit plus Schläfenanprall: freies Intervall möglich – wiederholt prüfen.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "SHT",
+      "Jugendlicher",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i010",
+    "title": "Lange Einklemmung unter Trümmern",
+    "category": "Trauma",
+    "picture": "Frau liegt seit Stunden mit beiden Beinen unter einem Betonteil, ist wach, durstig, Radialispuls tastbar.",
+    "course": "Stabil bis zur Befreiung; ohne Vorbereitung danach Kreislaufversagen und Rhythmusstörungen.",
+    "critical": [
+      "i.v.-Zugang und Volumen vor Befreiung",
+      "Arzt vor Befreiung hinzuziehen"
+    ],
+    "harmful": [
+      "Befreiung ohne vorherigen Zugang und Volumengabe"
+    ],
+    "sk": "II",
+    "trap": "Crush-Syndrom: Die Gefahr beginnt mit der Befreiung, nicht vorher.",
+    "temperament": "kooperativ",
+    "difficulty": "experte",
+    "tags": [
+      "Einklemmung",
+      "Crush",
+      "Schock"
+    ],
+    "newActions": [
+      "Crush-Management vor Befreiung",
+      "EKG-Monitoring"
+    ]
+  },
+  {
+    "id": "i011",
+    "title": "Eingeklemmter Lkw-Fahrer",
+    "category": "Trauma",
+    "picture": "Fahrer sitzt im verformten Führerhaus, Unterschenkel eingeklemmt, wach, friert, Radialispuls tastbar.",
+    "course": "Langsame Auskühlung und Schmerzzunahme; ohne Abstimmung dauert die Rettung über 30 min.",
+    "critical": [
+      "Wärmeerhalt bis 15 min",
+      "Analgesie bis 30 min",
+      "Rettungsweg mit Feuerwehr abstimmen"
+    ],
+    "harmful": [
+      "Sofortrettung ohne Indikation"
+    ],
+    "sk": "II",
+    "trap": "Technische Rettung und medizinische Versorgung parallel planen – der Patient bindet Personal.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Einklemmung",
+      "Hypothermie",
+      "Feuerwehr"
+    ],
+    "newActions": [
+      "Patientengerechte Rettung (THL)"
+    ]
+  },
+  {
+    "id": "i012",
+    "title": "Offene Unterschenkelfraktur",
+    "category": "Trauma",
+    "picture": "Radfahrer liegt am Boden, Knochenende am Schienbein sichtbar, mäßige Blutung, Fuß warm, Radialispuls tastbar.",
+    "course": "Stabil mit starken Schmerzen, Blutung steht unter Verband.",
+    "critical": [
+      "Sterile Abdeckung und Druckverband bis 15 min",
+      "Analgesie bis 30 min",
+      "Schienung bis 30 min"
+    ],
+    "harmful": [
+      "Knochen zurückschieben"
+    ],
+    "sk": "II",
+    "trap": "Offene Fraktur steril abdecken, Durchblutung vor und nach Schienung prüfen.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Fraktur",
+      "Extremität"
+    ],
+    "newActions": [
+      "Sterile Wundabdeckung",
+      "DMS-Kontrolle"
+    ]
+  },
+  {
+    "id": "i013",
+    "title": "Penetrierende Bauchverletzung",
+    "category": "Trauma",
+    "picture": "Junger Mann liegt gekrümmt, Hände auf dem Bauch, kleine Wunde, Haut blass und kaltschweißig, Radialispuls nicht tastbar.",
+    "course": "Phase 2 Bewusstseinstrübung, Phase 3 Kreislaufstillstand ohne operative Versorgung.",
+    "critical": [
+      "Transport in Traumazentrum bis 30 min",
+      "i.v.-Zugang ohne Transportverzögerung"
+    ],
+    "harmful": [
+      "Lange Versorgung vor Ort",
+      "Fremdkörper entfernen"
+    ],
+    "sk": "I",
+    "trap": "Nicht stillbare innere Blutung braucht den OP – kurze Versorgungszeit vor Ort.",
+    "temperament": "verwirrt",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Bauch",
+      "Schock",
+      "Penetrierend"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i014",
+    "title": "Spritzende Blutung in der Leiste",
+    "category": "Trauma",
+    "picture": "Frau liegt, hellrotes Blut spritzt aus einer Wunde in der Leistenbeuge, ein Ersthelfer drückt mit der Hand.",
+    "course": "Ohne Blutstillung Kreislaufversagen innerhalb von 15 min.",
+    "critical": [
+      "Manuelle Kompression sofort",
+      "Wundtamponade mit Druckverband bis 15 min"
+    ],
+    "harmful": [
+      "Tourniquet-Versuch mit Zeitverlust an nicht abbindbarer Stelle"
+    ],
+    "sk": "I",
+    "trap": "Rumpfnahe Blutungen sind nicht abbindbar – Kompression und Wundtamponade.",
+    "temperament": "panisch",
+    "difficulty": "experte",
+    "tags": [
+      "Blutung",
+      "Schock"
+    ],
+    "newActions": [
+      "Wound Packing (Hämostyptikum)"
+    ]
+  },
+  {
+    "id": "i015",
+    "title": "Glasschnitt am Hals",
+    "category": "Trauma",
+    "picture": "Mann sitzt, presst ein Tuch seitlich an den Hals, dunkles Blut läuft gleichmäßig, spricht angestrengt.",
+    "course": "Blutung unter gezieltem Druck kontrollierbar; offenes Halsgefäß birgt Gefahr einer Luftembolie.",
+    "critical": [
+      "Gezielte Kompression mit luftdichter Abdeckung bis 15 min"
+    ],
+    "harmful": [
+      "Zirkulärer Druckverband um den Hals"
+    ],
+    "sk": "II",
+    "trap": "Am Hals keine zirkulären Verbände – gezielt komprimieren.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Blutung",
+      "Hals",
+      "Atemweg"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i016",
+    "title": "Fremdkörper im Auge",
+    "category": "Trauma",
+    "picture": "Frau kommt zu Fuß, hält sich das rechte Auge zu, ein Splitter steckt im Auge, sieht verschwommen.",
+    "course": "Stabil; Gefahr weiterer Schädigung durch Augenbewegungen und Reiben.",
+    "critical": [
+      "Beidseitige Augenabdeckung bis 30 min",
+      "Transport in Augenklinik"
+    ],
+    "harmful": [
+      "Fremdkörper entfernen",
+      "Druck auf das Auge"
+    ],
+    "sk": "III",
+    "trap": "Beide Augen abdecken, damit das verletzte Auge ruhig bleibt.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Auge",
+      "Fremdkörper"
+    ],
+    "newActions": [
+      "Beidseitige Augenabdeckung"
+    ]
+  },
+  {
+    "id": "i017",
+    "title": "Gesichtsverletzung mit Blut im Mund",
+    "category": "Trauma",
+    "picture": "Mann sitzt vornübergebeugt, Gesicht geschwollen, spuckt immer wieder Blut, gurgelnde Atmung, folgt Aufforderungen.",
+    "course": "Sitzend stabil; flach gelagert droht Atemwegsverlegung innerhalb weniger Minuten.",
+    "critical": [
+      "Oberkörper vornübergebeugt lassen",
+      "Absaugbereitschaft bis 15 min"
+    ],
+    "harmful": [
+      "Flache Rückenlage",
+      "Wendl-Tubus bei Mittelgesichtsverletzung"
+    ],
+    "sk": "II",
+    "trap": "Der Patient hält seinen Atemweg selbst frei – nicht durch Lagerung zerstören.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Atemweg",
+      "Gesicht"
+    ],
+    "newActions": [
+      "Absaugen"
+    ]
+  },
+  {
+    "id": "i018",
+    "title": "Sprunggelenksverletzung, nicht gehfähig",
+    "category": "Trauma",
+    "picture": "Junge Frau sitzt auf dem Boden, Knöchel geschwollen, kann nicht auftreten, sonst unauffällig.",
+    "course": "Stabil.",
+    "critical": [
+      "Ruhigstellung und Hochlagerung bis 45 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Nicht gehfähig ergibt nach mSTaRT SK II, auch bei leichter Verletzung – das ist regelkonform.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Extremität",
+      "mSTaRT-Regel"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i019",
+    "title": "Ausgerenkte Schulter",
+    "category": "Trauma",
+    "picture": "Mann geht gebückt, stützt den rechten Arm mit der linken Hand, die Schulter wirkt eckig.",
+    "course": "Stabil, Schmerzen.",
+    "critical": [
+      "Ruhigstellung in Schonhaltung bis 30 min",
+      "Durchblutung und Sensibilität prüfen"
+    ],
+    "harmful": [
+      "Repositionsversuch durch Helfer"
+    ],
+    "sk": "III",
+    "trap": "Schonhaltung belassen, Durchblutung und Sensibilität dokumentieren.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Extremität",
+      "Gelenk"
+    ],
+    "newActions": [
+      "DMS-Kontrolle"
+    ]
+  },
+  {
+    "id": "i020",
+    "title": "Beidseitige Oberschenkelfraktur",
+    "category": "Trauma",
+    "picture": "Fußgänger liegt, beide Oberschenkel verformt, blass, unruhig, Radialispuls nicht tastbar.",
+    "course": "Phase 2 Eintrübung, Phase 3 Kreislaufversagen durch Blutverlust in die Oberschenkel.",
+    "critical": [
+      "Schienung beider Beine bis 15 min",
+      "i.v.-Zugang und Volumen bis 15 min",
+      "Transport bis 30 min"
+    ],
+    "harmful": [
+      "Unnötige Umlagerungen"
+    ],
+    "sk": "I",
+    "trap": "Geschlossene Frakturen können großen Blutverlust verbergen.",
+    "temperament": "verwirrt",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Fraktur",
+      "Schock"
+    ],
+    "newActions": [
+      "Traktionsschiene"
+    ]
+  },
+  {
+    "id": "i021",
+    "title": "Thoraxprellung mit verzögerter Atemnot",
+    "category": "Trauma",
+    "picture": "Beifahrer läuft umher, klagt über Schmerzen beim Atmen, Atemfrequenz 20/min.",
+    "course": "Phase 2 Atemfrequenz 28/min und einseitig abgeschwächtes Atemgeräusch, Phase 3 über 30/min.",
+    "critical": [
+      "Reevaluation mit Auskultation bis 30 min",
+      "Sauerstoff bei Verschlechterung"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Gehfähige Thoraxtraumen regelmäßig nachsichten – die SK kann steigen.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Thorax",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i022",
+    "title": "Explosionsopfer mit Hörverlust",
+    "category": "Trauma",
+    "picture": "Frau irrt umher, hört kaum, antwortet unpassend, keine äußeren Verletzungen sichtbar.",
+    "course": "Phase 2 Husten und zunehmende Atemnot, Phase 3 Atemfrequenz über 30/min mit fallender Sättigung.",
+    "critical": [
+      "Pulsoxymetrie und Auskultation bis 30 min",
+      "Sauerstoff bei Atemnot"
+    ],
+    "harmful": [
+      "Hörverlust als Verwirrtheit fehldeuten und Betreuung abbrechen"
+    ],
+    "sk": "III",
+    "trap": "Hörverlust nach Explosion ist ein Marker für Druckwellenverletzung – Lunge überwachen.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Explosion",
+      "Thorax",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Kommunikation bei Hörverlust (schriftlich)"
+    ]
+  },
+  {
+    "id": "i023",
+    "title": "Kopfverletzter mit aggressivem Verhalten",
+    "category": "Trauma",
+    "picture": "Mann mit Beule am Hinterkopf schreit, schlägt um sich, lehnt jede Hilfe ab und riecht nach Alkohol.",
+    "course": "Phase 2 zunehmende Schläfrigkeit, Phase 3 Pupillendifferenz.",
+    "critical": [
+      "Eigenschutz sicherstellen",
+      "Pupillenkontrolle bis 15 min",
+      "Arzt hinzuziehen bis 15 min"
+    ],
+    "harmful": [
+      "Unruhe ausschließlich dem Alkohol zuschreiben"
+    ],
+    "sk": "I",
+    "trap": "Aggression und Alkoholgeruch verdecken ein SHT – folgt keinen Aufforderungen heißt SK I.",
+    "temperament": "aggressiv",
+    "difficulty": "experte",
+    "tags": [
+      "SHT",
+      "Eigenschutz",
+      "Alkohol"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i024",
+    "title": "Spritzende Blutung am Unterarm, gehfähig",
+    "category": "Trauma",
+    "picture": "Mann geht zur Sammelstelle, hält den Unterarm hoch, hellrotes Blut spritzt pulsierend durch die Finger.",
+    "course": "Ohne Blutstillung Schock innerhalb von 15–30 min.",
+    "critical": [
+      "Druckverband oder Tourniquet bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Gehfähig, aber spritzende Blutung – die Nachprüfung der roten Kriterien ergibt SK I.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Blutung",
+      "mSTaRT-Regel"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i025",
+    "title": "Keine Atmung nach Atemwegsöffnung",
+    "category": "Trauma",
+    "picture": "Person liegt regungslos im Fahrzeugwrack, keine Atembewegung, auch nach Überstrecken des Kopfes keine Atmung.",
+    "course": "Keine Änderung.",
+    "critical": [
+      "Atemwege einmal freimachen und Atmung prüfen",
+      "Kennzeichnen und weitersichten"
+    ],
+    "harmful": [
+      "Reanimation in der Sichtungsphase mit Bindung von Personal"
+    ],
+    "sk": "EX",
+    "trap": "Im MANV wird ohne Spontanatmung nach Atemwegsöffnung nicht reanimiert, solange Ressourcen fehlen.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Atemweg",
+      "Sichtung",
+      "Ethik"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i026",
+    "title": "Verschüttete Person mit sicheren Todeszeichen",
+    "category": "Trauma",
+    "picture": "Person liegt unter Trümmern, keine Lebenszeichen, ausgeprägte Totenflecken und Leichenstarre.",
+    "course": "Keine Änderung.",
+    "critical": [
+      "Sichere Todeszeichen feststellen und dokumentieren"
+    ],
+    "harmful": [
+      "Ressourcen für Bergung vor Versorgung der Lebenden binden"
+    ],
+    "sk": "EX",
+    "trap": "Sichere Todeszeichen erlauben die Kennzeichnung – Bergung erst nach Versorgung der Lebenden.",
+    "temperament": "keins",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Sichtung",
+      "Todeszeichen"
+    ],
+    "newActions": [
+      "Todesfeststellung (Arzt)"
+    ]
+  },
+  {
+    "id": "i027",
+    "title": "Massives Rumpfquetschtrauma, präfinal",
+    "category": "Trauma",
+    "picture": "Person liegt nach Überrollen durch ein Fahrzeug, Schnappatmung, kein Radialispuls, nicht ansprechbar.",
+    "course": "Versterben innerhalb von Minuten trotz Maßnahmen wahrscheinlich.",
+    "critical": [
+      "Ärztliche Sichtung bis 15 min",
+      "Palliative Betreuung"
+    ],
+    "harmful": [
+      "Bindung mehrerer Kräfte bei begrenzten Ressourcen"
+    ],
+    "sk": "IV",
+    "trap": "mSTaRT ergibt SK I – nur ein Arzt vergibt SK IV und bewertet bei Ressourcenzuwachs neu.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Ethik",
+      "SK IV",
+      "Schock"
+    ],
+    "newActions": [
+      "Palliative Begleitung"
+    ]
+  },
+  {
+    "id": "i028",
+    "title": "Schwerstes SHT mit Hirnstammzeichen",
+    "category": "Trauma",
+    "picture": "Person liegt bewusstlos nach Sturz aus großer Höhe, beide Pupillen weit und reaktionslos, unregelmäßige Atmung.",
+    "course": "Weitere Verschlechterung bis zum Atemstillstand.",
+    "critical": [
+      "Ärztliche Sichtung bis 15 min",
+      "Hypoxie und Hypotonie als Ursache ausschließen"
+    ],
+    "harmful": [],
+    "sk": "IV",
+    "trap": "Prognose nur ärztlich abschätzen; SK IV ist eine Ressourcenentscheidung und reversibel.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "SHT",
+      "SK IV",
+      "Ethik"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i029",
+    "title": "Brustschmerz nach Schreck",
+    "category": "Internistisch",
+    "picture": "Älterer Mann ist unverletzt, steht abseits, reibt sich die Brust, wirkt grau und schwitzt, möchte niemandem zur Last fallen.",
+    "course": "Phase 2 Übelkeit und unregelmäßiger Puls, Phase 3 Kreislaufinstabilität durch Rhythmusstörungen.",
+    "critical": [
+      "12-Kanal-EKG bis 30 min",
+      "Monitoring, Sauerstoff nur bei Hypoxie"
+    ],
+    "harmful": [
+      "Weggehen lassen ohne Untersuchung"
+    ],
+    "sk": "III",
+    "trap": "Unverletzt heißt nicht gesund – Stress kann einen Herzinfarkt auslösen.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Herz",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "12-Kanal-EKG"
+    ]
+  },
+  {
+    "id": "i030",
+    "title": "Verwirrter Diabetiker",
+    "category": "Internistisch",
+    "picture": "Mann sitzt schwitzend am Rand, lallt, reagiert nicht auf Aufforderungen, keine Verletzungen sichtbar, Insulinpen in der Jackentasche.",
+    "course": "Phase 2 Krampfanfall oder Bewusstlosigkeit.",
+    "critical": [
+      "Blutzuckermessung bis 15 min",
+      "Glukosegabe bis 15 min"
+    ],
+    "harmful": [
+      "Für betrunken halten und liegen lassen",
+      "Orale Gabe bei Bewusstseinsstörung"
+    ],
+    "sk": "I",
+    "trap": "Bei jeder Bewusstseinsstörung Blutzucker messen.",
+    "temperament": "verwirrt",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Stoffwechsel",
+      "Bewusstsein"
+    ],
+    "newActions": [
+      "Blutzuckermessung",
+      "Glukosegabe"
+    ]
+  },
+  {
+    "id": "i031",
+    "title": "Asthmaanfall durch Rauch",
+    "category": "Internistisch",
+    "picture": "Junge Frau sitzt vornübergebeugt und stützt sich ab, pfeifende Ausatmung, spricht nur einzelne Worte, Atemfrequenz 34/min.",
+    "course": "Phase 2 Erschöpfung, Phase 3 Bewusstseinstrübung.",
+    "critical": [
+      "Sauerstoff bis 15 min",
+      "Inhalative Bronchodilatation bis 15 min"
+    ],
+    "harmful": [
+      "Flachlagerung",
+      "Rückatmung über Beutel"
+    ],
+    "sk": "I",
+    "trap": "Nicht mit Hyperventilation verwechseln – Rückatmung ist hier gefährlich.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Atmung",
+      "Abgrenzung"
+    ],
+    "newActions": [
+      "Inhalative Bronchodilatation"
+    ]
+  },
+  {
+    "id": "i032",
+    "title": "Insektenstich mit Quaddeln",
+    "category": "Internistisch",
+    "picture": "Frau kommt zu Fuß, juckende Quaddeln am ganzen Körper nach Wespenstich, sonst unauffällig.",
+    "course": "Phase 2 Heiserkeit und Schwindel, Phase 3 Atemnot und Kreislaufversagen.",
+    "critical": [
+      "Adrenalin i.m. bei Atem- oder Kreislaufbeteiligung sofort",
+      "Engmaschige Reevaluation"
+    ],
+    "harmful": [
+      "Als Bagatelle entlassen"
+    ],
+    "sk": "III",
+    "trap": "Hautsymptome können der Beginn einer Anaphylaxie sein.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Allergie",
+      "Atemweg",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Adrenalin i.m."
+    ]
+  },
+  {
+    "id": "i033",
+    "title": "Atemnot bei Herzschwäche",
+    "category": "Internistisch",
+    "picture": "Ältere Frau sitzt aufrecht auf einem Stuhl, rasselnde Atmung mit 32/min, Beine geschwollen; ihre Medikamente blieben in der evakuierten Wohnung.",
+    "course": "Phase 2 Sättigung weiter fallend, Phase 3 Erschöpfung.",
+    "critical": [
+      "Oberkörperhochlagerung beibehalten",
+      "Sauerstoff bis 15 min"
+    ],
+    "harmful": [
+      "Flachlagerung",
+      "Großzügige Infusion"
+    ],
+    "sk": "I",
+    "trap": "Atemnot bei Herzinsuffizienz – Volumen schadet, Lagerung hilft.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Atmung",
+      "Herz",
+      "Evakuierung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i034",
+    "title": "Plötzliche Atemnot nach langer Busfahrt",
+    "category": "Internistisch",
+    "picture": "Reisende setzt sich auf dem Weg zur Sammelstelle plötzlich hin, atmet mit 36/min, klagt über Brustschmerz, ein Unterschenkel ist geschwollen.",
+    "course": "Phase 2 Tachykardie und fallende Sättigung, Phase 3 Kreislaufinstabilität.",
+    "critical": [
+      "Sauerstoff bis 15 min",
+      "Pulsoxymetrie bis 15 min",
+      "Zügiger Transport"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Nicht jede Atemnot im MANV ist ein Trauma – an Lungenembolie denken.",
+    "temperament": "ängstlich",
+    "difficulty": "experte",
+    "tags": [
+      "Atmung",
+      "Abgrenzung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i035",
+    "title": "Typ-1-Diabetiker ohne Insulin seit Tagen",
+    "category": "Internistisch",
+    "picture": "Junger Mann aus einer Notunterkunft, sehr müde, tiefe schnelle Atmung mit 32/min, trockene Schleimhäute, obstartiger Mundgeruch.",
+    "course": "Phase 2 Schläfrigkeit, Phase 3 Kreislaufinstabilität.",
+    "critical": [
+      "Blutzuckermessung bis 15 min",
+      "i.v.-Zugang und Volumen bis 30 min"
+    ],
+    "harmful": [
+      "Rückatmung über Beutel"
+    ],
+    "sk": "I",
+    "trap": "Schnelle tiefe Atmung ist hier Kompensation, keine Panik.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Stoffwechsel",
+      "Atmung",
+      "Abgrenzung"
+    ],
+    "newActions": [
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i036",
+    "title": "Bluterbrechen in der Notunterkunft",
+    "category": "Internistisch",
+    "picture": "Älterer Mann sitzt blass auf dem Feldbett, hat zweimal dunkles Blut erbrochen, Radialispuls schnell, folgt Aufforderungen.",
+    "course": "Phase 2 erneutes Erbrechen und Kreislaufabfall, Phase 3 Radialispuls nicht tastbar.",
+    "critical": [
+      "i.v.-Zugang bis 15 min",
+      "Seitenlage oder Oberkörperhochlage bei Erbrechen",
+      "Zügiger Transport"
+    ],
+    "harmful": [
+      "Großzügige Volumengabe bis zur Normotonie"
+    ],
+    "sk": "II",
+    "trap": "Innere Blutung ohne Trauma – Kreislauf engmaschig kontrollieren.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Blutung",
+      "Schock"
+    ],
+    "newActions": [
+      "Absaugen"
+    ]
+  },
+  {
+    "id": "i037",
+    "title": "Anhaltender Krampfanfall",
+    "category": "Neurologisch",
+    "picture": "Junge Frau liegt zuckend am Boden, reagiert nicht, Speichel vor dem Mund; laut Begleitung dauert der Anfall über 5 Minuten.",
+    "course": "Ohne Therapie anhaltender Anfall mit Hypoxie und Aspiration.",
+    "critical": [
+      "Schutz vor Verletzungen sofort",
+      "Sauerstoff und Blutzucker bis 15 min",
+      "Antikonvulsive Therapie bis 15 min"
+    ],
+    "harmful": [
+      "Gegenstände in den Mund schieben",
+      "Arme und Beine festhalten"
+    ],
+    "sk": "I",
+    "trap": "Ein Anfall über 5 Minuten ist ein Status – medikamentös durchbrechen.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Krampfanfall",
+      "Atemweg"
+    ],
+    "newActions": [
+      "Antikonvulsive Therapie",
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i038",
+    "title": "Plötzliche Halbseitenlähmung",
+    "category": "Neurologisch",
+    "picture": "Zuschauerin sitzt auf einer Bank, Mundwinkel hängt, rechter Arm kraftlos, spricht verwaschen, versteht aber Aufforderungen.",
+    "course": "Langsame Zunahme der Symptome; das Zeitfenster für die Therapie läuft ab.",
+    "critical": [
+      "Symptombeginn dokumentieren",
+      "Blutzuckermessung bis 15 min",
+      "Transport Stroke Unit bis 45 min"
+    ],
+    "harmful": [
+      "Essen oder Trinken geben"
+    ],
+    "sk": "II",
+    "trap": "Schlaganfall ist zeitkritisch, auch wenn er im MANV nicht nach SK I aussieht.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Schlaganfall",
+      "Zeitfenster"
+    ],
+    "newActions": [
+      "Schlaganfall-Screening (BE-FAST)",
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i039",
+    "title": "Plötzlicher stärkster Kopfschmerz",
+    "category": "Neurologisch",
+    "picture": "Mann geht langsam, hält sich den Hinterkopf, beschreibt nach dem Tragen von Verletzten den schlimmsten Kopfschmerz seines Lebens.",
+    "course": "Phase 2 Erbrechen und Nackensteife, Phase 3 Eintrübung.",
+    "critical": [
+      "Pupillenkontrolle und Blutdruck bis 15 min",
+      "Priorisierter Transport in Klinik mit Neurochirurgie"
+    ],
+    "harmful": [
+      "Als Spannungskopfschmerz abtun"
+    ],
+    "sk": "III",
+    "trap": "Schlagartiger Vernichtungskopfschmerz ist ein Warnsignal für eine Hirnblutung.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kopfschmerz",
+      "Einsatzkraft",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i040",
+    "title": "Vorübergehende Sprachstörung",
+    "category": "Neurologisch",
+    "picture": "Ältere Frau läuft umher und berichtet, ihr Arm sei vor 20 Minuten taub gewesen und sie habe nicht sprechen können, jetzt sei alles gut.",
+    "course": "Stabil; erhöhtes Schlaganfallrisiko in den nächsten Stunden.",
+    "critical": [
+      "Transport in Klinik mit Stroke Unit"
+    ],
+    "harmful": [
+      "Entlassung vor Ort"
+    ],
+    "sk": "III",
+    "trap": "Rückläufige Symptome sind trotzdem ein Notfall.",
+    "temperament": "verharmlosend",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Schlaganfall",
+      "Senior"
+    ],
+    "newActions": [
+      "Schlaganfall-Screening (BE-FAST)"
+    ]
+  },
+  {
+    "id": "i041",
+    "title": "Fieber und Nackensteife in Gemeinschaftsunterkunft",
+    "category": "Neurologisch",
+    "picture": "Junger Mann liegt auf einem Feldbett, hohes Fieber, lichtscheu, kleine rote Flecken an den Beinen, antwortet verlangsamt.",
+    "course": "Phase 2 Kreislaufinstabilität, Phase 3 Eintrübung.",
+    "critical": [
+      "Eigenschutz mit Maske sofort",
+      "Isolierung und zügiger Transport"
+    ],
+    "harmful": [
+      "Versorgung ohne Schutzausrüstung"
+    ],
+    "sk": "II",
+    "trap": "Infektionsschutz für Helfer und andere Betroffene mitdenken.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Infektion",
+      "Eigenschutz"
+    ],
+    "newActions": [
+      "Infektionsschutz (FFP2)",
+      "Isolierung"
+    ]
+  },
+  {
+    "id": "i042",
+    "title": "Nach Krampfanfall, fremdsprachig",
+    "category": "Neurologisch",
+    "picture": "Mann liegt erschöpft nach einem Krampfanfall, spricht eine fremde Sprache, schaut verwirrt, reagiert aber auf Gesten.",
+    "course": "Langsame Besserung über 30 min, erneuter Anfall möglich.",
+    "critical": [
+      "Seitenlage bei Bewusstseinsstörung",
+      "Blutzuckermessung bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Sprachbarriere ist kein fehlendes Befolgen von Aufforderungen – mit Gesten prüfen.",
+    "temperament": "Sprachbarriere",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Krampfanfall",
+      "Sprachbarriere"
+    ],
+    "newActions": [
+      "Blutzuckermessung",
+      "Übersetzungshilfe"
+    ]
+  },
+  {
+    "id": "i043",
+    "title": "Kind mit Unterarmfraktur",
+    "category": "Pädiatrie",
+    "picture": "Achtjähriges Kind läuft weinend zu den Helfern, hält den verformten Unterarm, keine Eltern in Sicht.",
+    "course": "Stabil, Schmerzen.",
+    "critical": [
+      "Schienung bis 30 min",
+      "Analgesie bis 30 min",
+      "Feste Bezugsperson zuweisen"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Verletzte Kinder brauchen neben der Versorgung eine Bezugsperson und Registrierung.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Kind",
+      "Fraktur"
+    ],
+    "newActions": [
+      "Kinderbetreuung und Registrierung"
+    ]
+  },
+  {
+    "id": "i044",
+    "title": "Ruhiger Säugling im Kindersitz",
+    "category": "Pädiatrie",
+    "picture": "Säugling sitzt noch im Kindersitz im Unfallfahrzeug, schläft und lässt sich nur schwer wecken, die Mutter ist verletzt.",
+    "course": "Phase 2 Erbrechen, Phase 3 vorgewölbte Fontanelle und Eintrübung.",
+    "critical": [
+      "Bewusstsein altersgerecht beurteilen bis 15 min",
+      "Transport in Kinderklinik"
+    ],
+    "harmful": [
+      "Schläfrigkeit als normal werten"
+    ],
+    "sk": "II",
+    "trap": "Ein ruhiger, schwer erweckbarer Säugling ist ein Alarmzeichen.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Kind",
+      "SHT",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Altersangepasste Kindersichtung"
+    ]
+  },
+  {
+    "id": "i045",
+    "title": "Kind mit Fremdkörper in den Atemwegen",
+    "category": "Pädiatrie",
+    "picture": "Dreijähriges Kind hustet heftig, ziehende Einatmung, Lippen blass, Atemfrequenz 44/min, der Vater hält es.",
+    "course": "Bei Verlagerung des Fremdkörpers droht vollständige Verlegung.",
+    "critical": [
+      "Husten unterstützen, bei Erschöpfung Rückenschläge sofort",
+      "Sauerstoff und Transport in Kinderklinik"
+    ],
+    "harmful": [
+      "Blindes Auswischen des Mundes",
+      "Kind vom Vater trennen und hinlegen"
+    ],
+    "sk": "I",
+    "trap": "Erwachsenen-Grenzwerte gelten nicht für Kinder – hier ist der Atemweg das Problem.",
+    "temperament": "panisch",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kind",
+      "Atemweg"
+    ],
+    "newActions": [
+      "Rückenschläge und Kompressionen (Fremdkörper)"
+    ]
+  },
+  {
+    "id": "i046",
+    "title": "Unbegleitetes Kind",
+    "category": "Pädiatrie",
+    "picture": "Fünfjähriges Kind steht weinend am Rand und ruft nach seiner Mutter, keine sichtbaren Verletzungen.",
+    "course": "Stabil; ohne Betreuung läuft es weg oder geht verloren.",
+    "critical": [
+      "Kurzer Body-Check",
+      "Betreuung und Registrierung bis 15 min"
+    ],
+    "harmful": [
+      "Allein lassen",
+      "An unbekannte Personen übergeben"
+    ],
+    "sk": "III",
+    "trap": "Unverletzte Kinder sind Betreuungsfälle mit hoher Priorität für Registrierung.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Kind",
+      "Betreuung"
+    ],
+    "newActions": [
+      "Kinderbetreuung und Registrierung"
+    ]
+  },
+  {
+    "id": "i047",
+    "title": "Kind mit Oberschenkelfraktur",
+    "category": "Pädiatrie",
+    "picture": "Zehnjähriger liegt nach Sturz, Oberschenkel verformt, schreit vor Schmerz, Radialispuls tastbar.",
+    "course": "Phase 2 zunehmende Blässe durch Blutverlust, Schmerzen bleiben stark.",
+    "critical": [
+      "Analgesie bis 15 min",
+      "Schienung bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Kinder kompensieren lange – Herzfrequenz und Hautfarbe beachten.",
+    "temperament": "panisch",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kind",
+      "Fraktur"
+    ],
+    "newActions": [
+      "Traktionsschiene"
+    ]
+  },
+  {
+    "id": "i048",
+    "title": "Kleinkind nach Sturz mit Erbrechen",
+    "category": "Pädiatrie",
+    "picture": "Vierjähriges Kind liegt schläfrig im Arm der Mutter, hat zweimal erbrochen, reagiert kaum auf Ansprache, Beule am Kopf.",
+    "course": "Phase 2 weitere Eintrübung, Phase 3 Pupillendifferenz.",
+    "critical": [
+      "Pupillenkontrolle bis 15 min",
+      "Transport in Kinderklinik mit Neurochirurgie bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Folgt keinen Aufforderungen – auch beim Kind SK I.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kind",
+      "SHT"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i049",
+    "title": "Säugling in der Hitze",
+    "category": "Pädiatrie",
+    "picture": "Mutter in einer Notunterkunft zeigt ihren sechs Monate alten Säugling: schlapp, trinkt nicht, seit dem Morgen trockene Windeln.",
+    "course": "Phase 2 zunehmende Teilnahmslosigkeit, Phase 3 Kreislaufinstabilität.",
+    "critical": [
+      "Kühle Umgebung bis 15 min",
+      "Transport in Kinderklinik bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Säuglinge dekompensieren schnell durch Flüssigkeitsmangel.",
+    "temperament": "Sprachbarriere",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kind",
+      "Hitze"
+    ],
+    "newActions": [
+      "Altersangepasste Kindersichtung"
+    ]
+  },
+  {
+    "id": "i050",
+    "title": "Kind mit spritzender Beinblutung",
+    "category": "Pädiatrie",
+    "picture": "Neunjähriges Kind humpelt schreiend, aus einer Schnittwunde am Unterschenkel spritzt Blut.",
+    "course": "Ohne Blutstillung Schock innerhalb von 15 min.",
+    "critical": [
+      "Druckverband oder Tourniquet bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Tourniquet ist auch bei Kindern zulässig – Blutstillung vor Trösten.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Kind",
+      "Blutung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i051",
+    "title": "Kleinkind nach Fieberkrampf",
+    "category": "Pädiatrie",
+    "picture": "Zweijähriges Kind liegt schläfrig und heiß auf dem Arm des Vaters, der berichtet, es habe eben gezuckt; beide Eltern sehr aufgeregt.",
+    "course": "Langsames Aufklaren über 30 min; bei erneutem Anfall Verschlechterung.",
+    "critical": [
+      "Fiebersenkende Maßnahmen",
+      "Transport mit Begleitperson"
+    ],
+    "harmful": [
+      "Eltern vom Kind trennen"
+    ],
+    "sk": "II",
+    "trap": "Eltern beruhigen und einbinden, Kind beobachten.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Kind",
+      "Krampfanfall"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i052",
+    "title": "Sturz unter Blutverdünnung",
+    "category": "Geriatrie",
+    "picture": "Ältere Frau geht mit Rollator, kleine Platzwunde an der Stirn, nimmt Gerinnungshemmer, fühlt sich gut.",
+    "course": "Phase 2 Kopfschmerz und Verlangsamung, Phase 3 Eintrübung.",
+    "critical": [
+      "Medikamente erfragen",
+      "Pupillenkontrolle bei Reevaluation",
+      "Transport in Klinik mit CT"
+    ],
+    "harmful": [
+      "Entlassung vor Ort"
+    ],
+    "sk": "III",
+    "trap": "Gerinnungshemmer machen ein Bagatelltrauma zum Risiko.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Senior",
+      "SHT",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Medikamentenanamnese"
+    ]
+  },
+  {
+    "id": "i053",
+    "title": "Hüftnahe Fraktur nach Sturz",
+    "category": "Geriatrie",
+    "picture": "Älterer Mann liegt, kann nicht aufstehen, ein Bein ist verkürzt und nach außen gedreht.",
+    "course": "Stabil, starke Schmerzen, Auskühlung.",
+    "critical": [
+      "Wärmeerhalt bis 15 min",
+      "Analgesie bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Häufige Verletzung bei Älteren – Wärmeerhalt nicht vergessen.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Senior",
+      "Fraktur",
+      "Hypothermie"
+    ],
+    "newActions": [
+      "Vakuummatratze"
+    ]
+  },
+  {
+    "id": "i054",
+    "title": "Desorientierte Bewohnerin",
+    "category": "Geriatrie",
+    "picture": "Hochbetagte Frau geht umher, ist unverletzt, kann Fragen nicht beantworten und folgt keinen Aufforderungen.",
+    "course": "Stabil, wenn die Demenz vorbekannt ist; bei akutem Verwirrtheitszustand Verschlechterung.",
+    "critical": [
+      "Fremdanamnese durch Pflegepersonal bis 30 min",
+      "Blutzuckermessung"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Nach mSTaRT SK I – per Fremdanamnese klären, ob die Verwirrtheit neu ist.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Senior",
+      "Demenz",
+      "Übertriage-Falle"
+    ],
+    "newActions": [
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i055",
+    "title": "Ausgetrocknete Bewohnerin nach Evakuierung",
+    "category": "Geriatrie",
+    "picture": "Hochbetagte Frau sitzt im Rollstuhl, schläfrig, trockene Zunge, hat seit Stunden nichts getrunken.",
+    "course": "Phase 2 zunehmende Verwirrtheit, Phase 3 Kreislaufschwäche.",
+    "critical": [
+      "Blutzucker und Blutdruck bis 30 min",
+      "Flüssigkeitsgabe bis 45 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Ältere Menschen dekompensieren in Evakuierungslagen still.",
+    "temperament": "verwirrt",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Senior",
+      "Evakuierung"
+    ],
+    "newActions": [
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i056",
+    "title": "Unfallopfer mit Betablocker",
+    "category": "Geriatrie",
+    "picture": "Älterer Mann sitzt nach Auffahrunfall, Bauchschmerz, blass, Puls 72/min.",
+    "course": "Phase 2 Blutdruckabfall ohne Pulsanstieg, Phase 3 Radialispuls nicht tastbar.",
+    "critical": [
+      "Blutdruckmessung bis 15 min",
+      "Medikamente erfragen",
+      "Bauch untersuchen bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Betablocker verhindern die Warn-Tachykardie – normaler Puls heißt nicht stabil.",
+    "temperament": "verharmlosend",
+    "difficulty": "experte",
+    "tags": [
+      "Senior",
+      "Schock",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Medikamentenanamnese"
+    ]
+  },
+  {
+    "id": "i057",
+    "title": "Rippenprellung bei Seniorin",
+    "category": "Geriatrie",
+    "picture": "Ältere Frau sitzt auf einer Bank, kann wegen Schmerzen nicht aufstehen, atmet flach mit 24/min.",
+    "course": "Phase 2 schmerzbedingt flachere Atmung und fallende Sättigung.",
+    "critical": [
+      "Analgesie bis 30 min",
+      "Pulsoxymetrie bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Rippenverletzungen führen bei Älteren über Schonatmung zum Atemversagen.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Senior",
+      "Thorax"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i058",
+    "title": "Heimbeatmeter Patient bei Stromausfall",
+    "category": "Geriatrie",
+    "picture": "Älterer Mann im Pflegebett, das Beatmungsgerät zeigt eine Akku-Warnung, Atemfrequenz 8/min, schläfrig.",
+    "course": "Phase 2 Akkuausfall und Hypoxie, Phase 3 Atemstillstand.",
+    "critical": [
+      "Stromversorgung oder Beutelbeatmung bis 15 min",
+      "Transport mit Gerät"
+    ],
+    "harmful": [
+      "Gerät ohne Ersatz abschalten"
+    ],
+    "sk": "I",
+    "trap": "Technikabhängige Patienten sind bei Stromausfall akut gefährdet.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Senior",
+      "Beatmung",
+      "Stromausfall"
+    ],
+    "newActions": [
+      "Beutel-Masken-Beatmung",
+      "Heimbeatmung übernehmen"
+    ]
+  },
+  {
+    "id": "i059",
+    "title": "Hochbetagte Person mit schwerem Mehrfachtrauma",
+    "category": "Geriatrie",
+    "picture": "Sehr alte, vorerkrankte Person liegt unter Trümmern, Schnappatmung, kein Radialispuls, nicht ansprechbar; Angehörige berichten von einer Patientenverfügung.",
+    "course": "Versterben innerhalb von Minuten wahrscheinlich.",
+    "critical": [
+      "Ärztliche Sichtung",
+      "Palliative Begleitung und Angehörigenbetreuung"
+    ],
+    "harmful": [],
+    "sk": "IV",
+    "trap": "Prognose und Patientenwille fließen in die ärztliche Entscheidung ein, nicht das Alter allein.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Senior",
+      "SK IV",
+      "Ethik"
+    ],
+    "newActions": [
+      "Palliative Begleitung"
+    ]
+  },
+  {
+    "id": "i060",
+    "title": "Verbrühung am Unterarm",
+    "category": "Verbrennung",
+    "picture": "Küchenhilfe kommt zu Fuß, Unterarm gerötet mit Blasen auf etwa drei Handflächen Größe.",
+    "course": "Stabil, Schmerzen.",
+    "critical": [
+      "Kurze Kühlung mit lauwarmem Wasser bis 15 min",
+      "Sterile Abdeckung"
+    ],
+    "harmful": [
+      "Eiswasser oder Kühlakku direkt auf die Haut"
+    ],
+    "sk": "III",
+    "trap": "Kleinflächig kurz kühlen, großflächig nicht.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Verbrennung",
+      "Arbeitsunfall"
+    ],
+    "newActions": [
+      "Brandwundenverband"
+    ]
+  },
+  {
+    "id": "i061",
+    "title": "Großflächige Verbrennung, ansprechbar",
+    "category": "Verbrennung",
+    "picture": "Mann sitzt fröstelnd, Brust und beide Arme verbrannt, spricht klar, Atemfrequenz 24/min.",
+    "course": "Phase 2 Auskühlung und Schmerzen, Phase 3 beginnender Volumenmangel.",
+    "critical": [
+      "Wärmeerhalt bis 15 min",
+      "Analgesie bis 15 min",
+      "i.v.-Zugang bis 30 min",
+      "Transport in Verbrennungszentrum"
+    ],
+    "harmful": [
+      "Großflächige Kühlung"
+    ],
+    "sk": "II",
+    "trap": "Großflächige Verbrennung: Wärme statt Kälte.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Verbrennung",
+      "Hypothermie"
+    ],
+    "newActions": [
+      "Brandwundenverband"
+    ]
+  },
+  {
+    "id": "i062",
+    "title": "Kleinkind mit Verbrühung",
+    "category": "Verbrennung",
+    "picture": "Zweijähriges Kind schreit, Brust und Arm nach heißem Getränk gerötet mit Blasen, die Mutter kühlt seit Minuten mit kaltem Wasser.",
+    "course": "Phase 2 Unterkühlung bei fortgesetzter Kühlung.",
+    "critical": [
+      "Kühlung beenden und wärmen bis 15 min",
+      "Analgesie bis 30 min"
+    ],
+    "harmful": [
+      "Fortgesetzte Kühlung"
+    ],
+    "sk": "II",
+    "trap": "Kinder kühlen bei Verbrühungen sehr schnell aus.",
+    "temperament": "panisch",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Kind",
+      "Verbrennung",
+      "Hypothermie"
+    ],
+    "newActions": [
+      "Brandwundenverband"
+    ]
+  },
+  {
+    "id": "i063",
+    "title": "Stromunfall mit kleiner Strommarke",
+    "category": "Verbrennung",
+    "picture": "Elektriker geht selbstständig, kleine graue Hautstelle an Hand und Fuß, sagt, es gehe ihm gut.",
+    "course": "Phase 2 unregelmäßiger Puls, Phase 3 Rhythmusstörungen mit Kreislaufinstabilität möglich.",
+    "critical": [
+      "EKG-Monitoring bis 30 min",
+      "Transport zur Überwachung"
+    ],
+    "harmful": [
+      "Entlassung ohne EKG"
+    ],
+    "sk": "III",
+    "trap": "Kleine Strommarken verbergen innere Schäden und Rhythmusstörungen.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Strom",
+      "Herz",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "EKG-Monitoring"
+    ]
+  },
+  {
+    "id": "i064",
+    "title": "Zirkuläre Verbrennung am Brustkorb",
+    "category": "Verbrennung",
+    "picture": "Frau liegt, der Brustkorb ist ringsum verbrannt mit lederartiger Haut, Atmung flach und schnell mit 34/min.",
+    "course": "Phase 2 zunehmende Atemnot, Phase 3 Erschöpfung.",
+    "critical": [
+      "Sauerstoff bis 15 min",
+      "Frühe Arztbeteiligung bis 15 min",
+      "Wärmeerhalt"
+    ],
+    "harmful": [
+      "Großflächige Kühlung"
+    ],
+    "sk": "I",
+    "trap": "Verbrannte Haut kann die Atmung mechanisch einschnüren.",
+    "temperament": "ängstlich",
+    "difficulty": "experte",
+    "tags": [
+      "Verbrennung",
+      "Atmung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i065",
+    "title": "Verbrennung fast des gesamten Körpers",
+    "category": "Verbrennung",
+    "picture": "Person sitzt nach Brand ruhig da, fast die gesamte Haut ist verbrannt, spricht noch mit heiserer Stimme.",
+    "course": "Zunehmende Atemwegsschwellung und Kreislaufversagen in den nächsten Stunden.",
+    "critical": [
+      "Ärztliche Sichtung",
+      "Analgesie und Wärmeerhalt"
+    ],
+    "harmful": [],
+    "sk": "IV",
+    "trap": "Ansprechbarkeit täuscht – ärztliche Entscheidung zur SK IV mit Analgesie, keine Vernachlässigung.",
+    "temperament": "kooperativ",
+    "difficulty": "experte",
+    "tags": [
+      "Verbrennung",
+      "SK IV",
+      "Ethik"
+    ],
+    "newActions": [
+      "Palliative Begleitung"
+    ]
+  },
+  {
+    "id": "i066",
+    "title": "Brandopfer mit sicheren Todeszeichen",
+    "category": "Verbrennung",
+    "picture": "Person im ausgebrannten Raum ohne Lebenszeichen, mit Verletzungen, die mit dem Leben nicht vereinbar sind, und Leichenstarre.",
+    "course": "Keine Änderung.",
+    "critical": [
+      "Sichere Todeszeichen feststellen"
+    ],
+    "harmful": [
+      "Kräfte ungeschützt in den Brandbereich schicken"
+    ],
+    "sk": "EX",
+    "trap": "Rettungskräfte nicht in Gefahrenbereiche schicken, um Verstorbene zu versorgen.",
+    "temperament": "keins",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Todeszeichen",
+      "Eigenschutz"
+    ],
+    "newActions": [
+      "Todesfeststellung (Arzt)"
+    ]
+  },
+  {
+    "id": "i067",
+    "title": "Kopfschmerz nach Generatorbetrieb",
+    "category": "Intoxikation",
+    "picture": "Familie aus einem Keller mit laufendem Notstromaggregat, Kopfschmerz und Übelkeit, alle gehfähig, Sättigung 99 %.",
+    "course": "Phase 2 Schwindel und Verwirrtheit, Phase 3 Bewusstlosigkeit möglich.",
+    "critical": [
+      "Sauerstoff hochdosiert bis 15 min",
+      "CO-Messung bis 30 min"
+    ],
+    "harmful": [
+      "Normale Pulsoxymetrie als Entwarnung werten"
+    ],
+    "sk": "III",
+    "trap": "Die Pulsoxymetrie zeigt bei CO-Vergiftung falsch hohe Werte.",
+    "temperament": "kooperativ",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "CO",
+      "Gefahrstoff",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "CO-Messung (SpCO)"
+    ]
+  },
+  {
+    "id": "i068",
+    "title": "Stark alkoholisierter Jugendlicher",
+    "category": "Intoxikation",
+    "picture": "Jugendlicher liegt auf dem Rasen, nur auf Schmerzreiz erweckbar, hat erbrochen, riecht nach Alkohol.",
+    "course": "Phase 2 Aspiration und Auskühlung.",
+    "critical": [
+      "Stabile Seitenlage bis 15 min",
+      "Blutzucker und Wärmeerhalt bis 30 min",
+      "Verletzungen ausschließen"
+    ],
+    "harmful": [
+      "Unbeaufsichtigt in Rückenlage lassen"
+    ],
+    "sk": "I",
+    "trap": "Hinter Alkohol können Unterzucker und Kopfverletzung stecken.",
+    "temperament": "keins",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Alkohol",
+      "Atemweg",
+      "Jugendlicher"
+    ],
+    "newActions": [
+      "Blutzuckermessung",
+      "Absaugen"
+    ]
+  },
+  {
+    "id": "i069",
+    "title": "Agitierter Festivalbesucher",
+    "category": "Intoxikation",
+    "picture": "Junger Mann ist extrem unruhig, schwitzt stark, weite Pupillen, schlägt um sich und reagiert nicht auf Ansprache.",
+    "course": "Phase 2 Überhitzung und Herzrasen, Phase 3 Krampfanfall möglich.",
+    "critical": [
+      "Eigenschutz, Polizei bei Bedarf",
+      "Kühlung und ärztliche Sedierung bis 30 min"
+    ],
+    "harmful": [
+      "Fixierung in Bauchlage"
+    ],
+    "sk": "I",
+    "trap": "Agitation kann lebensgefährlich sein – Überhitzung und Herz im Blick behalten.",
+    "temperament": "aggressiv",
+    "difficulty": "experte",
+    "tags": [
+      "Drogen",
+      "Eigenschutz",
+      "Hitze"
+    ],
+    "newActions": [
+      "Ärztliche Sedierung",
+      "Aktive Kühlung"
+    ]
+  },
+  {
+    "id": "i070",
+    "title": "Bewusstloser mit sehr langsamer Atmung",
+    "category": "Intoxikation",
+    "picture": "Mann liegt in einer Toilettenkabine, nicht erweckbar, Atemfrequenz 6/min, sehr enge Pupillen.",
+    "course": "Phase 2 Atemstillstand ohne Beatmung.",
+    "critical": [
+      "Atemweg öffnen und beatmen bis 5 min",
+      "Antidot durch Arzt oder Notfallsanitäter bis 15 min"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Atemfrequenz unter 10 heißt SK I – zuerst die Atmung sichern.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Drogen",
+      "Atmung"
+    ],
+    "newActions": [
+      "Beutel-Masken-Beatmung",
+      "Naloxon"
+    ]
+  },
+  {
+    "id": "i071",
+    "title": "Rauchgasexposition mit Husten",
+    "category": "Intoxikation",
+    "picture": "Bewohner kommt aus verrauchtem Treppenhaus, hustet, Ruß an der Nase, Atemfrequenz 24/min, gehfähig.",
+    "course": "Phase 2 Kopfschmerz und Heiserkeit möglich.",
+    "critical": [
+      "Sauerstoff bis 15 min",
+      "Heiserkeit und Stridor überwachen"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Ruß im Gesicht und Heiserkeit können ein Inhalationstrauma ankündigen.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Rauchgas",
+      "Atemweg"
+    ],
+    "newActions": [
+      "CO-Messung (SpCO)"
+    ]
+  },
+  {
+    "id": "i072",
+    "title": "Reizstoff in Menschenmenge",
+    "category": "Intoxikation",
+    "picture": "Mehrere junge Menschen reiben sich tränende Augen und husten, alle gehfähig.",
+    "course": "Beschwerden klingen an frischer Luft über 30 min ab.",
+    "critical": [
+      "Frische Luft und Augenspülung bis 15 min"
+    ],
+    "harmful": [
+      "Augen reiben lassen",
+      "Salben auftragen"
+    ],
+    "sk": "III",
+    "trap": "Viele Betroffene, wenig Schwere – Sammelstelle statt Einzelversorgung.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Reizstoff",
+      "Auge"
+    ],
+    "newActions": [
+      "Augenspülung"
+    ]
+  },
+  {
+    "id": "i073",
+    "title": "Benommenheit nach Lösemitteldämpfen",
+    "category": "Intoxikation",
+    "picture": "Arbeiterin sitzt benommen vor der Halle, Kopfschmerz, Schwindel, folgt Aufforderungen, kann nicht sicher gehen.",
+    "course": "An frischer Luft langsame Besserung; kontaminierte Kleidung hält die Aufnahme aufrecht.",
+    "critical": [
+      "Kontaminierte Kleidung entfernen bis 15 min",
+      "Sauerstoff bei Atembeschwerden"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Gefahrstoff erfragen und Kleidung als Quelle bedenken.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Gefahrstoff",
+      "Industrie"
+    ],
+    "newActions": [
+      "Dekontamination (Entkleiden)"
+    ]
+  },
+  {
+    "id": "i074",
+    "title": "Hitzschlag beim Konzert",
+    "category": "Umwelt",
+    "picture": "Junge Frau liegt im Sanitätszelt, heiße trockene Haut, verwirrt, folgt keinen Aufforderungen.",
+    "course": "Phase 2 Krampfanfall, Phase 3 Kreislaufversagen.",
+    "critical": [
+      "Aktive Kühlung bis 15 min",
+      "i.v.-Zugang bis 30 min"
+    ],
+    "harmful": [
+      "Kühlung bis zum Transport verzögern"
+    ],
+    "sk": "I",
+    "trap": "Bei Hitzschlag ist Kühlen die wichtigste Maßnahme.",
+    "temperament": "verwirrt",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Hitze",
+      "Bewusstsein"
+    ],
+    "newActions": [
+      "Aktive Ganzkörperkühlung"
+    ]
+  },
+  {
+    "id": "i075",
+    "title": "Erschöpfte Einsatzkraft",
+    "category": "Umwelt",
+    "picture": "Feuerwehrmann sitzt nach Atemschutzeinsatz am Boden, stark verschwitzt, schwindelig, kann nicht sicher aufstehen.",
+    "course": "Mit Ruhe, Schatten und Flüssigkeit Besserung in 30 min.",
+    "critical": [
+      "Schatten, Schutzkleidung öffnen, Flüssigkeit bis 15 min"
+    ],
+    "harmful": [
+      "Sofort zurück in den Einsatz"
+    ],
+    "sk": "II",
+    "trap": "Eigene Kräfte sind auch Patienten – Einsatzkräfte mitsichten.",
+    "temperament": "verharmlosend",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Hitze",
+      "Einsatzkraft"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i076",
+    "title": "Unterkühlter Schwimmer",
+    "category": "Umwelt",
+    "picture": "Mann liegt nach Rettung aus kaltem Wasser zitternd in einer Decke, wach, Radialispuls tastbar.",
+    "course": "Ohne Wärmeerhalt lässt in Phase 2 das Zittern nach, Verwirrtheit setzt ein.",
+    "critical": [
+      "Nasse Kleidung entfernen und wärmen bis 15 min",
+      "Horizontale Lagerung"
+    ],
+    "harmful": [
+      "Aufstehen und Gehen lassen",
+      "Arme und Beine reiben"
+    ],
+    "sk": "II",
+    "trap": "Bergungstod vermeiden: horizontal, schonend, keine Bewegung.",
+    "temperament": "kooperativ",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Hypothermie",
+      "Wasser"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i077",
+    "title": "Schwer unterkühlte Person",
+    "category": "Umwelt",
+    "picture": "Ältere Person aus dem Freien, zittert nicht mehr, verlangsamt, folgt keinen Aufforderungen, Puls langsam.",
+    "course": "Phase 2 Bewusstlosigkeit, Phase 3 Rhythmusstörungen bei unsachgemäßer Bewegung.",
+    "critical": [
+      "Schonende horizontale Rettung",
+      "Wärmeerhalt bis 15 min",
+      "Transport in Zentrum mit Erwärmungsmöglichkeit"
+    ],
+    "harmful": [
+      "Ruckartige Umlagerung",
+      "Aktives Bewegen"
+    ],
+    "sk": "I",
+    "trap": "Fehlendes Zittern ist ein schlechtes Zeichen.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Hypothermie",
+      "Senior"
+    ],
+    "newActions": [
+      "EKG-Monitoring"
+    ]
+  },
+  {
+    "id": "i078",
+    "title": "Blitzschlag mit Hautzeichnung",
+    "category": "Umwelt",
+    "picture": "Wanderer geht selbstständig, farnartige Rötung auf dem Rücken, Ohrensausen, wirkt benommen.",
+    "course": "Phase 2 Rhythmusstörungen möglich, sonst stabil.",
+    "critical": [
+      "EKG-Monitoring bis 30 min",
+      "Transport zur Überwachung"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Bei Blitzopfern ohne Lebenszeichen gilt oft umgekehrte Sichtung – Gehfähige trotzdem überwachen.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Blitz",
+      "Herz"
+    ],
+    "newActions": [
+      "EKG-Monitoring"
+    ]
+  },
+  {
+    "id": "i079",
+    "title": "Beinahe-Ertrinken",
+    "category": "Umwelt",
+    "picture": "Jugendliche sitzt nach Rettung aus dem See erschöpft am Ufer, hustet, Atemfrequenz 28/min, sagt, sie sei wieder fit, schafft es aber nicht aufzustehen.",
+    "course": "Phase 2 zunehmender Husten und fallende Sättigung, Phase 3 Atemfrequenz über 30/min.",
+    "critical": [
+      "Pulsoxymetrie und Auskultation bis 15 min",
+      "Sauerstoff bei Sättigungsabfall",
+      "Klinische Überwachung"
+    ],
+    "harmful": [
+      "Entlassung vor Ort"
+    ],
+    "sk": "II",
+    "trap": "Nach Wasseraspiration kann sich die Atemstörung verzögert entwickeln.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Wasser",
+      "Atmung",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i080",
+    "title": "Ertrunkene Person mit sicheren Todeszeichen",
+    "category": "Umwelt",
+    "picture": "Person wird nach langer Suche aus dem Wasser geborgen, keine Lebenszeichen, Totenflecken und Leichenstarre.",
+    "course": "Keine Änderung.",
+    "critical": [
+      "Sichere Todeszeichen prüfen"
+    ],
+    "harmful": [],
+    "sk": "EX",
+    "trap": "Ohne sichere Todeszeichen gilt bei Kaltwasser: nicht für tot erklären.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Wasser",
+      "Todeszeichen"
+    ],
+    "newActions": [
+      "Todesfeststellung (Arzt)"
+    ]
+  },
+  {
+    "id": "i081",
+    "title": "Erstarrte Person",
+    "category": "Psychiatrie",
+    "picture": "Unverletzt wirkender Mann steht reglos an der Unfallstelle, starrt ins Leere, antwortet kaum, lässt sich aber an der Hand führen.",
+    "course": "Ohne Betreuung läuft er in Gefahrenbereiche; mit Zuwendung Besserung.",
+    "critical": [
+      "Body-Check auf Verletzungen bis 15 min",
+      "Betreuung durch PSNV bis 30 min"
+    ],
+    "harmful": [
+      "Allein lassen"
+    ],
+    "sk": "III",
+    "trap": "Akute Belastungsreaktion von Bewusstseinsstörung abgrenzen – Body-Check machen.",
+    "temperament": "verwirrt",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Psyche",
+      "Betreuung"
+    ],
+    "newActions": [
+      "PSNV-Übergabe"
+    ]
+  },
+  {
+    "id": "i082",
+    "title": "Aggressiver Angehöriger",
+    "category": "Psychiatrie",
+    "picture": "Unverletzter Mann schreit Einsatzkräfte an, fordert sofortige Behandlung seiner Frau und blockiert die Trage.",
+    "course": "Eskaliert ohne Deeskalation, bindet Kräfte und gefährdet Helfer.",
+    "critical": [
+      "Deeskalation, Polizei bei Bedarf"
+    ],
+    "harmful": [
+      "Konfrontatives Auftreten"
+    ],
+    "sk": "III",
+    "trap": "Eigenschutz und Deeskalation gehören zur Lagebewältigung.",
+    "temperament": "aggressiv",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Eigenschutz",
+      "Deeskalation"
+    ],
+    "newActions": [
+      "Deeskalation"
+    ]
+  },
+  {
+    "id": "i083",
+    "title": "Unfallverursacher mit Suizidgedanken",
+    "category": "Psychiatrie",
+    "picture": "Unverletzter Fahrer sitzt am Straßenrand, weint, sagt, er habe alles kaputt gemacht und wolle nicht mehr leben.",
+    "course": "Ohne Betreuung Gefahr der Selbstgefährdung, etwa durch Laufen auf die Fahrbahn.",
+    "critical": [
+      "Nicht allein lassen",
+      "PSNV oder Arzt bis 30 min"
+    ],
+    "harmful": [
+      "Vorwürfe machen"
+    ],
+    "sk": "III",
+    "trap": "Suizidäußerungen immer ernst nehmen und Betreuung sicherstellen.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Psyche",
+      "Selbstgefährdung"
+    ],
+    "newActions": [
+      "PSNV-Übergabe"
+    ]
+  },
+  {
+    "id": "i084",
+    "title": "Unruhiger Mann in Notunterkunft",
+    "category": "Psychiatrie",
+    "picture": "Mann läuft unruhig umher, spricht mit nicht anwesenden Personen, folgt einfachen Aufforderungen zögerlich, keine sichtbaren Verletzungen.",
+    "course": "Zunehmende Unruhe, mögliche Gefährdung anderer.",
+    "critical": [
+      "Ruhige Umgebung schaffen",
+      "Körperliche Ursachen prüfen (Blutzucker, Fieber)"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Psychiatrische Symptome erst nach Ausschluss körperlicher Ursachen zuordnen.",
+    "temperament": "verwirrt",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Psyche",
+      "Abgrenzung"
+    ],
+    "newActions": [
+      "Blutzuckermessung"
+    ]
+  },
+  {
+    "id": "i085",
+    "title": "Panische Mutter",
+    "category": "Psychiatrie",
+    "picture": "Unverletzte Mutter schreit nach ihrem Kind, das bereits versorgt wird, und läuft zwischen die liegenden Patienten.",
+    "course": "Unruhe überträgt sich auf andere Betroffene.",
+    "critical": [
+      "Bezugsperson zuweisen",
+      "Kontakt zum Kind herstellen"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Gezielte Betreuung entlastet die gesamte Patientenablage.",
+    "temperament": "panisch",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Psyche",
+      "Betreuung",
+      "Kind"
+    ],
+    "newActions": [
+      "PSNV-Übergabe"
+    ]
+  },
+  {
+    "id": "i086",
+    "title": "Schwangere nach Auffahrunfall",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Frau in der 34. Schwangerschaftswoche geht selbstständig, leichter Bauchschmerz, keine Blutung.",
+    "course": "Phase 2 zunehmender Bauchschmerz und harter Bauch, Phase 3 Schockzeichen.",
+    "critical": [
+      "Linksseitenlage beim Transport",
+      "Transport in Klinik mit Geburtshilfe"
+    ],
+    "harmful": [
+      "Entlassung vor Ort"
+    ],
+    "sk": "III",
+    "trap": "Schwangere nach Unfall immer klinisch überwachen – Plazentalösung möglich.",
+    "temperament": "verharmlosend",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Schwangerschaft",
+      "Bauch",
+      "Untertriage-Falle"
+    ],
+    "newActions": [
+      "Linksseitenlage (Schwangere)"
+    ]
+  },
+  {
+    "id": "i087",
+    "title": "Schwangere mit Schwindel in Rückenlage",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Hochschwangere liegt flach auf dem Rücken auf der Trage, blass, schwitzt, klagt über Schwindel.",
+    "course": "Bessert sich sofort in Linksseitenlage; bleibt sie liegen, Kreislaufschwäche.",
+    "critical": [
+      "Linksseitenlage sofort"
+    ],
+    "harmful": [
+      "Flache Rückenlage"
+    ],
+    "sk": "II",
+    "trap": "Vena-cava-Kompression durch Lagerung beheben.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Schwangerschaft",
+      "Lagerung"
+    ],
+    "newActions": [
+      "Linksseitenlage (Schwangere)"
+    ]
+  },
+  {
+    "id": "i088",
+    "title": "Einsetzende Geburt",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Frau liegt in der Notunterkunft, Wehen alle 2 Minuten, Pressdrang, Fruchtblase geplatzt.",
+    "course": "Geburt innerhalb von 15–30 min wahrscheinlich.",
+    "critical": [
+      "Geburtsvorbereitung und Hebamme oder Arzt anfordern bis 15 min",
+      "Wärmeerhalt für das Neugeborene"
+    ],
+    "harmful": [],
+    "sk": "II",
+    "trap": "Eine normale Geburt ist kein Notfall, bindet aber Personal – frühzeitig planen.",
+    "temperament": "ängstlich",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Geburt",
+      "Neugeborenes"
+    ],
+    "newActions": [
+      "Geburtsbegleitung",
+      "Neugeborenenversorgung"
+    ]
+  },
+  {
+    "id": "i089",
+    "title": "Junge Frau mit Unterbauchschmerz und Schock",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Junge Frau liegt gekrümmt, starke einseitige Unterbauchschmerzen, blass, Radialispuls nicht tastbar, Periode ausgeblieben.",
+    "course": "Phase 2 Bewusstseinstrübung, Phase 3 Kreislaufstillstand.",
+    "critical": [
+      "i.v.-Zugang bis 15 min",
+      "Transport in Gynäkologie mit OP bis 30 min"
+    ],
+    "harmful": [],
+    "sk": "I",
+    "trap": "Im MANV nicht jede Bauchsymptomatik dem Unfall zuordnen.",
+    "temperament": "ängstlich",
+    "difficulty": "experte",
+    "tags": [
+      "Schwangerschaft",
+      "Schock",
+      "Abgrenzung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i090",
+    "title": "Krampfanfall in der Schwangerschaft",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Schwangere in der 36. Woche hat gekrampft, reagiert danach nicht, Beine stark geschwollen.",
+    "course": "Erneute Anfälle, Gefahr für Mutter und Kind.",
+    "critical": [
+      "Seitenlage und Schutz sofort",
+      "Blutdruckmessung bis 15 min",
+      "Antikonvulsive Therapie durch Arzt bis 15 min"
+    ],
+    "harmful": [
+      "Flache Rückenlage"
+    ],
+    "sk": "I",
+    "trap": "Krampfanfall bei Schwangeren: an Eklampsie denken.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Schwangerschaft",
+      "Krampfanfall"
+    ],
+    "newActions": [
+      "Antikonvulsive Therapie"
+    ]
+  },
+  {
+    "id": "i091",
+    "title": "Schwangere mit Schürfwunden",
+    "category": "Gynäkologie/Geburt",
+    "picture": "Frau in der 20. Woche mit Schürfwunden an den Händen, geht selbst, fragt immer wieder, ob es dem Baby gut geht.",
+    "course": "Stabil.",
+    "critical": [
+      "Wundversorgung",
+      "Kontrolle in der Geburtshilfe anbieten"
+    ],
+    "harmful": [],
+    "sk": "III",
+    "trap": "Sorge ernst nehmen und eine Kontrolle organisieren.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Schwangerschaft",
+      "Betreuung"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i092",
+    "title": "Atemnot nach Chlorgasaustritt",
+    "category": "CBRN",
+    "picture": "Badegast sitzt am Beckenrand, hustet stark, Atemfrequenz 32/min, brennende Augen.",
+    "course": "Phase 2 Sättigungsabfall, Phase 3 Lungenödem.",
+    "critical": [
+      "Aus dem Gefahrenbereich bringen",
+      "Sauerstoff bis 15 min",
+      "Oberkörperhochlage"
+    ],
+    "harmful": [
+      "Körperliche Belastung"
+    ],
+    "sk": "I",
+    "trap": "Patienten aus dem Gefahrenbereich, Helfer nur mit Schutz hinein.",
+    "temperament": "panisch",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Gefahrstoff",
+      "Atmung"
+    ],
+    "newActions": [
+      "Dekontamination (Entkleiden)"
+    ]
+  },
+  {
+    "id": "i093",
+    "title": "Reizgas mit Latenz",
+    "category": "CBRN",
+    "picture": "Arbeiter kommt aus einer Halle, leichter Hustenreiz nach Gasaustritt, sonst beschwerdefrei, gehfähig.",
+    "course": "Zunehmende Atemnot durch toxisches Lungenödem, Latenz bis zu Stunden.",
+    "critical": [
+      "Körperliche Schonung",
+      "Klinische Überwachung über Stunden"
+    ],
+    "harmful": [
+      "Entlassung ohne Beobachtung"
+    ],
+    "sk": "III",
+    "trap": "Reizgase vom Spättyp machen zeitverzögert schwer krank.",
+    "temperament": "verharmlosend",
+    "difficulty": "experte",
+    "tags": [
+      "Gefahrstoff",
+      "Atmung",
+      "Untertriage-Falle"
+    ],
+    "newActions": []
+  },
+  {
+    "id": "i094",
+    "title": "Säurespritzer auf Haut und Auge",
+    "category": "CBRN",
+    "picture": "Arbeiterin läuft mit tränendem rechten Auge und geröteter Haut am Unterarm aus der Produktion.",
+    "course": "Ohne Spülung fortschreitende Gewebeschädigung.",
+    "critical": [
+      "Sofort mit viel Wasser spülen, Auge mindestens 15 min",
+      "Kontaminierte Kleidung entfernen"
+    ],
+    "harmful": [
+      "Neutralisationsversuch"
+    ],
+    "sk": "III",
+    "trap": "Spülen hat Vorrang – auch vor dem Transport.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Gefahrstoff",
+      "Auge",
+      "Verätzung"
+    ],
+    "newActions": [
+      "Augenspülung",
+      "Dekontamination (Wasserspülung)"
+    ]
+  },
+  {
+    "id": "i095",
+    "title": "Vergiftung mit Pflanzenschutzmittel",
+    "category": "CBRN",
+    "picture": "Landarbeiter liegt, starker Speichelfluss, sehr enge Pupillen, Muskelzucken, rasselnde Atmung mit 34/min, reagiert verlangsamt.",
+    "course": "Phase 2 Atemversagen ohne Antidot.",
+    "critical": [
+      "Eigenschutz und Dekontamination vor Kontakt",
+      "Sauerstoff",
+      "Antidot durch Arzt bis 15 min"
+    ],
+    "harmful": [
+      "Kontakt ohne Schutzhandschuhe"
+    ],
+    "sk": "I",
+    "trap": "Typische Zeichen erkennen – Eigenschutz vor Behandlung.",
+    "temperament": "verwirrt",
+    "difficulty": "experte",
+    "tags": [
+      "Gefahrstoff",
+      "Atmung",
+      "Eigenschutz"
+    ],
+    "newActions": [
+      "Antidot (Atropin, ärztlich)",
+      "Dekontamination (Entkleiden)"
+    ]
+  },
+  {
+    "id": "i096",
+    "title": "Bewusstloser am Rand des Gefahrstoffbereichs",
+    "category": "CBRN",
+    "picture": "Person liegt nach Gefahrgutunfall bewusstlos am Rand der Absperrung, schnarchende Atmung, Kleidung durchnässt.",
+    "course": "Phase 2 Atemwegsverlegung, weitere Giftaufnahme über die Haut.",
+    "critical": [
+      "Atemweg sichern parallel zur Notdekontamination bis 15 min",
+      "Kleidung entfernen"
+    ],
+    "harmful": [
+      "Vollständige Dekontamination vor Atemwegssicherung"
+    ],
+    "sk": "I",
+    "trap": "Lebensrettende Maßnahmen und Notdekontamination laufen parallel.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Gefahrstoff",
+      "Atemweg",
+      "Eigenschutz"
+    ],
+    "newActions": [
+      "Notdekontamination"
+    ]
+  },
+  {
+    "id": "i097",
+    "title": "Radioaktiv kontaminierte Person mit Fraktur",
+    "category": "CBRN",
+    "picture": "Techniker liegt mit Unterschenkelfraktur, der Strahlenschutz meldet kontaminierte Kleidung, wach, Radialispuls tastbar.",
+    "course": "Stabil; die Kontamination verteilt sich bei unsachgemäßem Umgang.",
+    "critical": [
+      "Versorgung der Verletzung hat Vorrang",
+      "Entkleiden und Abdecken",
+      "Schutzhandschuhe tragen"
+    ],
+    "harmful": [
+      "Lebenswichtige Versorgung aus Angst verzögern"
+    ],
+    "sk": "II",
+    "trap": "Kontamination behindert die Notfallversorgung selten – mit Basisschutz versorgen.",
+    "temperament": "kooperativ",
+    "difficulty": "experte",
+    "tags": [
+      "Strahlung",
+      "Fraktur",
+      "Eigenschutz"
+    ],
+    "newActions": [
+      "Dekontamination (Entkleiden)"
+    ]
+  },
+  {
+    "id": "i098",
+    "title": "Unklares Pulver",
+    "category": "CBRN",
+    "picture": "Büroangestellte hat einen Brief mit weißem Pulver geöffnet, beschwerdefrei, sehr besorgt.",
+    "course": "Stabil.",
+    "critical": [
+      "Isolieren und registrieren",
+      "Gefahrenabwehr abwarten"
+    ],
+    "harmful": [
+      "Pulver wegwischen oder wegblasen"
+    ],
+    "sk": "III",
+    "trap": "Ruhe bewahren, Eigenschutz, Ausbreitung verhindern.",
+    "temperament": "ängstlich",
+    "difficulty": "einsteiger",
+    "tags": [
+      "Gefahrstoff",
+      "Betreuung"
+    ],
+    "newActions": [
+      "Dekontamination (Entkleiden)"
+    ]
+  },
+  {
+    "id": "i099",
+    "title": "Geborgene Person aus Güllegrube",
+    "category": "CBRN",
+    "picture": "Feuerwehr hat unter Atemschutz eine Person aus einer Güllegrube geborgen: keine Lebenszeichen, Totenflecken. Ein Kollege war ungeschützt hinterhergestiegen.",
+    "course": "Keine Änderung; Gefahr weiterer Opfer durch ungeschützte Retter.",
+    "critical": [
+      "Kein Zutritt ohne umluftunabhängigen Atemschutz",
+      "Sichere Todeszeichen prüfen"
+    ],
+    "harmful": [
+      "Ungeschützter Rettungsversuch"
+    ],
+    "sk": "EX",
+    "trap": "Eigenschutz: Faulgase in Gruben töten regelmäßig auch Helfer.",
+    "temperament": "keins",
+    "difficulty": "fortgeschritten",
+    "tags": [
+      "Gefahrstoff",
+      "Eigenschutz",
+      "Todeszeichen"
+    ],
+    "newActions": [
+      "Todesfeststellung (Arzt)"
+    ]
+  },
+  {
+    "id": "i100",
+    "title": "Kombinationsverletzung nach Chemieexplosion",
+    "category": "CBRN",
+    "picture": "Person liegt nach Explosion, großflächig verbrannt, schnappende Atmung, kontaminierte Kleidung, kein Radialispuls.",
+    "course": "Versterben in kurzer Zeit wahrscheinlich.",
+    "critical": [
+      "Ärztliche Sichtung",
+      "Notdekontamination und Analgesie"
+    ],
+    "harmful": [],
+    "sk": "IV",
+    "trap": "SK IV nur ärztlich – Kombination aus Verbrennung, Trauma und Gefahrstoff verschlechtert die Prognose.",
+    "temperament": "keins",
+    "difficulty": "experte",
+    "tags": [
+      "Gefahrstoff",
+      "Verbrennung",
+      "SK IV"
+    ],
+    "newActions": [
+      "Notdekontamination",
+      "Palliative Begleitung"
+    ]
+  }
+]

@@ -1,11 +1,11 @@
 // dPS-App: Rollenwahl, Helfer-Ablauf (Meilenstein 2) und Praxisanleiter (Meilenstein 3, src/leitung.tsx).
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ScrollView, Text, Vibration, View, useColorScheme } from "react-native";
+import { Animated, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, Vibration, View, useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
-import type { Status, View as ViewData } from "@dps/schema/protocol";
+import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
 import { Badge, Button, Chip, Field, SK, Sheet, Stars, Title, clock, dark, light, skColor, type Theme } from "./src/ui";
 import { Leitung } from "./src/leitung";
@@ -18,6 +18,13 @@ const EXAM: Record<string, string> = {
 const MATERIAL: Record<string, string> = {
   tourniquet: "Tourniquet", dressing: "Verband", wendl: "Wendl-Tubus", o2_mask: "O₂-Maske", needle: "Punktionsnadel", ett: "Tubus",
   iv_cannula: "Venenkanüle", infusion: "Infusion", analgesic: "Analgetikum", pelvic_binder: "Beckengurt", splint: "Schiene", rescue_blanket: "Rettungsdecke",
+};
+const SILENT = "(keine Reaktion)"; // so antwortet der Server, wenn der Patient nicht sprechen kann
+// Vorschläge nach SAMPLER als ganze Sätze; das Thema geht mit, damit es auch ohne KI eine Antwort gibt.
+const QUICK: Record<Topic, string> = {
+  symptoms: "Wo haben Sie Schmerzen?", allergies: "Haben Sie Allergien?", medication: "Nehmen Sie regelmäßig Medikamente?",
+  history: "Haben Sie Vorerkrankungen?", lastMeal: "Wann haben Sie zuletzt etwas gegessen?", event: "Was ist passiert?",
+  risk: "Gibt es noch etwas, das ich wissen sollte?",
 };
 const STATUS: Record<Status, string> = { ready: "noch nicht gestartet", running: "", paused: "pausiert", ended: "beendet" };
 
@@ -53,7 +60,7 @@ export default function App() {
 
 function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
   const { conn, connect, send } = useConnection();
-  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover">(null);
+  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover" | "ask">(null);
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const i = setInterval(() => setNow(Date.now()), 1000);
@@ -121,6 +128,10 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
           ))}
         </Sheet>
       )}
+      {sheet === "ask" && conn.view?.patient && (
+        <Chat t={t} patient={conn.view.patient.id} picture={conn.view.patient.picture} dialog={conn.view.patient.dialog} ai={!!w?.ai} online={conn.status === "online"}
+          error={conn.error} onAsk={(q) => send({ type: "ask", patient: conn.view!.patient!.id, ...q })} onClose={() => setSheet(null)} />
+      )}
       {sheet === "handover" && conn.view?.patient && (
         <HandoverSheet t={t} patient={conn.view.patient.id} vehicles={conn.view.vehicles} onClose={() => setSheet(null)}
           onHandover={(vehicle, destination, diagnosis) => (send({ type: "handover", patient: conn.view!.patient!.id, vehicle, destination, diagnosis }), setSheet(null))} />
@@ -184,19 +195,19 @@ function Scan({ t, code, current, onScan, onBack }: { t: Theme; code: string; cu
   const [permission, requestPermission] = useCameraPermissions();
   const [manual, setManual] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const locked = useRef(false);
-  const handle = (raw: string) => {
-    if (locked.current) return;
+  const last = useRef(0); // die Kamera meldet denselben Code viele Male pro Sekunde
+  const handle = (raw: string, camera = false) => {
+    if (camera && Date.now() - last.current < 2000) return;
+    last.current = Date.now();
     const r = parseScan(raw, code);
     if ("error" in r) return setError(r.error);
-    locked.current = true;
     onScan(r.id);
   };
   return (
     <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
       <Title t={t}>Patient scannen</Title>
       {permission?.granted ? (
-        <CameraView style={{ height: 320, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => handle(r.data)} />
+        <CameraView style={{ height: 320, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => handle(r.data, true)} />
       ) : (
         <Button t={t} label="Kamera erlauben" onPress={requestPermission} />
       )}
@@ -209,7 +220,7 @@ function Scan({ t, code, current, onScan, onBack }: { t: Theme; code: string; cu
 }
 
 function PatientScreen({ t, conn, min, onSheet, onEnd }: {
-  t: Theme; conn: ReturnType<typeof useConnection>["conn"]; min: number; onSheet: (s: "actions" | "triage" | "scan" | "admit" | "handover") => void; onEnd: () => void;
+  t: Theme; conn: ReturnType<typeof useConnection>["conn"]; min: number; onSheet: (s: "actions" | "triage" | "scan" | "admit" | "handover" | "ask") => void; onEnd: () => void;
 }) {
   const v = conn.view!;
   const p = v.patient!;
@@ -265,6 +276,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         </View>
         {!p.left && (
           <View style={{ flexDirection: "row", gap: 10 }}>
+            <View style={{ flex: 1 }}><Button t={t} label="Fragen" onPress={() => onSheet("ask")} /></View>
             <View style={{ flex: 1 }}><Button t={t} label="Aufnahme" disabled={!!busy} onPress={() => onSheet("admit")} /></View>
             {v.me?.role !== "sichtung" && <View style={{ flex: 1 }}><Button t={t} label="Übergabe" disabled={!!busy} onPress={() => onSheet("handover")} /></View>}
           </View>
@@ -342,5 +354,86 @@ function HandoverSheet({ t, patient, vehicles, onHandover, onClose }: {
       <Field t={t} label="Verdacht (z. B. instabile Beckenfraktur)" value={diagnosis} onChange={setDiagnosis} />
       <Button t={t} strong label="Übergeben" disabled={!vehicle || !destination.trim()} onPress={() => onHandover(vehicle, destination.trim(), diagnosis.trim())} />
     </Sheet>
+  );
+}
+
+// Patient befragen als Chat: freie Frage (KI) oder Vorschlag nach SAMPLER (geht immer, auch ohne KI).
+function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }: {
+  t: Theme; patient: string; picture: string; dialog: { q: string; a: string }[]; ai: boolean; online: boolean; error: string | null;
+  onAsk: (q: { question: string; topic?: Topic }) => void; onClose: () => void;
+}) {
+  const [text, setText] = useState("");
+  const [waiting, setWaiting] = useState<{ q: string; at: number } | null>(null); // eigene Frage, bis die Antwort da ist
+  const scroll = useRef<ScrollView>(null);
+  useEffect(() => setWaiting(null), [dialog.length, error]);
+  const ask = (question: string, topic?: Topic) => {
+    if (waiting) return;
+    setWaiting({ q: question, at: dialog.length });
+    onAsk({ question, ...(topic ? { topic } : {}) });
+  };
+  const bubble = (mine: boolean, children: ReactNode, key: string) => (
+    <View key={key} style={{ alignSelf: mine ? "flex-end" : "flex-start", maxWidth: "82%", paddingHorizontal: 14, paddingVertical: 10, borderRadius: 18,
+      borderBottomRightRadius: mine ? 4 : 18, borderBottomLeftRadius: mine ? 18 : 4, backgroundColor: mine ? t.text : t.tint }}>
+      {children}
+    </View>
+  );
+  return (
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.bg, paddingTop: 48 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16, paddingBottom: 10, borderBottomWidth: 1, borderColor: t.line }}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Zurück zum Patienten" onPress={onClose} hitSlop={12}>
+          <Text style={{ color: t.text, fontSize: 28 }}>‹</Text>
+        </Pressable>
+        <View style={{ flex: 1 }}>
+          <Text style={{ color: t.text, fontSize: 18, fontWeight: "700" }}>{patient.toUpperCase()}</Text>
+          <Text style={{ color: t.quiet, fontSize: 13 }} numberOfLines={1}>{picture}</Text>
+        </View>
+      </View>
+      <ScrollView ref={scroll} onContentSizeChange={() => scroll.current?.scrollToEnd()} contentContainerStyle={{ padding: 16, gap: 8 }}>
+        {!dialog.length && !waiting && <Text style={{ color: t.quiet, textAlign: "center", marginTop: 24 }}>Sprich den Patienten an – höflich und in ganzen Sätzen kommst du am weitesten.</Text>}
+        {dialog.flatMap((d, i) => [
+          bubble(true, <Text style={{ color: t.bg, fontSize: 16 }}>{d.q}</Text>, `q${i}`),
+          bubble(false, <Text style={{ color: d.a === SILENT ? t.quiet : t.text, fontSize: 16, fontStyle: d.a === SILENT ? "italic" : "normal" }}>{d.a}</Text>, `a${i}`),
+        ])}
+        {waiting && bubble(true, <Text style={{ color: t.bg, fontSize: 16 }}>{waiting.q}</Text>, "wq")}
+        {waiting && bubble(false, <Typing t={t} />, "wa")}
+        {error && <Text style={{ color: t.red, textAlign: "center" }}>{error}</Text>}
+      </ScrollView>
+      <ScrollView horizontal keyboardShouldPersistTaps="handled" showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
+        {(Object.keys(QUICK) as Topic[]).map((topic) => (
+          <Chip key={topic} t={t} label={QUICK[topic]} selected={false} disabled={!!waiting} onPress={() => ask(QUICK[topic], topic)} />
+        ))}
+      </ScrollView>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, padding: 12, paddingBottom: 28 }}>
+        <TextInput value={text} onChangeText={setText} editable={ai} placeholder={ai ? "Frage an den Patienten …" : "Freie Fragen brauchen die KI – tippe einen Vorschlag"}
+          placeholderTextColor={t.quiet} accessibilityLabel="Frage an den Patienten" returnKeyType="send"
+          onSubmitEditing={() => text.trim().length > 1 && (ask(text.trim()), setText(""))}
+          style={{ flex: 1, minHeight: 48, borderWidth: 1, borderColor: t.line, borderRadius: 24, paddingHorizontal: 16, color: t.text, fontSize: 16 }} />
+        <Pressable accessibilityRole="button" accessibilityLabel="Senden" disabled={!ai || !online || !!waiting || text.trim().length < 2}
+          onPress={() => (ask(text.trim()), setText(""))}
+          style={({ pressed }) => ({ width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: t.text,
+            opacity: !ai || !online || waiting || text.trim().length < 2 ? 0.3 : pressed ? 0.7 : 1 })}>
+          <Text style={{ color: t.bg, fontSize: 20, fontWeight: "700" }}>↑</Text>
+        </Pressable>
+      </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+// „Patient tippt …“: drei pulsierende Punkte.
+function Typing({ t }: { t: Theme }) {
+  const a = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const loop = Animated.loop(Animated.timing(a, { toValue: 3, duration: 900, easing: Easing.linear, useNativeDriver: true }));
+    loop.start();
+    return () => loop.stop();
+  }, [a]);
+  return (
+    <View style={{ flexDirection: "row", gap: 4, paddingVertical: 6 }} accessibilityLabel="Patient antwortet">
+      {[0, 1, 2].map((i) => (
+        <Animated.View key={i} style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: t.quiet,
+          opacity: a.interpolate({ inputRange: [i, i + 0.5, i + 1, 3], outputRange: [0.3, 1, 0.3, 0.3], extrapolate: "clamp" }) }} />
+      ))}
+    </View>
   );
 }

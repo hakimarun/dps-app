@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import type { Findings, Patient, Sk } from "@dps/schema";
+import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Badge, Button, Chip, Field, Sheet, Stars, Title, clock, skColor, type Theme } from "./ui";
+import { Badge, Button, Chip, Field, Stars, Title, clock, skColor, type Theme } from "./ui";
+import { api, httpBase, useLibrary, type Session } from "./api";
+import { LibraryScreen } from "./library";
 
-type Session = { server: string; token: string; email: string };
-type LibPatient = { id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number };
-type Library = { patients: LibPatient[]; scenarios: { id: string; title: string; patients: string[] }[] };
 type ExerciseInfo = { code: string; title: string; status: Status; patients: string[] };
 type Clock = Extract<ServerMsg, { type: "clock" }>;
 
@@ -19,19 +18,6 @@ const ROLES = [["sichtung", "Sichtungstrupps"], ["behandlung", "Behandlungstrupp
 const ROLE_SHORT: Record<string, string> = { sichtung: "Sichtung", behandlung: "Behandlung", transport: "Transport" };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
-const httpBase = (server: string) => server.trim().replace(/^ws/, "http").replace(/\/$/, "");
-
-async function api<T>(s: { server: string; token: string }, path: string, body?: unknown): Promise<T> {
-  const res = await fetch(httpBase(s.server) + path, {
-    method: body === undefined ? "GET" : "POST",
-    headers: { "content-type": "application/json", ...(s.token ? { authorization: `Bearer ${s.token}` } : {}) },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error ?? `Fehler ${res.status}`);
-  return data as T;
-}
-
 export function Leitung({ t, onExit }: { t: Theme; onExit: () => void }) {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
   useEffect(() => {
@@ -89,91 +75,6 @@ function Home({ t, session, onLogout, onExit }: { t: Theme; session: Session; on
         </View>
       </View>
     </View>
-  );
-}
-
-function useLibrary(session: Session) {
-  const [lib, setLib] = useState<Library | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const load = () => void api<Library>(session, "/api/library").then(setLib, (e: Error) => setError(e.message));
-  useEffect(load, [session.token]);
-  return { lib, error, load };
-}
-
-function LibraryScreen({ t, session }: { t: Theme; session: Session }) {
-  const { lib, error, load } = useLibrary(session);
-  const [filter, setFilter] = useState<"alle" | "meine" | "offen">("alle");
-  const [detail, setDetail] = useState<LibPatient | null>(null);
-  const shown = lib?.patients.filter((p) => filter === "alle" || (filter === "meine") === p.approved) ?? [];
-  const toggle = (p: LibPatient) => api(session, "/api/library/approve", { item: p.id, approved: !p.approved }).then(load);
-  return (
-    <>
-      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
-        <Title t={t}>Bibliothek</Title>
-        <View style={{ flexDirection: "row", gap: 8 }}>
-          <Chip t={t} label="Alle" selected={filter === "alle"} onPress={() => setFilter("alle")} />
-          <Chip t={t} label="Von mir freigegeben" selected={filter === "meine"} onPress={() => setFilter("meine")} />
-          <Chip t={t} label="Offen" selected={filter === "offen"} onPress={() => setFilter("offen")} />
-        </View>
-        {error && <Text style={{ color: t.red }}>{error}</Text>}
-        {shown.map((p) => (
-          <Pressable key={p.id} accessibilityRole="button" onPress={() => setDetail(p)} style={{ borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 12, gap: 4 }}>
-            <Text style={{ color: t.text, fontWeight: "600", fontSize: 16 }}>{p.id.toUpperCase()} {p.title}</Text>
-            <Text style={{ color: t.quiet }}>Muster · {p.approved ? "von dir freigegeben" : "noch nicht geprüft"}</Text>
-            <Text style={{ color: t.quiet }}>{p.approvals}-mal freigegeben · {p.uses}-mal genutzt</Text>
-          </Pressable>
-        ))}
-      </ScrollView>
-      {detail && <CaseDetail t={t} session={session} item={detail} onToggle={() => toggle(detail).then(() => setDetail(null))} onClose={() => setDetail(null)} />}
-    </>
-  );
-}
-
-// Befunde in Kurzform, z. B. "AF 32 · HF 135 · RR 85/60 · kein Radialispuls".
-function summary(f: Partial<Findings>): string {
-  const parts: string[] = [];
-  const num: [keyof Findings, string, string?][] = [["rr", "AF"], ["spo2", "SpO₂", " %"], ["hr", "HF"], ["bp", "RR"], ["gcs", "GCS"], ["recap", "Rekap", " s"], ["pain", "NRS"], ["temp", "Temp", " °C"]];
-  for (const [k, label, unit] of num) if (f[k] !== undefined) parts.push(`${label} ${f[k]}${unit ?? ""}`);
-  if (f.walking !== undefined) parts.push(f.walking ? "gehfähig" : "liegt");
-  if (f.breathing === false) parts.push("keine Atmung");
-  if (f.radialPulse === false) parts.push("kein Radialispuls");
-  if (f.followsCommands === false) parts.push("befolgt keine Aufforderungen");
-  if (f.spurtingBleeding) parts.push("spritzende Blutung");
-  if (f.spurtingBleeding === false) parts.push("Blutung steht");
-  if (f.stridor) parts.push("Stridor");
-  if (f.lethalInjury) parts.push("tödliche Verletzung");
-  for (const [k, v] of Object.entries(f.exam ?? {})) parts.push(`${k}: ${v}`);
-  return parts.join(" · ");
-}
-
-function CaseDetail({ t, session, item, onToggle, onClose }: { t: Theme; session: Session; item: LibPatient; onToggle: () => void; onClose: () => void }) {
-  const [data, setData] = useState<{ patient: Patient; actions: Record<string, string> } | null>(null);
-  useEffect(() => void api<typeof data>(session, `/api/library/${item.id}`).then(setData), [item.id]);
-  const a = (id: string) => data?.actions[id] ?? id;
-  return (
-    <Sheet t={t} title={`${item.id.toUpperCase()} ${item.title}`} onClose={onClose}>
-      <Text style={{ color: t.text }}>{item.picture}</Text>
-      {data && (
-        <>
-          <Text style={{ color: t.quiet }}>Ausgangslage: {summary(data.patient.base)}</Text>
-          {Object.entries(data.patient.phases).map(([id, ph]) => (
-            <View key={id} style={{ borderTopWidth: 1, borderColor: t.line, paddingTop: 8, gap: 2 }}>
-              <Text style={{ color: t.text, fontWeight: "600" }}>
-                Phase {id}{ph.minutes ? ` (${ph.minutes} min)` : ""}{ph.dead ? " · tot" : ""}{ph.left ? " · abtransportiert" : ""}
-              </Text>
-              {Object.keys(ph.findings).length > 0 && <Text style={{ color: t.text }}>{summary(ph.findings)}</Text>}
-              {ph.rules.map((r, i) => (
-                <Text key={i} style={{ color: t.quiet }}>
-                  {[r.when.length ? `wenn ${r.when.map(a).join(" + ")}` : "", r.active.length ? `solange ${r.active.map(a).join(" + ")} läuft` : ""].filter(Boolean).join(", ")} → {r.then}
-                </Text>
-              ))}
-              {ph.else && <Text style={{ color: t.quiet }}>sonst → {ph.else}</Text>}
-            </View>
-          ))}
-        </>
-      )}
-      <Button t={t} strong label={item.approved ? "Freigabe zurückziehen" : "Für meine Übungen freigeben"} onPress={onToggle} />
-    </Sheet>
   );
 }
 

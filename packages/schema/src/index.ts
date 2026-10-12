@@ -61,6 +61,10 @@ export const Patient = z
     title: z.string(),
     picture: z.string(), // sichtbares Bild auf dem QR-Zettel
     profile: z.record(z.string(), z.unknown()).default({}), // Gesprächsprofil für den KI-Dialog
+    // Für die Bibliothek: Kategorie, Schlagworte, Schwierigkeit.
+    meta: z
+      .object({ category: z.string().default("Trauma"), tags: z.array(z.string()).default([]), difficulty: z.enum(["einsteiger", "fortgeschritten", "experte"]).default("fortgeschritten") })
+      .default({ category: "Trauma", tags: [], difficulty: "fortgeschritten" }),
     // Für die Auswertung: kritische Maßnahmen (eine der Maßnahmen bis "within" Minuten bei 15-min-Phasen) und schädliche Maßnahmen.
     // "handover" steht für die Übergabe zum Abtransport.
     scoring: z

@@ -6,6 +6,7 @@
     "start": "node src/main.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.1",
     "@dps/engine": "*",
     "@dps/schema": "*",
     "nodemailer": "^10.0.16",

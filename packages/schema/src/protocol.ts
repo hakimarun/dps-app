@@ -7,6 +7,14 @@ export const Role = z.enum(["sichtung", "behandlung", "transport"]);
 export type Role = z.infer<typeof Role>;
 export type Trupp = { code: string; name: string; role: Role; unit: string };
 
+// Anamnese nach SAMPLER (+ Risikofaktoren): Themen für die Ersatz-Auswahlliste und die Auswertung.
+export const Topic = z.enum(["symptoms", "allergies", "medication", "history", "lastMeal", "event", "risk"]);
+export type Topic = z.infer<typeof Topic>;
+export const TOPIC_LABEL: Record<Topic, string> = {
+  symptoms: "Beschwerden", allergies: "Allergien", medication: "Medikamente", history: "Vorerkrankungen",
+  lastMeal: "Letzte Mahlzeit", event: "Hergang", risk: "Risikofaktoren",
+};
+
 export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("join"), name: z.string().trim().min(1).max(40), unit: z.string().optional() }), // ohne unit: Einheit des Trupps
   z.object({ type: z.literal("scan"), patient: z.string() }),
@@ -14,6 +22,8 @@ export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("end") }),
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
   z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),
+  // Patient befragen: freie Frage (KI) oder Thema aus der Auswahlliste (ohne KI).
+  z.object({ type: z.literal("ask"), patient: z.string(), question: z.string().trim().max(300).optional(), topic: Topic.optional() }),
   z.object({
     type: z.literal("handover"), patient: z.string(), vehicle: z.string(),
     destination: z.string().trim().min(1).max(80), diagnosis: z.string().trim().max(200),
@@ -42,6 +52,8 @@ export const CreateExerciseReq = z.object({
     .object({ sichtung: z.number().int().min(0).max(10), behandlung: z.number().int().min(0).max(20), transport: z.number().int().min(0).max(10) })
     .default({ sichtung: 1, behandlung: 2, transport: 1 }),
 });
+export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional() });
+export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
 
 export type Intent = z.infer<typeof Intent>;
@@ -89,7 +101,10 @@ export type Evaluation = {
 export type View = {
   result?: { team: Team; me: HelperReport } | null; // erst nach Freigabe durch die Leitung
   me: { id: string; name: string; unit: string; role: Role; trupp: string | null; busy: { action: string; until: number | null } | null } | null;
-  patient: { id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean } | null;
+  patient: {
+    id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean;
+    dialog: { q: string; a: string }[]; // eigene Fragen an diesen Patienten
+  } | null;
   inventory: Record<string, number>;
   unitArrived: boolean;
   vehicles: { id: string; title: string; seats: number; arrived: boolean }[];
@@ -127,6 +142,7 @@ export type ServerMsg =
       actions: ActionInfo[]; // nur die für diese Funktion erlaubten
       participant: string | null;
       trupp: { name: string; role: Role; unit: string } | null; // bei Beitritt mit Trupp-Code
+      ai: boolean; // freie Fragen an Patienten möglich (sonst nur Themenliste)
     }
   // Übungsuhr: t Minuten zum Zeitpunkt serverNow; läuft nur bei status "running" weiter.
   | { type: "clock"; status: Status; t: number; serverNow: number }

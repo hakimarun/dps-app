@@ -2,25 +2,41 @@
 //   node apps/server/src/main.ts --port 3000 --data data
 // E-Mail: SMTP_URL (z. B. smtps://user:pass@host) und MAIL_FROM setzen; ohne SMTP_URL steht der Anmeldecode im Log.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { randomInt } from "node:crypto";
 import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import { z } from "zod";
-import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, LoginReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
-import type { Settings } from "@dps/engine";
-import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, viewFor, type Exercise } from "./exercise.ts";
+import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, LoginReq, ScenarioGenReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { Patient, type Scenario } from "@dps/schema";
+import { triage, type Settings } from "@dps/engine";
+import { fromEnv } from "./ai.ts";
+import { generate, generateFrame } from "./generator.ts";
+import { allowedActions, control, leitungView, loadLibrary, minutes, released, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
-import { approvalCounts, loadExercises, myApprovals, newCode, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "./db.ts";
+import { approvalCounts, attachPatient, attachedPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" } } });
 mkdirSync(opt.data, { recursive: true });
 const db = openDb(join(opt.data, "dps.sqlite"));
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
+// Geprüfte KI-Entwürfe sind spielbar wie Musterverläufe; vor den Übungen laden, die sie nutzen.
+const drafts = new Map(loadDrafts(db).map((d) => [d.id, d]));
+for (const d of drafts.values()) if (d.report.ok) lib.defs.patients[d.id] = Patient.parse(d.patient);
+// KI-Szenarien und nachträglich generierte Patienten (auch in Szenarien aus der Bibliothek).
+type LibScenario = Scenario & { situation?: string };
+const scenarios = lib.scenarios as Record<string, LibScenario>;
+for (const s of loadScenarios(db) as LibScenario[]) scenarios[s.id] = s;
+for (const a of attachedPatients(db)) if (scenarios[a.scenario] && lib.defs.patients[a.patient]) scenarios[a.scenario].patients.push(a.patient);
 const exercises = new Map(loadExercises(db, lib.defs).map((ex) => [ex.code, ex]));
+const dialogAi = fromEnv("dialog");
+const generatorAi = fromEnv("generator");
+const readIdeas = (f: string) => (existsSync(new URL(f, ideasDir)) ? JSON.parse(readFileSync(new URL(f, ideasDir), "utf8")) : []);
+const ideasDir = new URL("../../../library/ideas/", import.meta.url);
+const startSk = (p: Patient) => (p.phases[p.start].dead ? "EX" : triage({ ...p.base, ...p.phases[p.start].findings, exam: {} }, "mstart"));
 // Trupp-Codes zeigen direkt auf Übung und Trupp.
 const truppCodes = new Map<string, { ex: Exercise; trupp: Trupp }>();
 const indexTrupps = (ex: Exercise) => ex.trupps!.forEach((trupp) => truppCodes.set(trupp.code, { ex, trupp }));
@@ -31,6 +47,36 @@ const resolve = (code: string) => {
   return ex ? { ex, trupp: null } : truppCodes.get(c) ?? null;
 };
 const ROLE_LABEL: Record<Role, string> = { sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp" };
+// KI-Entwurf eines Patienten: speichern; besteht er die Prüfung, ist er spielbar (nach Freigabe).
+async function draftPatient(brief: string, owner: string): Promise<Draft> {
+  const { raw, report } = await generate(generatorAi!, brief, lib.defs.actions, lib.defs.patients.p01);
+  const id = (raw as { id: string }).id;
+  const d: Draft = { id, owner, created: Date.now(), brief, patient: raw, report };
+  saveDraft(db, d);
+  drafts.set(id, d);
+  if (report.ok) lib.defs.patients[id] = Patient.parse(raw);
+  return d;
+}
+// Patienten eines Szenarios nacheinander generieren; die Bibliothek zeigt den Fortschritt.
+// ponytail: Fortschritt nur im Speicher; nach einem Neustart fehlen nur die noch nicht erzeugten Patienten.
+type Job = { total: number; done: number; failed: number; error: string | null };
+const jobs = new Map<string, Job>();
+async function fillScenario(id: string, briefs: string[], owner: string) {
+  let job = jobs.get(id);
+  if (job && job.done < job.total) job.total += briefs.length;
+  else jobs.set(id, (job = { total: briefs.length, done: 0, failed: 0, error: null }));
+  for (const brief of briefs) {
+    try {
+      const d = await draftPatient(brief, owner);
+      if (d.report.ok) (attachPatient(db, id, d.id, Date.now()), scenarios[id].patients.push(d.id));
+      else job.failed++;
+    } catch (e) {
+      job.failed++;
+      job.error = e instanceof Error ? e.message : String(e);
+    }
+    job.done++;
+  }
+}
 const mailer = process.env.SMTP_URL ? nodemailer.createTransport(process.env.SMTP_URL) : null;
 
 const LEVELS: Record<Level, Pick<Settings, "phaseMinutes" | "random">> = {
@@ -97,19 +143,58 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const counts = approvalCounts(db);
     const all = [...exercises.values()];
     return send(res, 200, {
-      patients: Object.values(lib.defs.patients).map((p) => ({
-        id: p.id, version: p.version, title: p.title, picture: p.picture,
-        approved: mine.get(p.id) === p.version,
-        approvals: counts.get(p.id) ?? 0,
-        uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
+      patients: [
+        ...Object.values(lib.defs.patients).map((p) => ({
+          id: p.id, version: p.version, title: p.title, picture: p.picture,
+          approved: mine.get(p.id) === p.version,
+          approvals: counts.get(p.id) ?? 0,
+          uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
+          meta: p.meta, sk: startSk(p), origin: drafts.has(p.id) ? "ki" : "muster", errors: [] as string[],
+        })),
+        // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht freigebbar
+        ...[...drafts.values()].filter((d) => !d.report.ok).map((d) => ({
+          id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, approved: false, approvals: 0, uses: 0,
+          meta: { category: "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: "ki", errors: d.report.errors,
+        })),
+      ],
+      scenarios: Object.values(scenarios).map((s) => ({
+        id: s.id, title: s.title, patients: s.patients, situation: s.situation ?? null, origin: s.id.startsWith("ki-") ? "ki" : "muster", job: jobs.get(s.id) ?? null,
       })),
-      scenarios: Object.values(lib.scenarios).map((s) => ({ id: s.id, title: s.title, patients: s.patients })),
     });
   }
   if ((m = route.match(/^GET \/api\/library\/([a-z0-9-]{1,64})$/))) {
-    const p = lib.defs.patients[m[1]];
+    const p = lib.defs.patients[m[1]] ?? drafts.get(m[1])?.patient;
     if (!p) throw new HttpError(404, "unbekannter Fall");
-    return send(res, 200, { patient: p, actions: Object.fromEntries(Object.values(lib.defs.actions).map((a) => [a.id, a.title])) });
+    const d = drafts.get(m[1]);
+    return send(res, 200, { patient: p, actions: Object.fromEntries(Object.values(lib.defs.actions).map((a) => [a.id, a.title])), report: d?.report ?? null, brief: d?.brief ?? null });
+  }
+  if (route === "GET /api/ideas") return send(res, 200, { cases: readIdeas("cases.json"), scenarios: readIdeas("scenarios.json"), generator: !!generatorAi });
+  if (route === "POST /api/generate") {
+    if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet (AI_GENERATOR, ANTHROPIC_API_KEY oder LOCAL_AI_URL)");
+    const { brief } = GenerateReq.parse(await body(req));
+    const d = await draftPatient(brief, user.id).catch((e) => {
+      throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
+    });
+    return send(res, 201, { id: d.id, report: d.report });
+  }
+  if (route === "POST /api/scenarios") {
+    if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");
+    const { brief, patients } = ScenarioGenReq.parse(await body(req));
+    const { scenario, briefs } = await generateFrame(generatorAi, brief, patients, scenarios.busunfall ?? Object.values(scenarios)[0]).catch((e) => {
+      throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
+    });
+    saveScenario(db, user.id, brief, scenario, Date.now());
+    scenarios[scenario.id] = scenario;
+    void fillScenario(scenario.id, briefs, user.id);
+    return send(res, 201, { id: scenario.id, patients: briefs.length });
+  }
+  if ((m = route.match(/^POST \/api\/scenarios\/([a-z0-9-]{1,64})\/patients$/))) {
+    if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");
+    const sc = scenarios[m[1]];
+    if (!sc) throw new HttpError(404, "unbekanntes Szenario");
+    const { brief } = GenerateReq.parse(await body(req));
+    void fillScenario(sc.id, [`Lage: ${sc.situation ?? sc.title}\nPatient: ${brief}`], user.id);
+    return send(res, 202, { ok: true });
   }
   if (route === "POST /api/library/approve") {
     const r = ApproveReq.parse(await body(req));
@@ -198,11 +283,18 @@ function onMessage(ws: WebSocket, raw: string) {
         units: ex.scenario.units.map((u) => ({ id: u.id, title: u.title })),
         actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material })),
         trupp: trupp && { name: trupp.name, role: trupp.role, unit: ex.scenario.units.find((u) => u.id === trupp.unit)?.title ?? trupp.unit },
+        ai: !!dialogAi,
       });
     }
     out(ws, clock(ex));
   } else {
     if (!c.ex || c.watch) return out(ws, { type: "error", error: "erst hello senden" });
+    if (m.intent.type === "ask") {
+      // Antwort der KI kann dauern: asynchron, ohne andere Nachrichten aufzuhalten.
+      const ex = c.ex;
+      void submitAsk(ex, c.participant, m, Date.now(), dialogAi).then((r) => (out(ws, { type: "ack", id: m.id, error: r.error }), broadcast(ex)));
+      return;
+    }
     const r = submit(c.ex, c.participant, m, Date.now(), c.trupp);
     if (r.participant) c.participant = r.participant;
     out(ws, { type: "ack", id: m.id, error: r.error, participant: r.participant });
@@ -233,4 +325,5 @@ new WebSocketServer({ server: http }).on("connection", (ws) => {
   ws.on("close", () => clients.delete(ws));
 });
 setInterval(() => new Set([...clients.values()].map((c) => c.ex).filter((ex) => ex !== null)).forEach((ex) => broadcast(ex)), 1000);
-http.listen(Number(opt.port), () => console.log(`dPS-Server auf Port ${opt.port}, ${exercises.size} Übungen geladen`));
+http.listen(Number(opt.port), () =>
+  console.log(`dPS-Server auf Port ${opt.port}, ${exercises.size} Übungen, KI-Dialog: ${dialogAi?.name ?? "aus"}, KI-Generator: ${generatorAi?.name ?? "aus"}`));

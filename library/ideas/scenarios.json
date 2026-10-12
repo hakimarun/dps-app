@@ -1,0 +1,3103 @@
+[
+  {
+    "id": "s001",
+    "title": "Frontalzusammenstoß auf der Landstraße",
+    "category": "Verkehr",
+    "situation": "Zwei Pkw frontal kollidiert, fünf Betroffene, ein Fahrer eingeklemmt.",
+    "patients": 5,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 2,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Einklemmung"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr; nach 15 min 1 weiterer RTW",
+    "learning": "Erste Sichtung mit wenigen Kräften und gezielte Nachforderung.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i011",
+      "i007",
+      "i008",
+      "i021",
+      "i086",
+      "p08"
+    ]
+  },
+  {
+    "id": "s002",
+    "title": "Reisebus auf Autobahn umgestürzt",
+    "category": "Verkehr",
+    "situation": "Voll besetzter Reisebus liegt auf der Seite im Graben, viele Fahrgäste aus dem Ausland.",
+    "patients": 48,
+    "mix": {
+      "I": 8,
+      "II": 12,
+      "III": 25,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Nacht",
+      "Autobahn",
+      "Sprachbarriere"
+    ],
+    "units": "4 RTW, 2 NEF, OrgL, LNA; nach 15 min 6 RTW und SEG",
+    "learning": "Aufbau von Patientenablage und Sichtung bei großer Patientenzahl.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i006",
+      "i020",
+      "i007",
+      "i056",
+      "i021",
+      "i018",
+      "i008",
+      "i034",
+      "i042",
+      "i046",
+      "i025",
+      "i027",
+      "p02",
+      "p04",
+      "p09"
+    ]
+  },
+  {
+    "id": "s003",
+    "title": "Massenkarambolage im Nebel",
+    "category": "Verkehr",
+    "situation": "Über 20 Fahrzeuge auf der Autobahn ineinander gefahren, Folgeunfälle möglich.",
+    "patients": 47,
+    "mix": {
+      "I": 9,
+      "II": 14,
+      "III": 22,
+      "IV": 0,
+      "EX": 2
+    },
+    "special": [
+      "Nebel",
+      "Kälte",
+      "Eigengefährdung",
+      "Weitläufige Einsatzstelle"
+    ],
+    "units": "5 RTW, 3 NEF, OrgL, LNA; Abschnittsbildung; nach 15 min SEG und weitere 6 RTW",
+    "learning": "Einsatzabschnitte bilden und Eigenschutz auf der Fahrbahn sicherstellen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i002",
+      "i011",
+      "i020",
+      "i006",
+      "i007",
+      "i056",
+      "i053",
+      "i008",
+      "i021",
+      "i083",
+      "i026",
+      "p01",
+      "p03",
+      "p07",
+      "p08"
+    ]
+  },
+  {
+    "id": "s004",
+    "title": "Pkw fährt in Bushaltestelle",
+    "category": "Verkehr",
+    "situation": "Pkw ist in eine belebte Bushaltestelle geraten, mehrere Verletzte am Boden.",
+    "patients": 11,
+    "mix": {
+      "I": 3,
+      "II": 3,
+      "III": 4,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Schaulustige",
+      "Psychische Belastung"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Schnelle Sichtung trotz emotional belastender Lage.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i020",
+      "i047",
+      "i012",
+      "i052",
+      "i081",
+      "i085",
+      "i025",
+      "p01",
+      "p04"
+    ]
+  },
+  {
+    "id": "s005",
+    "title": "Linienbus gegen Lkw innerorts",
+    "category": "Verkehr",
+    "situation": "Stadtbus nach Kollision mit Lkw, viele leicht verletzte Fahrgäste im Bus.",
+    "patients": 28,
+    "mix": {
+      "I": 4,
+      "II": 8,
+      "III": 16,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Innenstadt",
+      "Viele Gehfähige"
+    ],
+    "units": "3 RTW, 1 NEF, OrgL; nach 15 min 3 RTW und KTW",
+    "learning": "Gehfähige zügig zur Sammelstelle lenken und nachsichten.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i007",
+      "i008",
+      "i019",
+      "i018",
+      "i021",
+      "i057",
+      "i086",
+      "i029",
+      "p08",
+      "p09"
+    ]
+  },
+  {
+    "id": "s006",
+    "title": "Motorradgruppe in Kurve verunglückt",
+    "category": "Verkehr",
+    "situation": "Drei Motorräder einer Gruppe kollidieren in einer Kurve, ein Beifahrer leblos.",
+    "patients": 7,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 2,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Ländlicher Raum",
+      "Lange Anfahrt"
+    ],
+    "units": "2 RTW, 1 NEF, RTH",
+    "learning": "Priorisierung bei kleiner Lage und weit entfernten Kliniken.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i002",
+      "i012",
+      "i019",
+      "i025",
+      "p01",
+      "p07"
+    ]
+  },
+  {
+    "id": "s007",
+    "title": "Kleinbus mit Grundschulkindern verunfallt",
+    "category": "Verkehr",
+    "situation": "Schulbus-Kleinbus ist von der Straße abgekommen, Eltern treffen an der Einsatzstelle ein.",
+    "patients": 14,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kinder",
+      "Eltern an der Einsatzstelle"
+    ],
+    "units": "3 RTW, 1 NEF, Kinder-Notarzt anfordern; nach 15 min 2 RTW",
+    "learning": "Kindersichtung und Betreuung unbegleiteter Kinder.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i043",
+      "i048",
+      "i047",
+      "i050",
+      "i046",
+      "i085",
+      "i082"
+    ]
+  },
+  {
+    "id": "s008",
+    "title": "Tanklastzug-Unfall mit Brand",
+    "category": "Verkehr",
+    "situation": "Tanklastzug und Pkw nach Kollision in Brand, Gefahrgutkennzeichnung sichtbar.",
+    "patients": 11,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 5,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Gefahrstoff",
+      "Brand",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF; Bereitstellungsraum außerhalb Gefahrenbereich",
+    "learning": "Eigenschutz und Gefahrenbereich vor Patientenkontakt.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i061",
+      "i064",
+      "i071",
+      "i073",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s009",
+    "title": "Unfall im Straßentunnel",
+    "category": "Verkehr",
+    "situation": "Mehrere Fahrzeuge im Tunnel kollidiert, Rauchentwicklung.",
+    "patients": 26,
+    "mix": {
+      "I": 4,
+      "II": 6,
+      "III": 15,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Tunnel",
+      "Rauch",
+      "Funkprobleme"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL; Patientenablage am Portal",
+    "learning": "Retten aus Gefahrenbereich und Sammelstelle außerhalb des Tunnels.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i031",
+      "i006",
+      "i007",
+      "i008",
+      "i011",
+      "i025",
+      "p06",
+      "p08"
+    ]
+  },
+  {
+    "id": "s010",
+    "title": "Wohnmobil gegen Reisebus auf Passstraße",
+    "category": "Verkehr",
+    "situation": "Kollision auf Bergstraße, Bus droht abzurutschen.",
+    "patients": 20,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 10,
+      "IV": 1,
+      "EX": 1
+    },
+    "special": [
+      "Bergstraße",
+      "Lange Anfahrt",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF, 2 RTH; Bergwacht nachfordern",
+    "learning": "Ressourcenmangel überbrücken und Lufttransport planen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i020",
+      "i006",
+      "i056",
+      "i053",
+      "i018",
+      "i034",
+      "i027",
+      "i026",
+      "p02",
+      "p04"
+    ]
+  },
+  {
+    "id": "s011",
+    "title": "Kleintransporter mit Erntehelfern",
+    "category": "Verkehr",
+    "situation": "Überladener Transporter umgekippt, Betroffene sprechen kaum Deutsch.",
+    "patients": 9,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 4,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Sprachbarriere",
+      "Ländlicher Raum"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 1 RTW",
+    "learning": "Sichtung und Kommunikation trotz Sprachbarriere.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i042",
+      "i004",
+      "i012",
+      "i019",
+      "i008",
+      "i049",
+      "p07"
+    ]
+  },
+  {
+    "id": "s012",
+    "title": "Auffahrunfall am Stauende",
+    "category": "Verkehr",
+    "situation": "Pkw fährt auf Kleinbus am Stauende auf, sechs Betroffene.",
+    "patients": 6,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Autobahn",
+      "Eigensicherung"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Kleine Lage sauber nach mSTaRT sichten.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i007",
+      "i021",
+      "i008",
+      "i018",
+      "i044",
+      "p08",
+      "p09"
+    ]
+  },
+  {
+    "id": "s013",
+    "title": "Pkw in Fußgängerzone",
+    "category": "Verkehr",
+    "situation": "Pkw nach mutmaßlichem medizinischem Notfall des Fahrers in Fußgängerzone, Polizei prüft die Lage.",
+    "patients": 18,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 9,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Unklare Lage",
+      "Schaulustige"
+    ],
+    "units": "3 RTW, 1 NEF, OrgL; Bereitstellungsraum nach Polizeifreigabe",
+    "learning": "Unklare Ursache – Eigenschutz und Rücksprache mit Polizei vor Patientenkontakt.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i030",
+      "i020",
+      "i047",
+      "i052",
+      "i053",
+      "i008",
+      "i089",
+      "i081",
+      "i085",
+      "p01",
+      "p04"
+    ]
+  },
+  {
+    "id": "s014",
+    "title": "Glätteserie auf Bundesstraße",
+    "category": "Verkehr",
+    "situation": "Mehrere Fahrzeuge auf überfrierender Nässe verunfallt, verteilt auf 500 Meter.",
+    "patients": 12,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Glätte",
+      "Kälte",
+      "Verzögerte Anfahrt"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Wärmeerhalt und Reevaluation bei verteilter Einsatzstelle.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i011",
+      "i053",
+      "i076",
+      "i057",
+      "i021",
+      "i007",
+      "p07"
+    ]
+  },
+  {
+    "id": "s015",
+    "title": "Entgleisung eines Fernzuges",
+    "category": "Bahn",
+    "situation": "Fernzug mit hoher Geschwindigkeit entgleist, mehrere Wagen umgestürzt.",
+    "patients": 60,
+    "mix": {
+      "I": 12,
+      "II": 18,
+      "III": 28,
+      "IV": 1,
+      "EX": 1
+    },
+    "special": [
+      "Gleisbereich",
+      "Oberleitung",
+      "Schwierige Zugänglichkeit"
+    ],
+    "units": "6 RTW, 3 NEF, OrgL, LNA; Bahnerdung abwarten; nach 15 min SEG und 10 RTW",
+    "learning": "Großlage strukturieren: Abschnitte, Ablage, Transportorganisation.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i010",
+      "i020",
+      "i006",
+      "i004",
+      "i007",
+      "i021",
+      "i008",
+      "i003",
+      "i081",
+      "i046",
+      "i027",
+      "i025",
+      "p02",
+      "p03",
+      "p04"
+    ]
+  },
+  {
+    "id": "s016",
+    "title": "Straßenbahn kollidiert mit Pkw",
+    "category": "Bahn",
+    "situation": "Straßenbahn erfasst Pkw an einer Kreuzung, Fahrgäste gestürzt.",
+    "patients": 8,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 5,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Innenstadt",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Gehfähige an Sammelstelle führen, Liegende zuerst sichten.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i007",
+      "i053",
+      "i008",
+      "i019",
+      "i052",
+      "i091",
+      "p09"
+    ]
+  },
+  {
+    "id": "s017",
+    "title": "Regionalzug gegen Traktor am Bahnübergang",
+    "category": "Bahn",
+    "situation": "Regionalzug nach Kollision teilweise entgleist, Traktorfahrer eingeklemmt.",
+    "patients": 24,
+    "mix": {
+      "I": 3,
+      "II": 6,
+      "III": 14,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Gleisbereich",
+      "Ländlicher Raum"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL; nach 15 min 4 RTW",
+    "learning": "Einsatzstelle in Gleisbereich sichern lassen und Kräfte bündeln.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i011",
+      "i006",
+      "i007",
+      "i012",
+      "i057",
+      "i008",
+      "i029",
+      "i026",
+      "p07",
+      "p08"
+    ]
+  },
+  {
+    "id": "s018",
+    "title": "Notbremsung im vollen Pendlerzug",
+    "category": "Bahn",
+    "situation": "Schnellbremsung eines vollen Pendlerzuges, viele gestürzte Fahrgäste.",
+    "patients": 10,
+    "mix": {
+      "I": 0,
+      "II": 2,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gleisbereich",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 KTW",
+    "learning": "Leichtverletztenlage strukturieren, keine Übertriage.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i008",
+      "i019",
+      "i018",
+      "i091",
+      "i052",
+      "p09"
+    ]
+  },
+  {
+    "id": "s019",
+    "title": "Brand im U-Bahn-Tunnel",
+    "category": "Bahn",
+    "situation": "Zug steht nach Brand im Tunnel, Fahrgäste flüchten über die Gleise.",
+    "patients": 32,
+    "mix": {
+      "I": 4,
+      "II": 8,
+      "III": 20,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Tunnel",
+      "Dunkelheit"
+    ],
+    "units": "4 RTW, 2 NEF, OrgL, LNA; Sammelstellen an beiden Ausgängen",
+    "learning": "Mehrere Sammelstellen koordinieren, Rauchgasopfer nachsichten.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i031",
+      "i061",
+      "i008",
+      "i018",
+      "i081",
+      "i085",
+      "p05",
+      "p06",
+      "p09"
+    ]
+  },
+  {
+    "id": "s020",
+    "title": "Güterzug mit Gefahrgut entgleist",
+    "category": "Bahn",
+    "situation": "Güterzug neben Wohngebiet entgleist, Kesselwagen undicht, Anwohner mit Reizsymptomen.",
+    "patients": 18,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 12,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Evakuierung",
+      "Windrichtung"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug; Bereitstellungsraum gegen den Wind",
+    "learning": "Bereitstellung gegen den Wind und Dekon vor Transport.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i092",
+      "i093",
+      "i031",
+      "i072",
+      "i073",
+      "i033",
+      "i055"
+    ]
+  },
+  {
+    "id": "s021",
+    "title": "Gedränge am Bahnsteig nach Spiel",
+    "category": "Bahn",
+    "situation": "Überfüllter Bahnsteig nach Fußballspiel, mehrere Personen ins Gleis gedrängt worden, Zugverkehr gestoppt.",
+    "patients": 9,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Menschenmenge",
+      "Alkohol"
+    ],
+    "units": "2 RTW, 1 NEF, Polizei",
+    "learning": "Sichtung inmitten einer Menschenmenge.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i068",
+      "i023",
+      "i018",
+      "i008",
+      "i082",
+      "p09"
+    ]
+  },
+  {
+    "id": "s022",
+    "title": "Kleinflugzeug stürzt in Wohngebiet",
+    "category": "Luftfahrt",
+    "situation": "Kleinflugzeug in Garten abgestürzt, Brand an Wohnhaus.",
+    "patients": 7,
+    "mix": {
+      "I": 1,
+      "II": 1,
+      "III": 3,
+      "IV": 0,
+      "EX": 2
+    },
+    "special": [
+      "Brand",
+      "Kraftstoff",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr",
+    "learning": "Eigenschutz bei Kraftstoffbrand und kleine Sichtungslage.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i061",
+      "i071",
+      "i043",
+      "i081",
+      "i066",
+      "i025",
+      "p06"
+    ]
+  },
+  {
+    "id": "s023",
+    "title": "Evakuierung nach Notlandung",
+    "category": "Luftfahrt",
+    "situation": "Passagierflugzeug nach Notlandung über Notrutschen evakuiert, viele Leichtverletzte auf dem Vorfeld.",
+    "patients": 53,
+    "mix": {
+      "I": 3,
+      "II": 10,
+      "III": 40,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Flughafengelände",
+      "Sprachbarriere",
+      "Kälte"
+    ],
+    "units": "Flughafenfeuerwehr, 4 RTW, 2 NEF, OrgL, LNA, SEG",
+    "learning": "Große Zahl Gehfähiger registrieren und Liegende priorisieren.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i018",
+      "i019",
+      "i053",
+      "i057",
+      "i029",
+      "i034",
+      "i042",
+      "i046",
+      "i091",
+      "i087",
+      "p09"
+    ]
+  },
+  {
+    "id": "s024",
+    "title": "Hubschrauberabsturz beim Flugtag",
+    "category": "Luftfahrt",
+    "situation": "Hubschrauber bei Flugvorführung in Zuschauernähe abgestürzt.",
+    "patients": 16,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 8,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Großveranstaltung",
+      "Kraftstoff",
+      "Schaulustige"
+    ],
+    "units": "Vorort-Sanitätsdienst, 3 RTW, 2 NEF, OrgL",
+    "learning": "Sanitätsdienst und Rettungsdienst verzahnen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i061",
+      "i022",
+      "i020",
+      "i012",
+      "i047",
+      "i085",
+      "i066",
+      "p01",
+      "p06"
+    ]
+  },
+  {
+    "id": "s025",
+    "title": "Harte Landung eines Heißluftballons",
+    "category": "Luftfahrt",
+    "situation": "Ballonkorb auf Acker umgekippt, sieben Insassen.",
+    "patients": 7,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Unwegsames Gelände",
+      "Lange Anfahrt"
+    ],
+    "units": "2 RTW, 1 NEF, RTH",
+    "learning": "Kleine Lage im Gelände mit langen Transportwegen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i004",
+      "i053",
+      "i018",
+      "i019",
+      "i057",
+      "p04"
+    ]
+  },
+  {
+    "id": "s026",
+    "title": "Turbulenzen: Verletzte nach Landung",
+    "category": "Luftfahrt",
+    "situation": "Nach schweren Turbulenzen meldet die Crew Verletzte an Bord, Flugzeug steht am Gate.",
+    "patients": 20,
+    "mix": {
+      "I": 1,
+      "II": 4,
+      "III": 15,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Enger Raum",
+      "Sprachbarriere"
+    ],
+    "units": "2 RTW, 1 NEF, Flughafensanitätsdienst",
+    "learning": "Sichtung in beengtem Raum und Abtransport über das Gate.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i008",
+      "i009",
+      "i019",
+      "i052",
+      "i057",
+      "i042",
+      "i029",
+      "p09"
+    ]
+  },
+  {
+    "id": "s027",
+    "title": "Kollision eines Ausflugsschiffs",
+    "category": "Wasser",
+    "situation": "Ausflugsschiff nach Kollision mit Frachtkahn, Personen im Wasser.",
+    "patients": 28,
+    "mix": {
+      "I": 3,
+      "II": 6,
+      "III": 18,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Wasser",
+      "Kälte",
+      "Wasserrettung"
+    ],
+    "units": "Wasserrettung, 3 RTW, 2 NEF, OrgL; Anlegestelle als Ablage",
+    "learning": "Wasserrettung und Patientenablage an Land koordinieren.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i076",
+      "i077",
+      "i079",
+      "i008",
+      "i053",
+      "i046",
+      "i080",
+      "p05",
+      "p07",
+      "p09"
+    ]
+  },
+  {
+    "id": "s028",
+    "title": "Brand auf einer Flussfähre",
+    "category": "Wasser",
+    "situation": "Brand im Maschinenraum einer Fähre, Fahrgäste an Deck und im Wasser.",
+    "patients": 21,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 12,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Wasser",
+      "Rauch",
+      "Kälte"
+    ],
+    "units": "Wasserrettung, 3 RTW, 1 NEF, OrgL",
+    "learning": "Rauchgas- und Unterkühlungsopfer parallel versorgen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i061",
+      "i076",
+      "i079",
+      "i031",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s029",
+    "title": "Kanugruppe im Wildwasser gekentert",
+    "category": "Wasser",
+    "situation": "Jugendgruppe im Wildwasser gekentert, mehrere unterkühlt am Ufer.",
+    "patients": 8,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 3,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Kälte",
+      "Unwegsames Gelände",
+      "Jugendliche"
+    ],
+    "units": "2 RTW, 1 NEF, Wasserrettung, RTH",
+    "learning": "Unterkühlung erkennen und Bergungstod vermeiden.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i076",
+      "i077",
+      "i079",
+      "i019",
+      "i080"
+    ]
+  },
+  {
+    "id": "s030",
+    "title": "Strömungsunfall am Badesee",
+    "category": "Wasser",
+    "situation": "Mehrere Schwimmer gerieten in Not, Panik am Ufer.",
+    "patients": 8,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 4,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Sommer",
+      "Schaulustige"
+    ],
+    "units": "2 RTW, 1 NEF, Wasserwacht",
+    "learning": "Beinahe-Ertrinken nicht unterschätzen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i079",
+      "i076",
+      "i032",
+      "i043",
+      "i085",
+      "p05",
+      "p09"
+    ]
+  },
+  {
+    "id": "s031",
+    "title": "Einbruch ins Eis",
+    "category": "Wasser",
+    "situation": "Mehrere Schlittschuhläufer auf einem Weiher eingebrochen, Helfer ebenfalls ins Eis gestürzt.",
+    "patients": 7,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kälte",
+      "Eis",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr mit Eisrettung",
+    "learning": "Eigenschutz bei Eisrettung und Wärmeerhalt.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i076",
+      "i077",
+      "i079",
+      "i043",
+      "i046"
+    ]
+  },
+  {
+    "id": "s032",
+    "title": "Partyboot-Unfall bei Nacht",
+    "category": "Wasser",
+    "situation": "Partyboot nach Kollision mit Steg beschädigt, alkoholisierte Gäste teils im Wasser.",
+    "patients": 11,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Nacht",
+      "Alkohol",
+      "Wasser"
+    ],
+    "units": "2 RTW, 1 NEF, Wasserrettung",
+    "learning": "Alkoholisierte Patienten sorgfältig auf Verletzungen sichten.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i068",
+      "i023",
+      "i079",
+      "i076",
+      "i008",
+      "i082",
+      "p03"
+    ]
+  },
+  {
+    "id": "s033",
+    "title": "Explosion in einem Chemiewerk",
+    "category": "Industrie",
+    "situation": "Explosion in Produktionsanlage, Brand und Austritt unbekannter Stoffe.",
+    "patients": 32,
+    "mix": {
+      "I": 6,
+      "II": 8,
+      "III": 15,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Gefahrstoff",
+      "Werkfeuerwehr",
+      "Explosionsgefahr"
+    ],
+    "units": "Werkfeuerwehr, 4 RTW, 2 NEF, OrgL, LNA, Gefahrstoffzug",
+    "learning": "Zusammenarbeit mit Werkfeuerwehr und Dekon-Strukturen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i022",
+      "i061",
+      "i064",
+      "i094",
+      "i093",
+      "i096",
+      "i073",
+      "i100",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s034",
+    "title": "Gasexplosion in Lebensmittelbetrieb",
+    "category": "Industrie",
+    "situation": "Verpuffung in Großbäckerei, Teile der Halle eingestürzt.",
+    "patients": 10,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 4,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Einsturzgefahr"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Verbrennungen und Trauma in einer Lage priorisieren.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i061",
+      "i060",
+      "i022",
+      "i010",
+      "i003",
+      "i026",
+      "p06"
+    ]
+  },
+  {
+    "id": "s035",
+    "title": "Unfall an einer Güllegrube",
+    "category": "Industrie",
+    "situation": "Landwirt in Güllegrube gestürzt, Helfer hinterhergestiegen, weitere Personen mit Übelkeit.",
+    "patients": 6,
+    "mix": {
+      "I": 2,
+      "II": 1,
+      "III": 2,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Gefahrstoff",
+      "Eigengefährdung",
+      "Ländlicher Raum"
+    ],
+    "units": "1 RTW, 1 NEF, Feuerwehr mit Atemschutz",
+    "learning": "Kein Zutritt ohne Atemschutz – Eigenschutz vor Rettung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i099",
+      "i096",
+      "i073",
+      "i067",
+      "i081"
+    ]
+  },
+  {
+    "id": "s036",
+    "title": "Gerüsteinsturz auf Baustelle",
+    "category": "Industrie",
+    "situation": "Baugerüst eingestürzt, Arbeiter unter Gerüstteilen, kaum Deutschkenntnisse.",
+    "patients": 13,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 5,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Sprachbarriere",
+      "Einsturzgefahr"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr; nach 15 min 2 RTW",
+    "learning": "Sichtung mit Sprachbarriere und Einklemmung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i004",
+      "i010",
+      "i012",
+      "i005",
+      "i042",
+      "i026",
+      "p03",
+      "p04"
+    ]
+  },
+  {
+    "id": "s037",
+    "title": "Ammoniakaustritt im Kühlhaus",
+    "category": "Industrie",
+    "situation": "Leck in einer Ammoniak-Kälteanlage, Beschäftigte mit Atemnot und Augenreizung.",
+    "patients": 21,
+    "mix": {
+      "I": 3,
+      "II": 6,
+      "III": 12,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Windrichtung"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug; Bereitstellungsraum gegen den Wind",
+    "learning": "Reizgaslage mit Spätfolgen und Dekon.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i092",
+      "i093",
+      "i094",
+      "i031",
+      "i072",
+      "i073"
+    ]
+  },
+  {
+    "id": "s038",
+    "title": "Staubexplosion in einer Mühle",
+    "category": "Industrie",
+    "situation": "Staubexplosion in Getreidemühle, Brand und Verschüttete.",
+    "patients": 15,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 6,
+      "IV": 1,
+      "EX": 1
+    },
+    "special": [
+      "Brand",
+      "Einsturzgefahr"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL",
+    "learning": "Verbrennungslage mit begrenzten Zentrumsbetten.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i061",
+      "i064",
+      "i065",
+      "i022",
+      "i010",
+      "i071",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s039",
+    "title": "Stromunfall im Umspannwerk",
+    "category": "Industrie",
+    "situation": "Lichtbogen bei Wartungsarbeiten, fünf Techniker betroffen.",
+    "patients": 5,
+    "mix": {
+      "I": 1,
+      "II": 1,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Elektrische Gefahr",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Freigabe durch Fachpersonal und EKG-Überwachung.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i063",
+      "i060",
+      "i061",
+      "i016",
+      "i029"
+    ]
+  },
+  {
+    "id": "s040",
+    "title": "Kranunfall im Hafen",
+    "category": "Industrie",
+    "situation": "Containerkran-Ausleger auf Abfertigungsbereich gestürzt.",
+    "patients": 9,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 4,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Weitläufiges Gelände",
+      "Sprachbarriere"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 1 RTW",
+    "learning": "Lagekundung auf großem Gelände.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i010",
+      "i020",
+      "i003",
+      "i008",
+      "i042",
+      "i026",
+      "p01",
+      "p10"
+    ]
+  },
+  {
+    "id": "s041",
+    "title": "Lösemittelaustritt in Lackiererei",
+    "category": "Industrie",
+    "situation": "Lösemittelfass in Halle ausgelaufen, viele Beschäftigte mit Schwindel.",
+    "patients": 15,
+    "mix": {
+      "I": 1,
+      "II": 4,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug",
+    "learning": "Dekon und Sammelstelle für viele Leichtbetroffene.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i073",
+      "i096",
+      "i094",
+      "i072",
+      "i067",
+      "p09"
+    ]
+  },
+  {
+    "id": "s042",
+    "title": "Nächtlicher Brand im Mehrfamilienhaus",
+    "category": "Brand/Gebäude",
+    "situation": "Treppenhausbrand, Bewohner flüchten über Balkone und Leitern.",
+    "patients": 14,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 8,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Nacht",
+      "Rauch",
+      "Kälte"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Rauchgasopfer sichten und CO-Gefahr erkennen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i031",
+      "i018",
+      "i061",
+      "i062",
+      "i046",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s043",
+    "title": "Brand im Pflegeheim",
+    "category": "Brand/Gebäude",
+    "situation": "Brand in einem Pflegeheim, viele bettlägerige Bewohner müssen evakuiert werden.",
+    "patients": 38,
+    "mix": {
+      "I": 5,
+      "II": 10,
+      "III": 20,
+      "IV": 2,
+      "EX": 1
+    },
+    "special": [
+      "Evakuierung",
+      "Bettlägerige",
+      "Nacht"
+    ],
+    "units": "4 RTW, 2 NEF, OrgL, LNA, SEG Betreuung",
+    "learning": "Evakuierung immobiler Menschen und Geriatrie-Sichtung.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i054",
+      "i055",
+      "i058",
+      "i053",
+      "i033",
+      "i071",
+      "i067",
+      "i059",
+      "i065",
+      "i066",
+      "p06"
+    ]
+  },
+  {
+    "id": "s044",
+    "title": "Hotelbrand mit Touristengruppe",
+    "category": "Brand/Gebäude",
+    "situation": "Brand in Hotel, ausländische Reisegruppe betroffen.",
+    "patients": 29,
+    "mix": {
+      "I": 4,
+      "II": 6,
+      "III": 18,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Sprachbarriere",
+      "Nacht",
+      "Rauch"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL; nach 15 min SEG",
+    "learning": "Registrierung und Sichtung bei Sprachbarriere.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i061",
+      "i018",
+      "i042",
+      "i046",
+      "i029",
+      "i066",
+      "p05",
+      "p06"
+    ]
+  },
+  {
+    "id": "s045",
+    "title": "Gebäudeeinsturz nach Gasexplosion",
+    "category": "Brand/Gebäude",
+    "situation": "Mehrfamilienhaus nach Gasexplosion teilweise eingestürzt, Verschüttete vermutet.",
+    "patients": 18,
+    "mix": {
+      "I": 4,
+      "II": 5,
+      "III": 6,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Einsturzgefahr",
+      "Verschüttete",
+      "Eigengefährdung"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL, THW; nach 15 min 3 RTW",
+    "learning": "Rettung Verschütteter und Crush-Syndrom planen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i010",
+      "i022",
+      "i061",
+      "i004",
+      "i048",
+      "i039",
+      "i059",
+      "i026",
+      "p03",
+      "p04"
+    ]
+  },
+  {
+    "id": "s046",
+    "title": "Kellerbrand im Hochhaus",
+    "category": "Brand/Gebäude",
+    "situation": "Kellerbrand, Rauch zieht ins Treppenhaus eines Hochhauses.",
+    "patients": 28,
+    "mix": {
+      "I": 2,
+      "II": 6,
+      "III": 20,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Viele Gehfähige",
+      "Hochhaus"
+    ],
+    "units": "3 RTW, 1 NEF, OrgL",
+    "learning": "Viele Rauchgasbetroffene, Untertriage durch CO vermeiden.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i031",
+      "i033",
+      "i049",
+      "i051",
+      "p09"
+    ]
+  },
+  {
+    "id": "s047",
+    "title": "Brand in einer Diskothek",
+    "category": "Brand/Gebäude",
+    "situation": "Brand während Partynacht, Gedränge an den Ausgängen.",
+    "patients": 44,
+    "mix": {
+      "I": 6,
+      "II": 10,
+      "III": 25,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Nacht",
+      "Panik",
+      "Alkohol"
+    ],
+    "units": "4 RTW, 3 NEF, OrgL, LNA; nach 15 min SEG und 6 RTW",
+    "learning": "Kombination aus Verbrennung, Rauchgas und Gedrängeverletzungen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i061",
+      "i064",
+      "i065",
+      "i071",
+      "i067",
+      "i068",
+      "i069",
+      "i018",
+      "i066",
+      "p05",
+      "p06",
+      "p09"
+    ]
+  },
+  {
+    "id": "s048",
+    "title": "Balkoneinsturz bei Familienfeier",
+    "category": "Brand/Gebäude",
+    "situation": "Balkon mit Gästen eingestürzt, Personen aus dem ersten Stock gestürzt.",
+    "patients": 12,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 5,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Einsturzgefahr",
+      "Angehörige"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Sturzverletzungen sichten und Angehörige einbinden.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i004",
+      "i020",
+      "i053",
+      "i047",
+      "i018",
+      "i085",
+      "p04",
+      "p07"
+    ]
+  },
+  {
+    "id": "s049",
+    "title": "Kohlenmonoxid im Wohnhaus",
+    "category": "Brand/Gebäude",
+    "situation": "Defekte Heizungsanlage, mehrere Bewohner mit Kopfschmerz, ein Kind schläfrig.",
+    "patients": 12,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Unsichtbare Gefahr",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr mit Messgerät",
+    "learning": "CO erkennen trotz normaler Sättigung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i067",
+      "i048",
+      "i051",
+      "i029",
+      "i091",
+      "p09"
+    ]
+  },
+  {
+    "id": "s050",
+    "title": "Brand in einer Gemeinschaftsunterkunft",
+    "category": "Brand/Gebäude",
+    "situation": "Brand in Unterkunft für Geflüchtete, viele Familien mit Kindern.",
+    "patients": 23,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 15,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Sprachbarriere",
+      "Kinder",
+      "Nacht"
+    ],
+    "units": "3 RTW, 1 NEF, OrgL, SEG Betreuung",
+    "learning": "Kindersichtung und Registrierung mit Sprachbarriere.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i062",
+      "i049",
+      "i046",
+      "i042",
+      "i084",
+      "i088",
+      "i090",
+      "p06"
+    ]
+  },
+  {
+    "id": "s051",
+    "title": "Zimmerbrand im Einfamilienhaus",
+    "category": "Brand/Gebäude",
+    "situation": "Zimmerbrand, Familie mit Kindern aus dem Haus gerettet.",
+    "patients": 5,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 2,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Kinder"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Erste kleine Lage mit Kindern sicher sichten.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i062",
+      "i085",
+      "p06"
+    ]
+  },
+  {
+    "id": "s052",
+    "title": "Gedränge am Konzertausgang",
+    "category": "Großveranstaltung",
+    "situation": "Nach Konzertende kommt es am Ausgang zu einem Gedränge mit Stürzen.",
+    "patients": 45,
+    "mix": {
+      "I": 4,
+      "II": 10,
+      "III": 30,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Menschenmenge",
+      "Nacht",
+      "Panik"
+    ],
+    "units": "Sanitätsdienst vor Ort, 4 RTW, 2 NEF, OrgL, LNA",
+    "learning": "Druckverletzungen erkennen und Sanitätsdienst integrieren.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i006",
+      "i021",
+      "i018",
+      "i008",
+      "i068",
+      "i085",
+      "i081",
+      "i025",
+      "p05",
+      "p08",
+      "p09"
+    ]
+  },
+  {
+    "id": "s053",
+    "title": "Hitzewelle beim Open-Air-Festival",
+    "category": "Großveranstaltung",
+    "situation": "Viele Besucher mit Hitzesymptomen, Sanitätsdienst überlastet.",
+    "patients": 36,
+    "mix": {
+      "I": 3,
+      "II": 8,
+      "III": 25,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Hitze",
+      "Viele Gehfähige",
+      "Alkohol"
+    ],
+    "units": "Sanitätsdienst, 3 RTW, 1 NEF, Behandlungsplatz",
+    "learning": "Behandlungsplatz und Transportpriorität bei vielen Leichtfällen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i074",
+      "i069",
+      "i068",
+      "i032",
+      "i031",
+      "i049",
+      "p09"
+    ]
+  },
+  {
+    "id": "s054",
+    "title": "Bühnenteil stürzt beim Stadtfest",
+    "category": "Großveranstaltung",
+    "situation": "Teil einer Bühnenkonstruktion stürzt in den Zuschauerbereich.",
+    "patients": 16,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 8,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Menschenmenge",
+      "Einsturzgefahr"
+    ],
+    "units": "Sanitätsdienst, 3 RTW, 1 NEF, OrgL",
+    "learning": "Sichtung im Zuschauerbereich mit Schaulustigen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i010",
+      "i004",
+      "i008",
+      "i043",
+      "i085",
+      "i038",
+      "i026",
+      "p03",
+      "p07"
+    ]
+  },
+  {
+    "id": "s055",
+    "title": "Unwetter über Festivalgelände",
+    "category": "Großveranstaltung",
+    "situation": "Sturm und Starkregen über Zeltplatz, umgestürzte Aufbauten, Blitzeinschläge.",
+    "patients": 42,
+    "mix": {
+      "I": 4,
+      "II": 8,
+      "III": 30,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Sturm",
+      "Nacht",
+      "Schlamm",
+      "Weitläufige Einsatzstelle"
+    ],
+    "units": "Sanitätsdienst, 4 RTW, 2 NEF, OrgL, LNA, SEG",
+    "learning": "Abschnittsbildung auf weitläufigem Gelände.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i078",
+      "i076",
+      "i008",
+      "i012",
+      "i068",
+      "i069",
+      "i081",
+      "p01",
+      "p07"
+    ]
+  },
+  {
+    "id": "s056",
+    "title": "Unfall an einem Fahrgeschäft",
+    "category": "Großveranstaltung",
+    "situation": "Gondel eines Fahrgeschäfts auf dem Volksfest abgestürzt.",
+    "patients": 12,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Schaulustige",
+      "Kinder"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Kinder und Jugendliche zügig sichten.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i047",
+      "i048",
+      "i009",
+      "i004",
+      "i085",
+      "p04"
+    ]
+  },
+  {
+    "id": "s057",
+    "title": "Pyrotechnik und Panik im Stadion",
+    "category": "Großveranstaltung",
+    "situation": "Pyrotechnik im Fanblock löst Panik aus, Rauch und Stürze auf der Tribüne.",
+    "patients": 28,
+    "mix": {
+      "I": 2,
+      "II": 6,
+      "III": 20,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Menschenmenge",
+      "Polizeilage"
+    ],
+    "units": "Sanitätsdienst, 3 RTW, 1 NEF, OrgL",
+    "learning": "Sichtung unter Polizeischutz in Menschenmengen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i060",
+      "i071",
+      "i031",
+      "i018",
+      "i082",
+      "i068",
+      "p09"
+    ]
+  },
+  {
+    "id": "s058",
+    "title": "Standbrand auf dem Weihnachtsmarkt",
+    "category": "Großveranstaltung",
+    "situation": "Gasflasche an einem Imbissstand in Brand geraten.",
+    "patients": 10,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kälte",
+      "Menschenmenge"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Kleine Verbrennungslage mit Gehfähigen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i060",
+      "i061",
+      "i062",
+      "i071",
+      "p09"
+    ]
+  },
+  {
+    "id": "s059",
+    "title": "Hitze beim Stadtmarathon",
+    "category": "Großveranstaltung",
+    "situation": "Mehrere Läufer kollabieren bei hohen Temperaturen auf der Zielgeraden.",
+    "patients": 16,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Hitze",
+      "Weitläufige Strecke"
+    ],
+    "units": "Sanitätsdienst, 2 RTW, 1 NEF",
+    "learning": "Hitzschlag erkennen und vor Ort kühlen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i074",
+      "i075",
+      "i029",
+      "i030",
+      "i018"
+    ]
+  },
+  {
+    "id": "s060",
+    "title": "Mischintoxikationen auf einer Rave-Party",
+    "category": "Großveranstaltung",
+    "situation": "Mehrere Partygäste mit Drogen-Symptomen, teils aggressiv.",
+    "patients": 16,
+    "mix": {
+      "I": 4,
+      "II": 4,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Drogen",
+      "Eigengefährdung",
+      "Nacht"
+    ],
+    "units": "Sanitätsdienst, 2 RTW, 2 NEF, Polizei",
+    "learning": "Intoxikationen und Eigenschutz.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i069",
+      "i070",
+      "i068",
+      "i074",
+      "i084",
+      "i037",
+      "p05"
+    ]
+  },
+  {
+    "id": "s061",
+    "title": "Sturzflut in einer Ortschaft",
+    "category": "Naturereignis",
+    "situation": "Starkregen löst Sturzflut aus, Häuser überflutet, Menschen auf Dächern.",
+    "patients": 26,
+    "mix": {
+      "I": 3,
+      "II": 6,
+      "III": 15,
+      "IV": 0,
+      "EX": 2
+    },
+    "special": [
+      "Hochwasser",
+      "Stromausfall",
+      "Erschwerte Zufahrt"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL, Wasserrettung, RTH mit Winde",
+    "learning": "Lange Lagen mit Evakuierung und begrenzter Zufahrt.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i076",
+      "i079",
+      "i035",
+      "i033",
+      "i058",
+      "i055",
+      "i067",
+      "i080",
+      "p05"
+    ]
+  },
+  {
+    "id": "s062",
+    "title": "Baum stürzt auf Festzelt",
+    "category": "Naturereignis",
+    "situation": "Orkanböe wirft Baum auf ein Festzelt.",
+    "patients": 21,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 12,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Sturm",
+      "Einsturzgefahr"
+    ],
+    "units": "3 RTW, 1 NEF, OrgL",
+    "learning": "Sichtung unter Einsturzgefahr und weiterem Sturm.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i010",
+      "i004",
+      "i008",
+      "i009",
+      "i057",
+      "i026",
+      "p03",
+      "p07"
+    ]
+  },
+  {
+    "id": "s063",
+    "title": "Erdrutsch auf Wohngebiet",
+    "category": "Naturereignis",
+    "situation": "Hangrutsch verschüttet mehrere Häuser.",
+    "patients": 12,
+    "mix": {
+      "I": 2,
+      "II": 3,
+      "III": 4,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Verschüttete",
+      "Nachrutschgefahr"
+    ],
+    "units": "2 RTW, 1 NEF, THW, Ortungstechnik",
+    "learning": "Verschüttetenrettung über Stunden planen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i010",
+      "i077",
+      "i059",
+      "i026",
+      "i004",
+      "i053",
+      "p04"
+    ]
+  },
+  {
+    "id": "s064",
+    "title": "Lawine im Skigebiet",
+    "category": "Naturereignis",
+    "situation": "Lawine erfasst Skifahrergruppe abseits der Piste.",
+    "patients": 10,
+    "mix": {
+      "I": 3,
+      "II": 2,
+      "III": 4,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Kälte",
+      "Lawinengefahr",
+      "Alpines Gelände"
+    ],
+    "units": "Bergwacht, 2 RTH, 1 RTW",
+    "learning": "Zeitkritische Ortung und Hypothermie.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i077",
+      "i076",
+      "i004",
+      "i012",
+      "i026",
+      "p05"
+    ]
+  },
+  {
+    "id": "s065",
+    "title": "Blitzeinschlag in Wandergruppe",
+    "category": "Naturereignis",
+    "situation": "Blitz schlägt in der Nähe einer Wandergruppe ein, mehrere Personen am Boden.",
+    "patients": 8,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 4,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gewitter",
+      "Unwegsames Gelände"
+    ],
+    "units": "2 RTW, 1 NEF, RTH",
+    "learning": "Besonderheiten der Sichtung nach Blitzschlag.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i078",
+      "i063",
+      "i060",
+      "i081",
+      "p05"
+    ]
+  },
+  {
+    "id": "s066",
+    "title": "Hitzewelle mit Stromausfall im Pflegeheim",
+    "category": "Naturereignis",
+    "situation": "Mehrtägige Hitze und Stromausfall, viele Bewohner geschwächt.",
+    "patients": 21,
+    "mix": {
+      "I": 3,
+      "II": 8,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Hitze",
+      "Stromausfall",
+      "Bettlägerige"
+    ],
+    "units": "3 RTW, 1 NEF, SEG",
+    "learning": "Stille Verschlechterung bei Älteren erkennen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i055",
+      "i058",
+      "i054",
+      "i074",
+      "i033",
+      "i040"
+    ]
+  },
+  {
+    "id": "s067",
+    "title": "Hagelsturm über Campingplatz",
+    "category": "Naturereignis",
+    "situation": "Schwerer Hagel und Sturm auf Campingplatz, Wohnwagen beschädigt.",
+    "patients": 14,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Unwetter",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Leichtverletztenlage mit wenigen Kräften strukturieren.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i008",
+      "i019",
+      "i043",
+      "i046",
+      "p09"
+    ]
+  },
+  {
+    "id": "s068",
+    "title": "Tornado über Gewerbegebiet",
+    "category": "Naturereignis",
+    "situation": "Tornado zerstört Hallen im Gewerbegebiet, Trümmer verteilt.",
+    "patients": 30,
+    "mix": {
+      "I": 5,
+      "II": 8,
+      "III": 14,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Einsturzgefahr",
+      "Weitläufige Einsatzstelle",
+      "Stromausfall"
+    ],
+    "units": "4 RTW, 2 NEF, OrgL, LNA, THW; nach 15 min SEG",
+    "learning": "Abschnittsbildung bei verteilten Schadensstellen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i010",
+      "i005",
+      "i020",
+      "i014",
+      "i004",
+      "i003",
+      "i028",
+      "i027",
+      "i026",
+      "p01",
+      "p02",
+      "p04"
+    ]
+  },
+  {
+    "id": "s069",
+    "title": "Schneechaos auf der Autobahn",
+    "category": "Naturereignis",
+    "situation": "Hunderte Fahrzeuge stecken seit Stunden im Schnee fest.",
+    "patients": 28,
+    "mix": {
+      "I": 2,
+      "II": 6,
+      "III": 20,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kälte",
+      "Lange Anfahrt",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF, SEG Betreuung, Räumfahrzeuge",
+    "learning": "Betreuung und Sichtung in langer Lage.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i076",
+      "i077",
+      "i067",
+      "i030",
+      "i035",
+      "i055",
+      "i049"
+    ]
+  },
+  {
+    "id": "s070",
+    "title": "Chlorgas im Hallenbad",
+    "category": "CBRN",
+    "situation": "Fehldosierung in der Wasseraufbereitung, Badegäste mit Atemnot.",
+    "patients": 24,
+    "mix": {
+      "I": 3,
+      "II": 6,
+      "III": 15,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Kinder",
+      "Nässe und Kälte"
+    ],
+    "units": "3 RTW, 1 NEF, Gefahrstoffzug",
+    "learning": "Reizgaslage mit Kindern und Spätfolgen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i092",
+      "i093",
+      "i031",
+      "i045",
+      "i085",
+      "i076"
+    ]
+  },
+  {
+    "id": "s071",
+    "title": "Reizstoff in einer Diskothek",
+    "category": "CBRN",
+    "situation": "Reizstoff in einer Disco versprüht, viele Gäste mit Augenbrennen.",
+    "patients": 20,
+    "mix": {
+      "I": 0,
+      "II": 2,
+      "III": 18,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Menschenmenge",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF, Polizei",
+    "learning": "Viele Leichtbetroffene ohne Übertriage.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i072",
+      "i031",
+      "i018",
+      "i068",
+      "p09"
+    ]
+  },
+  {
+    "id": "s072",
+    "title": "Unklares Pulver im Postzentrum",
+    "category": "CBRN",
+    "situation": "Weißes Pulver aus einem Paket ausgetreten, Beschäftigte beunruhigt.",
+    "patients": 12,
+    "mix": {
+      "I": 0,
+      "II": 0,
+      "III": 12,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Isolierung"
+    ],
+    "units": "1 RTW, 1 NEF, Gefahrstoffzug, Polizei",
+    "learning": "Ruhe bewahren, Isolierung und Registrierung.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i098",
+      "i029",
+      "i091",
+      "i081",
+      "p09"
+    ]
+  },
+  {
+    "id": "s073",
+    "title": "Pflanzenschutzmittel-Unfall",
+    "category": "CBRN",
+    "situation": "Feldarbeiter nach Ausbringen von Pflanzenschutzmittel mit Vergiftungszeichen.",
+    "patients": 7,
+    "mix": {
+      "I": 2,
+      "II": 2,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Ländlicher Raum",
+      "Sprachbarriere"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug",
+    "learning": "Typische Vergiftungszeichen und Eigenschutz.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i095",
+      "i096",
+      "i073",
+      "i094",
+      "i042"
+    ]
+  },
+  {
+    "id": "s074",
+    "title": "Säureaustritt nach Gefahrgutunfall",
+    "category": "CBRN",
+    "situation": "Tanklastzug mit Säure nach Unfall undicht, Verletzte im Gefahrenbereich.",
+    "patients": 14,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff",
+      "Eigengefährdung",
+      "Dekontamination"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug; Bereitstellungsraum gegen den Wind",
+    "learning": "Rettung aus Gefahrenbereich, Notdekon und Behandlung.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i094",
+      "i096",
+      "i011",
+      "i093",
+      "i073",
+      "p08"
+    ]
+  },
+  {
+    "id": "s075",
+    "title": "Kontamination in Forschungseinrichtung",
+    "category": "CBRN",
+    "situation": "Zwischenfall mit radioaktivem Material, Beschäftigte möglicherweise kontaminiert.",
+    "patients": 8,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 5,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Strahlung",
+      "Dekontamination"
+    ],
+    "units": "1 RTW, 1 NEF, Strahlenschutz, Gefahrstoffzug",
+    "learning": "Notfallversorgung hat Vorrang vor Dekon.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i097",
+      "i003",
+      "i081",
+      "i098",
+      "i008"
+    ]
+  },
+  {
+    "id": "s076",
+    "title": "Gasgeruch im Bürogebäude",
+    "category": "CBRN",
+    "situation": "Unklarer Gasgeruch, viele Beschäftigte mit Schwindel und Übelkeit.",
+    "patients": 30,
+    "mix": {
+      "I": 1,
+      "II": 4,
+      "III": 25,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Unklare Lage",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug",
+    "learning": "Massenhafte unspezifische Symptome strukturieren.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i067",
+      "i073",
+      "i031",
+      "i029",
+      "i091",
+      "p09"
+    ]
+  },
+  {
+    "id": "s077",
+    "title": "Lage nach Messerangriff",
+    "category": "Gewalt/Amok",
+    "situation": "Lage nach Messerangriff in der Innenstadt, Polizei sichert ab, Verletzte an mehreren Stellen.",
+    "patients": 9,
+    "mix": {
+      "I": 3,
+      "II": 2,
+      "III": 3,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Eigengefährdung",
+      "Polizeilage",
+      "Bereitstellungsraum"
+    ],
+    "units": "2 RTW, 1 NEF in Bereitstellungsraum; Zugang nach Polizeifreigabe",
+    "learning": "Eigenschutz, Bereitstellungsraum und schnelle Blutstillung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i001",
+      "i013",
+      "i015",
+      "i024",
+      "i014",
+      "i081",
+      "i025",
+      "p01"
+    ]
+  },
+  {
+    "id": "s078",
+    "title": "Bedrohungslage im Einkaufszentrum",
+    "category": "Gewalt/Amok",
+    "situation": "Polizei meldet Bedrohungslage, Gebäude wird geräumt, Verletzte an Sammelpunkten.",
+    "patients": 23,
+    "mix": {
+      "I": 4,
+      "II": 5,
+      "III": 12,
+      "IV": 0,
+      "EX": 2
+    },
+    "special": [
+      "Eigengefährdung",
+      "Unklare Lage",
+      "Bereitstellungsraum"
+    ],
+    "units": "4 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum",
+    "learning": "Arbeiten in sicherem Bereich und Patientensammelstellen.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i001",
+      "i013",
+      "i014",
+      "i024",
+      "i018",
+      "i081",
+      "i085",
+      "i025",
+      "p01",
+      "p02",
+      "p09"
+    ]
+  },
+  {
+    "id": "s079",
+    "title": "Fahrzeug in Menschenmenge",
+    "category": "Gewalt/Amok",
+    "situation": "Fahrzeug in Menschenmenge gefahren, Polizei sichert ab.",
+    "patients": 33,
+    "mix": {
+      "I": 6,
+      "II": 8,
+      "III": 15,
+      "IV": 1,
+      "EX": 3
+    },
+    "special": [
+      "Eigengefährdung",
+      "Polizeilage",
+      "Psychische Belastung"
+    ],
+    "units": "4 RTW, 3 NEF, OrgL, LNA; nach 15 min SEG und 6 RTW",
+    "learning": "Großlage mit Sicherheitsabschnitt und Einsatzabschnitten.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i020",
+      "i004",
+      "i048",
+      "i047",
+      "i053",
+      "i012",
+      "i081",
+      "i046",
+      "i027",
+      "i026",
+      "p03",
+      "p04",
+      "p07",
+      "p10"
+    ]
+  },
+  {
+    "id": "s080",
+    "title": "Explosion auf Bahnhofsvorplatz",
+    "category": "Gewalt/Amok",
+    "situation": "Explosion unklarer Ursache, Polizei schließt weitere Gefahr nicht aus.",
+    "patients": 24,
+    "mix": {
+      "I": 5,
+      "II": 6,
+      "III": 10,
+      "IV": 1,
+      "EX": 2
+    },
+    "special": [
+      "Eigengefährdung",
+      "Zweitereignis möglich",
+      "Bereitstellungsraum"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL, LNA in Bereitstellungsraum",
+    "learning": "Schnelle Rettung aus Gefahrenbereich und Sichtung an sicherem Ort.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i022",
+      "i014",
+      "i024",
+      "i016",
+      "i061",
+      "i003",
+      "i027",
+      "i025",
+      "p01",
+      "p02",
+      "p10"
+    ]
+  },
+  {
+    "id": "s081",
+    "title": "Massenschlägerei auf Volksfest",
+    "category": "Gewalt/Amok",
+    "situation": "Auseinandersetzung zwischen größeren Gruppen, Polizei trennt die Beteiligten.",
+    "patients": 15,
+    "mix": {
+      "I": 1,
+      "II": 4,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Alkohol",
+      "Eigengefährdung",
+      "Polizeilage"
+    ],
+    "units": "2 RTW, 1 NEF, Polizei",
+    "learning": "Eigenschutz und SHT unter Alkohol erkennen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i023",
+      "i009",
+      "i017",
+      "i008",
+      "i068",
+      "i082"
+    ]
+  },
+  {
+    "id": "s082",
+    "title": "Lage nach Schussabgabe in Firmengebäude",
+    "category": "Gewalt/Amok",
+    "situation": "Polizei meldet Lage nach Schussabgabe, Täter festgenommen, Verletzte im Gebäude.",
+    "patients": 8,
+    "mix": {
+      "I": 3,
+      "II": 2,
+      "III": 2,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Eigengefährdung",
+      "Polizeilage",
+      "Bereitstellungsraum"
+    ],
+    "units": "2 RTW, 2 NEF in Bereitstellungsraum; Zugang mit Polizei",
+    "learning": "Zusammenarbeit mit Polizei und Blutungskontrolle.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i013",
+      "i001",
+      "i014",
+      "i024",
+      "i081",
+      "i025",
+      "p01",
+      "p02"
+    ]
+  },
+  {
+    "id": "s083",
+    "title": "Unfall im Chemieunterricht",
+    "category": "Bildung",
+    "situation": "Reaktion beim Schulversuch, Schüler mit Augen- und Hautreizungen.",
+    "patients": 11,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kinder",
+      "Gefahrstoff"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Kinder mit Gefahrstoffkontakt sichten und spülen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i094",
+      "i072",
+      "i031",
+      "i046",
+      "i062"
+    ]
+  },
+  {
+    "id": "s084",
+    "title": "Brand in einer Kindertagesstätte",
+    "category": "Bildung",
+    "situation": "Brand in Kita, Kinder werden von Erziehern ins Freie gebracht.",
+    "patients": 16,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 12,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kinder",
+      "Rauch",
+      "Eltern an der Einsatzstelle"
+    ],
+    "units": "2 RTW, 1 NEF, Kinder-Notarzt; nach 15 min 2 RTW",
+    "learning": "Kindersichtung, Registrierung und Elternbetreuung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i071",
+      "i062",
+      "i051",
+      "i046",
+      "i085",
+      "i045"
+    ]
+  },
+  {
+    "id": "s085",
+    "title": "Dacheinsturz in Turnhalle",
+    "category": "Bildung",
+    "situation": "Dach der Schulturnhalle unter Schneelast eingestürzt.",
+    "patients": 17,
+    "mix": {
+      "I": 3,
+      "II": 5,
+      "III": 8,
+      "IV": 0,
+      "EX": 1
+    },
+    "special": [
+      "Einsturzgefahr",
+      "Kinder",
+      "Kälte"
+    ],
+    "units": "3 RTW, 2 NEF, OrgL, THW",
+    "learning": "Verschüttete Kinder und Einsatzabschnitte.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i048",
+      "i047",
+      "i050",
+      "i010",
+      "i043",
+      "i046",
+      "i026",
+      "p04"
+    ]
+  },
+  {
+    "id": "s086",
+    "title": "Lebensmittelvergiftung auf Klassenfahrt",
+    "category": "Bildung",
+    "situation": "Viele Schüler einer Klassenfahrt mit Erbrechen und Durchfall.",
+    "patients": 20,
+    "mix": {
+      "I": 0,
+      "II": 6,
+      "III": 14,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kinder",
+      "Infektionsschutz"
+    ],
+    "units": "2 RTW, 1 KTW, 1 NEF",
+    "learning": "Massenanfall leichter Fälle, Infektionsschutz.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i049",
+      "i046",
+      "i030",
+      "i041",
+      "p09"
+    ]
+  },
+  {
+    "id": "s087",
+    "title": "Gasaustritt im Hochschullabor",
+    "category": "Bildung",
+    "situation": "Gasaustritt in einem Hochschullabor, Studierende mit Reizsymptomen.",
+    "patients": 10,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Gefahrstoff"
+    ],
+    "units": "2 RTW, 1 NEF, Gefahrstoffzug",
+    "learning": "Reizgas mit Latenz nicht unterschätzen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i093",
+      "i092",
+      "i094",
+      "i073",
+      "i031"
+    ]
+  },
+  {
+    "id": "s088",
+    "title": "Sturz auf Treppe bei Feueralarm",
+    "category": "Bildung",
+    "situation": "Bei Räumung der Schule nach Feueralarm stürzen Schüler auf der Treppe.",
+    "patients": 12,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 8,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kinder",
+      "Viele Gehfähige"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Kleine Kinderlage strukturiert abarbeiten.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i043",
+      "i048",
+      "i018",
+      "i046",
+      "i085",
+      "p09"
+    ]
+  },
+  {
+    "id": "s089",
+    "title": "Krankenhausevakuierung bei Hochwasser",
+    "category": "Gesundheitswesen",
+    "situation": "Krankenhaus muss wegen Hochwasser geräumt werden, Intensivpatienten betroffen.",
+    "patients": 31,
+    "mix": {
+      "I": 6,
+      "II": 10,
+      "III": 15,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Hochwasser",
+      "Beatmete Patienten",
+      "Lange Lage"
+    ],
+    "units": "6 RTW, 3 NEF, ITW, OrgL, LNA",
+    "learning": "Transportkapazitäten priorisieren und Übergaben organisieren.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i058",
+      "i033",
+      "i036",
+      "i054",
+      "i055",
+      "i088",
+      "i049"
+    ]
+  },
+  {
+    "id": "s090",
+    "title": "Stromausfall im Pflegeheim",
+    "category": "Gesundheitswesen",
+    "situation": "Pflegeheim ohne Strom, mehrere Bewohner heimbeatmet.",
+    "patients": 13,
+    "mix": {
+      "I": 3,
+      "II": 4,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Stromausfall",
+      "Bettlägerige"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr mit Stromerzeuger",
+    "learning": "Technikabhängige Patienten priorisieren.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i058",
+      "i054",
+      "i055",
+      "i033",
+      "i077"
+    ]
+  },
+  {
+    "id": "s091",
+    "title": "Brand in einem Dialysezentrum",
+    "category": "Gesundheitswesen",
+    "situation": "Brand im Dialysezentrum während laufender Behandlungen.",
+    "patients": 12,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Vorerkrankte"
+    ],
+    "units": "2 RTW, 1 NEF; nach 15 min 2 RTW",
+    "learning": "Vorerkrankte Patienten evakuieren und sichten.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i071",
+      "i067",
+      "i033",
+      "i054",
+      "i029",
+      "i053"
+    ]
+  },
+  {
+    "id": "s092",
+    "title": "Norovirus-Ausbruch im Seniorenheim",
+    "category": "Gesundheitswesen",
+    "situation": "Viele Bewohner mit Brechdurchfall, Personal ebenfalls erkrankt.",
+    "patients": 17,
+    "mix": {
+      "I": 1,
+      "II": 6,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Infektionsschutz",
+      "Senioren"
+    ],
+    "units": "2 RTW, 1 NEF, KTW",
+    "learning": "Infektionsschutz und Austrocknung bei Älteren.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i055",
+      "i054",
+      "i036",
+      "i030",
+      "i040"
+    ]
+  },
+  {
+    "id": "s093",
+    "title": "Brand auf psychiatrischer Station",
+    "category": "Gesundheitswesen",
+    "situation": "Brand auf geschlossener Station, Patienten unruhig.",
+    "patients": 16,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Rauch",
+      "Psychische Erkrankungen",
+      "Eigengefährdung"
+    ],
+    "units": "2 RTW, 1 NEF, Polizei",
+    "learning": "Sichtung bei eingeschränkter Kooperation.",
+    "difficulty": "experte",
+    "caseIds": [
+      "i071",
+      "i084",
+      "i083",
+      "i082",
+      "i060",
+      "p09"
+    ]
+  },
+  {
+    "id": "s094",
+    "title": "Verunfallter Rettungswagen",
+    "category": "Gesundheitswesen",
+    "situation": "RTW mit Patient an Bord verunfallt, Besatzung verletzt.",
+    "patients": 5,
+    "mix": {
+      "I": 1,
+      "II": 2,
+      "III": 2,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Eigene Kräfte betroffen",
+      "Psychische Belastung"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Eigene Kollegen sichten und versorgen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i007",
+      "i029",
+      "i019",
+      "i053",
+      "i075"
+    ]
+  },
+  {
+    "id": "s095",
+    "title": "Stillstand einer Sesselbahn",
+    "category": "Freizeit/Sport",
+    "situation": "Sesselbahn steht still, viele Fahrgäste müssen abgeseilt werden.",
+    "patients": 32,
+    "mix": {
+      "I": 0,
+      "II": 2,
+      "III": 30,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Kälte",
+      "Lange Lage",
+      "Bergrettung"
+    ],
+    "units": "Bergwacht, 1 RTW, 1 NEF, SEG Betreuung",
+    "learning": "Betreuung und Wärmeerhalt bei langer Bergung.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i076",
+      "i030",
+      "i029",
+      "i081",
+      "i046"
+    ]
+  },
+  {
+    "id": "s096",
+    "title": "Unfall im Hochseilgarten",
+    "category": "Freizeit/Sport",
+    "situation": "Sicherungsseil gerissen, Besucher abgestürzt.",
+    "patients": 5,
+    "mix": {
+      "I": 1,
+      "II": 1,
+      "III": 3,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Höhe",
+      "Kinder"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Kleine Lage mit Sturzverletzungen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i004",
+      "i043",
+      "i018",
+      "i085",
+      "p04"
+    ]
+  },
+  {
+    "id": "s097",
+    "title": "Unfall an einer Achterbahn",
+    "category": "Freizeit/Sport",
+    "situation": "Zug einer Achterbahn nach technischem Defekt abrupt gestoppt.",
+    "patients": 16,
+    "mix": {
+      "I": 2,
+      "II": 4,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Höhe",
+      "Kinder",
+      "Schwierige Zugänglichkeit"
+    ],
+    "units": "2 RTW, 1 NEF, Feuerwehr Höhenrettung",
+    "learning": "Patienten in der Höhe sichten und Rettung planen.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i021",
+      "i043",
+      "i019",
+      "i004",
+      "i029",
+      "i085",
+      "p08"
+    ]
+  },
+  {
+    "id": "s098",
+    "title": "Pferdepanik beim Reitturnier",
+    "category": "Freizeit/Sport",
+    "situation": "Pferde scheuen und laufen in den Zuschauerbereich.",
+    "patients": 9,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 5,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Tiere",
+      "Kinder"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Stumpfes Trauma bei scheinbar Leichtverletzten.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i007",
+      "i047",
+      "i008",
+      "i057",
+      "p08"
+    ]
+  },
+  {
+    "id": "s099",
+    "title": "Hitzekollaps beim Jugendturnier",
+    "category": "Freizeit/Sport",
+    "situation": "In heißer Sporthalle kollabieren mehrere Jugendliche.",
+    "patients": 10,
+    "mix": {
+      "I": 1,
+      "II": 3,
+      "III": 6,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Hitze",
+      "Jugendliche"
+    ],
+    "units": "2 RTW, 1 NEF",
+    "learning": "Hitzeerkrankungen bei Jugendlichen erkennen.",
+    "difficulty": "einsteiger",
+    "caseIds": [
+      "i074",
+      "i075",
+      "i031",
+      "i030",
+      "p09"
+    ]
+  },
+  {
+    "id": "s100",
+    "title": "Massensturz beim Radrennen",
+    "category": "Freizeit/Sport",
+    "situation": "Massensturz im Hauptfeld bei hoher Geschwindigkeit.",
+    "patients": 17,
+    "mix": {
+      "I": 2,
+      "II": 5,
+      "III": 10,
+      "IV": 0,
+      "EX": 0
+    },
+    "special": [
+      "Weitläufige Strecke",
+      "Schaulustige"
+    ],
+    "units": "Sanitätsdienst, 2 RTW, 1 NEF, RTH",
+    "learning": "Sichtung auf langer Strecke mit Sanitätsdienst.",
+    "difficulty": "fortgeschritten",
+    "caseIds": [
+      "i009",
+      "i012",
+      "i019",
+      "i021",
+      "i006",
+      "i008",
+      "p07"
+    ]
+  }
+]

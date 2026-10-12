@@ -50,7 +50,7 @@ function compute(ex: Exercise, T: number): Evaluation {
   const starts = ofType("start");
   const triages = ofType("triage");
   const handovers = ofType("handover");
-  for (const r of [...ofType("scan"), ...starts, ...triages, ...ofType("admit"), ...handovers]) acc.get(r.event.participant)?.patients.add(r.event.patient);
+  for (const r of [...ofType("scan"), ...starts, ...triages, ...ofType("admit"), ...ofType("ask"), ...handovers]) acc.get(r.event.participant)?.patients.add(r.event.patient);
 
   // Kritische Maßnahmen je Patient: rechtzeitig, zu spät oder verpasst.
   const critical = { timely: 0, late: 0, missed: 0 };
@@ -123,6 +123,16 @@ function compute(ex: Exercise, T: number): Evaluation {
       a.scarce.used = true;
       if (["III", "EX"].includes(targetSk(s, id))) a.scarce.wasted = true;
     }
+  }
+
+  // Anamnese (G5): +1 je neuem SAMPLER-Thema pro Patient, höchstens 7; ab 5 Themen "Gute Frage".
+  const asked = new Map<string, Set<string>>();
+  for (const r of ofType("ask")) {
+    const key = `${r.event.participant}/${r.event.patient}`;
+    const set = asked.get(key) ?? new Set();
+    for (const topic of r.event.topics) if (!set.has(topic) && set.size < 7) set.add(topic), add(r.event.participant, 1);
+    asked.set(key, set);
+    if (set.size >= 5) acc.get(r.event.participant)?.badges.add("Gute Frage");
   }
 
   // Übergabe: Vollständigkeit und Transportreihenfolge.

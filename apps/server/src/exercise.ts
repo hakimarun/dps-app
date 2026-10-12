@@ -3,7 +3,9 @@
 // Aktionen an ihrer echten Zeit einsortieren. Keine Ein- und Ausgabe hier, das Speichern machen onRecord/onControl.
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import type { ClientMsg, LeitungView, Role, Status, Trupp, View } from "@dps/schema/protocol";
+import { TOPIC_LABEL, type ClientMsg, type LeitungView, type Role, type Status, type Trupp, type View } from "@dps/schema/protocol";
+import type { Ai } from "./ai.ts";
+import { askPatient } from "./dialog.ts";
 import { apply, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
 
 export type Library = { defs: Defs; scenarios: Record<string, Scenario> };
@@ -111,6 +113,7 @@ export function submit(
   const st = status(ex);
   const nowT = minutes(ex, now);
   const i = msg.intent;
+  if (i.type === "ask") return { error: "Fragen laufen über submitAsk" };
   let event: Event;
   let name: string | undefined;
   if (i.type === "join") {
@@ -139,6 +142,34 @@ export function submit(
   return { error: null, participant: event.participant };
 }
 
+// Frage an einen Patienten: prüfen, Antwort holen (KI oder Profil), mit Antwort protokollieren.
+export async function submitAsk(ex: Exercise, participant: string | null, msg: Extract<ClientMsg, { type: "intent" }>, now: number, ai: Ai | null): Promise<{ error: string | null }> {
+  const i = msg.intent;
+  if (i.type !== "ask") return { error: "keine Frage" };
+  if (ex.seen.has(msg.id)) return { error: null };
+  if (!participant) return { error: "nicht beigetreten" };
+  if (status(ex) !== "running") return { error: NOT_RUNNING[status(ex)] };
+  if (!i.question && !i.topic) return { error: "Frage fehlt" };
+  const t = minutes(ex, now);
+  const question = i.question ?? TOPIC_LABEL[i.topic!];
+  const s = stateAt(ex, t);
+  const probe: Event = { t, type: "ask", participant, patient: i.patient, question, answer: "", topics: [] };
+  const error = validate(s, probe);
+  if (error) return { error };
+  ex.seen.add(msg.id); // gegen doppelt gesendete Fragen, während die KI antwortet
+  try {
+    const history = ex.records.flatMap((r) => (r.event.type === "ask" && r.event.participant === participant && r.event.patient === i.patient ? [{ q: r.event.question, a: r.event.answer, topics: r.event.topics }] : []));
+    const { answer, topics } = await askPatient(ai, ex.defs.patients[i.patient], s, i.patient, i, history);
+    const r: Rec = { id: msg.id, t, event: { ...probe, answer, topics } };
+    addRecord(ex, r);
+    ex.onRecord?.(r);
+    return { error: null };
+  } catch (e) {
+    ex.seen.delete(msg.id);
+    return { error: e instanceof Error ? e.message : "Fehler bei der Antwort" };
+  }
+}
+
 // Was ein Helfer sehen darf: nur der gescannte Patient, nur aufgedeckte Befunde, kein Titel (der verrät die Diagnose).
 export function viewFor(ex: Exercise, s: State, id: string): View {
   const me = s.participants[id];
@@ -149,7 +180,10 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
   return {
     me: { id, name: ex.names.get(id) ?? "", unit: me.unit, role: roleOf(ex, id), trupp: truppOf(ex, id)?.name ?? null, busy: me.busy && { action: me.busy.action, until: me.busy.until } },
     patient: p && ps
-      ? { id: p, picture: ex.defs.patients[p].picture, findings: visible(s, p), triage: ps.triage, done: ps.done, place: PLACE[ps.place], left: ps.left }
+      ? {
+          id: p, picture: ex.defs.patients[p].picture, findings: visible(s, p), triage: ps.triage, done: ps.done, place: PLACE[ps.place], left: ps.left,
+          dialog: ex.records.flatMap((r) => (r.event.type === "ask" && r.event.participant === id && r.event.patient === p ? [{ q: r.event.question, a: r.event.answer }] : [])).slice(-10),
+        }
       : null,
     inventory: unit.inventory,
     unitArrived: s.t >= unit.arrivesAt,
@@ -202,6 +236,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
       case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
       case "end": return `${name(e.participant)}: Maßnahme beendet`;
       case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
+      case "ask": return `${name(e.participant)} fragt ${P(e.patient)}: „${e.question}“`;
       case "admit": return `${name(e.participant)} nimmt ${P(e.patient)} auf: ${PLACE[e.place]}`;
       case "handover": return `${name(e.participant)} übergibt ${P(e.patient)} an ${unit(e.vehicle)} → ${e.destination}`;
       case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;

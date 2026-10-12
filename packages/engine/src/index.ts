@@ -13,6 +13,8 @@ export type Event =
   | { t: number; type: "end"; participant: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
   | { t: number; type: "admit"; participant: string; patient: string; place: Place }
+  // Gespräch mit dem Patienten; ändert den Zustand nicht, wird für die Auswertung protokolliert.
+  | { t: number; type: "ask"; participant: string; patient: string; question: string; answer: string; topics: string[] }
   | { t: number; type: "handover"; participant: string; patient: string; vehicle: string; destination: string; diagnosis: string }
   | { t: number; type: "phase"; patient: string; to: string };
 
@@ -56,13 +58,13 @@ export function validate(s: State, e: Event): string | null {
   const h = s.participants[e.participant];
   if (!h) return "nicht beigetreten";
   if (e.type === "end") return h.busy?.until === null ? null : "keine dauerhafte Maßnahme aktiv";
-  if (h.busy) return "Helfer ist beschäftigt";
+  if (h.busy && !(e.type === "ask" && h.patient === e.patient)) return "Helfer ist beschäftigt"; // reden geht auch während einer Maßnahme
   const ps = s.patients[e.patient];
   if (!ps) return "unbekannter Patient";
   if (ps.left) return "Patient ist bereits abtransportiert";
   if (e.type === "scan") return null;
   if (h.patient !== e.patient) return "erst Patient scannen";
-  if (e.type === "triage" || e.type === "admit") return null;
+  if (e.type === "triage" || e.type === "admit" || e.type === "ask") return null;
   if (e.type === "handover") {
     const v = s.units[e.vehicle];
     if (!v) return "unbekanntes Fahrzeug";

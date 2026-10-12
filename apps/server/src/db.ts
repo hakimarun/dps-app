@@ -19,6 +19,9 @@ export function openDb(path: string): Db {
     create table if not exists approvals (user_id text not null, item text not null, version integer not null, at integer not null, primary key (user_id, item));
     create table if not exists exercises (code text primary key, owner text not null, header text not null);
     create table if not exists controls (code text not null, at integer not null, type text not null);
+    create table if not exists drafts (id text primary key, owner text not null, created integer not null, brief text not null, patient text not null, report text not null);
+    create table if not exists scenarios (id text primary key, owner text not null, created integer not null, brief text not null, data text not null);
+    create table if not exists scenario_patients (scenario text not null, patient text not null, at integer not null);
     create table if not exists records (seq integer primary key autoincrement, code text not null, id text not null, t real not null, event text not null, name text, trupp text);
   `);
   // Datenbanken aus Meilenstein 3/4 haben noch keine Trupp-Spalte.
@@ -101,6 +104,30 @@ export function loadExercises(db: Db, defs: Defs): Exercise[] {
     for (const r of recs) addRecord(ex, { id: r.id, t: r.t, event: JSON.parse(r.event), name: r.name ?? undefined, trupp: r.trupp ?? undefined });
     return persist(db, ex);
   });
+}
+
+// KI-Entwürfe für die Bibliothek (G8/G9).
+export type Draft = { id: string; owner: string; created: number; brief: string; patient: unknown; report: { ok: boolean; errors: string[]; warnings: string[]; sk: string | null } };
+export function saveDraft(db: Db, d: Draft) {
+  db.prepare("insert into drafts values (?, ?, ?, ?, ?, ?)").run(d.id, d.owner, d.created, d.brief, JSON.stringify(d.patient), JSON.stringify(d.report));
+}
+export function loadDrafts(db: Db): Draft[] {
+  const rows = db.prepare("select * from drafts order by created").all() as { id: string; owner: string; created: number; brief: string; patient: string; report: string }[];
+  return rows.map((r) => ({ ...r, patient: JSON.parse(r.patient), report: JSON.parse(r.report) }));
+}
+
+// KI-Szenarien und nachträglich generierte Patienten (auch für Szenarien aus der Bibliothek).
+export function saveScenario(db: Db, owner: string, brief: string, scenario: { id: string }, now: number) {
+  db.prepare("insert into scenarios values (?, ?, ?, ?, ?)").run(scenario.id, owner, now, brief, JSON.stringify(scenario));
+}
+export function loadScenarios(db: Db): unknown[] {
+  return (db.prepare("select data from scenarios order by created").all() as { data: string }[]).map((r) => JSON.parse(r.data));
+}
+export function attachPatient(db: Db, scenario: string, patient: string, now: number) {
+  db.prepare("insert into scenario_patients values (?, ?, ?)").run(scenario, patient, now);
+}
+export function attachedPatients(db: Db): { scenario: string; patient: string }[] {
+  return db.prepare("select scenario, patient from scenario_patients order by at").all() as { scenario: string; patient: string }[];
 }
 
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // ohne leicht verwechselbare Zeichen

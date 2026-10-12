@@ -19,6 +19,7 @@
     "apps/app/src/scan.ts",
     "apps/app/src/streak.ts",
     "apps/app/src/skills.ts",
+    "apps/app/src/voice.ts",
     "apps/app/test"
   ]
 }

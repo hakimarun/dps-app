@@ -10,6 +10,8 @@ import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "
 import { Solo, type SoloGame } from "./src/solo";
 import { ProfileScreen, addToProfile } from "./src/profile";
 import { Observe } from "./src/observe";
+import { canListen, canSpeak, listen, speak, stopSpeaking } from "./src/speech";
+import { voiceFor } from "./src/voice";
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
@@ -540,6 +542,25 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
     setWaiting({ q: question, at: dialog.length });
     onAsk({ question, ...(topic ? { topic } : {}) });
   };
+  // G6: Sprechen statt Tippen und Antworten vorlesen (Stimme passend zur Persona); Vorlesen merkt sich das Gerät.
+  const [tts, setTts] = useState(false);
+  const [listening, setListening] = useState(false);
+  const stop = useRef<(() => void) | null>(null);
+  useEffect(() => void AsyncStorage.getItem("dps:tts").then((v) => setTts(v === "1")), []);
+  const toggleTts = () => (setTts(!tts), AsyncStorage.setItem("dps:tts", tts ? "0" : "1"), tts && stopSpeaking());
+  const heard = useRef(dialog.length);
+  useEffect(() => {
+    const last = dialog.at(-1);
+    if (tts && dialog.length > heard.current && last && last.a !== SILENT) speak(last.a, voiceFor(picture));
+    heard.current = dialog.length;
+  }, [dialog.length]);
+  useEffect(() => () => (stop.current?.(), stopSpeaking()), []);
+  const mic = () => {
+    if (listening) return stop.current?.();
+    stopSpeaking();
+    setListening(true);
+    stop.current = listen((said, final) => (final && said.trim().length > 1 ? (ask(said.trim()), setText("")) : setText(said)), () => setListening(false));
+  };
   const bubble = (mine: boolean, children: ReactNode, key: string) => (
     <View key={key} style={{ alignSelf: mine ? "flex-end" : "flex-start", maxWidth: "82%", paddingHorizontal: 14, paddingVertical: 10, borderRadius: 18,
       borderBottomRightRadius: mine ? 4 : 18, borderBottomLeftRadius: mine ? 18 : 4, backgroundColor: mine ? t.accent : t.card }}>
@@ -557,6 +578,7 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
           <Text style={{ color: t.text, fontSize: 18, fontWeight: "700" }}>{patient.toUpperCase()}</Text>
           <Text style={{ color: t.quiet, fontSize: 13 }} numberOfLines={1}>{picture}</Text>
         </View>
+        {canSpeak && <Chip t={t} label={tts ? "🔊 Vorlesen an" : "🔈 Vorlesen"} selected={tts} onPress={toggleTts} />}
       </View>
       <ScrollView ref={scroll} onContentSizeChange={() => scroll.current?.scrollToEnd()} contentContainerStyle={{ padding: 16, gap: 8 }}>
         {!dialog.length && !waiting && <Text style={{ color: t.quiet, textAlign: "center", marginTop: 24 }}>Sprich den Patienten an – höflich und in ganzen Sätzen kommst du am weitesten.</Text>}
@@ -574,10 +596,18 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
         ))}
       </ScrollView>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, padding: 12, paddingBottom: 28 }}>
-        <TextInput value={text} onChangeText={setText} editable={ai} placeholder={ai ? "Frage an den Patienten …" : "Freie Fragen brauchen die KI – tippe einen Vorschlag"}
+        <TextInput value={text} onChangeText={setText} editable={ai} placeholder={listening ? "Ich höre zu …" : ai ? "Frage an den Patienten …" : "Freie Fragen brauchen die KI – tippe einen Vorschlag"}
           placeholderTextColor={t.quiet} accessibilityLabel="Frage an den Patienten" returnKeyType="send"
           onSubmitEditing={() => text.trim().length > 1 && (ask(text.trim()), setText(""))}
           style={{ flex: 1, minHeight: 48, borderWidth: 1, borderColor: t.line, borderRadius: 24, paddingHorizontal: 16, color: t.text, fontSize: 16 }} />
+        {canListen && ai && (
+          <Pressable accessibilityRole="button" accessibilityLabel={listening ? "Zuhören beenden" : "Frage sprechen"} accessibilityState={{ selected: listening }}
+            disabled={!online || !!waiting} onPress={mic}
+            style={({ pressed }) => ({ width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center",
+              backgroundColor: listening ? t.accent : t.card, borderWidth: 2, borderColor: listening ? t.accent : t.edge, opacity: !online || waiting ? 0.3 : pressed ? 0.7 : 1 })}>
+            <Text style={{ fontSize: 20, color: listening ? "#FFFFFF" : t.text }}>{listening ? "■" : "🎤"}</Text>
+          </Pressable>
+        )}
         <Pressable accessibilityRole="button" accessibilityLabel="Senden" disabled={!ai || !online || !!waiting || text.trim().length < 2}
           onPress={() => (ask(text.trim()), setText(""))}
           style={({ pressed }) => ({ width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: t.text,

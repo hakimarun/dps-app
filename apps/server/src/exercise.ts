@@ -236,7 +236,7 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
     stock: Object.entries(s.units).filter(([uid, u]) => uid !== me.unit && s.t >= u.arrivesAt).map(([uid, u]) => ({ id: uid, title: u.title, inventory: u.inventory })),
     lage: roleOf(ex, id) === "fuehrung" ? {
       patients: Object.entries(s.patients).map(([pid, ps]) => ({ id: pid, triage: ps.triage, place: PLACE[ps.place], cleared: ps.cleared, left: ps.left })),
-      vehicles: Object.entries(s.units).filter(([uid]) => uid.startsWith("nach-")).map(([, u]) => ({ title: u.title, arrivesAt: u.arrivesAt, arrived: s.t >= u.arrivesAt, seats: u.seats })),
+      vehicles: Object.entries(s.units).filter(([uid]) => uid.startsWith("nach-")).map(([, u]) => ({ title: u.title, arrived: s.t >= u.arrivesAt, seats: u.seats })),
       clearance: hasLead(ex),
     } : null,
   };
@@ -263,15 +263,18 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
     const last = ex.records.findLast((r) => r.t <= t && "patient" in r.event && r.event.patient === id)?.t ?? null;
     const lastContact = busyHere ? t : last;
     counts[ps.triage ?? "offen"]++;
-    const alert = ph.dead
+    // A8: später entdeckte Patienten – Fristen und Hinweise zählen ab ihrem Auftauchen
+    const alert = t < ps.appears
+      ? `Zettel bei ${mmss(ps.appears)} auslegen (taucht später auf)`
+      : ph.dead
       ? "verstorben"
       : ph.left || ps.left
         ? null
         : ps.triage && RANK[ps.triage] < RANK[target]
           ? `Untertriage (Soll ${target})`
-          : target === "I" && t - (lastContact ?? 0) >= CONTACT_ALERT_MIN
-            ? `seit ${Math.floor(t - (lastContact ?? 0))} min ohne Helfer`
-            : !ps.triage && t >= 10
+          : target === "I" && t - (lastContact ?? ps.appears) >= CONTACT_ALERT_MIN
+            ? `seit ${Math.floor(t - (lastContact ?? ps.appears))} min ohne Helfer`
+            : !ps.triage && t - ps.appears >= 10
               ? "nicht gesichtet"
               : null;
     const before = targetSk(start, id);
@@ -293,7 +296,9 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
   }));
   const trupps = ex.trupps!.map((tr) => ({ ...tr, unit: unit(tr.unit), members: [...ex.truppOf].filter(([, c]) => c === tr.code).map(([pid]) => name(pid)) }));
   const events = timeline(ex, t, generated).reverse().slice(0, 30).map((e) => ({ t: e.t, text: e.text }));
-  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, events, observer: ex.observer ?? null };
+  // Nachforderungen der Führung: die Leitung bestätigt das Eintreffen, wenn das Fahrzeug wirklich da ist
+  const requests = ex.records.flatMap((r) => (r.t <= t && r.event.type === "request" ? [{ unit: r.event.unit, title: unit(r.event.unit), at: r.t, by: name(r.event.participant), arrived: s.t >= s.units[r.event.unit].arrivesAt }] : []));
+  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, requests, events, observer: ex.observer ?? null };
 }
 
 // Alle Ereignisse bis t mit Text, aufsteigend: Aktionen der Helfer und echte Phasenwechsel der Patienten.
@@ -312,7 +317,8 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
       case "end": return `${name(e.participant)}: Maßnahme beendet`;
       case "assist": return `${name(e.participant)} hilft an ${P(e.patient)} mit`;
-      case "request": return `${name(e.participant)} fordert ${REINFORCEMENT[e.kind].label} bei der Leitstelle an (Eintreffen ${mmss(e.t + REINFORCEMENT[e.kind].minutes)})`;
+      case "request": return `${name(e.participant)} fordert ${REINFORCEMENT[e.kind].label} bei der Leitstelle an`;
+      case "arrive": return `${unit(e.unit)} ist eingetroffen`;
       case "clear": return `${name(e.participant)} gibt ${P(e.patient)} zum Transport frei`;
       case "fetch": return `${name(e.participant)} holt ${e.item} von ${unit(e.from)}`;
       case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
@@ -402,7 +408,7 @@ export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung
 export const NOTE_LABEL = { note: "Beobachtung", gut: "Beobachtung gut", besser: "Beobachtung besser" } as const;
 export function inject(
   ex: Exercise,
-  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string } | Omit<Extract<Event, { type: "note" }>, "t"> | Omit<Extract<Event, { type: "feedback" }>, "t">,
+  e: { type: "set"; patient: string; to: string } | { type: "arrive"; unit: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string } | Omit<Extract<Event, { type: "note" }>, "t"> | Omit<Extract<Event, { type: "feedback" }>, "t">,
   now: number,
 ): string | null {
   const st = status(ex);

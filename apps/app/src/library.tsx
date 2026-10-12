@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Image, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Findings, Patient, Sk } from "@dps/schema";
 import { api, download, httpBase, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
+import type { GenJob } from "@dps/schema/protocol";
 import { Button, Card, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
 import { SHAPES, TILE } from "./fun";
 import { CaseEditor, ScenarioEditor } from "./editor";
@@ -19,6 +20,7 @@ type ScenarioIdea = {
 type Ideas = { cases: Idea[]; scenarios: ScenarioIdea[]; generator: boolean };
 type Report = { ok: boolean; errors: string[]; warnings: string[]; sk: Sk | null };
 
+const ORIGIN_CASE: Record<LibPatient["origin"], string> = { muster: "Musterfall", ki: "KI-Fall", eigen: "eigener Fall", import: "importiert" };
 const DIFF: Record<string, string> = { einsteiger: "Einsteiger", fortgeschritten: "Fortgeschritten", experte: "Experte" };
 const SKS: Sk[] = ["I", "II", "III", "IV", "EX"];
 // Suche: alle Wörter müssen in einem der Felder vorkommen.
@@ -110,7 +112,7 @@ function Filters<S extends string>({ t, q, setQ, status, setStatus, statuses, ca
   );
 }
 
-type CaseStatus = "alle" | "meine" | "offen" | "ki";
+type CaseStatus = "alle" | "ki" | "fehler";
 
 function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib: ReturnType<typeof useLibrary>; generator: boolean }) {
   const [q, setQ] = useState("");
@@ -122,17 +124,17 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
   const [editing, setEditing] = useState<Patient | "neu" | null>(null);
   const all = lib.lib?.patients ?? [];
   const shown = all.filter((p) =>
-    (status === "alle" || (status === "meine" && p.approved) || (status === "offen" && !p.approved) || (status === "ki" && p.origin === "ki")) &&
+    (status === "alle" || (status === "ki" && p.origin === "ki") || (status === "fehler" && p.errors.length > 0)) &&
     (!cat || p.meta.category === cat) && (!sk || p.sk === sk) && matches(q, [p.id, p.title, p.meta.category, ...p.meta.tags]));
   return (
     <>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
         <Title t={t}>Fälle</Title>
-        <Text style={{ color: t.quiet }}>{shown.length} von {all.length} · {all.filter((p) => p.approved).length} von dir freigegeben</Text>
+        <Text style={{ color: t.quiet }}>{shown.length} von {all.length} · spielbar ist jeder Fall, der die automatische Prüfung besteht</Text>
         <Button t={t} label="Neuer Fall (Formular)" onPress={() => setEditing("neu")} />
         <Button t={t} label="Neuer Fall mit KI" disabled={!generator} note={generator ? undefined : "KI-Fallgenerator ist auf dem Server nicht eingerichtet"} onPress={() => setCreating(true)} />
         <Filters t={t} q={q} setQ={setQ} status={status} setStatus={setStatus}
-          statuses={[["alle", "Alle"], ["meine", "Von mir freigegeben"], ["offen", "Offen"], ["ki", "KI-Entwürfe"]]}
+          statuses={[["alle", "Alle"], ["ki", "KI-Fälle"], ["fehler", "Mit Prüffehlern"]]}
           cats={[...new Set(all.map((p) => p.meta.category))].sort()} cat={cat} setCat={setCat} sk={sk} setSk={setSk} />
         {lib.error && <Text style={{ color: t.red }}>{lib.error}</Text>}
         {groupBy(shown, (p) => p.meta.category).map(([category, items]) => (
@@ -143,16 +145,15 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
                 lines={[
                   { text: `SK ${p.sk ?? "–"} · ${DIFF[p.meta.difficulty] ?? p.meta.difficulty}${p.meta.tags.length ? ` · ${p.meta.tags.join(", ")}` : ""}` },
                   p.errors.length
-                    ? { text: "KI-Entwurf · Prüfung fehlgeschlagen", color: t.red }
-                    : { text: `${p.approved ? "✓ von dir freigegeben" : p.origin === "ki" ? "KI-Entwurf · noch nicht geprüft" : "noch nicht geprüft"} · ${p.approvals}× freigegeben · ${p.uses}× genutzt`, color: p.approved ? t.green : undefined },
+                    ? { text: "Prüfung fehlgeschlagen · nicht spielbar", color: t.red }
+                    : { text: `${ORIGIN_CASE[p.origin]} · ${p.uses}× genutzt` },
                 ]} />
             ))}
           </View>
         ))}
       </ScrollView>
       {detail && !editing && (
-        <CaseDetail t={t} session={session} item={detail} imageGen={!!lib.lib?.imageGen} onImage={lib.load} onClose={() => setDetail(null)} onEdit={setEditing}
-          onToggle={() => api(session, "/api/library/approve", { item: detail.id, approved: !detail.approved }).then(() => (lib.load(), setDetail(null)))} />
+        <CaseDetail t={t} session={session} item={detail} imageGen={!!lib.lib?.imageGen} onImage={lib.load} onClose={() => setDetail(null)} onEdit={setEditing} />
       )}
       {editing && (
         <CaseEditor t={t} session={session} initial={editing === "neu" ? undefined : editing} onClose={() => setEditing(null)}
@@ -192,8 +193,8 @@ function ReportView({ t, report }: { t: Theme; report: Report }) {
   );
 }
 
-function CaseDetail({ t, session, item, imageGen, onImage, onToggle, onClose, onEdit }: {
-  t: Theme; session: Session; item: LibPatient; imageGen: boolean; onImage: () => void; onToggle: () => void; onClose: () => void; onEdit: (p: Patient) => void;
+function CaseDetail({ t, session, item, imageGen, onImage, onClose, onEdit }: {
+  t: Theme; session: Session; item: LibPatient; imageGen: boolean; onImage: () => void; onClose: () => void; onEdit: (p: Patient) => void;
 }) {
   const [image, setImage] = useState(item.image);
   const [painting, setPainting] = useState(false);
@@ -218,7 +219,7 @@ function CaseDetail({ t, session, item, imageGen, onImage, onToggle, onClose, on
         <View style={{ gap: 6 }}>
           {imageGen && <Button t={t} label={painting ? "Bild wird erzeugt … (ca. 1 min)" : image ? "Neues Bild erzeugen" : "Bild erzeugen"} disabled={painting} onPress={() => paint()} />}
           {image && !painting && <Button t={t} label="Bild entfernen" onPress={() => paint(true)} />}
-          <Text style={{ color: t.quiet, fontSize: 12 }}>Das Bild entsteht lokal aus dem Bildtext. Vor der Freigabe prüfen: Verletzungen stellt das Modell oft ungenau dar, maßgeblich bleibt der Text.</Text>
+          <Text style={{ color: t.quiet, fontSize: 12 }}>Das Bild entsteht lokal aus dem Bildtext. Bitte ansehen: Verletzungen stellt das Modell oft ungenau dar, maßgeblich bleibt der Text.</Text>
           {imageError && <Text style={{ color: t.red }}>{imageError}</Text>}
         </View>
       )}
@@ -243,7 +244,6 @@ function CaseDetail({ t, session, item, imageGen, onImage, onToggle, onClose, on
           {sources.length > 0 && <Text style={{ color: t.quiet }}>Quellen laut KI (bitte prüfen): {sources.join("; ")}</Text>}
         </>
       )}
-      <Button t={t} strong label={item.approved ? "Freigabe zurückziehen" : "Für meine Übungen freigeben"} disabled={item.errors.length > 0} onPress={onToggle} />
       {data?.patient && <Button t={t} label={item.editable ? "Bearbeiten (neue Version)" : "Als Kopie bearbeiten"} onPress={() => onEdit(data.patient)} />}
     </Sheet>
   );
@@ -254,21 +254,23 @@ function GenerateSheet({ t, session, brief: initial = "", title = "Neuer Fall mi
 }) {
   const [brief, setBrief] = useState(initial);
   const [state, setState] = useState<"idle" | "busy" | "done">("idle");
+  const [audience, setAudience] = useState<Audience>("rs");
   const [report, setReport] = useState<Report | null>(null);
   const [error, setError] = useState<string | null>(null);
   const run = () => {
     setState("busy");
     setError(null);
-    api<{ id: string; report: Report }>(session, "/api/generate", { brief }).then(
+    api<{ id: string; report: Report }>(session, "/api/generate", { brief, audience }).then(
       (r) => (setReport(r.report), setState("done")),
       (e: Error) => (setError(e.message), setState("idle")),
     );
   };
   return (
     <Sheet t={t} title={title} onClose={state === "done" ? onDone : onClose}>
-      <Text style={{ color: t.quiet }}>Beschreibe Verletzung oder Erkrankung, Verlauf, Lernziel und Zielgruppe. Die KI erstellt einen Entwurf, den du vor der Freigabe prüfst.</Text>
+      <Text style={{ color: t.quiet }}>Beschreibe Verletzung oder Erkrankung, Verlauf, Lernziel und Zielgruppe. Die KI erstellt den Fall; besteht er die automatische Prüfung, ist er sofort spielbar. Lies ihn trotzdem einmal durch.</Text>
       <TextInput value={brief} onChangeText={setBrief} multiline accessibilityLabel="Fallidee"
         style={{ minHeight: 120, borderWidth: 1, borderColor: t.line, borderRadius: 10, padding: 12, color: t.text, fontSize: 16, textAlignVertical: "top" }} />
+      {state === "idle" && <AudiencePicker t={t} value={audience} onChange={setAudience} />}
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       {report && <ReportView t={t} report={report} />}
       {state !== "done" && <Button t={t} strong label={state === "busy" ? "KI arbeitet … (bis zu einer Minute)" : "Entwurf erstellen"} disabled={state === "busy" || brief.trim().length < 10} onPress={run} />}
@@ -293,7 +295,7 @@ function IdeaList({ t, session, ideas, onGenerated }: { t: Theme; session: Sessi
     <>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
         <Title t={t}>Fallideen</Title>
-        <Text style={{ color: t.quiet }}>{shown.length} von {all.length} Ideen. Ideen sind noch nicht spielbar: Mit KI ausarbeiten, prüfen, freigeben.</Text>
+        <Text style={{ color: t.quiet }}>{shown.length} von {all.length} Ideen. Ideen sind noch nicht spielbar: erst mit KI ausarbeiten.</Text>
         <Filters t={t} q={q} setQ={setQ} cats={[...new Set(all.map((i) => i.category))].sort()} cat={cat} setCat={setCat} sk={sk} setSk={setSk} />
         {groupBy(shown, (i) => i.category).map(([category, items]) => (
           <View key={category}>
@@ -389,12 +391,12 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
         <Sheet t={t} title={playing.title} onClose={() => setPlay(null)}>
           {playing.situation && <Text style={{ color: t.text }}>{playing.situation}</Text>}
           {playing.job && <Text style={{ color: jobLine(t, playing.job).color ?? t.quiet }}>{jobLine(t, playing.job).text}</Text>}
-          <Text style={{ color: t.quiet }}>Neue KI-Patienten prüfst und gibst du unter „Fälle“ frei; erst dann sind sie in Übungen wählbar.</Text>
+          <Text style={{ color: t.quiet }}>Neue KI-Patienten sind spielbar, sobald sie die automatische Prüfung bestehen; fehlerhafte stehen unter „Fälle“ mit Prüfbericht.</Text>
           {playing.patients.map((id) => {
             const p = byId.get(id);
             return (
               <Row key={id} t={t} color={p?.sk ? skColor(t, p.sk) : t.line} title={`${id.toUpperCase()} ${p?.title ?? ""}`} onPress={() => {}}
-                lines={[{ text: `SK ${p?.sk ?? "–"} · ${p?.approved ? "✓ von dir freigegeben" : p?.origin === "ki" ? "KI-Entwurf · noch nicht geprüft" : "noch nicht geprüft"}`, color: p?.approved ? t.green : undefined }]} />
+                lines={[{ text: `SK ${p?.sk ?? "–"} · ${p ? ORIGIN_CASE[p.origin] : ""}` }]} />
             );
           })}
           <Button t={t} label={playing.editable ? "Bearbeiten" : "Als Kopie bearbeiten"} onPress={() => setEdit(playing)} />
@@ -429,17 +431,26 @@ function ScenarioGenSheet({ t, session, title, brief: initial, count: initialCou
   t: Theme; session: Session; title: string; brief: string; count?: number; scenario?: string; onClose: () => void; onDone: (id: string) => void;
 }) {
   const [brief, setBrief] = useState(initial);
-  const [count, setCount] = useState(initialCount ?? 1);
-  const [busy, setBusy] = useState(false);
+  // Neues Szenario: Zahl der Patienten je Sichtungskategorie zu Beginn (Vorschlag aus der Idee, sonst ein kleiner Mix)
+  const [mix, setMix] = useState<Record<MixKey, number>>(() => defaultMix(initialCount));
+  const [audience, setAudience] = useState<Audience>("rs");
+  const [job, setJob] = useState<{ id: string; state: GenJob | null } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const total = MIX_KEYS.reduce((n, k) => n + mix[k], 0);
   const run = () => {
-    setBusy(true);
     setError(null);
     (scenario
-      ? api(session, `/api/scenarios/${scenario}/patients`, { brief }).then(() => scenario)
-      : api<{ id: string }>(session, "/api/scenarios", { brief, patients: count }).then((r) => r.id)
-    ).then(onDone, (e: Error) => (setError(e.message), setBusy(false)));
+      ? api(session, `/api/scenarios/${scenario}/patients`, { brief, audience }).then(() => scenario)
+      : api<{ id: string }>(session, "/api/scenarios", { brief, mix, audience }).then((r) => r.id)
+    ).then((id) => setJob({ id, state: null }), (e: Error) => setError(e.message));
   };
+  // Fortschritt abfragen, solange erzeugt wird
+  useEffect(() => {
+    if (!job || job.state?.stage === "fertig" || job.state?.stage === "fehler") return;
+    const i = setInterval(() => void api<GenJob>(session, `/api/jobs/${job.id}`).then((state) => setJob((j) => j && { ...j, state }), () => {}), 2000);
+    return () => clearInterval(i);
+  }, [job?.id, job?.state?.stage]);
+  if (job) return <GenProgress t={t} job={job.state} onDone={() => onDone(job.id)} onClose={onClose} />;
   return (
     <Sheet t={t} title={title} onClose={onClose}>
       <Text style={{ color: t.quiet }}>
@@ -451,20 +462,84 @@ function ScenarioGenSheet({ t, session, title, brief: initial, count: initialCou
         style={{ minHeight: 120, borderWidth: 1, borderColor: t.line, borderRadius: 10, padding: 12, color: t.text, fontSize: 16, textAlignVertical: "top" }} />
       {!scenario && (
         <>
-          <Text style={{ color: t.quiet }}>Patienten</Text>
-          <ChipRow>{[4, 6, 8, 10, 12, 15].map((n) => <Chip key={n} t={t} label={String(n)} selected={count === n} onPress={() => setCount(n)} />)}</ChipRow>
+          <Text style={{ color: t.quiet }}>Patienten je Sichtungskategorie zu Beginn (zusammen {total}, höchstens 15)</Text>
+          {MIX_KEYS.map((k) => (
+            <View key={k} style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <View style={{ width: 14, height: 28, borderRadius: 4, backgroundColor: skColor(t, k) }} />
+              <Text style={{ color: t.text, flex: 1, fontWeight: "700" }}>{MIX_LABEL[k]}</Text>
+              <View style={{ width: 56 }}><Button t={t} label="−" disabled={mix[k] === 0} onPress={() => setMix((m) => ({ ...m, [k]: m[k] - 1 }))} /></View>
+              <Text style={{ color: t.text, fontWeight: "800", width: 28, textAlign: "center" }} accessibilityLabel={`${MIX_LABEL[k]}: ${mix[k]}`}>{mix[k]}</Text>
+              <View style={{ width: 56 }}><Button t={t} label="+" disabled={total >= 15} onPress={() => setMix((m) => ({ ...m, [k]: m[k] + 1 }))} /></View>
+            </View>
+          ))}
         </>
       )}
+      <AudiencePicker t={t} value={audience} onChange={setAudience} />
       {error && <Text style={{ color: t.red }}>{error}</Text>}
-      <Button t={t} strong label={busy ? "KI arbeitet …" : scenario ? "Patient erzeugen" : "Szenario erzeugen"} disabled={busy || brief.trim().length < 10} onPress={run} />
+      <Button t={t} strong label={scenario ? "Patient erzeugen" : `Szenario mit ${total} Patienten erzeugen`} disabled={brief.trim().length < 10 || (!scenario && total === 0)} onPress={run} />
     </Sheet>
   );
 }
 
+// Fortschritt der KI-Erzeugung: Lage entwerfen, dann jeder Patient mit Soll- und Ist-Sichtung, sobald er fertig ist.
+function GenProgress({ t, job, onDone, onClose }: { t: Theme; job: GenJob | null; onDone: () => void; onClose: () => void }) {
+  const finished = job?.stage === "fertig" || job?.stage === "fehler";
+  const ok = job?.items.filter((i) => i.ok).length ?? 0;
+  return (
+    <Sheet t={t} title={finished ? (job?.stage === "fehler" ? "Erzeugung fehlgeschlagen" : "Fertig") : "KI erzeugt …"} onClose={onClose}>
+      <Text style={{ color: t.text, fontWeight: "700" }} accessibilityLiveRegion="polite">
+        {!job || job.stage === "lage" ? "Lage, Einsatzmittel und Patientenskizzen werden entworfen …"
+          : job.stage === "patienten" ? `Patient ${Math.min(job.done + 1, job.total)} von ${job.total} wird erzeugt …`
+          : job.stage === "fertig" ? `${ok} von ${job.total} Patienten spielbar${job.failed ? `, ${job.failed} nicht bestanden` : ""}.`
+          : job.error}
+      </Text>
+      <View style={{ height: 12, borderRadius: 6, backgroundColor: t.card, overflow: "hidden" }} accessibilityRole="progressbar"
+        {...({ "aria-valuemin": 0, "aria-valuemax": job?.total ?? 1, "aria-valuenow": job?.done ?? 0 } as object)}>
+        <View style={{ width: `${job && job.total ? Math.round(((job.stage === "lage" ? 0.3 : job.done) / job.total) * 100) : 5}%`, height: 12, backgroundColor: t.accent }} />
+      </View>
+      {job?.items.map((i, n) => (
+        <Card key={n} t={t} color={i.ok ? (i.sk ? skColor(t, i.sk as Sk) : t.line) : t.red}>
+          <Text style={{ color: t.text, fontWeight: "800" }}>{i.ok ? "✓" : "✗"} {i.title}</Text>
+          <Text style={{ color: i.ok ? t.quiet : t.red }}>
+            {i.ok ? `Sichtung zu Beginn ${i.sk ?? "–"}${i.target ? (i.target === i.sk ? " wie gewünscht" : ` (gewünscht ${i.target})`) : ""}` : `nicht bestanden: ${i.problem ?? "Fehler"}`}
+          </Text>
+        </Card>
+      ))}
+      {finished && job?.stage === "fertig" && <Button t={t} strong label="Zum Szenario" onPress={onDone} />}
+    </Sheet>
+  );
+}
+
+// Zielgruppe der KI-Fälle: bestimmt Komplexität, Fallen und welche Maßnahmen als kritisch gelten.
+type Audience = "sanh" | "rs" | "notsan";
+const AUDIENCE: [Audience, string, string][] = [
+  ["sanh", "SanH", "Sanitätshelfer: klare Bilder, Basismaßnahmen"],
+  ["rs", "RS", "Rettungssanitäter: typische Notfälle, eine Falle"],
+  ["notsan", "NotSan", "Notfallsanitäter: komplex, versteckte Befunde, invasive Maßnahmen"],
+];
+function AudiencePicker({ t, value, onChange }: { t: Theme; value: Audience; onChange: (a: Audience) => void }) {
+  return (
+    <>
+      <Text style={{ color: t.quiet }}>Schwierigkeit / Zielgruppe</Text>
+      <ChipRow>{AUDIENCE.map(([a, label]) => <Chip key={a} t={t} label={label} selected={value === a} onPress={() => onChange(a)} />)}</ChipRow>
+      <Text style={{ color: t.quiet, fontSize: 13 }}>{AUDIENCE.find(([a]) => a === value)![2]}</Text>
+    </>
+  );
+}
+
+type MixKey = "I" | "II" | "III" | "EX";
+const MIX_KEYS: MixKey[] = ["I", "II", "III", "EX"];
+const MIX_LABEL: Record<MixKey, string> = { I: "SK I · rot", II: "SK II · gelb", III: "SK III · grün", EX: "EX · tot" };
+// Vorschlag nach Gesamtzahl (z. B. aus einer Idee): wenige Schwerstverletzte, viele Leichtverletzte.
+const defaultMix = (n = 5): Record<MixKey, number> => {
+  const I = Math.max(1, Math.round(n * 0.2)), II = Math.max(1, Math.round(n * 0.3));
+  return { I, II, III: Math.max(0, n - I - II), EX: 0 };
+};
+
 const ORIGIN: Record<LibScenario["origin"], string> = { muster: "Muster", ki: "KI-Szenario", eigen: "eigenes Szenario", import: "importiert" };
 
 // A6: Szenario-Datei einlesen. Im Web per Dateiauswahl, auf dem Handy den Inhalt einfügen.
-// Jeder Fall wird geprüft und bekommt eine eigene ID; spielbar erst nach deiner Freigabe unter „Fälle“.
+// Jeder Fall wird geprüft und bekommt eine eigene ID; spielbar ist er, sobald er die Prüfung besteht.
 function ImportSheet({ t, session, onClose, onDone }: { t: Theme; session: Session; onClose: () => void; onDone: (id: string) => void }) {
   const [file, setFile] = useState<{ name: string; text: string } | null>(null);
   const [pasted, setPasted] = useState("");
@@ -485,7 +560,7 @@ function ImportSheet({ t, session, onClose, onDone }: { t: Theme; session: Sessi
   if (result)
     return (
       <Sheet t={t} title="Import fertig" onClose={() => onDone(result.id)}>
-        <Text style={{ color: t.text }}>{result.imported} {result.imported === 1 ? "Fall" : "Fälle"} übernommen. Prüfe und gib sie unter „Fälle“ frei, dann sind sie in Übungen wählbar.</Text>
+        <Text style={{ color: t.text }}>{result.imported} {result.imported === 1 ? "Fall" : "Fälle"} übernommen. Sie sind sofort in Übungen wählbar.</Text>
         {result.failed.map((f, i) => <Text key={i} style={{ color: t.red }}>Nicht übernommen: {f.title} – {f.errors.join("; ")}</Text>)}
         <Button t={t} strong label="Zum Szenario" onPress={() => onDone(result.id)} />
       </Sheet>

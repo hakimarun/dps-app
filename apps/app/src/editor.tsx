@@ -1,6 +1,6 @@
 // Formular-Editor (A1, A4): Fälle und Szenarien ohne JSON anlegen und bearbeiten.
 // Der Server prüft jeden Stand live (dieselbe Prüfung wie bei KI-Fällen); gespeichert wird als eigener Entwurf,
-// der wie jeder Fall erst nach Freigabe in Übungen wählbar ist.
+// der spielbar ist, sobald er die Prüfung besteht.
 import { useEffect, useState, type ReactNode } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Patient, Sk } from "@dps/schema";
@@ -90,7 +90,7 @@ export function CaseEditor({ t, session, initial, onClose, onSaved }: { t: Theme
     <Overlay t={t} onClose={onClose}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 10, paddingBottom: 40 }}>
         <Title t={t}>{initial ? "Fall bearbeiten" : "Neuer Fall"}</Title>
-        {initial && <Text style={{ color: t.quiet }}>Eigene Fälle bekommen beim Speichern eine neue Version, die neu freigegeben werden muss. Musterfälle und Fälle anderer werden als Kopie gespeichert.</Text>}
+        {initial && <Text style={{ color: t.quiet }}>Eigene Fälle bekommen beim Speichern eine neue Version. Musterfälle und Fälle anderer werden als Kopie gespeichert.</Text>}
         <ReportLine t={t} report={report} />
 
         <Section t={t} title="Grunddaten">

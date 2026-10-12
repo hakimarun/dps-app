@@ -40,16 +40,37 @@ const kv = (list: { key: string; value: string }[] | undefined) => Object.fromEn
 
 // Kleine Modelle benennen Phasen frei ("2-schock") und verweisen dann ungenau ("2-versorgt"):
 // Phasen fortlaufend nummerieren und Verweise exakt oder über die führende Zahl zuordnen.
-function renumber(g: GenPatient): GenPatient {
+// Was sich gar nicht zuordnen lässt, fällt weg (Regel ohne Ziel, Phase endet dort), statt den ganzen Fall scheitern zu lassen.
+export function renumber(g: GenPatient): GenPatient & { dropped: number } {
   const ids = new Map(g.phases.map((p, i) => [p.id, String(i + 1)]));
-  const num = (x: string) => x.match(/^\d+/)?.[0];
-  const ref = (r: string) => ids.get(r) ?? ids.get(g.phases.find((p) => num(r) !== undefined && num(p.id) === num(r))?.id ?? "") ?? r;
-  const gcs = <T extends { gcs?: number }>(f: T) => (f.gcs === undefined ? f : { ...f, gcs: Math.min(15, Math.max(3, f.gcs)) });
-  return {
-    ...g, start: ref(g.start), base: gcs(g.base),
-    phases: g.phases.map((p) => ({ ...p, id: ids.get(p.id)!, findings: gcs(p.findings), else: p.else && ref(p.else), rules: p.rules.map((r) => ({ ...r, then: ref(r.then) })) })),
+  const num = (x: string) => x.match(/^\D*(\d+)/)?.[1];
+  const ref = (r: string): string | undefined => {
+    const n = num(r);
+    return ids.get(r) ?? ids.get(g.phases.find((p) => n !== undefined && num(p.id) === n)?.id ?? "") ?? (n && Number(n) >= 1 && Number(n) <= g.phases.length ? n : undefined);
   };
+  const gcs = <T extends { gcs?: number }>(f: T) => (f.gcs === undefined ? f : { ...f, gcs: Math.min(15, Math.max(3, f.gcs)) });
+  let dropped = 0;
+  const phases = g.phases.map((p) => {
+    const rules = p.rules.flatMap((r) => { const then = ref(r.then); return then ? [{ ...r, then }] : (dropped++, []); });
+    const next = p.else === undefined ? undefined : ref(p.else);
+    if (p.else !== undefined && !next) dropped++;
+    return { ...p, id: ids.get(p.id)!, findings: gcs(p.findings), else: next, rules };
+  });
+  return { ...g, start: ref(g.start) ?? "1", base: gcs(g.base), phases, dropped };
 }
+
+// Kleine Modelle halten "lethalInjury" für "schwer verletzt"; mSTaRT sichtet dann EX, obwohl der Patient lebt.
+// Nur wer in der Phase tot ist, hat eine mit dem Leben nicht vereinbare Verletzung.
+function lethalOnlyWhenDead(g: GenPatient): boolean {
+  let changed = false;
+  const startDead = !!g.phases.find((p) => p.id === g.start)?.dead;
+  if (g.base.lethalInjury !== startDead) (g.base.lethalInjury = startDead), (changed = true);
+  for (const p of g.phases) if (p.findings.lethalInjury !== undefined && p.findings.lethalInjury !== p.dead) (p.findings.lethalInjury = p.dead), (changed = true);
+  return changed;
+}
+// Der Bildtext beschreibt die eine Person, nicht die Szene: er beginnt mit Geschlecht oder Alter.
+export const describesPerson = (picture: string) =>
+  /^(ein |eine )?(junger |junge |älterer |ältere |alter |alte |kleiner |kleines |kleine )?(mann|frau|junge|mädchen|kind|jugendliche[rn]?|teenager|säugling|baby|kleinkind|person|seniorin|senior|patient(in)?|schwangere|ca\.|etwa|\d)/i.test(picture.trim());
 
 export function toPatient(g: GenPatient, id: string): unknown {
   g = renumber(g);
@@ -111,7 +132,7 @@ function prune(g: GenPatient, actions: Record<string, Action>): string[] {
   return [...removed];
 }
 
-export async function generate(ai: Ai, brief: string, actions: Record<string, Action>, example: unknown): Promise<{ raw: unknown; report: Report }> {
+export async function generate(ai: Ai, brief: string, actions: Record<string, Action>, example: unknown, target?: Sk, audience: Audience = "rs"): Promise<{ raw: unknown; report: Report }> {
   const system = [
     "Du erstellst einen Übungspatienten für eine Simulation von Großschadenslagen (MANV) im deutschen Rettungsdienst.",
     "Der Patient läuft in Phasen von 15 Minuten. Jede Phase hat Befunde (nur Änderungen gegenüber der Ausgangslage), Regeln (wenn Maßnahmen erledigt bzw. gerade laufen, dann Folgephase) und eine Folgephase 'else', wenn keine Regel greift. Unbehandelt soll sich ein kritischer Patient verschlechtern; mit den richtigen Maßnahmen stabilisieren. Ohne 'else' und Regeln ist eine Phase ein Endzustand. Tote Phasen: dead=true, keine Atmung, Puls 0.",
@@ -122,6 +143,10 @@ export async function generate(ai: Ai, brief: string, actions: Record<string, Ac
     "Nutze in Regeln, kritischen und schädlichen Maßnahmen nur diese IDs (plus 'handover' für die Übergabe zum Abtransport):",
     ...Object.values(actions).map((a) => `- ${a.id}: ${a.title} (${a.minutes === null ? "dauerhaft" : `${a.minutes} min`})`),
     "Anamnese-Antworten schreibst du als ganze Sätze in Ich-Form, wie der Patient sie sagen würde (z. B. „Ich nehme einen Blutverdünner.“).",
+    AUDIENCES[audience].prompt,
+    "Titel: kurz das Verletzungs- oder Krankheitsbild (z. B. „Offene Unterschenkelfraktur mit Schock“), ohne Personennamen und ohne Ort.",
+    "Das sichtbare Bild beschreibt nur diese eine Person, wie Helfer sie vorfinden: beginne mit Geschlecht und geschätztem Alter (z. B. „Junge, ca. 14 Jahre, liegt …“), dann Haltung, sichtbare Verletzungen, Verhalten und was sie sagt. Keine Fahrzeuge, keine Unfallszene, keine anderen Personen, keine Diagnose.",
+    "lethalInjury (mit dem Leben nicht vereinbare Verletzung) ist nur bei toten Patienten wahr; schwer Verletzte, die atmen, haben lethalInjury=false.",
     "Das sichtbare Bild beschreibt nur, was Helfer sehen, ohne Diagnose. Werte medizinisch plausibel und konservativ nach gängigen deutschen Leitlinien (S3 Polytrauma, ERC). Nenne unter 'sources' die Leitlinien oder Quellen, auf die du dich stützt; der Fall wird vor dem Einsatz von einem Praxisanleiter oder Arzt geprüft.",
     `Beispiel eines fertigen Falls im Zielformat der Bibliothek (zur Orientierung; dein Format sind Listen statt Objekte): ${JSON.stringify(example)}`,
   ].join("\n");
@@ -131,11 +156,23 @@ export async function generate(ai: Ai, brief: string, actions: Record<string, Ac
   for (let attempt = 1; ; attempt++) {
     const g = await ai.json("generator", system, user, GenPatient, 16000);
     const removed = prune(g, actions);
+    const lethalFixed = lethalOnlyWhenDead(g);
+    const outOfScope = withinAudience(g, audience);
+    const dropped = renumber(g).dropped;
     const raw = toPatient(g, id);
     const report = check(raw, actions);
+    if (dropped) report.warnings.push(`${dropped} Verweis(e) auf fehlende Phasen entfernt`);
     if (removed.length) report.warnings.push(`unbekannte Maßnahmen entfernt (Regeln dazu fehlen jetzt): ${removed.join(", ")}`);
-    if (report.ok || attempt === 2) return { raw, report };
-    user = `${user}\n\nDein letzter Entwurf hatte Fehler. Behebe sie und gib den ganzen Fall neu aus:\n${report.errors.join("\n")}\n\nLetzter Entwurf: ${JSON.stringify(g)}`;
+    if (lethalFixed) report.warnings.push("„tödliche Verletzung“ bei lebendem Patienten entfernt");
+    if (outOfScope) report.warnings.push(`kritische Maßnahmen außerhalb des Rahmens ${AUDIENCES[audience].label} entfernt`);
+    const scene = !describesPerson(g.picture);
+    if (scene) report.warnings.push("Bildtext beschreibt nicht die Person (sollte mit Geschlecht oder Alter beginnen)");
+    const offTarget = target && report.sk && report.sk !== target;
+    if (offTarget) report.warnings.push(`Sichtung zu Beginn ${report.sk} statt gewünscht ${target}`);
+    if ((report.ok && !scene && !offTarget) || attempt === 2) return { raw, report };
+    const problems = [...report.errors, ...(scene ? ["Das sichtbare Bild beschreibt die Szene statt der Person. Beginne mit Geschlecht und Alter und beschreibe nur diese eine Person."] : []),
+      ...(offTarget ? [`Der Patient soll zu Beginn nach mSTaRT Kategorie ${target} sein, ist nach deinen Ausgangswerten aber ${report.sk}. Passe Ausgangswerte und Startphase an (${SK_HINT[target]}).`] : [])];
+    user = `${user}\n\nDein letzter Entwurf hatte Fehler. Behebe sie und gib den ganzen Fall neu aus:\n${problems.join("\n")}\n\nLetzter Entwurf: ${JSON.stringify(g)}`;
   }
 }
 
@@ -163,23 +200,64 @@ const GenFrame = z.object({
   title: z.string().max(120),
   situation: z.string().max(800),
   units: z.array(z.object({ kind: z.enum(KINDS), arrivesAt: z.number() })).max(10),
-  patients: z.array(z.object({ brief: z.string().max(700) })).max(15),
+  patients: z.array(z.object({ sk: z.enum(["I", "II", "III", "EX"]), brief: z.string().max(700) })).max(15),
 });
+// Wie ein Patient zu Beginn aussehen muss, damit mSTaRT die gewünschte Kategorie ergibt.
+export const SK_HINT: Record<Sk, string> = {
+  I: "rot: z. B. spritzende Blutung, Atemfrequenz unter 10 oder über 30, kein Radialispuls oder befolgt keine Aufforderungen",
+  II: "gelb: nicht gehfähig, aber atmet normal, Radialispuls tastbar, befolgt Aufforderungen, keine spritzende Blutung",
+  III: "grün: gehfähig, leicht verletzt",
+  IV: "blau: abwartende Behandlung",
+  EX: "tot: Startphase dead=true, keine Atmung, Puls 0, lethalInjury=true",
+};
+export type Mix = Partial<Record<"I" | "II" | "III" | "EX", number>>;
 
-export async function generateFrame(ai: Ai, brief: string, count: number, template: Scenario): Promise<{ scenario: Scenario & { situation: string }; briefs: string[] }> {
+// Zielgruppe des generierten Falls: bestimmt Komplexität, Fallen und welche Maßnahmen als kritisch gelten dürfen.
+const SANH_ACTIONS = ["airway_open", "airway_hold", "recovery_position", "oxygen", "bag_rebreathing", "tourniquet", "pressure_dressing", "shock_position", "upper_body_up",
+  "wound_dressing", "burn_dressing", "cool_large", "rinse", "warm", "calm", "cpr", "measure_bp", "pulse_oximetry", "blood_glucose", "body_check", "check_pupils",
+  "examine_pelvis", "examine_abdomen", "inspect_burn", "auscultate", "measure_temp", "handover"];
+const RS_ACTIONS = [...SANH_ACTIONS, "wendl", "bag_valve", "chest_seal", "pelvic_binder", "splint", "cervical_collar", "vacuum_mattress", "glucose", "ecg"];
+export const AUDIENCES = {
+  sanh: { label: "Sanitätshelfer (SanH)", difficulty: "einsteiger", critical: SANH_ACTIONS,
+    prompt: "Zielgruppe Sanitätshelfer (SanH): eindeutige Verletzungsbilder mit deutlichen Leitsymptomen, wenig Fallen, Verlauf eher langsam; kritisch sind nur Basismaßnahmen (Atemweg, Lagerung, Blutstillung, Wärmeerhalt, Betreuung, Reanimation)." },
+  rs: { label: "Rettungssanitäter (RS)", difficulty: "fortgeschritten", critical: RS_ACTIONS,
+    prompt: "Zielgruppe Rettungssanitäter (RS): typische Notfallbilder, eine Falle je Fall (z. B. Schmerz verdeckt Verletzung), kritisch sind Basismaßnahmen plus Immobilisation, Beckengurt, Beatmung mit Beutel und Chest Seal." },
+  notsan: { label: "Notfallsanitäter (NotSan)", difficulty: "experte", critical: null,
+    prompt: "Zielgruppe Notfallsanitäter (NotSan): komplexe Verläufe, versteckte Befunde (innere Blutung, Spannungspneumothorax, Hypoglykämie hinter Verwirrtheit), Untertriage-Fallen, schneller Verfall; kritisch dürfen auch invasive Maßnahmen sein (Zugang, Infusion, Analgesie, Entlastungspunktion, Wundtamponade)." },
+} as const;
+export type Audience = keyof typeof AUDIENCES;
+// Kritische Maßnahmen außerhalb des Kompetenzrahmens der Zielgruppe streichen; gibt zurück, ob etwas wegfiel.
+function withinAudience(g: GenPatient, audience: Audience): boolean {
+  const allowed = AUDIENCES[audience].critical as readonly string[] | null;
+  g.difficulty = AUDIENCES[audience].difficulty;
+  if (!allowed) return false;
+  const before = JSON.stringify(g.critical);
+  g.critical = g.critical.map((c) => ({ ...c, actions: c.actions.filter((a) => allowed.includes(a)) })).filter((c) => c.actions.length);
+  return JSON.stringify(g.critical) !== before;
+}
+export const mixTotal = (m: Mix) => Object.values(m).reduce((a, b) => a + (b ?? 0), 0);
+
+// mix: gewünschte Zahl Patienten je Sichtungskategorie zu Beginn; jeder Patient bekommt seine Kategorie als Vorgabe mit.
+export async function generateFrame(ai: Ai, brief: string, mix: Mix, template: Scenario, id = `ki-s${crypto.randomUUID().slice(0, 5)}`, audience: Audience = "rs"): Promise<{ scenario: Scenario & { situation: string }; briefs: { brief: string; sk: Sk }[] }> {
+  const count = mixTotal(mix);
+  const wanted = (["I", "II", "III", "EX"] as const).filter((k) => mix[k]).map((k) => `${mix[k]}× Kategorie ${k} (${SK_HINT[k]})`).join(", ");
   const system = [
     "Du entwirfst eine Übungslage für eine Simulation von Großschadenslagen (MANV) im deutschen Rettungsdienst.",
     `Liefere einen Titel, die Lage in zwei bis drei Sätzen, die anrückenden Einsatzmittel (RTW, NEF, KTW mit Eintreffzeit in Minuten nach Übungsstart, mindestens eines bei 0) und genau ${count} Patienten.`,
-    "Jeder Patient ist eine Skizze in zwei bis vier Sätzen: Alter, Geschlecht, was Helfer sehen, Verletzung oder Erkrankung, Verlauf ohne Behandlung, Soll-Sichtungskategorie nach mSTaRT und Temperament.",
-    "Mische die Sichtungskategorien realistisch (meist viele Leichtverletzte, wenige Schwerstverletzte) und baue mindestens eine Falle ein, z. B. eine Untertriage-Gefahr. Keine Patienten doppelt.",
+    `Sichtungskategorien zu Beginn nach mSTaRT, genau so verteilt: ${wanted}. Gib bei jedem Patienten die Kategorie im Feld sk an.`,
+    "Jeder Patient ist eine Skizze in zwei bis vier Sätzen: Alter, Geschlecht, was Helfer sehen, Verletzung oder Erkrankung, Verlauf ohne Behandlung und Temperament.",
+    AUDIENCES[audience].prompt,
+    "Keine Patienten doppelt.",
   ].join("\n");
   const g = await ai.json("generator", system, `Szenario-Idee: ${brief}`, GenFrame, 4000);
-  // Kleine Modelle liefern oft weniger Patienten als bestellt: bis zu zweimal nachfordern.
-  for (let i = 0; i < 2 && g.patients.length < count; i++) {
-    const more = await ai.json("generator", system, `Szenario-Idee: ${brief}\nLage: ${g.situation}\nBisherige Patienten:\n${g.patients.map((p) => `- ${p.brief}`).join("\n")}\n\nGib ${count - g.patients.length} weitere, andere Patienten aus (Titel, Lage und Einsatzmittel wie oben).`, GenFrame, 4000);
+  // Je Kategorie so viele Skizzen wie bestellt; kleine Modelle liefern oft zu wenige oder falsch verteilt: bis zu zweimal nachfordern.
+  const pick = () => (["I", "II", "III", "EX"] as const).flatMap((k) => g.patients.filter((p) => p.sk === k).slice(0, mix[k] ?? 0));
+  for (let i = 0; i < 2 && pick().length < count; i++) {
+    const missing = (["I", "II", "III", "EX"] as const).map((k) => [k, (mix[k] ?? 0) - g.patients.filter((p) => p.sk === k).length] as const).filter(([, n]) => n > 0);
+    const more = await ai.json("generator", system, `Szenario-Idee: ${brief}\nLage: ${g.situation}\nBisherige Patienten:\n${g.patients.map((p) => `- (${p.sk}) ${p.brief}`).join("\n")}\n\nGib weitere, andere Patienten aus: ${missing.map(([k, n]) => `${n}× Kategorie ${k}`).join(", ")} (Titel, Lage und Einsatzmittel wie oben).`, GenFrame, 4000);
     g.patients.push(...more.patients);
   }
   const units = buildUnits(g.units.length ? g.units : template.units.map((u) => ({ kind: u.title.slice(0, 3) as Kind, arrivesAt: u.arrivesAt })), template);
-  const scenario = { id: `ki-s${crypto.randomUUID().slice(0, 5)}`, title: g.title, situation: g.situation, patients: [], units };
-  return { scenario, briefs: g.patients.slice(0, count).map((p) => `Lage: ${g.situation}\nPatient: ${p.brief}`) };
+  const scenario = { id, title: g.title, situation: g.situation, patients: [], units };
+  return { scenario, briefs: pick().map((p) => ({ sk: p.sk, brief: `Lage: ${g.situation}\nPatient: ${p.brief}\nSichtungskategorie zu Beginn nach mSTaRT: ${p.sk} (${SK_HINT[p.sk]})` })) };
 }

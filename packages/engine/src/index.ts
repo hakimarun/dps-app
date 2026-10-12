@@ -4,16 +4,17 @@ import type { Action, Algorithm, Findings, Patient, Phase, Place, Scenario, Sk }
 
 // vitals: "text" zeigt Befunde wie auf der Papier-dPS ("Puls schnell und schwach") statt Zahlen (H2),
 // "live" lässt die Zahlen nach einem Phasenwechsel gleiten und leicht schwanken wie am Monitor.
-export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "live" | "text" };
+// late (A8, Lageänderung): Patienten, die erst ab dieser Übungsminute auftauchen; ihr Verlauf beginnt dann.
+export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "live" | "text"; late?: Record<string, number> };
 export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15, random: false };
 
-// Nachforderung über die Leitstelle (B3): Anfahrzeit, Transportplätze und Ausstattung je Fahrzeugtyp.
+// Nachforderung über die Leitstelle (B3): Transportplätze und Ausstattung je Fahrzeugtyp. Das Eintreffen bestätigt die Leitung, wenn das Fahrzeug wirklich da ist.
 export const REINFORCEMENT = {
-  rtw: { label: "RTW", minutes: 10, seats: 1, inventory: { tourniquet: 2, dressing: 4, wendl: 1, o2_mask: 2, needle: 1, iv_cannula: 4, infusion: 4, analgesic: 2, pelvic_binder: 1, splint: 1, rescue_blanket: 4, cervical_collar: 2, vacuum_mattress: 1, bvm: 1, chest_seal: 2, hemostatic: 2, burn_dressing: 2, glucose: 1, pacer_pads: 1 } },
-  nef: { label: "NEF", minutes: 8, seats: 0, inventory: { needle: 2, ett: 2, analgesic: 4, iv_cannula: 2, infusion: 2, o2_mask: 1, bvm: 1, chest_seal: 1, hemostatic: 1, glucose: 2, pacer_pads: 1 } },
-  nktw: { label: "NKTW", minutes: 12, seats: 1, inventory: { tourniquet: 1, dressing: 4, rescue_blanket: 4, o2_mask: 2, cervical_collar: 1, bvm: 1, glucose: 1, splint: 1 } },
-  ktw: { label: "KTW", minutes: 15, seats: 1, inventory: { dressing: 4, rescue_blanket: 4, o2_mask: 1, cervical_collar: 1 } },
-} as const satisfies Record<string, { label: string; minutes: number; seats: number; inventory: Record<string, number> }>;
+  rtw: { label: "RTW", seats: 1, inventory: { tourniquet: 2, dressing: 4, wendl: 1, o2_mask: 2, needle: 1, iv_cannula: 4, infusion: 4, analgesic: 2, pelvic_binder: 1, splint: 1, rescue_blanket: 4, cervical_collar: 2, vacuum_mattress: 1, bvm: 1, chest_seal: 2, hemostatic: 2, burn_dressing: 2, glucose: 1, pacer_pads: 1 } },
+  nef: { label: "NEF", seats: 0, inventory: { needle: 2, ett: 2, analgesic: 4, iv_cannula: 2, infusion: 2, o2_mask: 1, bvm: 1, chest_seal: 1, hemostatic: 1, glucose: 2, pacer_pads: 1 } },
+  nktw: { label: "NKTW", seats: 1, inventory: { tourniquet: 1, dressing: 4, rescue_blanket: 4, o2_mask: 2, cervical_collar: 1, bvm: 1, glucose: 1, splint: 1 } },
+  ktw: { label: "KTW", seats: 1, inventory: { dressing: 4, rescue_blanket: 4, o2_mask: 1, cervical_collar: 1 } },
+} as const satisfies Record<string, { label: string; seats: number; inventory: Record<string, number> }>;
 
 // Zeit t in Minuten seit Übungsstart.
 export type Event =
@@ -25,8 +26,10 @@ export type Event =
   | { t: number; type: "assist"; participant: string; patient: string }
   // Material von einem anderen Fahrzeug vor Ort in die eigene Einheit holen (C10), je ein Stück.
   | { t: number; type: "fetch"; participant: string; from: string; item: string }
-  // Führung (B3): Verstärkung bei der Leitstelle nachfordern (trifft nach der Anfahrzeit ein) und Patienten zum Transport freigeben.
+  // Führung (B3): Verstärkung bei der Leitstelle nachfordern und Patienten zum Transport freigeben.
   | { t: number; type: "request"; participant: string; kind: keyof typeof REINFORCEMENT; unit: string; title: string }
+  // Leitung: nachgefordertes Fahrzeug ist wirklich eingetroffen.
+  | { t: number; type: "arrive"; unit: string }
   | { t: number; type: "clear"; participant: string; patient: string }
   // Leitung ändert das Temperament eines Patienten (G11); leer = zurück zum Fall.
   | { t: number; type: "mood"; patient: string; temperament: string }
@@ -55,6 +58,8 @@ export type PatientState = {
   left: boolean; // abtransportiert: läuft nicht weiter
   cleared: boolean; // von der Führung zum Transport freigegeben (B3)
   mood: string | null; // Temperament, von der Leitung live geändert (G11); null = wie im Fall
+  appears: number; // ab dieser Minute auffindbar (A8, später entdeckte Patienten)
+  pace: number; // Faktor auf die Phasendauer: mit Zufall 0,8–1,2 je Patient (A8, Verlaufsvarianten)
 };
 export type ParticipantState = { unit: string; patient: string | null; busy: Running | null };
 export type Defs = { patients: Record<string, Patient>; actions: Record<string, Action> };
@@ -73,7 +78,9 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
   for (const id of scenario.patients) {
     const p = defs.patients[id];
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
-    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false, mood: null };
+    const appears = settings.late?.[id] ?? 0;
+    const pace = settings.random ? 0.8 + 0.4 * unit(`${seed}:${id}`) : 1;
+    patients[id] = { phase: p.start, phaseStart: appears, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false, mood: null, appears, pace };
   }
   const units: State["units"] = {};
   for (const u of scenario.units) units[u.id] = { title: u.title, arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
@@ -83,6 +90,7 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
 // Prüft eine Absicht eines Helfers. Gibt den Grund der Ablehnung zurück oder null.
 export function validate(s: State, e: Event): string | null {
   if (e.type === "phase") return "Phasenwechsel erzeugt nur die Engine";
+  if (e.type === "arrive") return !s.units[e.unit] ? "unbekanntes Fahrzeug" : s.units[e.unit].arrivesAt <= e.t ? "Fahrzeug ist schon da" : null;
   if (e.type === "message") return e.text.trim() ? null : "Nachricht fehlt";
   if (e.type === "mood") return s.patients[e.patient] ? null : "unbekannter Patient";
   if (e.type === "feedback") return !s.participants[e.helper] ? "unbekannter Helfer" : null;
@@ -95,16 +103,18 @@ export function validate(s: State, e: Event): string | null {
   if (e.type === "end") return h.busy?.until === null ? null : "keine dauerhafte Maßnahme aktiv";
   // Führungsaufgaben gehen auch während einer Maßnahme und ohne gescannten Patienten.
   if (e.type === "request") return REINFORCEMENT[e.kind] ? (s.units[e.unit] ? "Fahrzeug gibt es schon" : null) : "unbekannter Fahrzeugtyp";
-  if (e.type === "clear") return !s.patients[e.patient] ? "unbekannter Patient" : s.patients[e.patient].left ? "Patient ist bereits abtransportiert" : null;
+  if (e.type === "clear") return !s.patients[e.patient] ? "unbekannter Patient" : s.patients[e.patient].left ? "Patient ist bereits abtransportiert" : !s.patients[e.patient].triage ? "Patient ist noch nicht gesichtet" : null;
   if (h.busy && !(e.type === "ask" && h.patient === e.patient)) return "Helfer ist beschäftigt"; // reden geht auch während einer Maßnahme
   if (e.type === "fetch") {
     const from = s.units[e.from];
     if (!from || e.from === h.unit) return "unbekanntes Fahrzeug";
     if (e.t < from.arrivesAt) return "Fahrzeug noch nicht eingetroffen";
-    return (from.inventory[e.item] ?? 0) < 1 ? `kein ${e.item} mehr auf diesem Fahrzeug` : null;
+    if (!(e.item in from.inventory)) return "dieses Material gibt es auf dem Fahrzeug nicht";
+    return from.inventory[e.item] < 1 ? `kein ${e.item} mehr auf diesem Fahrzeug` : null;
   }
   const ps = s.patients[e.patient];
   if (!ps) return "unbekannter Patient";
+  if (e.t < ps.appears) return "Diesen Patienten gibt es hier noch nicht";
   if (ps.left) return "Patient ist bereits abtransportiert";
   if (e.type === "scan") return null;
   if (h.patient !== e.patient) return "erst Patient scannen";
@@ -120,14 +130,16 @@ export function validate(s: State, e: Event): string | null {
     if (!v) return "unbekanntes Fahrzeug";
     if (e.t < v.arrivesAt) return "Fahrzeug noch nicht eingetroffen";
     if (v.seats < 1) return "kein Platz mehr im Fahrzeug";
-    if (Object.values(s.participants).some((x) => x.busy?.patient === e.patient)) return "erst laufende Maßnahmen beenden";
+    const busy = Object.values(s.participants).find((x) => x.busy?.patient === e.patient)?.busy;
+    if (busy) return `erst laufende Maßnahme beenden: ${s.defs.actions[busy.action]?.title ?? busy.action}`;
     return null;
   }
   const a = s.defs.actions[e.action];
   if (!a) return "unbekannte Maßnahme";
   const unit = s.units[h.unit];
-  if (e.t < unit.arrivesAt) return "Einheit noch nicht eingetroffen";
-  for (const [item, n] of Object.entries(a.material)) if ((unit.inventory[item] ?? 0) < n) return `kein ${item} mehr`;
+  if (e.t < unit.arrivesAt) return Number.isFinite(unit.arrivesAt) ? `Euer Fahrzeug ${unit.title} trifft erst ab Minute ${Math.ceil(unit.arrivesAt)} ein` : `Euer Fahrzeug ${unit.title} ist noch nicht da`;
+  for (const [item, n] of Object.entries(a.material))
+    if ((unit.inventory[item] ?? 0) < n) return item in unit.inventory ? `kein ${item} mehr` : `kein ${item} an Bord, von einem anderen Fahrzeug holen`;
   return null;
 }
 
@@ -188,7 +200,7 @@ export function apply(s: State, e: Event): State {
     }
     case "request": {
       const r = REINFORCEMENT[e.kind];
-      s.units[e.unit] = { title: e.title, arrivesAt: e.t + r.minutes, seats: r.seats, inventory: { ...r.inventory } };
+      s.units[e.unit] = { title: e.title, arrivesAt: Infinity, seats: r.seats, inventory: { ...r.inventory } }; // bis die Leitung das Eintreffen bestätigt
       break;
     }
     case "clear":
@@ -203,6 +215,9 @@ export function apply(s: State, e: Event): State {
       own[e.item] = (own[e.item] ?? 0) + 1;
       break;
     }
+    case "arrive":
+      s.units[e.unit].arrivesAt = e.t;
+      break;
     case "message":
     case "note":
     case "feedback":
@@ -229,7 +244,7 @@ export function tick(s: State, now: number): Event[] {
     for (const [id, ps] of Object.entries(s.patients)) {
       const ph = phaseDef(s, id);
       if (ph.dead || ph.left || ps.left || (!ph.rules.length && !ph.else)) continue;
-      const end = ps.phaseStart + (ph.minutes ?? s.settings.phaseMinutes);
+      const end = ps.phaseStart + (ph.minutes ?? s.settings.phaseMinutes) * ps.pace;
       if (end <= now && (!next || end < next.t)) next = { t: end, type: "phase", patient: id, to: nextPhase(s, id) };
     }
     if (!next) break;
@@ -346,6 +361,13 @@ export function triage(f: Findings, algorithm: Algorithm): Sk {
         return "I";
       return f.walking ? "III" : "II";
   }
+}
+
+// Fester Zufallswert 0…1 aus einem Text (FNV-1a), unabhängig von s.rng, damit die übrigen Zufallsereignisse gleich bleiben.
+function unit(key: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < key.length; i++) h = Math.imul(h ^ key.charCodeAt(i), 16777619);
+  return (h >>> 0) / 4294967296;
 }
 
 // mulberry32: kleiner, reproduzierbarer Zufallsgenerator; der Zustand liegt in s.rng.

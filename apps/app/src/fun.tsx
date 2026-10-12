@@ -1,6 +1,6 @@
 // Kahoot-Gefühl für Lobby, Countdown, Auswertung und Startseite (J1–J5): kräftige Farben, Symbolformen,
 // bewegter Hintergrund, 3D-Knöpfe, Konfetti. Nie im Einsatzmodus (J6); "Bewegung reduzieren" schaltet alles ab.
-import { useEffect, useMemo, useRef, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Animated, Dimensions, Easing, Pressable, ScrollView, Text, View, type ViewStyle } from "react-native";
 import { Logo, light, useReducedMotion } from "./ui";
 
@@ -35,16 +35,23 @@ function Shape({ kind, size, color }: { kind: number; size: number; color: strin
 }
 
 // Schwebende Formen im Hintergrund.
+// Hintergrundformen: bei jedem Laden zufällig verteilt, mit eigener Größe, Form, Geschwindigkeit, Hubhöhe und Drehrichtung.
+// Die Werte werden einmal je Form gewürfelt und bleiben stabil, solange sie zu sehen ist.
 function Floater({ i }: { i: number }) {
-  const v = useLoop(9000 + (i % 5) * 2300, i * 400);
-  const size = 40 + ((i * 37) % 70);
-  const left = `${(i * 23 + 7) % 92}%` as const;
-  const top = `${(i * 41 + 11) % 88}%` as const;
-  const up = v.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, -30 - (i % 3) * 10, 0] });
-  const spin = v.interpolate({ inputRange: [0, 1], outputRange: ["0deg", `${i % 2 ? 360 : -360}deg`] });
+  const [r] = useState(() => {
+    const rnd = (min: number, max: number) => min + Math.random() * (max - min);
+    return {
+      size: rnd(30, 120), left: rnd(-5, 92), top: rnd(-5, 90), kind: Math.floor(rnd(0, 4)),
+      ms: rnd(6000, 18000), delay: rnd(0, 3000), lift: rnd(15, 55), opacity: rnd(0.08, 0.18),
+      turn: Math.random() < 0.5 ? -360 : 360, // volle Umdrehung, sonst springt die Form am Schleifenende
+    };
+  });
+  const v = useLoop(r.ms, r.delay);
+  const up = v.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, -r.lift, 0] });
+  const spin = v.interpolate({ inputRange: [0, 1], outputRange: ["0deg", `${r.turn}deg`] });
   return (
-    <Animated.View pointerEvents="none" style={{ position: "absolute", left, top, opacity: 0.13, transform: [{ translateY: up }, { rotate: spin }] }}>
-      <Shape kind={i % 4} size={size} color={W} />
+    <Animated.View key={i} pointerEvents="none" style={{ position: "absolute", left: `${r.left}%`, top: `${r.top}%`, opacity: r.opacity, transform: [{ translateY: up }, { rotate: spin }] }}>
+      <Shape kind={r.kind} size={r.size} color={W} />
     </Animated.View>
   );
 }

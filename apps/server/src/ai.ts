@@ -1,7 +1,7 @@
 // KI-Anbindung (G12): Claude über die Anthropic API oder ein lokales Modell über eine OpenAI-kompatible
 // Schnittstelle (z. B. Ollama, llama.cpp, vLLM). Eine schmale Schnittstelle, je Aufgabe wählbar:
 //   AI_DIALOG / AI_GENERATOR = claude | local | off
-//   ANTHROPIC_API_KEY (Claude), LOCAL_AI_URL + LOCAL_AI_MODEL (lokal)
+//   ANTHROPIC_API_KEY (Claude, bei Schlüsseln ohne Workspace dazu ANTHROPIC_WORKSPACE_ID), LOCAL_AI_URL + LOCAL_AI_MODEL (lokal)
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { z } from "zod";
@@ -13,21 +13,30 @@ const MODEL = { dialog: "claude-haiku-5-5", generator: "claude-opus-5-5" } as co
 const EFFORT = { dialog: "low", generator: "high" } as const;
 const TIMEOUT = { dialog: 15_000, generator: 300_000 } as const;
 
-export function claude(): Ai {
-  const clients = { dialog: new Anthropic({ timeout: TIMEOUT.dialog }), generator: new Anthropic({ timeout: TIMEOUT.generator }) };
+export function claude(workspace = process.env.ANTHROPIC_WORKSPACE_ID): Ai {
+  const defaultHeaders = workspace ? { "anthropic-workspace-id": workspace } : undefined;
+  const clients = { dialog: new Anthropic({ timeout: TIMEOUT.dialog, defaultHeaders }), generator: new Anthropic({ timeout: TIMEOUT.generator, defaultHeaders }) };
   return {
     name: "claude",
     async json(task, system, user, schema, maxTokens) {
-      const res = await clients[task].messages.parse({
-        model: MODEL[task],
-        max_tokens: maxTokens,
-        system,
-        messages: [{ role: "user", content: user }],
-        output_config: { effort: EFFORT[task], format: zodOutputFormat(schema) },
-      });
-      if (res.stop_reason === "refusal") throw new Error("Die KI hat die Anfrage abgelehnt");
-      if (res.stop_reason === "max_tokens" || !res.parsed_output) throw new Error("Die KI-Antwort war unvollständig");
-      return res.parsed_output;
+      const ask = { model: MODEL[task], max_tokens: maxTokens, system, messages: [{ role: "user" as const, content: user }] };
+      try {
+        const res = await clients[task].messages.parse({ ...ask, output_config: { effort: EFFORT[task], format: zodOutputFormat(schema) } });
+        if (res.stop_reason === "refusal") throw new Error("Die KI hat die Anfrage abgelehnt");
+        if (res.stop_reason === "max_tokens" || !res.parsed_output) throw new Error("Die KI-Antwort war unvollständig");
+        return res.parsed_output;
+      } catch (e) {
+        // Großes Fall-Schema: Die API lehnt die Grammatik ab ("too large"/"too complex"). Dann Schema in den Prompt und streng nachprüfen.
+        if (!(e instanceof Anthropic.BadRequestError && /grammar is too large|too complex/i.test(e.message))) throw e;
+        const res = await clients[task].messages.create({
+          ...ask,
+          system: `${system}\nAntworte ausschließlich mit einem JSON-Objekt nach diesem JSON-Schema, ohne weiteren Text:\n${JSON.stringify(z.toJSONSchema(schema))}`,
+          output_config: { effort: EFFORT[task] },
+        });
+        if (res.stop_reason === "refusal") throw new Error("Die KI hat die Anfrage abgelehnt");
+        if (res.stop_reason === "max_tokens") throw new Error("Die KI-Antwort war unvollständig");
+        return parseJson(res.content.flatMap((b) => (b.type === "text" ? [b.text] : [])).join(""), schema);
+      }
     },
   };
 }
@@ -61,10 +70,12 @@ export function local(url: string, model: string): Ai {
     if (!res.ok) throw new Error(`Lokales Modell antwortet mit HTTP ${res.status}`);
     const data = (await res.json()) as { choices?: { message?: { content?: string } }[] };
     const text = data.choices?.[0]?.message?.content ?? "";
-    // Kleine Modelle umrahmen JSON manchmal mit Text; das äußerste Objekt herausschneiden und streng prüfen.
-    return schema.parse(JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1)));
+    return parseJson(text, schema);
   }
 }
+
+// Modelle umrahmen JSON manchmal mit Text; das äußerste Objekt herausschneiden und streng prüfen.
+const parseJson = <T>(text: string, schema: z.ZodType<T>): T => schema.parse(JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1)));
 
 export function fromEnv(task: Task, env: NodeJS.ProcessEnv = process.env): Ai | null {
   const choice = env[task === "dialog" ? "AI_DIALOG" : "AI_GENERATOR"] ?? (env.ANTHROPIC_API_KEY ? "claude" : env.LOCAL_AI_URL ? "local" : "off");

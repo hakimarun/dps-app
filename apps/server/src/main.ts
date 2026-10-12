@@ -11,14 +11,14 @@ import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, EE_ROLES, FeedbackReq, ROLE_LABEL, GenerateReq, InjectReq, NoteReq, ScenarioBundle, ScenarioGenReq, ScenarioSaveReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
-import { Patient, type Scenario } from "@dps/schema";
+import { CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, EE_ROLES, FeedbackReq, ROLE_LABEL, GenerateReq, InjectReq, NoteReq, ScenarioBundle, ScenarioGenReq, ScenarioSaveReq, type Audience, type GenJob, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { Patient, type Scenario, type Sk } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
 import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, withCallsigns, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate, summary } from "./evaluation.ts";
-import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, setApproval, userByToken, type Draft } from "./db.ts";
+import { attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, userByToken, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
 import { suggestFeedback } from "./feedback.ts";
 import { imageGenFromEnv } from "./images.ts";
@@ -84,9 +84,9 @@ const SOLO_MAX = 300; // ponytail: feste Obergrenze gegen Fluten des offenen End
 // Solo-Fälle sind ohne Anmeldung offen: KI höchstens SOLO_AI_QUESTIONS Fragen je Fall, danach antwortet der Patient aus seinem Profil.
 const SOLO_AI_QUESTIONS = 20;
 const aiFor = (ex: Exercise) => (ex.owner === SOLO && ex.records.filter((r) => r.event.type === "ask").length >= SOLO_AI_QUESTIONS ? null : dialogAi);
-// KI-Entwurf eines Patienten: speichern; besteht er die Prüfung, ist er spielbar (nach Freigabe).
-async function draftPatient(brief: string, owner: string): Promise<Draft> {
-  const { raw, report } = await generate(generatorAi!, brief, lib.defs.actions, lib.defs.patients.p01);
+// KI-Entwurf eines Patienten: speichern; besteht er die Prüfung, ist er sofort spielbar.
+async function draftPatient(brief: string, owner: string, target?: Sk, audience?: Audience): Promise<Draft> {
+  const { raw, report } = await generate(generatorAi!, brief, lib.defs.actions, lib.defs.patients.p01, target, audience);
   const id = (raw as { id: string }).id;
   const d: Draft = { id, owner, created: Date.now(), brief, patient: raw, report };
   saveDraft(db, d);
@@ -96,23 +96,28 @@ async function draftPatient(brief: string, owner: string): Promise<Draft> {
 }
 // Patienten eines Szenarios nacheinander generieren; die Bibliothek zeigt den Fortschritt.
 // ponytail: Fortschritt nur im Speicher; nach einem Neustart fehlen nur die noch nicht erzeugten Patienten.
-type Job = { total: number; done: number; failed: number; error: string | null };
-const jobs = new Map<string, Job>();
-async function fillScenario(id: string, briefs: string[], owner: string) {
+// Fortschritt je Szenario, damit die App während der Erstellung zeigen kann, was passiert.
+const jobs = new Map<string, GenJob>();
+async function fillScenario(id: string, briefs: { brief: string; sk?: Sk }[], owner: string, audience?: Audience) {
   let job = jobs.get(id);
-  if (job && job.done < job.total) job.total += briefs.length;
-  else jobs.set(id, (job = { total: briefs.length, done: 0, failed: 0, error: null }));
-  for (const brief of briefs) {
+  if (job && job.stage !== "fertig" && job.stage !== "fehler") job.total += briefs.length;
+  else jobs.set(id, (job = { stage: "patienten", total: briefs.length, done: 0, failed: 0, error: null, items: [] }));
+  job.stage = "patienten";
+  for (const { brief, sk } of briefs) {
     try {
-      const d = await draftPatient(brief, owner);
+      const d = await draftPatient(brief, owner, sk, audience);
+      const title = String((d.patient as { title?: string }).title ?? "Patient");
       if (d.report.ok) (attachPatient(db, id, d.id, Date.now()), scenarios[id].patients.push(d.id));
       else job.failed++;
+      job.items.push({ title, target: sk ?? null, sk: d.report.sk, ok: d.report.ok, problem: d.report.errors[0] ?? null });
     } catch (e) {
       job.failed++;
       job.error = e instanceof Error ? e.message : String(e);
+      job.items.push({ title: "Patient", target: sk ?? null, sk: null, ok: false, problem: job.error });
     }
     job.done++;
   }
+  job.stage = "fertig";
 }
 const devices: number[] = []; // Zeitpunkte neuer Geräte in der letzten Minute
 const DEVICES_PER_MINUTE = 30; // ponytail: globale Grenze gegen Fluten; bei Bedarf je IP
@@ -230,22 +235,18 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
 
   if (route === "GET /api/me") return send(res, 200, user);
   if (route === "GET /api/library") {
-    const mine = myApprovals(db, user.id);
-    const counts = approvalCounts(db);
     const all = [...exercises.values()];
     return send(res, 200, {
       patients: [
         ...Object.values(lib.defs.patients).map((p) => ({
           id: p.id, version: p.version, title: p.title, picture: p.picture,
-          approved: !drafts.has(p.id) || mine.get(p.id) === p.version, // Musterfälle sind geprüft und sofort spielbar
-          approvals: counts.get(p.id) ?? 0,
           uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
           meta: p.meta, sk: startSk(p), origin: drafts.get(p.id)?.origin ?? "muster", errors: [] as string[], editable: drafts.get(p.id)?.owner === user.id,
           image: imageUrl(p.id),
         })),
-        // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht freigebbar
+        // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht spielbar
         ...[...drafts.values()].filter((d) => !d.report.ok).map((d) => ({
-          id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, approved: false, approvals: 0, uses: 0,
+          id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, uses: 0,
           meta: { category: d.origin === "eigen" ? "Eigener Entwurf" : d.origin === "import" ? "Importierter Entwurf" : "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: d.origin ?? "ki", errors: d.report.errors,
           editable: d.owner === user.id, image: null,
         })),
@@ -288,8 +289,8 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   if (route === "GET /api/ideas") return send(res, 200, { cases: readIdeas("cases.json"), scenarios: readIdeas("scenarios.json"), generator: !!generatorAi });
   if (route === "POST /api/generate") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet (AI_GENERATOR, ANTHROPIC_API_KEY oder LOCAL_AI_URL)");
-    const { brief } = GenerateReq.parse(await body(req));
-    const d = await draftPatient(brief, user.id).catch((e) => {
+    const { brief, audience } = GenerateReq.parse(await body(req));
+    const d = await draftPatient(brief, user.id, undefined, audience).catch((e) => {
       throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
     });
     return send(res, 201, { id: d.id, report: d.report });
@@ -361,29 +362,35 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   }
   if (route === "POST /api/scenarios") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");
-    const { brief, patients } = ScenarioGenReq.parse(await body(req));
-    const { scenario, briefs } = await generateFrame(generatorAi, brief, patients, scenarios.busunfall ?? Object.values(scenarios)[0]).catch((e) => {
-      throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
-    });
-    saveScenario(db, user.id, brief, scenario, Date.now());
-    scenarios[scenario.id] = { ...scenario, owner: user.id };
-    void fillScenario(scenario.id, briefs, user.id);
-    return send(res, 201, { id: scenario.id, patients: briefs.length });
+    const { brief, mix, audience } = ScenarioGenReq.parse(await body(req));
+    // Sofort antworten; Lage und Patienten entstehen im Hintergrund, die App fragt den Fortschritt ab.
+    const id = `ki-s${crypto.randomUUID().slice(0, 5)}`;
+    const total = mix.I + mix.II + mix.III + mix.EX;
+    const job: GenJob = { stage: "lage", total, done: 0, failed: 0, error: null, items: [] };
+    jobs.set(id, job);
+    void generateFrame(generatorAi, brief, mix, scenarios.busunfall ?? Object.values(scenarios)[0], id, audience).then(
+      ({ scenario, briefs }) => {
+        saveScenario(db, user.id, brief, scenario, Date.now());
+        scenarios[scenario.id] = { ...scenario, owner: user.id };
+        jobs.delete(id);
+        return fillScenario(scenario.id, briefs, user.id, audience);
+      },
+      (e) => Object.assign(job, { stage: "fehler", error: `KI-Fehler: ${e instanceof Error ? e.message : e}` }),
+    );
+    return send(res, 202, { id, patients: total });
+  }
+  if ((m = route.match(/^GET \/api\/jobs\/([a-z0-9-]{1,64})$/))) {
+    const job = jobs.get(m[1]);
+    if (!job) throw new HttpError(404, "keine Erzeugung zu diesem Szenario");
+    return send(res, 200, job);
   }
   if ((m = route.match(/^POST \/api\/scenarios\/([a-z0-9-]{1,64})\/patients$/))) {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");
     const sc = scenarios[m[1]];
     if (!sc) throw new HttpError(404, "unbekanntes Szenario");
-    const { brief } = GenerateReq.parse(await body(req));
-    void fillScenario(sc.id, [`Lage: ${sc.situation ?? sc.title}\nPatient: ${brief}`], user.id);
+    const { brief, audience } = GenerateReq.parse(await body(req));
+    void fillScenario(sc.id, [{ brief: `Lage: ${sc.situation ?? sc.title}\nPatient: ${brief}` }], user.id, audience);
     return send(res, 202, { ok: true });
-  }
-  if (route === "POST /api/library/approve") {
-    const r = ApproveReq.parse(await body(req));
-    const p = lib.defs.patients[r.item];
-    if (!p) throw new HttpError(404, "unbekannter Fall");
-    setApproval(db, user.id, p.id, p.version, r.approved, Date.now());
-    return send(res, 200, { ok: true });
   }
   if (route === "GET /api/exercises") {
     const mine = [...exercises.values()].filter((ex) => ex.owner === user.id).sort((a, b) => b.created - a.created);
@@ -400,10 +407,9 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const r = CreateExerciseReq.parse(await body(req));
     const sc = lib.scenarios[r.scenario];
     if (!sc) throw new HttpError(400, "unbekanntes Szenario");
-    const mine = myApprovals(db, user.id);
-    // Ohne Konten: Musterfälle gelten als freigegeben; KI-, eigene und importierte Fälle braucht weiter die eigene Freigabe.
-    const missing = r.patients.filter((id) => !lib.defs.patients[id] || (drafts.has(id) && mine.get(id) !== lib.defs.patients[id].version));
-    if (missing.length) throw new HttpError(400, `nicht von dir freigegeben: ${missing.join(", ")}`);
+    // Ohne Freigabe: spielbar ist jeder Fall, der die automatische Prüfung bestanden hat (nur solche stehen in lib.defs).
+    const missing = r.patients.filter((id) => !lib.defs.patients[id]);
+    if (missing.length) throw new HttpError(400, `nicht spielbar (Prüfung nicht bestanden oder unbekannt): ${missing.join(", ")}`);
     const taken = (c: string) => codeTaken(c) || trupps.some((t) => t.code === c);
     // Trupps: Transporttrupps auf Fahrzeuge mit Plätzen verteilen, die übrigen reihum auf alle Einheiten.
     const trupps: Trupp[] = [];
@@ -425,7 +431,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const observer = newCode((c) => taken(c) || c === code);
     const ex = saveExercise(db, {
       code, owner: user.id, scenario: { ...sc, patients: r.patients, units: withCallsigns(sc.units) },
-      settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps, observer,
+      settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals, ...(r.late ? { late: Object.fromEntries(Object.entries(r.late).filter(([id]) => r.patients.includes(id))) } : {}) }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps, observer,
     }, lib.defs);
     exercises.set(code, ex);
     indexTrupps(ex);

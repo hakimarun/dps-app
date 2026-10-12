@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import type { Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { control, createExercise, loadLibrary, stateAt, status, submit, timeline, viewFor } from "../src/exercise.ts";
+import { control, createExercise, inject, leitungView, loadLibrary, stateAt, status, submit, timeline, viewFor } from "../src/exercise.ts";
 import { evaluate } from "../src/evaluation.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -173,7 +173,7 @@ test("Einsatzeinheit: Arzt sichtet zuerst, Zelt-/Techniktrupp versorgen und sich
   assert.equal(evaluate(ex, 5 * MIN).triageByRole.arzt.correct, 1);
 });
 
-test("Führung: fordert Verstärkung an (trifft nach Anfahrzeit ein) und gibt die Transportreihenfolge frei", () => {
+test("Führung: fordert Verstärkung an (Leitung bestätigt das Eintreffen) und gibt die Transportreihenfolge frei", () => {
   const trupps = [
     { code: "FUEHR1", name: "Führung", role: "fuehrung" as const, unit: "rtw1" },
     { code: "EESIC2", name: "EE 1 Sicherungstrupp", role: "sicherung" as const, unit: "rtw1" },
@@ -187,18 +187,26 @@ test("Führung: fordert Verstärkung an (trifft nach Anfahrzeit ein) und gibt di
   assert.equal(send(sich, 1, { type: "request", kind: "rtw" }), "Verstärkung und Transportfreigabe macht die Führung");
   assert.equal(send(lead, 2, { type: "request", kind: "rtw" }), null);
   const isNew = (v: { title: string }) => /^RTW \d+\/83-\d \(nachgefordert\)$/.test(v.title); // Funkrufname nach Fahrzeugklasse
-  assert.equal(viewFor(ex, stateAt(ex, 5), sich).vehicles.find(isNew)?.arrived, false);
-  assert.equal(viewFor(ex, stateAt(ex, 12), sich).vehicles.find(isNew)?.arrived, true); // 2 + 10 min
+  assert.equal(viewFor(ex, stateAt(ex, 30), sich).vehicles.find(isNew)?.arrived, false); // kommt nicht von selbst
+  assert.deepEqual(leitungView(ex, 11 * MIN).requests.map((r) => [r.unit, r.at, r.by, r.arrived]), [["nach-rtw-1", 2, "OrgL", false]]);
+  assert.equal(inject(ex, { type: "arrive", unit: "nach-rtw-1" }, 12 * MIN), null); // Leitung: „Ist da“
+  assert.equal(inject(ex, { type: "arrive", unit: "nach-rtw-1" }, 12 * MIN), "Fahrzeug ist schon da");
+  assert.equal(viewFor(ex, stateAt(ex, 12), sich).vehicles.find(isNew)?.arrived, true);
+  assert.equal(leitungView(ex, 12 * MIN).requests[0].arrived, true);
   assert.equal(send(sich, 12, { type: "scan", patient: "p09" }), null);
   assert.equal(send(sich, 12, { type: "handover", patient: "p09", vehicle: "nach-rtw-1", destination: "Klinikum", diagnosis: "Prellung" }), "Die Führung hat diesen Patienten noch nicht zum Transport freigegeben");
-  assert.equal(send(lead, 12, { type: "clear", patient: "p09" }), null); // auch ohne Scan
+  assert.equal(send(lead, 12, { type: "clear", patient: "p09" }), "Patient ist noch nicht gesichtet");
+  assert.equal(send(lead, 12, { type: "scan", patient: "p09" }), null);
+  assert.equal(send(lead, 12, { type: "triage", patient: "p09", sk: "III" }), null);
+  assert.equal(send(lead, 12, { type: "clear", patient: "p09" }), null);
   assert.equal(send(sich, 13, { type: "handover", patient: "p09", vehicle: "nach-rtw-1", destination: "Klinikum", diagnosis: "Prellung" }), null);
   assert.equal(send(lead, 14, { type: "start", patient: "p01", action: "tourniquet" }), "erst Patient scannen"); // Führung behandelt wie alle (nach Scan)
   const lage = viewFor(ex, stateAt(ex, 14), lead).lage!;
-  assert.deepEqual(lage.patients.find((p) => p.id === "p09"), { id: "p09", triage: null, place: "abtransportiert", cleared: true, left: true });
+  assert.deepEqual(lage.patients.find((p) => p.id === "p09"), { id: "p09", triage: "III", place: "abtransportiert", cleared: true, left: true });
   assert.equal(viewFor(ex, stateAt(ex, 14), sich).lage, null); // nur die Führung sieht die Lage
   const texts = timeline(ex, 14).map((e) => e.text);
-  assert.ok(texts.includes("OrgL fordert RTW bei der Leitstelle an (Eintreffen 12:00)"));
+  assert.ok(texts.includes("OrgL fordert RTW bei der Leitstelle an"));
+  assert.ok(texts.some((x) => /^RTW \d+\/83-\d \(nachgefordert\) ist eingetroffen$/.test(x)));
   assert.ok(texts.some((x) => /Sam übergibt P09 an RTW \d+\/83-\d \(nachgefordert\)/.test(x)));
   // weitere Nachforderungen: jeder Rufname nur einmal
   for (let i = 0; i < 6; i++) send(lead, 15, { type: "request", kind: i % 2 ? "nef" : "rtw" });

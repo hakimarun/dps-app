@@ -151,20 +151,29 @@ test("KI fällt aus: Vorschläge antworten aus dem Profil, freie Fragen melden d
   assert.match((await submitAsk(ex, p, intent(2, { type: "ask", patient: "p01", question: "Wie heißen Sie?" }), 2 * MIN, down)).error ?? "", /Ollama/);
 });
 
-test("Szenario-Rahmen: Einsatzmittel aus Vorlagen, eines ab Minute 0, genau so viele Patientenskizzen wie bestellt", async () => {
+test("Szenario-Rahmen: Einsatzmittel aus Vorlagen, eines ab Minute 0, Patienten genau nach Sichtungsmix", async () => {
   const frame = {
     title: "Brand im Pflegeheim", situation: "Nachts brennt ein Pflegeheim.",
     units: [{ kind: "NEF", arrivesAt: 8 }, { kind: "RTW", arrivesAt: 5.4 }, { kind: "RTW", arrivesAt: 90 }, { kind: "KTW", arrivesAt: 20 }],
-    patients: [{ brief: "Bewohnerin, 84, Rauchgas" }, { brief: "Pfleger, 30, Verbrennung Hand" }, { brief: "Bewohner, 90, verwirrt" }],
+    patients: [{ sk: "II", brief: "Bewohnerin, 84, Rauchgas" }, { sk: "III", brief: "Pfleger, 30, Verbrennung Hand" }, { sk: "I", brief: "Bewohner, 90, bewusstlos" }],
   };
-  const { scenario, briefs } = await generateFrame(fake(frame), "Pflegeheimbrand", 2, lib.scenarios.busunfall);
-  const topped = await generateFrame(fake(frame), "Pflegeheimbrand", 5, lib.scenarios.busunfall); // 3 + 3 nachgefordert, 5 genutzt
-  assert.equal(topped.briefs.length, 5);
+  const { scenario, briefs } = await generateFrame(fake(frame), "Pflegeheimbrand", { I: 1, III: 1 }, lib.scenarios.busunfall);
+  assert.deepEqual(briefs.map((b) => b.sk), ["I", "III"]); // genau nach Mix, die II bleibt weg
+  assert.match(briefs[0].brief, /^Lage: Nachts brennt ein Pflegeheim\.\nPatient: Bewohner, 90, bewusstlos\nSichtungskategorie zu Beginn nach mSTaRT: I/);
+  const topped = await generateFrame(fake(frame), "Pflegeheimbrand", { II: 2, III: 2 }, lib.scenarios.busunfall); // fehlende je Kategorie nachgefordert
+  assert.deepEqual(topped.briefs.map((b) => b.sk), ["II", "II", "III", "III"]);
   assert.deepEqual(scenario.units.map((u) => [u.id, u.title, u.arrivesAt, u.seats]), [["rtw1", "RTW 1", 0, 1], ["nef1", "NEF 1", 8, 0], ["ktw1", "KTW 1", 20, 2], ["rtw2", "RTW 2", 60, 1]]);
   assert.deepEqual(scenario.units[1].inventory, lib.scenarios.busunfall.units.find((u) => u.id === "nef1")!.inventory);
-  assert.equal(briefs.length, 2);
-  assert.match(briefs[0], /^Lage: Nachts brennt ein Pflegeheim\.\nPatient: Bewohnerin, 84/);
   assert.match(scenario.id, /^ki-s/);
+});
+
+test("Generator: verfehlt der Patient die gewünschte Sichtung, gibt es einen zweiten Versuch mit Hinweis", async () => {
+  const prompts: string[] = [];
+  const ai: Ai = { name: "test", async json(_t, _s, user, schema) { prompts.push(user); return schema.parse(gen); } }; // gen ist SK I
+  const r = await generate(ai, "Stichverletzung", lib.defs.actions, lib.defs.patients.p01, "III");
+  assert.equal(prompts.length, 2);
+  assert.match(prompts[1], /soll zu Beginn nach mSTaRT Kategorie III sein, ist nach deinen Ausgangswerten aber I/);
+  assert.ok(r.report.warnings.includes("Sichtung zu Beginn I statt gewünscht III"));
 });
 
 test("Lokales Modell über OpenAI-kompatible Schnittstelle, auch mit Text um das JSON und nach kaputtem JSON", async () => {
@@ -188,4 +197,41 @@ test("Lokales Modell über OpenAI-kompatible Schnittstelle, auch mit Text um das
   } finally {
     server.close();
   }
+});
+
+test("Generator: tödliche Verletzung nur bei Toten, Bildtext muss die Person beschreiben", async () => {
+  const lethal = structuredClone(gen);
+  lethal.base.lethalInjury = true; // kleines Modell: "schwer verletzt" = tödlich
+  const scene = structuredClone(gen);
+  scene.picture = "Ein Kleinbus liegt neben einem Baum, Einsatzkräfte bergen Verletzte.";
+  const prompts: string[] = [];
+  const replies = [scene, lethal];
+  const ai: Ai = { name: "test", async json(_t, _s, user, schema) { prompts.push(user); return schema.parse(replies[prompts.length - 1]); } };
+  const r = await generate(ai, "Stichverletzung", lib.defs.actions, lib.defs.patients.p01);
+  assert.equal(prompts.length, 2); // Szene statt Person: zweiter Versuch
+  assert.match(prompts[1], /beschreibt die Szene statt der Person/);
+  assert.equal(r.report.sk, "I"); // nicht EX
+  assert.ok(r.report.warnings.includes("„tödliche Verletzung“ bei lebendem Patienten entfernt"));
+});
+
+test("Generator: Verweis auf eine nicht vorhandene Phase fällt weg, statt den Fall scheitern zu lassen", async () => {
+  const dangling = structuredClone(gen);
+  dangling.phases[1].else = "5-stabilisierungsmaßnahmen"; // gibt es nicht
+  dangling.phases[0].rules.push({ when: ["oxygen"], active: [], then: "phase-9" });
+  const r = await generate(fake(dangling), "Stichverletzung", lib.defs.actions, lib.defs.patients.p01);
+  assert.equal(r.report.ok, true);
+  assert.ok(r.report.warnings.includes("2 Verweis(e) auf fehlende Phasen entfernt"));
+});
+
+test("Generator: Zielgruppe SanH streicht kritische Maßnahmen außerhalb des Rahmens und setzt die Schwierigkeit", async () => {
+  const g = structuredClone(gen);
+  g.critical = [{ actions: ["tourniquet"], within: 10 }, { actions: ["iv_access", "fluids"], within: 20 }];
+  const sanh = await generate(fake(g), "Stichverletzung", lib.defs.actions, lib.defs.patients.p01, undefined, "sanh");
+  const p = sanh.raw as { scoring: { critical: { actions: string[] }[] }; meta: { difficulty: string } };
+  assert.deepEqual(p.scoring.critical.map((c) => c.actions), [["tourniquet"]]);
+  assert.equal(p.meta.difficulty, "einsteiger");
+  assert.ok(sanh.report.warnings.includes("kritische Maßnahmen außerhalb des Rahmens Sanitätshelfer (SanH) entfernt"));
+  const notsan = await generate(fake(g), "Stichverletzung", lib.defs.actions, lib.defs.patients.p01, undefined, "notsan");
+  assert.equal((notsan.raw as typeof p).scoring.critical.length, 2); // NotSan darf invasive Maßnahmen
+  assert.equal((notsan.raw as typeof p).meta.difficulty, "experte");
 });

@@ -1,4 +1,4 @@
-// Speicher mit der eingebauten SQLite von Node: Geräte-Schlüssel, Freigaben, Übungen.
+// Speicher mit der eingebauten SQLite von Node: Geräte-Schlüssel, Übungen, eigene Fälle und Szenarien.
 import { DatabaseSync } from "node:sqlite";
 import { createHash, randomBytes, randomInt } from "node:crypto";
 import type { Defs } from "@dps/engine";
@@ -13,7 +13,6 @@ export function openDb(path: string): Db {
     pragma journal_mode = wal;
     create table if not exists users (id text primary key, created integer not null);
     create table if not exists sessions (token_hash blob primary key, user_id text not null, created integer not null);
-    create table if not exists approvals (user_id text not null, item text not null, version integer not null, at integer not null, primary key (user_id, item));
     create table if not exists exercises (code text primary key, owner text not null, header text not null);
     create table if not exists controls (code text not null, at integer not null, type text not null);
     create table if not exists drafts (id text primary key, owner text not null, created integer not null, brief text not null, patient text not null, report text not null);
@@ -47,22 +46,6 @@ export function newDevice(db: Db, now: number): string {
 
 export function userByToken(db: Db, token: string): { id: string } | null {
   return (db.prepare("select u.id from sessions s join users u on u.id = s.user_id where s.token_hash = ?").get(hash(token)) as { id: string } | undefined) ?? null;
-}
-
-// Freigaben: jeder Praxisanleiter gibt Fälle nur für sich frei, gebunden an die Version.
-export function myApprovals(db: Db, userId: string): Map<string, number> {
-  const rows = db.prepare("select item, version from approvals where user_id = ?").all(userId) as { item: string; version: number }[];
-  return new Map(rows.map((r) => [r.item, r.version]));
-}
-
-export function approvalCounts(db: Db): Map<string, number> {
-  const rows = db.prepare("select item, count(*) as n from approvals group by item").all() as { item: string; n: number }[];
-  return new Map(rows.map((r) => [r.item, r.n]));
-}
-
-export function setApproval(db: Db, userId: string, item: string, version: number, approved: boolean, now: number) {
-  if (approved) db.prepare("insert or replace into approvals values (?, ?, ?, ?)").run(userId, item, version, now);
-  else db.prepare("delete from approvals where user_id = ? and item = ?").run(userId, item);
 }
 
 // Übungen: Kopf, Steuerbefehle und Aktionen werden sofort geschrieben, beim Start alles wieder geladen.

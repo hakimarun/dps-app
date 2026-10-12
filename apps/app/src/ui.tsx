@@ -56,7 +56,7 @@ export function Button({ t, label, note, onPress, disabled, strong, color }: {
       {({ pressed }) => (
         <View style={{ borderRadius: 14, backgroundColor: edge, paddingBottom: pressed ? 1 : 4, marginTop: pressed ? 3 : 0, opacity: disabled ? 0.45 : 1 }}>
           <View style={{ borderRadius: 14, backgroundColor: strong ? t.accent : t.card, overflow: "hidden" }}>
-            <View style={{ minHeight: strong ? 56 : 48, paddingHorizontal: 16, paddingVertical: 6, justifyContent: "center", backgroundColor: color ? `${color}2E` : "transparent", borderWidth: color ? 2 : 0, borderColor: color ?? "transparent", borderRadius: 14 }}>
+            <View style={{ minHeight: strong ? 56 : 48, paddingHorizontal: 8, paddingVertical: 6, justifyContent: "center", backgroundColor: color ? `${color}2E` : "transparent", borderWidth: color ? 2 : 0, borderColor: color ?? "transparent", borderRadius: 14 }}>
               <Text style={{ color: fg, fontSize: strong ? 18 : 16, fontWeight: strong ? "900" : "700", textAlign: align }}>{label}</Text>
               {note && <Text style={{ color: strong ? "rgba(255,255,255,0.8)" : t.quiet, fontSize: 12, textAlign: align }}>{note}</Text>}
             </View>

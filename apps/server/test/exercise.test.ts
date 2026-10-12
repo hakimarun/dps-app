@@ -4,7 +4,7 @@ import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
 import { caseOfDay, control, createExercise, csv, inject, submitAsk, observerView, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { DatabaseSync } from "node:sqlite";
-import { deleteExercisesBefore, loadExercises, myApprovals, newDevice, openDb, saveExercise, setApproval, userByToken } from "../src/db.ts";
+import { deleteExercisesBefore, loadExercises, newDevice, openDb, saveExercise, userByToken } from "../src/db.ts";
 import { evaluate } from "../src/evaluation.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -92,10 +92,8 @@ test("Ohne Konten: jedes Gerät bekommt einen eigenen Schlüssel, auch in älter
   assert.ok(userByToken(old as never, newDevice(old as never, 0)));
 });
 
-test("Freigaben und Übungen überstehen einen Neustart", () => {
+test("Übungen überstehen einen Neustart", () => {
   const db = openDb(":memory:");
-  setApproval(db, "u1", "p01", 1, true, 0);
-  assert.equal(myApprovals(db, "u1").get("p01"), 1);
   const trupp = { code: "TRUPPX", name: "Behandlungstrupp 1", role: "behandlung" as const, unit: "rtw1" };
   const ex = saveExercise(db, { ...header, trupps: [trupp] }, lib.defs);
   control(ex, "start", 0);
@@ -326,4 +324,17 @@ test("Temperament live ändern: wirkt auf Gespräch und Auswertung, Leitung sieh
   control(ex, "end", 10 * MIN);
   assert.ok(evaluate(ex, 10 * MIN).helpers[0].badges.includes("Ruhepol")); // beruhigt den nun aggressiven Patienten
   assert.equal(inject(ex, { type: "mood", patient: "p01", temperament: "" }, 10 * MIN), "Übung beendet");
+});
+
+test("Später entdeckter Patient: Leitung sieht, wann der Zettel ausgelegt wird; Fristen zählen ab dem Auftauchen", async () => {
+  const { evaluate } = await import("../src/evaluation.ts");
+  const ex = createExercise({ ...header, code: "LATE01", settings: { ...defaultSettings, late: { p01: 20 } } }, lib.defs);
+  control(ex, "start", 0);
+  const { p } = joined(ex);
+  assert.equal(leitungView(ex, 5 * MIN).patients[0].alert, "Zettel bei 20:00 auslegen (taucht später auf)");
+  assert.equal(submit(ex, p, msg({ type: "scan", patient: "p01" }, 5 * MIN), 5 * MIN).error, "Diesen Patienten gibt es hier noch nicht");
+  assert.equal(submit(ex, p, msg({ type: "scan", patient: "p01" }, 21 * MIN), 21 * MIN).error, null);
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "tourniquet" }, 22 * MIN), 22 * MIN);
+  control(ex, "end", 40 * MIN);
+  assert.equal(evaluate(ex, 40 * MIN).critical.timely, 1); // Tourniquet bei 22 min: rechtzeitig, weil P01 erst bei 20 auftauchte
 });

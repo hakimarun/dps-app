@@ -1,0 +1,2335 @@
+{
+  "format": "dps-szenario",
+  "version": 1,
+  "exported": "2026-10-12",
+  "scenario": {
+    "title": "Verpuffung im Chemieraum – Realschule am Lindenpark",
+    "situation": "Um 10:15 Uhr kommt es im Chemieraum einer Realschule während eines Schülerversuchs der Klasse 9b zu einer Verpuffung mit Stichflamme und Freisetzung von Reizgas. Lehrkräfte haben den Raum geräumt und die Betroffenen auf den Schulhof gebracht, wo eine Patientenablage eingerichtet wird. Die Feuerwehr lüftet das Gebäude, mehrere Schüler sind panisch, es ist kühl und windig.",
+    "patients": [
+      "ki-01b9c2",
+      "ki-4dda18",
+      "ki-e74c7b",
+      "ki-2d24e8",
+      "ki-a0d62a",
+      "ki-69b977",
+      "ki-4deaf3"
+    ],
+    "units": [
+      {
+        "id": "rtw1",
+        "title": "RTW 1",
+        "arrivesAt": 0,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "rtw2",
+        "title": "RTW 2",
+        "arrivesAt": 7,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "nef1",
+        "title": "NEF 1",
+        "arrivesAt": 10,
+        "seats": 0,
+        "inventory": {
+          "needle": 2,
+          "ett": 2,
+          "analgesic": 4,
+          "iv_cannula": 2,
+          "infusion": 2,
+          "o2_mask": 1,
+          "bvm": 1,
+          "chest_seal": 1,
+          "hemostatic": 1,
+          "glucose": 2,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw1",
+        "title": "KTW 1",
+        "arrivesAt": 12,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      },
+      {
+        "id": "rtw3",
+        "title": "RTW 3",
+        "arrivesAt": 15,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw2",
+        "title": "KTW 2",
+        "arrivesAt": 20,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      }
+    ]
+  },
+  "patients": [
+    {
+      "id": "ki-01b9c2",
+      "version": 1,
+      "title": "Arterielle Schnittverletzung am Unterarm mit leichten Handverbrennungen",
+      "picture": "Frau, ca. 40 Jahre, sitzt am Rand des Schulhofs auf dem Boden und presst ein blutgetränktes Tuch auf den rechten Unterarm. Darunter spritzt hellrotes Blut stoßweise hervor, daneben eine Blutlache. Beide Hände sind gerötet und haben kleine Blasen. Sie ist wach, gefasst und etwas blass. Sie versucht immer wieder aufzustehen und sagt: „Ich muss nach meinen Schülern sehen, mir geht es gut!“",
+      "profile": {
+        "temperament": "gefasst, pflichtbewusst, unruhig wegen der Schüler; wird bei zunehmendem Blutverlust stiller und schläfrig",
+        "pitfall": "Die Patientin spielt ihre Verletzung herunter, will ständig aufstehen und nach den Schülern sehen und muss zum Sitzenbleiben angehalten werden. Das Tuch verdeckt die spritzende Blutung. Die auffälligen Brandblasen an den Händen lenken von der lebensbedrohlichen Blutung ab. Großflächiges Kühlen ist bei kühlem, windigem Wetter schädlich, denn es drohen Auskühlung und eine Verstärkung des Schocks.",
+        "anamnesis": {
+          "symptoms": "Mein Arm tut weh und blutet stark, und meine Hände brennen. Mir ist ein bisschen schwindelig.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme keine Medikamente, nur die Pille.",
+          "history": "Ich bin eigentlich gesund und hatte noch nie etwas Ernstes.",
+          "lastMeal": "Ich habe in der ersten großen Pause um halb zehn ein Brot gegessen und einen Kaffee getrunken.",
+          "event": "Beim Versuch hat es plötzlich gezischt und eine Stichflamme gegeben. Dabei ist mir der Glaskolben in der Hand zerplatzt und hat mir den Arm aufgeschnitten.",
+          "risk": "Ich weiß nicht genau, wann meine letzte Tetanusimpfung war. Das ist bestimmt schon über zehn Jahre her."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (AWMF-Register 187-023, Version 2022): Blutstillung durch Kompression/Druckverband, Tourniquet bei nicht stillbarer Extremitätenblutung, Wärmeerhalt",
+          "European Resuscitation Council (ERC) Leitlinien 2021, Kapitel Erste Hilfe: direkter Druck und Druckverband bei lebensbedrohlicher Blutung, Kühlen von Verbrennungen nur kleinflächig, Hypothermievermeidung",
+          "S2k-Leitlinie Behandlung thermischer Verletzungen im Erwachsenenalter (AWMF-Register 044-001): kein großflächiges Kühlen wegen Hypothermiegefahr, sterile Abdeckung",
+          "mSTaRT-Algorithmus (Kanz et al., Notfall + Rettungsmedizin 2006) zur Vorsichtung bei MANV",
+          "DRK/ASB/JUH Ausbildungsunterlagen Sanitätsdienst (Sanitätshelfer): Blutstillung, Schockbekämpfung, Betreuung"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Blutung",
+          "Spritzende Blutung",
+          "Schnittverletzung",
+          "Schock",
+          "Verbrennung",
+          "Wärmeerhalt",
+          "Betreuung"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "pressure_dressing"
+            ],
+            "within": 10
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 22,
+        "spo2": 96,
+        "hr": 112,
+        "bp": "125/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": true,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 6,
+        "exam": {
+          "wound": "Ca. 6 cm lange, tiefe, klaffende Schnittwunde an der Innenseite des rechten Unterarms kurz oberhalb des Handgelenks. Hellrotes Blut spritzt pulsierend. Keine sichtbaren Glassplitter mehr in der Wunde.",
+          "burn": "Rötung und einzelne kleine Brandblasen an Handinnenflächen und Fingern beidseits, oberflächlich, zusammen deutlich unter 5 % Körperoberfläche.",
+          "skin": "Leicht blass, warm, trocken.",
+          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
+          "eyes": "Augen leicht gerötet, sie gibt kurzes Brennen durch den Rauch an, kein Fremdkörper.",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion beidseits.",
+          "temp": "36,5 °C",
+          "bodycheck": "Außer dem rechten Unterarm und den Händen keine weiteren Verletzungen."
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "tourniquet"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 20,
+            "hr": 106,
+            "bp": "120/80",
+            "spurtingBleeding": false,
+            "pain": 5,
+            "exam": {
+              "wound": "Verband sitzt, Blutung steht, Verband nicht durchgeblutet.",
+              "skin": "Leicht blass, beginnt im Wind zu frösteln."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 18,
+            "spo2": 97,
+            "hr": 96,
+            "bp": "125/80",
+            "spurtingBleeding": false,
+            "pain": 4,
+            "exam": {
+              "wound": "Verband sitzt, Blutung steht.",
+              "skin": "Rosig, warm, trocken.",
+              "temp": "36,4 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 20,
+            "hr": 104,
+            "bp": "118/78",
+            "recap": 3,
+            "spurtingBleeding": false,
+            "pain": 5,
+            "exam": {
+              "wound": "Verband sitzt, Blutung steht.",
+              "skin": "Blass, kühl, Kältezittern.",
+              "temp": "35,9 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 26,
+            "spo2": 95,
+            "hr": 128,
+            "bp": "100/70",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 7,
+            "exam": {
+              "wound": "Tuch vollständig durchgeblutet, weiterhin pulsierend spritzende Blutung, große Blutlache.",
+              "skin": "Deutlich blass, kaltschweißig.",
+              "behavior": "Wird ruhiger und etwas schläfrig, antwortet langsamer: „Mir ist so komisch.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "6"
+            },
+            {
+              "when": [
+                "tourniquet"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 24,
+            "spo2": 95,
+            "hr": 118,
+            "bp": "100/70",
+            "recap": 3,
+            "gcs": 14,
+            "spurtingBleeding": false,
+            "pain": 6,
+            "exam": {
+              "wound": "Blutung steht, Verband nicht durchgeblutet.",
+              "skin": "Blass, kaltschweißig, fröstelt."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 20,
+            "spo2": 96,
+            "hr": 108,
+            "bp": "110/75",
+            "recap": 3,
+            "gcs": 15,
+            "spurtingBleeding": false,
+            "pain": 5,
+            "exam": {
+              "wound": "Blutung steht.",
+              "skin": "Noch blass, aber trocken und wärmer.",
+              "temp": "36,2 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 24,
+            "spo2": 95,
+            "hr": 120,
+            "bp": "95/65",
+            "recap": 4,
+            "gcs": 14,
+            "spurtingBleeding": false,
+            "pain": 6,
+            "exam": {
+              "wound": "Blutung steht.",
+              "skin": "Blass, kalt, ausgeprägtes Kältezittern.",
+              "temp": "35,6 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 32,
+            "spo2": 93,
+            "hr": 145,
+            "bp": "75/50",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 10,
+            "followsCommands": false,
+            "pain": 6,
+            "exam": {
+              "wound": "Weiterhin spritzende Blutung, sehr große Blutlache, Tuch ist ihr aus der Hand gerutscht.",
+              "skin": "Fahl-grau, kaltschweißig, kalt.",
+              "behavior": "Sinkt zur Seite, öffnet die Augen nur auf Ansprache, murmelt unverständlich."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "tourniquet"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "12",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 30,
+            "spo2": 93,
+            "hr": 135,
+            "bp": "85/55",
+            "radialPulse": false,
+            "recap": 4,
+            "gcs": 12,
+            "followsCommands": true,
+            "spurtingBleeding": false,
+            "pain": 6,
+            "exam": {
+              "wound": "Blutung steht.",
+              "skin": "Fahl, kaltschweißig, kalt.",
+              "behavior": "Schläfrig, befolgt einfache Aufforderungen verzögert."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "shock_position"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 26,
+            "spo2": 94,
+            "hr": 125,
+            "bp": "90/60",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 13,
+            "followsCommands": true,
+            "spurtingBleeding": false,
+            "pain": 5,
+            "exam": {
+              "wound": "Blutung steht.",
+              "skin": "Blass, kühl, weniger schweißig.",
+              "behavior": "Etwas wacher, fragt leise nach ihren Schülern."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 8,
+            "spo2": 82,
+            "hr": 150,
+            "bp": "nicht messbar",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 5,
+            "followsCommands": false,
+            "spurtingBleeding": false,
+            "pain": 0,
+            "exam": {
+              "wound": "Nur noch sickernde Blutung bei massivem Blutverlust, riesige Blutlache.",
+              "skin": "Wachsbleich, kalt, marmoriert.",
+              "behavior": "Reagiert nur noch auf Schmerzreiz mit Stöhnen, Schnappatmung droht."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "tourniquet",
+                "shock_position"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "13",
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "hr": 0,
+            "bp": "nicht messbar",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "spurtingBleeding": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "pulse_oximetry": "Kein messbares Signal.",
+              "skin": "Wachsbleich, kalt.",
+              "pupils": "Weit, lichtstarr beidseits."
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-4dda18",
+      "version": 1,
+      "title": "Verbrennung 2. Grades beider Oberschenkel (ca. 8 % KOF)",
+      "picture": "Junge, ca. 15 Jahre, liegt auf dem Rücken auf dem Boden. Die Jeans ist an beiden Oberschenkeln angesengt, darunter großflächig gerötete Haut mit Blasen. Er hält die Hände über die Beine, ohne sie zu berühren, jammert laut und ruft: „Meine Beine brennen! Fasst mich bloß nicht an!“ Auf Ansprache sagt er, dass er vor Schmerzen nicht aufstehen kann.",
+      "profile": {
+        "temperament": "laut, wehleidig, leicht reizbar; wird ruhiger, wenn man ihm erklärt, was man tut",
+        "pitfall": "Schreit Helfer an und will die angesengte Jeans selbst herunterreißen. Fragt ständig, ob seine Eltern angerufen werden. Bei langem Kühlen ohne Rettungsdecke beginnt er auf dem kalten Boden zu zittern.",
+        "anamnesis": {
+          "symptoms": "Meine Oberschenkel brennen wie Feuer, das tut total weh! Wegen dem Gestank habe ich kurz gehustet, aber jetzt bekomme ich gut Luft.",
+          "event": "Bei unserem Versuch hat es plötzlich gezischt, dann kam eine Stichflamme, und meine Hose hat kurz gebrannt.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Nein, ich nehme keine Medikamente.",
+          "history": "Nein, ich bin eigentlich gesund.",
+          "lastMeal": "In der ersten großen Pause habe ich ein Brötchen gegessen und etwas getrunken.",
+          "risk": "Ich glaube, ich bin gegen Tetanus geimpft, aber das weiß meine Mutter genauer."
+        },
+        "sources": [
+          "AWMF S2k-Leitlinie 006-128: Behandlung thermischer Verletzungen im Kindesalter (Kühlung nur kurz und lauwarm, Vermeidung von Hypothermie, sterile Abdeckung, Wärmeerhalt)",
+          "AWMF S2k-Leitlinie 044-001: Behandlung thermischer Verletzungen im Erwachsenenalter",
+          "European Resuscitation Council (ERC) Guidelines 2021 – First Aid: Burns (Kühlung, Abdecken, Hypothermieprophylaxe)",
+          "mSTaRT-Algorithmus (modifiziertes Simple Triage and Rapid Treatment) zur Vorsichtung bei MANV",
+          "DGUV Information 204-022: Erste Hilfe im Betrieb bzw. Ausbildungsunterlagen Sanitätsdienst (Basismaßnahmen bei Verbrennungen)"
+        ]
+      },
+      "meta": {
+        "category": "Verbrennung",
+        "tags": [
+          "Verbrennung",
+          "Schulunfall",
+          "Jugendlicher",
+          "Wärmeerhalt",
+          "Betreuung",
+          "MANV"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "burn_dressing"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": []
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 22,
+        "spo2": 98,
+        "hr": 112,
+        "bp": "130/80",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 8,
+        "exam": {
+          "burn": "Verbrennung 2. Grades an der Vorderseite beider Oberschenkel, zusammen ca. 8 % Körperoberfläche: Rötung, teils geplatzte Blasen, feuchter Wundgrund, stark schmerzhaft. Die Jeans ist angesengt, aber nicht mit der Haut verklebt. Gesicht, Hände und Genitalbereich sind nicht betroffen.",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
+          "body_check": "Keine weiteren Verletzungen. Gesicht und Nasenhaare unversehrt, kein Ruß im Mund, keine Heiserkeit.",
+          "abdomen": "Weich, kein Druckschmerz.",
+          "pelvis": "Stabil, kein Schmerz.",
+          "temperature": "36,6 °C",
+          "ecg": "Sinustachykardie",
+          "glucose": "105 mg/dl"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "cool_large",
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "cool_large",
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            },
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "cool_large"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "hr": 105,
+            "pain": 5,
+            "exam": {
+              "temperature": "36,1 °C",
+              "skin": "Haut an den Beinen nass und kühl. Er fröstelt, Gänsehaut an den Armen, klagt: „Mir wird kalt.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "hr": 112,
+            "recap": 3,
+            "pain": 6,
+            "exam": {
+              "temperature": "35,7 °C",
+              "skin": "Er zittert deutlich am ganzen Körper, die Lippen sind leicht bläulich und die Haut ist kalt. Er jammert: „Mir ist so kalt, hört auf mit dem Wasser!“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 24,
+            "hr": 118,
+            "recap": 3,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "temperature": "35,2 °C",
+              "skin": "Er zittert stark, ist blass, die Lippen sind bläulich. Er wirkt matt und antwortet verlangsamt."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 18,
+            "hr": 96,
+            "pain": 4,
+            "exam": {
+              "burn": "Brandwunden an beiden Oberschenkeln steril und locker abgedeckt, ca. 8 % KOF, 2. Grades.",
+              "temperature": "36,4 °C",
+              "skin": "Unter der Rettungsdecke warm, kein Zittern."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 16,
+            "hr": 90,
+            "pain": 3,
+            "exam": {
+              "burn": "Brandwunden an beiden Oberschenkeln steril und locker abgedeckt, ca. 8 % KOF, 2. Grades.",
+              "temperature": "36,5 °C",
+              "skin": "Warm, kein Zittern. Er liegt ruhig und spricht gefasst: „Geht schon besser, danke.“"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 20,
+            "hr": 102,
+            "pain": 5,
+            "exam": {
+              "burn": "Brandwunden an beiden Oberschenkeln gekühlt, liegen offen, ca. 8 % KOF, 2. Grades. Etwas Schmutz vom Boden am Wundrand.",
+              "temperature": "36,3 °C",
+              "skin": "Unter der Rettungsdecke warm, kein Zittern."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 20,
+            "hr": 106,
+            "pain": 7,
+            "exam": {
+              "burn": "Brandwunden an beiden Oberschenkeln steril abgedeckt, ca. 8 % KOF, 2. Grades, weiterhin stark schmerzhaft.",
+              "skin": "Unter der Rettungsdecke warm, kein Zittern."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 18,
+            "hr": 100,
+            "pain": 6,
+            "exam": {
+              "burn": "Brandwunden an beiden Oberschenkeln steril abgedeckt, ca. 8 % KOF, 2. Grades.",
+              "skin": "Warm, kein Zittern. Er ist ruhiger, stöhnt aber noch bei Bewegung."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 24,
+            "hr": 120,
+            "bp": "135/85",
+            "pain": 9,
+            "exam": {
+              "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF. Die Blasen werden größer und nässen, Schmutz vom Boden in den offenen Wunden.",
+              "temperature": "36,2 °C",
+              "skin": "Er fröstelt auf dem kalten Boden, ist sehr unruhig und schreit vor Schmerzen."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "cool_large",
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "cool_large",
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            },
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "cool_large"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 26,
+            "hr": 126,
+            "bp": "130/85",
+            "recap": 3,
+            "pain": 9,
+            "exam": {
+              "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF, stark nässend und verschmutzt.",
+              "temperature": "35,7 °C",
+              "skin": "Er zittert, ist blass und kaltschweißig und weint vor Schmerzen."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "12",
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 26,
+            "hr": 128,
+            "bp": "125/80",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 9,
+            "exam": {
+              "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF, stark nässend und verschmutzt.",
+              "temperature": "35,3 °C",
+              "skin": "Er zittert stark, ist blass, die Lippen sind leicht bläulich. Er wirkt erschöpft und antwortet verlangsamt."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "burn_dressing"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-e74c7b",
+      "version": 1,
+      "title": "Asthmaanfall nach Reizgasinhalation",
+      "picture": "Mädchen, ca. 14 Jahre, sitzt vornübergebeugt auf einer Bank und stützt die Arme auf die Knie. Sie hustet stark und atmet schnell mit hörbarem Pfeifen beim Ausatmen. Gesicht blass, Augen gerötet und tränend, keine sichtbaren Brandverletzungen. Ein Rucksack liegt neben ihr. Sie wirkt ängstlich, schaut die Helfer an und sagt stockend: „Ich krieg … schlecht Luft … mein Asthma …“",
+      "profile": {
+        "temperament": "ängstlich, aber kooperativ; beruhigt sich deutlich bei ruhiger Ansprache",
+        "pitfall": "Die Patientin hat ihr Notfallspray im Rucksack und sagt das nur auf Nachfrage. Die schnelle Atmung darf nicht als Hyperventilation verkannt werden: Tütenrückatmung oder Flachlagerung verschlechtern den Zustand. Sie fragt immer wieder: „Muss ich ersticken?“",
+        "anamnesis": {
+          "symptoms": "Ich krieg kaum Luft, meine Brust ist ganz eng und meine Augen brennen.",
+          "allergies": "Ich bin allergisch gegen Hausstaub und Katzenhaare.",
+          "medication": "Ich habe ein Asthmaspray für den Notfall, das ist in meinem Rucksack. Morgens und abends nehme ich noch ein anderes Spray.",
+          "history": "Ich habe seit ich klein bin Asthma, aber so schlimm war es lange nicht mehr.",
+          "lastMeal": "Ich habe in der ersten großen Pause ein Brot gegessen und Wasser getrunken.",
+          "event": "Bei unserem Versuch hat es plötzlich gezischt und eine Stichflamme gegeben. Dann war da so ein stechender Rauch und ich musste sofort husten.",
+          "risk": "Wenn es kalt ist oder ich mich aufrege, wird mein Asthma immer schlimmer."
+        },
+        "sources": [
+          "Nationale VersorgungsLeitlinie Asthma, 4. Auflage (BÄK, KBV, AWMF), Kapitel Asthmaanfall bei Kindern und Jugendlichen",
+          "S2k-Leitlinie Diagnostik und Therapie von Patienten mit Asthma (AWMF-Register 020-009)",
+          "ERC Leitlinien 2021: Lebensrettende Maßnahmen bei Kindern (Paediatric Life Support) und Erste Hilfe",
+          "mSTaRT-Vorsichtung (modifiziertes Simple Triage and Rapid Treatment) für den MANV",
+          "DGUV Information 202-059 Erste Hilfe in Schulen",
+          "Hinweis: Notfallspray der Patientin nur nach Rücksprache bzw. Assistenz bei Selbstanwendung, ärztliche Prüfung vor dem Übungseinsatz erforderlich"
+        ]
+      },
+      "meta": {
+        "category": "Pädiatrie",
+        "tags": [
+          "Asthma",
+          "Reizgas",
+          "Atemnot",
+          "Schule",
+          "MANV",
+          "Kind/Jugendliche"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "upper_body_up"
+            ],
+            "within": 5
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 15
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing",
+          "shock_position",
+          "recovery_position"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 26,
+        "spo2": 92,
+        "hr": 116,
+        "bp": "125/80",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 3,
+        "exam": {
+          "auscultation": "Beidseits exspiratorisches Giemen und Brummen, verlängerte Ausatmung, Belüftung seitengleich",
+          "inspection": "Sitzt im Kutschersitz, setzt die Atemhilfsmuskulatur ein, leichte Einziehungen am Hals. Spricht nur in kurzen Sätzen. Keine Verbrennungen oder sonstigen Verletzungen",
+          "eyes": "Bindehäute beidseits gerötet, Tränenfluss, Brennen",
+          "skin": "Blass, kühl, nicht zyanotisch",
+          "ecg": "Sinustachykardie",
+          "temp": "36,6 °C",
+          "pupils": "Mittelweit, seitengleich, prompt lichtreagibel"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "upper_body_up",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "upper_body_up",
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "upper_body_up"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 22,
+            "spo2": 95,
+            "hr": 106,
+            "pain": 2,
+            "exam": {
+              "auscultation": "Giemen beidseits deutlich leiser, Ausatmung noch leicht verlängert",
+              "inspection": "Sitzt aufrecht, atmet ruhiger mit Lippenbremse, spricht in ganzen Sätzen"
+            }
+          },
+          "rules": [],
+          "else": "5",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 26,
+            "spo2": 92,
+            "hr": 118,
+            "exam": {
+              "inspection": "Sitzt aufrecht, ist aber sehr unruhig und weint, Atmung weiterhin schnell und pfeifend"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 30,
+            "spo2": 89,
+            "hr": 128,
+            "recap": 2,
+            "pain": 4,
+            "exam": {
+              "auscultation": "Lautes Giemen und Brummen beidseits, stark verlängerte Ausatmung",
+              "inspection": "Deutliche Einziehungen am Hals und zwischen den Rippen, spricht nur noch einzelne Wörter, panisch",
+              "skin": "Blass, Lippen leicht bläulich"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "upper_body_up",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "6"
+            },
+            {
+              "when": [
+                "upper_body_up",
+                "calm"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 20,
+            "spo2": 96,
+            "hr": 100,
+            "pain": 1,
+            "exam": {
+              "auscultation": "Nur noch vereinzeltes leises Giemen am Ende der Ausatmung",
+              "inspection": "Sitzt entspannt, spricht in ganzen Sätzen, Husten deutlich weniger",
+              "skin": "Rosig, warm"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 25,
+            "spo2": 92,
+            "hr": 114,
+            "pain": 3,
+            "exam": {
+              "auscultation": "Giemen beidseits etwas leiser, Ausatmung verlängert",
+              "inspection": "Sitzt aufrecht, Einziehungen geringer, spricht wieder in kurzen Sätzen",
+              "skin": "Blass, Lippen rosig"
+            }
+          },
+          "rules": [],
+          "else": "5",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 34,
+            "spo2": 84,
+            "hr": 142,
+            "bp": "135/85",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 5,
+            "exam": {
+              "auscultation": "Atemgeräusch beidseits sehr leise, kaum noch Giemen hörbar",
+              "inspection": "Erschöpft, Kopf sinkt nach vorne, spricht nicht mehr, schwere Einziehungen",
+              "skin": "Lippen und Fingerspitzen bläulich, kaltschweißig"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "upper_body_up",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 28,
+            "spo2": 90,
+            "hr": 128,
+            "bp": "130/80",
+            "recap": 2,
+            "gcs": 15,
+            "pain": 4,
+            "exam": {
+              "auscultation": "Wieder deutliches Giemen beidseits, Belüftung besser",
+              "inspection": "Sitzt aufrecht, sehr erschöpft, antwortet mit einzelnen Wörtern",
+              "skin": "Blass, Lippen noch leicht bläulich"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 8,
+            "spo2": 72,
+            "hr": 52,
+            "bp": "90/50",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 8,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "auscultation": "Kaum noch Atemgeräusch hörbar (stille Lunge)",
+              "inspection": "Bewusstlos, schnappende, sehr flache Atmung",
+              "skin": "Zentral zyanotisch, grau-blass",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "10"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 12,
+            "spo2": 86,
+            "hr": 110,
+            "bp": "100/60",
+            "radialPulse": true,
+            "recap": 3,
+            "gcs": 7,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "auscultation": "Leises Atemgeräusch unter Beutelbeatmung, Beatmung schwergängig",
+              "inspection": "Bewusstlos, Beatmung mit Beutel-Masken-System nötig",
+              "skin": "Zyanose rückläufig, blass",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "auscultation": "Kein Atemgeräusch",
+              "inspection": "Keine Atmung, keine Reaktion",
+              "skin": "Zentral zyanotisch, grau",
+              "ecg": "Asystolie"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-2d24e8",
+      "version": 1,
+      "title": "Panikbedingte Hyperventilation nach Reizgasereignis",
+      "picture": "Mädchen, ca. 15 Jahre, läuft weinend und unruhig hin und her. Atmet sehr schnell und hektisch, hält die Hände vor die Brust, die Finger sind leicht verkrampft. Keine sichtbaren Verletzungen, keine Brandspuren, kein Ruß im Gesicht. Wirkt aufgelöst, schaut sich panisch um und ruft: „Ich krieg keine Luft! Meine Hände kribbeln so, ich sterbe!“",
+      "profile": {
+        "temperament": "hysterisch, panisch und weinerlich; beruhigt sich bei einer festen, ruhigen Bezugsperson und folgt dann der Anleitung zum langsamen Atmen",
+        "pitfall": "Die schnelle Atmung wirkt bedrohlich. Trotz Reizgasexposition sind Atemweg und Lunge unauffällig, und die SpO2 ist hoch. Das muss durch Abhören und Pulsoxymetrie gesichert werden, bevor man von reiner Panik ausgeht. Die Tütenrückatmung ist nicht mehr empfohlen. Wer die Patientin ohne Betreuung stehen lässt, riskiert, dass sie sich weiter steigert und andere Schüler ansteckt.",
+        "anamnesis": {
+          "symptoms": "Ich krieg keine Luft, meine Hände und mein Mund kribbeln total, und meine Finger werden ganz steif!",
+          "allergies": "Nein, ich habe keine Allergien.",
+          "medication": "Nein, ich nehme keine Medikamente.",
+          "history": "Nein, ich bin gesund, ich habe auch kein Asthma.",
+          "lastMeal": "Ich habe in der ersten großen Pause ein Brot gegessen.",
+          "event": "Es hat bei der Gruppe neben uns plötzlich geknallt, und dann hat es so komisch gestunken. Ich war gar nicht direkt dran, aber alle haben geschrien, und ich bin rausgerannt.",
+          "risk": "Ich habe nur ganz kurz was gerochen, im Hals brennt es aber nicht. Ich habe einfach so Angst."
+        },
+        "sources": [
+          "Sefrin P, Weidringer JW, Weiss W: Sichtungskonzept mSTaRT, Deutsches Ärzteblatt / Notfall + Rettungsmedizin",
+          "European Resuscitation Council (ERC) Guidelines 2021 – First Aid",
+          "Callaham M: Hypoxic hazards of traditional paper bag rebreathing in hyperventilating patients. Ann Emerg Med 1989;18:622–628",
+          "DGUV Information 202-059 „Erste Hilfe in Schulen“",
+          "BBK: Psychosoziale Notfallversorgung – Qualitätsstandards und Leitlinien (Konsensus-Prozess), Teil I und II",
+          "S2k-Leitlinie Diagnostik und Therapie von Inhalationsverletzungen/Reizgasexposition (Orientierung zur Ausschlussdiagnostik)"
+        ]
+      },
+      "meta": {
+        "category": "Psychiatrie",
+        "tags": [
+          "Hyperventilation",
+          "Panik",
+          "Betreuung",
+          "Reizgas",
+          "Jugendliche",
+          "Schule"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 15
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 28,
+        "spo2": 100,
+        "hr": 115,
+        "bp": "135/80",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 2,
+        "exam": {
+          "ecg": "Sinustachykardie",
+          "auscultation": "Vesikuläratmen beidseits, kein Giemen, keine Rasselgeräusche",
+          "airway": "Atemweg frei, keine Heiserkeit, kein Husten, kein Ruß in Mund oder Nase",
+          "skin": "Keine Verbrennungen, keine Rötung, Haut rosig und warm",
+          "eyes": "Augen unauffällig, kein Tränen durch Reizung",
+          "pupils": "Mittelweit, isokor, prompt lichtreagibel",
+          "hands": "Kribbeln in beiden Händen und um den Mund, beginnende Verkrampfung der Finger",
+          "bodycheck": "Keine Verletzungen von Kopf bis Fuß",
+          "temperature": "36,7 °C",
+          "glucose": "98 mg/dl"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 20,
+            "hr": 98,
+            "bp": "125/75",
+            "pain": 1,
+            "exam": {
+              "ecg": "Sinusrhythmus",
+              "hands": "Kribbeln lässt nach, Finger lockern sich",
+              "behavior": "Weint leise, atmet nach Anleitung langsamer, hält sich an der Helferin fest"
+            }
+          },
+          "rules": [],
+          "else": "4",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 30,
+            "hr": 125,
+            "bp": "140/85",
+            "pain": 3,
+            "exam": {
+              "ecg": "Sinustachykardie",
+              "hands": "Ausgeprägte Pfötchenstellung beider Hände, Kribbeln auch in den Füßen und um den Mund",
+              "behavior": "Schreit und weint, läuft zu anderen Schülern, die ebenfalls unruhig werden und schneller atmen"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 16,
+            "hr": 88,
+            "bp": "120/75",
+            "pain": 0,
+            "exam": {
+              "ecg": "Sinusrhythmus",
+              "hands": "Kein Kribbeln mehr, Hände frei beweglich",
+              "behavior": "Ruhig, etwas erschöpft und verlegen, friert leicht im Wind, möchte ihre Eltern anrufen"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 22,
+            "hr": 105,
+            "bp": "130/80",
+            "pain": 1,
+            "exam": {
+              "ecg": "Sinustachykardie",
+              "hands": "Verkrampfung löst sich langsam, Kribbeln noch leicht vorhanden",
+              "behavior": "Sitzt, weint noch, atmet aber mit der Helferin mit"
+            }
+          },
+          "rules": [],
+          "else": "4",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "rr": 30,
+            "hr": 130,
+            "bp": "140/85",
+            "gcs": 14,
+            "pain": 4,
+            "exam": {
+              "ecg": "Sinustachykardie",
+              "hands": "Starke Pfötchenstellung, Füße ebenfalls verkrampft, kann deshalb nicht mehr laufen",
+              "behavior": "Sitzt zusammengekauert auf dem Boden, schwindelig, leicht benommen, ruft immer wieder: Ich sterbe!"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "walking": false,
+            "rr": 26,
+            "hr": 115,
+            "bp": "130/80",
+            "gcs": 15,
+            "pain": 3,
+            "exam": {
+              "ecg": "Sinustachykardie",
+              "hands": "Verkrampfung und Kribbeln weiterhin vorhanden",
+              "behavior": "Erschöpft, zittert in der Kälte, weint still, starrt vor sich hin und reagiert nur auf direkte Ansprache"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-a0d62a",
+      "version": 1,
+      "title": "Verbrennung 1. Grades an der linken Hand",
+      "picture": "Junge, ca. 14 Jahre, kommt selbstständig gelaufen und hält die linke Hand hoch. Handrücken und Finger der linken Hand sind gleichmäßig gerötet, Blasen sind nicht zu sehen. Gesicht und Haare ohne Rußspuren. Er gibt sich betont lässig, verzieht aber das Gesicht, wenn er die Hand bewegt. Sagt: „Ist nix, ist nur ein bisschen warm geworden.“",
+      "profile": {
+        "temperament": "betont lässig und cool, spielt die Verletzung herunter, ist eigentlich verunsichert und will vor den Mitschülern nicht schwach wirken",
+        "pitfall": "Er gibt die Schmerzen mit „höchstens 2“ an und sagt zunächst, Kühlen sei unnötig. Erst nach ruhigem Zuspruch lässt er sich versorgen. Bei der Nachsichtung muss trotzdem auf Zeichen eines Inhalationstraumas geachtet werden (keine vorhanden). Es ist kühl und windig, deshalb nur die Hand mit handwarmem Wasser kühlen, nicht eiskalt und nicht zu lange. Danach braucht er Wärmeerhalt.",
+        "anamnesis": {
+          "symptoms": "Die Hand brennt ein bisschen, aber das ist halb so wild.",
+          "event": "Ich stand direkt am Versuch. Da gab es plötzlich eine Stichflamme, und ich habe versucht, die Flamme mit der Hand wegzuwischen.",
+          "risk": "Von dem Rauch habe ich kaum etwas eingeatmet, ich war ja schnell draußen. Luft bekomme ich ganz normal.",
+          "allergies": "Nein, ich habe keine Allergien.",
+          "medication": "Nein, ich nehme keine Medikamente.",
+          "history": "Nein, ich bin gesund.",
+          "lastMeal": "In der ersten großen Pause habe ich ein Brötchen gegessen."
+        },
+        "sources": [
+          "AWMF S2k-Leitlinie Behandlung thermischer Verletzungen im Kindesalter (Reg.-Nr. 006-128): Kühlung nur kleiner Flächen mit handwarmem Wasser, Vermeidung von Hypothermie",
+          "AWMF S2k-Leitlinie Behandlung thermischer Verletzungen des Erwachsenen (Reg.-Nr. 044-001)",
+          "mSTaRT-Sichtungsalgorithmus (Kanz et al.), Konsensus Sichtungskategorien Deutschland",
+          "ERC Guidelines 2021, Kapitel First Aid: Kühlung von Verbrennungen mit Wasser",
+          "DGUV Information 202-059: Erste Hilfe in Schulen"
+        ]
+      },
+      "meta": {
+        "category": "Verbrennung",
+        "tags": [
+          "Verbrennung",
+          "Hand",
+          "Pädiatrie",
+          "Schulunfall",
+          "gehfähig",
+          "Betreuung"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": []
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 18,
+        "spo2": 98,
+        "hr": 100,
+        "bp": "125/75",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 5,
+        "exam": {
+          "burn": "Linker Handrücken und Finger gleichmäßig gerötet, Haut trocken und intakt, keine Blasen, Rötung lässt sich wegdrücken, ca. 1 % KOF",
+          "face": "Keine Rußspuren an Mund und Nase, Augenbrauen und Wimpern intakt, Stimme normal, kein Husten",
+          "eyes": "Augen nicht gerötet, kein Tränen",
+          "lung": "Vesikuläres Atemgeräusch beidseits, keine Spastik, keine Rasselgeräusche",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion beidseits",
+          "skin": "Übrige Haut rosig, warm, unverletzt"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "cool_large"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "hr": 92,
+            "pain": 3,
+            "exam": {
+              "burn": "Rötung nach Kühlung etwas blasser, Haut intakt, keine Blasen, Schmerz deutlich besser",
+              "skin": "Fröstelt im Wind leicht, Haut am Körper noch warm"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "hr": 105,
+            "pain": 6,
+            "exam": {
+              "burn": "Linker Handrücken und Finger kräftig gerötet, pochender Schmerz, Haut intakt, keine Blasen"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "cool_large"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "hr": 85,
+            "pain": 2,
+            "exam": {
+              "burn": "Rötung blasser, Haut intakt, keine Blasen, nur noch leichtes Brennen",
+              "skin": "Warm, rosig, friert nicht"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "hr": 95,
+            "pain": 3,
+            "exam": {
+              "burn": "Rötung blasser, Haut intakt, keine Blasen",
+              "skin": "Friert, Gänsehaut, zittert leicht, Lippen rosig"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "hr": 100,
+            "pain": 6,
+            "exam": {
+              "burn": "Rötung unverändert kräftig, Haut intakt, keine Blasen, hält die Hand schützend hoch"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "cool_large"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-69b977",
+      "version": 1,
+      "title": "Reizgasexposition der Augen und Atemwege",
+      "picture": "Junge, ca. 15 Jahre, geht unsicher und mit zusammengekniffenen Augen umher. Er reibt sich ständig mit beiden Händen die Augen. Beide Augen sind stark gerötet und tränen. Trockener Reizhusten, atmet aber ruhig. Keine sichtbaren Wunden. Wach, ängstlich, fragt immer wieder: „Ich sehe alles verschwommen, werde ich jetzt blind?“",
+      "profile": {
+        "temperament": "unsicher, ängstlich, lässt sich durch ruhige Ansprache gut lenken",
+        "pitfall": "Reibt sich ohne Betreuung immer wieder die Augen und fragt ständig, ob er blind wird. Das Reiben muss aktiv verhindert werden.",
+        "anamnesis": {
+          "symptoms": "Meine Augen brennen total und ich sehe alles verschwommen. Ich muss die ganze Zeit husten, und im Hals kratzt es.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Nein, ich nehme keine Medikamente.",
+          "history": "Ich bin gesund, Asthma habe ich nicht.",
+          "lastMeal": "Ich habe in der ersten Pause ein Brot gegessen, so um neun.",
+          "event": "Bei unserem Versuch hat es plötzlich gezischt und eine Stichflamme gegeben. Dann kam so ein stechender Rauch, und der ist mir direkt ins Gesicht gezogen.",
+          "risk": "Ich trage keine Kontaktlinsen und keine Brille. Die Schutzbrille hatte ich gerade abgesetzt."
+        },
+        "sources": [
+          "ERC Leitlinien 2021, Kapitel Erste Hilfe (chemische Augenverletzung: sofortige Spülung mit reichlich Wasser)",
+          "DGUV Information 204-007 „Handbuch zur Ersten Hilfe“ (Augenverätzung, Reizgase)",
+          "DGUV Information 213-850 „Sicheres Arbeiten in Laboratorien“",
+          "mSTaRT-Sichtungsalgorithmus (Vorsichtung bei MANV)",
+          "Hinweis zur Prüfung: Nach Reizgasinhalation kann ein Lungenödem auch verzögert auftreten (Latenz bis 24 h). Der Patient braucht deshalb eine ärztliche Abklärung, auch wenn die Beschwerden besser werden."
+        ]
+      },
+      "meta": {
+        "category": "CBRN",
+        "tags": [
+          "Reizgas",
+          "Augenreizung",
+          "Augenspülung",
+          "Reizhusten",
+          "Betreuung",
+          "Jugendlicher",
+          "Schulunfall"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "rinse"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "cool_large",
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 18,
+        "spo2": 97,
+        "hr": 104,
+        "bp": "130/80",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 6,
+        "exam": {
+          "eyes": "Beide Augen stark gerötet, starker Tränenfluss, kneift die Lider krampfhaft zusammen, sieht verschwommen",
+          "pupils": "Isokor, mittelweit, prompt lichtreagibel, starke Lichtempfindlichkeit",
+          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Reizhusten",
+          "bodycheck": "Keine Verbrennungen, keine Wunden, Kleidung riecht stechend, Gesichtshaut leicht gerötet",
+          "temp": "36,6 °C"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "rinse",
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 16,
+            "hr": 88,
+            "pain": 2,
+            "exam": {
+              "eyes": "Rötung deutlich rückläufig, nur noch leichtes Tränen, kann die Augen öffnen, sieht wieder fast klar",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, kein Giemen, nur noch gelegentliches Hüsteln"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "hr": 98,
+            "pain": 4,
+            "exam": {
+              "eyes": "Rötung etwas weniger, tränen noch, reibt sich aber weiterhin die Augen, sieht leicht verschwommen",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten etwas weniger"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 22,
+            "spo2": 96,
+            "hr": 112,
+            "pain": 7,
+            "exam": {
+              "eyes": "Augen stark gerötet, Lider leicht geschwollen, krampfhafter Lidschluss, sieht nur noch Umrisse, reibt ständig",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten häufiger"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "rinse",
+                "calm"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 18,
+            "hr": 94,
+            "pain": 4,
+            "exam": {
+              "eyes": "Augen noch gerötet, mäßiger Tränenfluss, kann die Augen kurz öffnen, sieht leicht verschwommen",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, gelegentlicher Reizhusten"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 20,
+            "hr": 104,
+            "pain": 5,
+            "exam": {
+              "eyes": "Augen gerötet, Lider leicht geschwollen, tränen stark, reibt weiter, sieht verschwommen",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 24,
+            "spo2": 95,
+            "hr": 118,
+            "pain": 8,
+            "exam": {
+              "eyes": "Lider deutlich geschwollen, Augen kaum zu öffnen, sieht nur hell und dunkel, weint und reibt ständig",
+              "lungs": "Vesikuläres Atemgeräusch, vereinzelt leises Giemen beidseits, quälender Reizhusten"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "rinse"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 26,
+            "spo2": 94,
+            "hr": 120,
+            "pain": 8,
+            "exam": {
+              "eyes": "Lider stark geschwollen, Augen nicht mehr zu öffnen, sieht nur noch hell und dunkel",
+              "lungs": "Leises Giemen beidseits, anhaltender quälender Reizhusten, klagt über Engegefühl in der Brust"
+            }
+          },
+          "rules": [],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-4deaf3",
+      "version": 1,
+      "title": "Akute Belastungsreaktion mit beginnender Auskühlung",
+      "picture": "Mädchen, ca. 14 Jahre, sitzt still und zusammengekauert auf einer Mauer, die Arme fest um den Oberkörper geschlungen. Kleine Schnittwunde an der Kuppe des linken Zeigefingers, blutet kaum. Gesicht blass, Blick starr ins Leere. Reagiert erst nach mehrfacher Ansprache und sagt leise: „Mir geht's gut, ist schon okay.“",
+      "profile": {
+        "temperament": "still, in sich gekehrt, fügsam; öffnet sich nur bei geduldiger, ruhiger Zuwendung",
+        "pitfall": "Wirkt unauffällig und ruhig, wird deshalb neben den lauten, panischen Mitschülern leicht übersehen. Fragt bei Zuwendung leise nach ihrer Freundin und möchte, dass jemand bei ihr bleibt.",
+        "anamnesis": {
+          "symptoms": "Mir ist kalt. Alles fühlt sich so komisch weit weg an, als wäre ich gar nicht richtig da.",
+          "allergies": "Nein, ich habe keine Allergien.",
+          "medication": "Nein, ich nehme keine Medikamente.",
+          "history": "Ich bin eigentlich gesund.",
+          "lastMeal": "Ich habe in der ersten Pause ein Brot gegessen und etwas Wasser getrunken.",
+          "event": "Es hat auf einmal laut geknallt, und dann war da so eine Flamme direkt neben mir. Dann war alles voller Rauch, und ich bin einfach rausgerannt. Am Finger habe ich mich wohl an einem Glas geschnitten.",
+          "risk": "Ich glaube, ich habe kaum etwas von dem Rauch eingeatmet. Aber meine Freundin stand direkt neben dem Brenner, und ich weiß nicht, wo sie jetzt ist."
+        },
+        "sources": [
+          "BBK: Psychosoziale Notfallversorgung – Qualitätsstandards und Leitlinien, Teil I und II (Konsensus-Prozess, Bundesamt für Bevölkerungsschutz und Katastrophenhilfe)",
+          "AWMF S3-Leitlinie Posttraumatische Belastungsstörung (Reg.-Nr. 155-001), Abschnitt Frühintervention",
+          "ERC Leitlinien 2021: Erste Hilfe (Wärmeerhalt, Wundversorgung) und Kreislaufstillstand unter besonderen Umständen (Hypothermie)",
+          "mSTaRT-Sichtungsalgorithmus (modifiziertes Simple Triage and Rapid Treatment), Konsensus Sichtungskategorien Deutschland",
+          "DRK/ASB Ausbildungsunterlagen Sanitätsdienst: Psychische Erste Hilfe nach Lasogga und Gasch (Grundregeln: Sag, dass du da bist; Körperkontakt; Abschirmen; Sprechen und Zuhören)"
+        ]
+      },
+      "meta": {
+        "category": "Psychiatrie",
+        "tags": [
+          "Akute Belastungsreaktion",
+          "Psychische Erste Hilfe",
+          "Wärmeerhalt",
+          "Jugendliche",
+          "Bagatellverletzung"
+        ],
+        "difficulty": "einsteiger"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 18,
+        "spo2": 98,
+        "hr": 96,
+        "bp": "115/70",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 2,
+        "exam": {
+          "wound": "Oberflächliche, ca. 1 cm lange Schnittwunde an der Kuppe des linken Zeigefingers, blutet kaum, kein Fremdkörper sichtbar.",
+          "lung": "Beidseits vesikuläres Atemgeräusch, kein Giemen, kein Husten.",
+          "eyes": "Augen nicht gerötet, kein Tränenfluss, kein Brennen angegeben.",
+          "pupils": "Isokor, mittelweit, prompt lichtreagibel.",
+          "skin": "Blass, Hände kühl, keine Verbrennungen, keine Rötung im Gesicht.",
+          "temperature": "36,4 °C",
+          "psyche": "Orientiert, antwortet aber verzögert und einsilbig, starrt vor sich hin, wirkt abwesend."
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "calm",
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "3"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 15,
+            "hr": 82,
+            "bp": "112/68",
+            "pain": 1,
+            "exam": {
+              "skin": "Gesichtsfarbe rosiger, Hände wieder warm.",
+              "temperature": "36,6 °C",
+              "psyche": "Spricht über das Erlebte, weint zwischendurch, lässt sich trösten, nimmt wieder Blickkontakt auf, fragt nach ihren Eltern."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "hr": 92,
+            "exam": {
+              "skin": "Blass, Hände kalt, zittert sichtbar.",
+              "temperature": "36,0 °C",
+              "psyche": "Nimmt zögerlich Blickkontakt auf, erzählt leise vom Knall, sagt mehrfach: „Mir ist so kalt.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "hr": 98,
+            "exam": {
+              "skin": "Blass, Hände etwas wärmer.",
+              "temperature": "36,4 °C",
+              "psyche": "Hält die Decke fest, starrt weiter ins Leere, antwortet nur mit Nicken oder Kopfschütteln."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "hr": 102,
+            "recap": 3,
+            "exam": {
+              "skin": "Blass, Hände und Lippen kühl, zittert.",
+              "temperature": "35,9 °C",
+              "psyche": "Zieht sich weiter zurück, hat die Knie angezogen, antwortet kaum noch, nickt höchstens."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm",
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "hr": 108,
+            "recap": 3,
+            "gcs": 14,
+            "exam": {
+              "skin": "Blass, Hände kalt, Lippen leicht bläulich, zittert stark.",
+              "temperature": "35,5 °C",
+              "psyche": "Wirkt wie erstarrt, reagiert erst nach mehrfacher, lauter Ansprache, antwortet wortkarg und unsicher, folgt einfachen Aufforderungen aber noch."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm",
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "hr": 110,
+            "recap": 3,
+            "gcs": 14,
+            "exam": {
+              "skin": "Blass, Hände kalt, Lippen bläulich, zittert stark.",
+              "temperature": "35,2 °C",
+              "psyche": "Apathisch, starrt regungslos vor sich hin, spricht nicht mehr von sich aus, folgt Aufforderungen nur langsam."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm",
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 16,
+            "hr": 88,
+            "bp": "110/68",
+            "recap": 2,
+            "gcs": 15,
+            "exam": {
+              "skin": "Noch blass, Hände langsam wärmer, zittert kaum noch.",
+              "temperature": "36,0 °C",
+              "psyche": "Taut langsam auf, beginnt zu weinen und vom Erlebten zu erzählen, möchte, dass jemand bei ihr bleibt, fragt nach ihrer Freundin."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "hr": 96,
+            "recap": 3,
+            "exam": {
+              "skin": "Blass, Hände kalt, Lippen leicht bläulich, zittert stark.",
+              "temperature": "35,5 °C",
+              "psyche": "Spricht leise mit dem Helfer, klappert mit den Zähnen und sagt: „Mir ist so kalt, ich will nach Hause.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "hr": 100,
+            "gcs": 14,
+            "exam": {
+              "skin": "Blass, Hände nicht mehr kalt.",
+              "temperature": "36,2 °C",
+              "psyche": "Sitzt eingewickelt und regungslos da, reagiert erst nach mehrfacher Ansprache, antwortet wortkarg und unsicher, wirkt völlig abwesend."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "dead": false
+        }
+      }
+    }
+  ]
+}

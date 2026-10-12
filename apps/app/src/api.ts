@@ -5,7 +5,7 @@ import type { Sk } from "@dps/schema";
 
 export type Session = { server: string; token: string }; // token: Geräteschlüssel der Spielleitung (keine Konten)
 export type LibPatient = {
-  id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number;
+  id: string; version: number; title: string; picture: string; uses: number;
   meta: { category: string; tags: string[]; difficulty: string }; sk: Sk | null; origin: "muster" | "ki" | "eigen" | "import"; errors: string[];
   editable: boolean; // eigener Entwurf: Bearbeiten erzeugt eine neue Version, sonst eine Kopie
   image: string | null; // Pfad zum Patientenbild auf dem Server

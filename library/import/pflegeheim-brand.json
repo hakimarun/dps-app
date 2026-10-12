@@ -1,0 +1,2599 @@
+{
+  "format": "dps-szenario",
+  "version": 1,
+  "exported": "2026-10-12",
+  "scenario": {
+    "title": "Nächtlicher Brand im Pflegeheim „Haus Lindenhof“ – Rauchgas, Kälte und Verwirrung",
+    "situation": "Gegen 02:40 Uhr brach im Erdgeschoss des Pflegeheims „Haus Lindenhof“ ein Zimmerbrand aus, der Flur ist stark verraucht. Die Feuerwehr hat die Bewohner des betroffenen Wohnbereichs ins Freie gebracht. Sie liegen und stehen nun im Nachtzeug auf dem Parkplatz vor dem Haupteingang, bei 2 °C, Nieselregen und böigem Wind. Mehrere Bewohner sind dement oder bettlägerig, eine Pflegekraft ist verletzt, und die Nachtschicht hat keinen vollständigen Überblick über die Bewohnerliste.",
+    "patients": [
+      "ki-c2f70e",
+      "ki-dc9a60",
+      "ki-055f4f",
+      "ki-ea33b4",
+      "ki-8e92d6",
+      "ki-eb8b72"
+    ],
+    "units": [
+      {
+        "id": "rtw1",
+        "title": "RTW 1",
+        "arrivesAt": 0,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "nef1",
+        "title": "NEF 1",
+        "arrivesAt": 4,
+        "seats": 0,
+        "inventory": {
+          "needle": 2,
+          "ett": 2,
+          "analgesic": 4,
+          "iv_cannula": 2,
+          "infusion": 2,
+          "o2_mask": 1,
+          "bvm": 1,
+          "chest_seal": 1,
+          "hemostatic": 1,
+          "glucose": 2,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "rtw2",
+        "title": "RTW 2",
+        "arrivesAt": 6,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw1",
+        "title": "KTW 1",
+        "arrivesAt": 9,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      },
+      {
+        "id": "rtw3",
+        "title": "RTW 3",
+        "arrivesAt": 12,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw2",
+        "title": "KTW 2",
+        "arrivesAt": 15,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      },
+      {
+        "id": "nef2",
+        "title": "NEF 2",
+        "arrivesAt": 18,
+        "seats": 0,
+        "inventory": {
+          "needle": 2,
+          "ett": 2,
+          "analgesic": 4,
+          "iv_cannula": 2,
+          "infusion": 2,
+          "o2_mask": 1,
+          "bvm": 1,
+          "chest_seal": 1,
+          "hemostatic": 1,
+          "glucose": 2,
+          "pacer_pads": 1
+        }
+      }
+    ]
+  },
+  "patients": [
+    {
+      "id": "ki-c2f70e",
+      "version": 1,
+      "title": "Rauchgasinhalation mit CO-Vergiftung, beginnender Atemwegsschwellung und Unterkühlung",
+      "picture": "Frau, ca. 85 Jahre, liegt im Nachthemd auf einer Krankentrage, in eine nasse Decke gewickelt. Ruß an Nase und Mund, hustet schwarzen Schleim ab. Atmet schnell, beim Einatmen ist ein pfeifendes Geräusch zu hören, die Stimme ist heiser. Das Gesicht wirkt rosig, sie zittert am ganzen Körper. Sie klammert sich an die Hand des Helfers und ruft ängstlich: „Lassen Sie mich nicht allein, ich krieg so schlecht Luft!“",
+      "profile": {
+        "temperament": "Ängstlich und klammernd, lässt die Hand der Helfer nicht los, wiederholt ständig, dass sie keine Luft bekommt. Sie beruhigt sich nur, wenn man sie ruhig mit ihrem Namen anspricht (Name auf dem Bewohnerarmband: Frau Berger). Leicht verlangsamt und verwirrt, ab Phase 2 ohne Behandlung zunehmend schläfrig.",
+        "pitfall": "Das Pulsoxymeter zeigt 98 %, weil es CO-Hämoglobin nicht von oxygeniertem Hämoglobin unterscheidet, und die Patientin wirkt rosig. Dadurch scheint Sauerstoff überflüssig. Richtig sind trotzdem sofort hochdosierter Sauerstoff (10–15 l/min über Maske mit Reservoir), Oberkörperhochlagerung, Entfernen der nassen Decke mit Wärmeerhalt und eine frühe Transportpriorität mit Notarzt, weil sich bei Stridor die Atemwege verlegen können.",
+        "anamnesis": {
+          "symptoms": "Mein Hals brennt so, ich kriege kaum Luft, und mein Kopf tut furchtbar weh. Mir ist ganz übel, und mir ist so kalt.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich bekomme eine Wassertablette und etwas für den Blutdruck, die Schwester gibt mir das morgens.",
+          "history": "Ich habe eine Herzschwäche. Seit meinem Oberschenkelhalsbruch vor zwei Jahren komme ich nicht mehr aus dem Bett.",
+          "lastMeal": "Abendbrot gab es um sechs Uhr, eine Scheibe Brot und Tee.",
+          "event": "Ich bin aufgewacht, weil alles voller Rauch war, und ich konnte doch nicht aufstehen. Ich habe gerufen und gerufen, bis die Männer von der Feuerwehr gekommen sind.",
+          "risk": "Früher habe ich geraucht, aber das ist schon über dreißig Jahre her."
+        },
+        "sources": [
+          "AWMF S2k-Leitlinie Diagnostik und Therapie der Kohlenmonoxidvergiftung (Reg.-Nr. 040-012, 2021)",
+          "AWMF S2k-Leitlinie Behandlung thermischer Verletzungen im Erwachsenenalter (Reg.-Nr. 044-001)",
+          "AWMF S3-Leitlinie Sauerstoff in der Akuttherapie beim Erwachsenen (Reg.-Nr. 020-021, 2021) – Ausnahme CO-Vergiftung: hochdosierte Gabe unabhängig von der SpO2",
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (Reg.-Nr. 187-023) – Atemwegsmanagement und Wärmeerhalt",
+          "ERC Leitlinien 2021 – Kreislaufstillstand unter besonderen Umständen (akzidentelle Hypothermie, Atemwegsverlegung) und Basic Life Support",
+          "mSTaRT-Sichtungsalgorithmus (Kanz et al., Notfall + Rettungsmedizin)"
+        ]
+      },
+      "meta": {
+        "category": "Intoxikation",
+        "tags": [
+          "Inhalationstrauma",
+          "Rauchgas",
+          "CO-Vergiftung",
+          "Stridor",
+          "Hypothermie",
+          "Geriatrie",
+          "Brand",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 10
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "upper_body_up"
+            ],
+            "within": 15
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "cool_large",
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 34,
+        "spo2": 98,
+        "hr": 112,
+        "bp": "155/85",
+        "radialPulse": true,
+        "recap": 3,
+        "gcs": 14,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": true,
+        "lethalInjury": false,
+        "pain": 4,
+        "exam": {
+          "airway": "Ruß an Nase, Mund und im Rachen, Nasenhaare versengt, heisere Stimme, beginnender inspiratorischer Stridor, Husten mit schwarzem Auswurf",
+          "lung": "Giemen beidseits, verlängerte Ausatmung, keine Seitendifferenz",
+          "skin": "Gesicht rosig, Haut kühl und nass vom Regen, Kältezittern, keine relevanten Hautverbrennungen",
+          "burn": "Keine flächigen Hautverbrennungen, nur Rußauflagerungen im Gesicht und versengte Nasenhaare",
+          "pupils": "isokor, mittelweit, prompte Lichtreaktion",
+          "neuro": "wach, leicht verwirrt und verlangsamt, klagt über Kopfschmerz und Übelkeit, bewegt alle Extremitäten",
+          "temp": "35,2 °C",
+          "ecg": "Sinustachykardie",
+          "glucose": "118 mg/dl",
+          "abdomen": "weich, kein Druckschmerz",
+          "pelvis": "stabil, kein Schmerz",
+          "bodycheck": "Keine äußeren Verletzungen, nasse Kleidung und nasse Decke, kalte Füße"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 26,
+            "hr": 102,
+            "bp": "145/80",
+            "gcs": 15,
+            "pain": 3,
+            "exam": {
+              "airway": "Ruß im Gesicht, heisere Stimme, leiser inspiratorischer Stridor, nicht zunehmend",
+              "lung": "leises Giemen beidseits",
+              "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
+              "neuro": "wach, orientiert, Kopfschmerz etwas besser, ruhiger",
+              "temp": "35,5 °C"
+            }
+          },
+          "rules": [],
+          "else": "5",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 30,
+            "hr": 110,
+            "gcs": 14,
+            "exam": {
+              "airway": "heisere Stimme, inspiratorischer Stridor unverändert",
+              "skin": "rosig, kalt und nass, starkes Kältezittern",
+              "neuro": "wach, verwirrt, Kopfschmerz etwas besser",
+              "temp": "34,8 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 36,
+            "hr": 126,
+            "bp": "160/90",
+            "recap": 4,
+            "gcs": 12,
+            "pain": 5,
+            "exam": {
+              "airway": "deutlich lauter inspiratorischer Stridor, Stimme kaum noch hörbar, Einziehungen am Hals",
+              "lung": "Giemen und feuchte Rasselgeräusche beidseits",
+              "skin": "weiterhin rosig, kalt und nass, Kältezittern",
+              "neuro": "schläfrig, öffnet die Augen auf Ansprache, verwaschene Sprache, befolgt einfache Aufforderungen verzögert",
+              "temp": "34,5 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 22,
+            "hr": 96,
+            "bp": "140/80",
+            "gcs": 15,
+            "pain": 3,
+            "exam": {
+              "airway": "heisere Stimme, leiser inspiratorischer Stridor, stabil – dringend Klinik mit Intubationsbereitschaft",
+              "lung": "leises Giemen beidseits",
+              "skin": "rosig, warm unter der Rettungsdecke",
+              "neuro": "wach, orientiert, ruhig bei Ansprache mit ihrem Namen",
+              "temp": "35,8 °C",
+              "ecg": "Sinusrhythmus"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 30,
+            "hr": 114,
+            "bp": "150/85",
+            "recap": 3,
+            "gcs": 13,
+            "pain": 4,
+            "exam": {
+              "airway": "inspiratorischer Stridor, nicht weiter zunehmend, Stimme heiser – Notarzt und frühe Intubation erforderlich",
+              "lung": "Giemen und vereinzelte Rasselgeräusche beidseits",
+              "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
+              "neuro": "schläfrig, aber erweckbar, befolgt Aufforderungen",
+              "temp": "35,0 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 8,
+            "spo2": 86,
+            "hr": 138,
+            "bp": "100/60",
+            "recap": 4,
+            "gcs": 8,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "airway": "hochgradiger Stridor, kaum Luftfluss, Schaukelatmung",
+              "lung": "stark abgeschwächtes Atemgeräusch, Rasselgeräusche beidseits",
+              "skin": "blass-grau, kalt, Lippen bläulich",
+              "neuro": "reagiert nur noch auf Schmerzreiz mit Stöhnen",
+              "temp": "34,2 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 12,
+            "spo2": 95,
+            "hr": 118,
+            "bp": "115/70",
+            "recap": 3,
+            "gcs": 8,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "airway": "Beutel-Masken-Beatmung mit Sauerstoff unter erhöhtem Widerstand möglich, Stridor – sofortige Intubation durch Notarzt erforderlich",
+              "lung": "beatmet, Atemgeräusch beidseits, Rasselgeräusche",
+              "skin": "blass, kalt, Lippen wieder rosiger",
+              "neuro": "bewusstlos, reagiert auf Schmerzreiz mit Abwehrbewegung",
+              "temp": "34,4 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 62,
+            "hr": 38,
+            "bp": "60/30",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 3,
+            "followsCommands": false,
+            "stridor": false,
+            "pain": 0,
+            "exam": {
+              "airway": "keine Atmung, kein Luftfluss",
+              "lung": "kein Atemgeräusch",
+              "skin": "zyanotisch, kalt",
+              "neuro": "keine Reaktion, Pupillen weit",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "8"
+            },
+            {
+              "when": [],
+              "active": [
+                "cpr"
+              ],
+              "then": "8"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "stridor": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "neuro": "keine Reaktion, Pupillen weit und lichtstarr",
+              "skin": "zyanotisch, kalt"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-dc9a60",
+      "version": 1,
+      "title": "Offene Thoraxverletzung mit Rauchgasinhalation und Unterkühlung",
+      "picture": "Mann, ca. 50 Jahre, sitzt an eine Hauswand gelehnt in nasser, weißer Pflegekleidung und zittert. Links seitlich am Brustkorb ist der Kasack blutdurchtränkt. Aus einer Schnittwunde quillt bei jedem Atemzug schaumiges Blut, dabei ist ein schlürfendes Geräusch zu hören. Ruß an Nase und Mund, er hustet und atmet schnell und flach. Er versucht aufzustehen und sackt sofort zurück. Hektisch hält er einen zerknitterten, nassen Zettel hoch und ruft: „Mir geht's gut, kümmert euch um Zimmer 4 und 7, die fehlen noch!“",
+      "profile": {
+        "temperament": "hektisch, pflichtbewusst, spielt die eigenen Beschwerden herunter, drängt ständig auf die Suche nach vermissten Bewohnern",
+        "pitfall": "Er wiegelt ab und lenkt mit Informationen über vermisste Bewohner von sich ab („Ich hab nur einen Kratzer, Zimmer 7 ist wichtiger!“). Helfer lassen sich leicht ablenken und übersehen die offene Thoraxwunde sowie die Rauchgasbelastung. Die Pulsoxymetrie kann bei CO-Vergiftung falsch hohe Werte anzeigen.",
+        "anamnesis": {
+          "symptoms": "Ich krieg schlecht Luft und mein Kopf brummt, aber das ist jetzt egal. Frau Berger aus Zimmer 4 und Herr Albrecht aus Zimmer 7 fehlen noch!",
+          "event": "Ich bin dreimal in den Flur zurückgelaufen, um Leute rauszuholen. Beim letzten Mal habe ich nichts mehr gesehen und bin seitlich in die Glastür gekracht.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme morgens Ramipril gegen den Blutdruck.",
+          "history": "Ich habe nur Bluthochdruck, sonst bin ich gesund.",
+          "lastMeal": "Gegen Mitternacht habe ich im Dienstzimmer ein Brot gegessen.",
+          "risk": "Ich rauche seit dreißig Jahren, ungefähr eine Schachtel am Tag."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung, AWMF-Register 187-023, Version 2022 (Thoraxtrauma, Spannungspneumothorax, Wärmeerhalt)",
+          "S2k-Leitlinie Diagnostik und Therapie der Kohlenmonoxidvergiftung, AWMF-Register 040-012 (hochdosierter Sauerstoff, eingeschränkte Aussagekraft der Pulsoxymetrie)",
+          "ERC Guidelines 2021: Kreislaufstillstand unter besonderen Umständen (Spannungspneumothorax, Hypothermie)",
+          "PHTLS – Prehospital Trauma Life Support, 9./10. Auflage (offener Pneumothorax, ventilierter Thoraxverschluss)",
+          "mSTaRT-Vorsichtungsalgorithmus (modifiziertes Simple Triage and Rapid Treatment), Bundesamt für Bevölkerungsschutz und Katastrophenhilfe / Konsensuskonferenz Sichtung"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Thoraxtrauma",
+          "offener Pneumothorax",
+          "Spannungspneumothorax",
+          "Rauchgasinhalation",
+          "CO-Verdacht",
+          "Hypothermie",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "chest_seal"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 32,
+        "spo2": 90,
+        "hr": 118,
+        "bp": "135/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 6,
+        "exam": {
+          "chest": "Ca. 4 cm lange Schnittwunde links seitlich am Brustkorb, etwa 5. Interkostalraum in der vorderen Axillarlinie. Schlürfendes Geräusch bei der Einatmung, schaumig-blutiges Sekret, mäßige venöse Blutung, nicht spritzend.",
+          "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär. Vereinzelt Giemen beidseits.",
+          "airway": "Ruß an Nase und Mund, Hustenreiz, Stimme leicht heiser, kein Stridor. Gesichtshaare nicht versengt.",
+          "head": "Kopfschmerz und leichter Schwindel. Keine äußeren Kopfverletzungen.",
+          "pulse_oximetry_note": "Bei Rauchgasexposition kann der SpO2-Wert durch CO-Hämoglobin falsch hoch sein.",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
+          "body_check": "Mehrere oberflächliche Schnittwunden an beiden Unterarmen, kaum blutend. Becken stabil, Bauch weich. Keine weiteren Verletzungen.",
+          "abdomen": "Weich, kein Druckschmerz, keine Abwehrspannung.",
+          "pelvis": "Stabil, kein Druckschmerz.",
+          "temp": "36,0 °C, Haut kalt und nass.",
+          "ecg": "Sinustachykardie",
+          "glucose": "118 mg/dl"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "chest_seal",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "chest_seal"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 24,
+            "spo2": 95,
+            "hr": 106,
+            "bp": "130/80",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr, geringe Nachblutung am Rand.",
+              "auscultation": "Links weiterhin abgeschwächtes Atemgeräusch, rechts vesikulär.",
+              "head": "Kopfschmerz unter Sauerstoff langsam rückläufig."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 28,
+            "spo2": 91,
+            "hr": 112,
+            "bp": "130/80",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
+              "head": "Kopfschmerz nimmt zu, leichte Übelkeit.",
+              "pulse_oximetry_note": "Bei Rauchgasexposition kann der SpO2-Wert durch CO-Hämoglobin falsch hoch sein."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 36,
+            "spo2": 86,
+            "hr": 132,
+            "bp": "115/75",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 7,
+            "exam": {
+              "chest": "Lautes schlürfendes Geräusch. Die Wundränder legen sich bei der Ausatmung teilweise ventilartig an. Zunehmende Blutung, nicht spritzend.",
+              "auscultation": "Links kaum Atemgeräusch, rechts vesikulär.",
+              "neck": "Halsvenen leicht gefüllt.",
+              "behavior": "Spricht nur noch in kurzen Sätzen, will trotzdem aufstehen und zurück ins Haus."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "chest_seal",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "chest_seal"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 20,
+            "spo2": 96,
+            "hr": 98,
+            "bp": "130/80",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch.",
+              "auscultation": "Links leicht abgeschwächtes Atemgeräusch, rechts vesikulär.",
+              "temp": "36,0 °C, unter der Rettungsdecke kein Kältezittern mehr.",
+              "behavior": "Ruhiger, fragt aber immer wieder nach Zimmer 4 und 7."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "analgesia"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 22,
+            "spo2": 95,
+            "hr": 108,
+            "bp": "135/85",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
+              "temp": "35,2 °C, starkes Kältezittern, Haut kalt und nass.",
+              "behavior": "Klappert mit den Zähnen und sagt: „Mir ist so kalt.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 18,
+            "spo2": 97,
+            "hr": 92,
+            "bp": "125/80",
+            "pain": 2,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
+              "temp": "36,1 °C, unter der Rettungsdecke.",
+              "behavior": "Deutlich entspannter und transportbereit."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 26,
+            "spo2": 93,
+            "hr": 115,
+            "bp": "130/80",
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
+              "head": "Starker Kopfschmerz, Übelkeit, wirkt verlangsamt und wiederholt sich.",
+              "pulse_oximetry_note": "Der SpO2-Wert wirkt passabel, kann aber durch CO-Hämoglobin falsch hoch sein."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 26,
+            "spo2": 93,
+            "hr": 112,
+            "bp": "120/80",
+            "pain": 6,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
+              "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 40,
+            "spo2": 80,
+            "hr": 145,
+            "bp": "85/60",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 12,
+            "pain": 8,
+            "exam": {
+              "chest": "Die Wunde ist durch Gewebe und Kleidung verlegt, kein schlürfendes Geräusch mehr. Linke Thoraxhälfte bewegt sich kaum mit.",
+              "auscultation": "Links aufgehobenes Atemgeräusch, rechts vesikulär.",
+              "neck": "Halsvenen deutlich gestaut.",
+              "skin": "Blass-zyanotisch, kaltschweißig.",
+              "behavior": "Verwirrt und unruhig, spricht nur noch einzelne Worte.",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "chest_seal",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "11"
+            },
+            {
+              "when": [
+                "needle_decompression"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "12",
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 28,
+            "spo2": 90,
+            "hr": 122,
+            "bp": "100/70",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 7,
+            "exam": {
+              "chest": "Entlastet, Chest Seal bzw. Punktionsstelle versorgt.",
+              "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär.",
+              "neck": "Halsvenen nicht mehr gestaut.",
+              "behavior": "Etwas klarer, sehr erschöpft."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 8,
+            "spo2": 70,
+            "hr": 48,
+            "bp": "60 palp.",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 5,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "auscultation": "Links aufgehobenes Atemgeräusch, rechts leise.",
+              "neck": "Halsvenen prall gestaut.",
+              "skin": "Zyanotisch, marmoriert.",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "needle_decompression"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "13",
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-055f4f",
+      "version": 1,
+      "title": "Instabile Beckenfraktur mit Handgelenksfraktur und Unterkühlung nach Sturz",
+      "picture": "Frau, ca. 80 Jahre, liegt barfuß im durchnässten Nachthemd auf dem Rücken auf nassem Asphalt. Sie hält den rechten Unterarm mit der linken Hand, das rechte Handgelenk ist sichtbar verformt und geschwollen. Das rechte Bein bewegt sie nicht. Sie zittert und ist blass, aber wach und freundlich. Sie sagt: „Ach, das ist nur meine Hand. Kümmern Sie sich erst um die anderen, ich will keine Umstände machen.“",
+      "profile": {
+        "temperament": "Höflich und bagatellisierend, will keine Umstände machen und lehnt die Decke zunächst ab („Andere brauchen die nötiger“). Ab Phase 3 ohne Versorgung langsamer, wiederholt sich und wird zunehmend verwirrt.",
+        "pitfall": "Sie klagt laut über das deformierte Handgelenk und verschweigt den Leistenschmerz. Diesen gibt sie erst auf gezielte Nachfrage oder bei der Beckenuntersuchung zu. Das instabile Becken mit innerer Blutung und die Unterkühlung bei 2 °C, Nässe und Wind werden leicht übersehen, weil die Patientin nach mSTaRT stabil wirkt.",
+        "anamnesis": {
+          "symptoms": "Mein Handgelenk tut furchtbar weh. Sonst geht es schon, mir ist nur so kalt.",
+          "event": "Ich bin auf der nassen Rampe ausgerutscht und ganz unglücklich auf die rechte Seite gefallen.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme morgens eine Blutdrucktablette, eine Wassertablette und etwas für die Knochen.",
+          "history": "Ich habe hohen Blutdruck und Osteoporose, aber sonst bin ich für mein Alter ganz gut beisammen.",
+          "lastMeal": "Ich habe gestern Abend um sechs Abendbrot gegessen und in der Nacht etwas Tee getrunken.",
+          "risk": "Ich bin nicht mehr so sicher auf den Beinen. Sonst gehe ich immer mit dem Rollator, aber den hatte ich vorhin nicht dabei."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (AWMF-Register 187-023, Version 2022): Beckengurt bei Verdacht auf instabile Beckenverletzung, Vermeidung wiederholter Stabilitätsprüfung, Wärmeerhalt, Immobilisation",
+          "European Resuscitation Council (ERC) Leitlinien 2021, Kapitel Kreislaufstillstand unter besonderen Umständen: akzidentelle Hypothermie, Wärmeerhalt und schonende Rettung",
+          "mSTaRT-Algorithmus (Kanz KG et al., Notfall + Rettungsmedizin 2006) zur Vorsichtung beim MANV",
+          "PHTLS – Präklinisches Traumamanagement (NAEMT, aktuelle deutsche Auflage): geriatrisches Trauma, Beckenverletzungen und letale Trias aus Hypothermie, Azidose und Koagulopathie",
+          "AWMF S2e-Leitlinie Distale Radiusfraktur (Register 012-015): Ruhigstellung und DMS-Kontrolle"
+        ]
+      },
+      "meta": {
+        "category": "Geriatrie",
+        "tags": [
+          "Sturz",
+          "Beckenfraktur",
+          "Distale Radiusfraktur",
+          "Hypothermie",
+          "Innere Blutung",
+          "Schock",
+          "Bagatellisierung"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "examine_pelvis"
+            ],
+            "within": 10
+          },
+          {
+            "actions": [
+              "pelvic_binder"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "vacuum_mattress"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "recovery_position",
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 20,
+        "spo2": 94,
+        "hr": 96,
+        "bp": "140/85",
+        "radialPulse": true,
+        "recap": 3,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 7,
+        "exam": {
+          "injuries": "Rechtes Handgelenk bajonettförmig fehlgestellt und geschwollen, geschlossen. Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
+          "pelvis": "Druckschmerz über Schambein und rechter Leiste. Bei einmaliger vorsichtiger Kompression instabil, nicht wiederholen! Die Patientin vermeidet jede Bewegung des rechten Beins.",
+          "abdomen": "Bauch weich, rechter Unterbauch leicht druckempfindlich, keine Abwehrspannung.",
+          "head": "Keine Kopfverletzung erkennbar. Kein Bewusstseinsverlust laut Patientin, HWS ohne Druckschmerz.",
+          "airway": "Keine Rußspuren an Gesicht, Mund oder Nase, kein Husten, Stimme klar.",
+          "lungs": "Beidseits seitengleich belüftet, keine Rasselgeräusche.",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
+          "skin": "Kalt, blass, Nachthemd durchnässt, deutliches Kältezittern.",
+          "temperature": "35,6 °C (Ohr)",
+          "glucose": "112 mg/dl",
+          "ecg": "Sinusrhythmus"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "warm",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "pelvic_binder",
+                "warm"
+              ],
+              "active": [],
+              "then": "3"
+            },
+            {
+              "when": [
+                "pelvic_binder"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 18,
+            "hr": 92,
+            "bp": "135/80",
+            "pain": 5,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel, Patientin in Vakuummatratze. Leistenschmerz gebessert.",
+              "skin": "Kühl, blass, trocken in Rettungsdecke und Decken eingepackt. Kältezittern lässt nach.",
+              "temperature": "35,5 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 20,
+            "hr": 100,
+            "bp": "130/80",
+            "pain": 6,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt. Bei jeder Umlagerung ohne Immobilisation verzieht die Patientin vor Schmerz das Gesicht.",
+              "skin": "Kühl, blass, in Rettungsdecke eingepackt, noch Kältezittern.",
+              "temperature": "35,4 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 22,
+            "hr": 104,
+            "bp": "125/75",
+            "pain": 6,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt, Leistenschmerz etwas gebessert.",
+              "skin": "Kalt, nass, blass, starkes Kältezittern. Liegt weiter ungeschützt auf dem Asphalt.",
+              "temperature": "34,9 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 22,
+            "hr": 108,
+            "bp": "120/75",
+            "pain": 7,
+            "exam": {
+              "pelvis": "Druckschmerz über Schambein und rechter Leiste, instabil. Auf direkte Nachfrage gibt die Patientin zu, dass die Leiste schon seit dem Sturz weh tut.",
+              "abdomen": "Rechter Unterbauch druckempfindlich, beginnendes Hämatom in der rechten Leiste, keine Abwehrspannung.",
+              "skin": "Kalt, nass, blass, starkes Kältezittern.",
+              "temperature": "35,0 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            },
+            {
+              "when": [
+                "pelvic_binder"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 18,
+            "hr": 90,
+            "bp": "135/80",
+            "pain": 4,
+            "exam": {
+              "injuries": "Rechtes Handgelenk in Fehlstellung geschient und gepolstert, Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
+              "pelvis": "Beckengurt sitzt korrekt, Patientin in Vakuummatratze. Leistenschmerz gebessert.",
+              "skin": "Kühl, trocken eingepackt, kein Kältezittern mehr.",
+              "temperature": "35,5 °C (Ohr)"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 20,
+            "hr": 104,
+            "bp": "120/75",
+            "pain": 7,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt. Ohne Immobilisation bei jeder Bewegung starke Schmerzen, die Patientin stöhnt.",
+              "skin": "Kühl, blass, in Rettungsdecke eingepackt, leichtes Kältezittern.",
+              "temperature": "35,3 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 22,
+            "spo2": 93,
+            "hr": 108,
+            "bp": "115/70",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt.",
+              "skin": "Kalt, nass, marmoriert, das Kältezittern lässt nach.",
+              "temperature": "34,2 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 26,
+            "spo2": 93,
+            "hr": 116,
+            "bp": "100/65",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "pelvis": "Instabil, deutlicher Leistenschmerz rechts, zunehmendes Hämatom in Leiste und Schamregion.",
+              "abdomen": "Unterbauch druckempfindlich, Hämatom in der rechten Leiste, keine Abwehrspannung.",
+              "skin": "Kalt, nass, blass-marmoriert, kaum noch Kältezittern.",
+              "temperature": "34,4 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "warm"
+              ],
+              "active": [],
+              "then": "12"
+            },
+            {
+              "when": [
+                "pelvic_binder"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 24,
+            "spo2": 92,
+            "hr": 112,
+            "bp": "100/60",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 5,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt, das Hämatom in der Leiste nimmt trotzdem langsam zu.",
+              "skin": "Kalt, nass, marmoriert, kein Kältezittern mehr.",
+              "temperature": "33,8 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 28,
+            "spo2": 91,
+            "hr": 124,
+            "bp": "80/50",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 12,
+            "pain": 5,
+            "exam": {
+              "pelvis": "Ausgedehntes Hämatom in Leiste und Schamregion rechts.",
+              "skin": "Kalt, grau-marmoriert, kein Kältezittern.",
+              "temperature": "33,6 °C (Ohr)"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "warm",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "14"
+            }
+          ],
+          "else": "13",
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 22,
+            "spo2": 94,
+            "hr": 106,
+            "bp": "110/70",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt, Hämatom in der Leiste stabil.",
+              "skin": "Kalt, blass, in Rettungsdecke und Decken eingepackt.",
+              "temperature": "34,6 °C (Ohr)"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "rr": 32,
+            "spo2": 86,
+            "hr": 130,
+            "bp": "60 palp.",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 8,
+            "followsCommands": false,
+            "pain": 3,
+            "exam": {
+              "skin": "Kalt, grau, marmoriert.",
+              "temperature": "33,2 °C (Ohr)"
+            }
+          },
+          "rules": [],
+          "else": "15",
+          "dead": false
+        },
+        "14": {
+          "findings": {
+            "rr": 24,
+            "spo2": 92,
+            "hr": 116,
+            "bp": "90/55",
+            "recap": 4,
+            "gcs": 13,
+            "pain": 5,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt, ausgedehntes Hämatom in der Leiste.",
+              "skin": "Kalt, blass-marmoriert, in Rettungsdecke eingepackt.",
+              "temperature": "34,0 °C (Ohr)"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "15": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "temperature": "32,8 °C (Ohr)"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-ea33b4",
+      "version": 1,
+      "title": "Kohlenmonoxidvergiftung nach Rauchgasexposition",
+      "picture": "Mann, ca. 88 Jahre, sitzt zusammengesunken im Rollstuhl unter einer nassen Wolldecke, nur im Schlafanzug und barfuß. Keine sichtbaren Verletzungen, Gesicht blass, Schlafanzug riecht stark nach Rauch. Auf der Decke ist Erbrochenes. Er ist unruhig, hält sich mit beiden Händen den Kopf, schaut sich ratlos um und murmelt: „Mir ist so schlecht … wo bin ich denn hier? Ich will in mein Bett.“",
+      "profile": {
+        "temperament": "verwirrt, misstrauisch und abwehrend; reißt sich die Sauerstoffmaske herunter und schlägt nach Helfern; wird bei langsamer, einfacher Sprache und Körperkontakt (Hand halten) deutlich kooperativer",
+        "pitfall": "Die neue Verwirrtheit, der Kopfschmerz und die Übelkeit werden als Demenz abgetan, und die Pulsoxymetrie zeigt trotz Kohlenmonoxidvergiftung falsch-normale Werte um 97 %. Ohne hochdosierten Sauerstoff trübt er ein und krampft. Die Maske bleibt nur auf, wenn er betreut und beruhigt wird. Bei 2 °C und Nässe kühlt er zusätzlich aus.",
+        "anamnesis": {
+          "symptoms": "Mein Kopf brummt ganz furchtbar, und mir ist so schlecht. Mir ist auch schwindelig.",
+          "allergies": "Allergien? Nein, ich glaube nicht. Fragen Sie die Schwester.",
+          "medication": "Ich bekomme morgens Tabletten von der Schwester, für das Herz und gegen das Wasser, glaube ich.",
+          "history": "Ich habe es mit dem Herzen, und mein Gedächtnis ist nicht mehr so gut, sagt der Doktor. Laufen kann ich auch nicht mehr.",
+          "lastMeal": "Abendbrot gab es, Brot mit Wurst, glaube ich. Das ist mir aber eben wieder hochgekommen.",
+          "event": "Ich habe im Bett gelegen, dann hat es so gequalmt und gestunken. Ich weiß nicht, wie lange. Dann haben mich die Männer mit den Helmen rausgeholt.",
+          "risk": "Geraucht habe ich früher, aber das ist schon ewig her. Mir ist so kalt."
+        },
+        "sources": [
+          "AWMF S2k-Leitlinie Diagnostik und Therapie der Kohlenmonoxidvergiftung (Reg.-Nr. 040-012, 2021): Pulsoxymetrie unzuverlässig, sofort 100 % O2 hochdosiert über Maske mit Reservoir, Klinik mit Möglichkeit zur CO-Hb-Messung bzw. HBO-Abklärung",
+          "ERC Guidelines 2021: Cardiac Arrest in Special Circumstances (Vergiftungen, akzidentelle Hypothermie)",
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (Reg.-Nr. 187-023, 2022): Wärmeerhalt und Vermeidung von Hypothermie in der Präklinik",
+          "DGN S2k-Leitlinie Erster epileptischer Anfall und Epilepsien im Erwachsenenalter (2023): Atemwegssicherung, Seitenlage und Sauerstoff beim Krampfanfall",
+          "mSTaRT-Vorsichtungsalgorithmus (Kanz et al., Berufsfeuerwehr München)"
+        ]
+      },
+      "meta": {
+        "category": "Intoxikation",
+        "tags": [
+          "CO-Vergiftung",
+          "Rauchgas",
+          "Demenz",
+          "Pulsoxymetrie-Falle",
+          "Hypothermie",
+          "Krampfanfall",
+          "Geriatrie"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "handover"
+            ],
+            "within": 45
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing",
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 22,
+        "spo2": 97,
+        "hr": 104,
+        "bp": "150/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 14,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 4,
+        "exam": {
+          "airway": "frei; keine Rußspuren in Mund und Nase, keine Schwellung, Stimme unauffällig, kein Husten",
+          "skin": "blass bis rosig, kühl, nass vom Regen; Schlafanzug riecht stark nach Rauch",
+          "lung": "vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche, kein Giemen",
+          "pupils": "isokor, mittelweit, prompt lichtreagibel",
+          "neuro": "zeitlich und örtlich desorientiert, verlangsamt, befolgt einfache Aufforderungen, keine Lähmungen; laut Pflege sonst ruhig, kennt sein Zimmer und die Pflegekräfte",
+          "abdomen": "weich, kein Druckschmerz",
+          "pelvis": "stabil, kein Schmerz",
+          "body_check": "keine Verletzungen, keine Verbrennungen; Füße bloß und kalt",
+          "spo2_note": "Pulsoxymeter zeigt 97 %; CO-Oxymetrie nicht vorhanden",
+          "temp": "35,4 °C",
+          "glucose": "118 mg/dl",
+          "ecg": "Sinustachykardie"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 20,
+            "hr": 96,
+            "bp": "145/80",
+            "pain": 3,
+            "exam": {
+              "neuro": "ruhiger, behält die Maske auf, hält die Hand des Helfers; Kopfschmerz und Übelkeit lassen nach",
+              "skin": "kühl, nass, zittert am ganzen Körper",
+              "temp": "35,0 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 24,
+            "hr": 112,
+            "bp": "160/90",
+            "gcs": 13,
+            "pain": 5,
+            "exam": {
+              "neuro": "unruhig und ängstlich, reißt sich die Sauerstoffmaske immer wieder herunter, schlägt nach Helfern, ruft: „Lasst mich in Ruhe!“",
+              "skin": "kühl, nass, zittert",
+              "temp": "35,0 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 24,
+            "spo2": 96,
+            "hr": 122,
+            "bp": "165/95",
+            "gcs": 11,
+            "followsCommands": false,
+            "pain": 6,
+            "exam": {
+              "airway": "erneut erbrochen, Erbrochenes im Mund, gurgelndes Atemgeräusch",
+              "neuro": "somnolent, öffnet die Augen nur auf Ansprache, unverständliche Worte, befolgt keine Aufforderungen mehr, einzelne Muskelzuckungen an den Armen",
+              "skin": "kalt, nass, zittert",
+              "temp": "34,9 °C",
+              "ecg": "ST-Senkung"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "airway_open",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 18,
+            "hr": 88,
+            "bp": "140/80",
+            "pain": 2,
+            "exam": {
+              "neuro": "kooperativ, behält die Maske auf; laut Pflege fast wieder „wie sonst“, Kopfschmerz nur noch leicht, keine Übelkeit",
+              "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
+              "temp": "35,6 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 20,
+            "hr": 98,
+            "bp": "150/85",
+            "pain": 3,
+            "exam": {
+              "neuro": "behält die Maske auf, Kopfschmerz und Übelkeit rückläufig, klagt: „Mir ist so kalt.“",
+              "skin": "kalt, nass, starkes Kältezittern, Lippen bläulich",
+              "temp": "34,8 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 16,
+            "hr": 80,
+            "bp": "130/75",
+            "recap": 3,
+            "gcs": 13,
+            "pain": 2,
+            "exam": {
+              "neuro": "zunehmend schläfrig und verlangsamt, befolgt einfache Aufforderungen; Kopfschmerz und Übelkeit rückläufig",
+              "skin": "kalt, blass-marmoriert, Kältezittern lässt nach",
+              "temp": "34,0 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 22,
+            "spo2": 97,
+            "hr": 110,
+            "bp": "155/85",
+            "gcs": 13,
+            "followsCommands": true,
+            "pain": 4,
+            "exam": {
+              "airway": "frei nach Absaugen, kein Gurgeln mehr",
+              "neuro": "schläfrig, desorientiert, befolgt einfache Aufforderungen, keine Muskelzuckungen mehr",
+              "skin": "kalt, nass, zittert",
+              "temp": "34,7 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 8,
+            "spo2": 86,
+            "hr": 140,
+            "bp": "180/100",
+            "recap": 3,
+            "gcs": 3,
+            "followsCommands": false,
+            "exam": {
+              "neuro": "generalisierter Krampfanfall mit rhythmischen Zuckungen aller Extremitäten, nicht ansprechbar, Zungenbiss",
+              "airway": "Speichel und Erbrochenes vor dem Mund, gurgelnde, unregelmäßige Atmung",
+              "pupils": "weit, träge lichtreagibel",
+              "temp": "34,7 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "airway_open",
+                "oxygen",
+                "recovery_position"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "12",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 18,
+            "spo2": 98,
+            "hr": 98,
+            "bp": "145/80",
+            "gcs": 13,
+            "followsCommands": true,
+            "pain": 3,
+            "exam": {
+              "airway": "frei",
+              "neuro": "weiterhin verwirrter als sonst, aber ruhig, behält die Maske auf, befolgt Aufforderungen",
+              "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
+              "temp": "35,3 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 20,
+            "spo2": 96,
+            "hr": 112,
+            "bp": "160/90",
+            "recap": 3,
+            "gcs": 9,
+            "followsCommands": false,
+            "exam": {
+              "neuro": "Krampf hat aufgehört, nachschlafend, öffnet die Augen auf Schmerzreiz, wehrt gezielt ab, stöhnt",
+              "airway": "frei in Seitenlage, Atmung regelmäßig",
+              "pupils": "isokor, mittelweit, lichtreagibel",
+              "temp": "34,6 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 6,
+            "spo2": 78,
+            "hr": 50,
+            "bp": "90/50",
+            "recap": 4,
+            "gcs": 3,
+            "followsCommands": false,
+            "exam": {
+              "neuro": "Krampf vorbei, nicht erweckbar, keine Reaktion auf Schmerzreiz",
+              "airway": "Erbrochenes im Rachen, schnarchende, sehr flache Atmung",
+              "skin": "kalt, grau-zyanotisch",
+              "pupils": "weit, kaum lichtreagibel",
+              "temp": "34,4 °C",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "airway_open"
+              ],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "13"
+            }
+          ],
+          "else": "14",
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "rr": 12,
+            "spo2": 93,
+            "hr": 104,
+            "bp": "130/75",
+            "recap": 3,
+            "gcs": 5,
+            "followsCommands": false,
+            "exam": {
+              "airway": "frei nach Absaugen, Brustkorb hebt sich unter Beutel-Masken-Beatmung, Eigenatmung flach",
+              "neuro": "bewusstlos, ungezielte Bewegungen auf Schmerzreiz",
+              "skin": "kalt, blass",
+              "temp": "34,3 °C",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "14": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 0,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "neuro": "keine Reaktion, keine Atmung",
+              "pupils": "weit, lichtstarr",
+              "ecg": "Asystolie"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-8e92d6",
+      "version": 1,
+      "title": "Rauchexposition und kleine Handverbrennung bei Demenz mit drohender Unterkühlung",
+      "picture": "Frau, ca. 75 Jahre, läuft barfuß im dünnen, durchnässten Nachthemd umher und hustet immer wieder. Am rechten Handrücken ist eine kleine gerötete Stelle zu sehen. Sie zittert leicht, wirkt aber gut gelaunt, lächelt, fasst einen Helfer am Arm und sagt: „Da bist du ja, mein Junge! Komm, ich muss nach Hause, die Kinder warten.“ Kurz danach wendet sie sich ab und geht zielstrebig in die Dunkelheit.",
+      "profile": {
+        "temperament": "freundlich, redselig, desorientiert; hält einen Helfer für ihren Sohn; wird unruhig, wenn man sie festhalten will, lässt sich aber mit ruhiger Zuwendung führen",
+        "pitfall": "Wirkt leicht verletzt und wird schnell grün gesichtet. Wegen ihrer Demenz läuft sie ohne feste Bezugsperson weg und kühlt bei Nässe, Wind und 2 °C rasch aus. Großflächiges Kühlen der Handverbrennung verschlimmert die Unterkühlung.",
+        "anamnesis": {
+          "symptoms": "Mir kratzt es so im Hals, und an der Hand brennt es ein bisschen. Kalt ist mir auch, aber das macht nichts.",
+          "allergies": "Allergien? Nein, ich vertrage alles, ich bin doch nicht krank.",
+          "medication": "Die Schwester bringt mir morgens immer meine Tabletten. Welche das sind, weiß ich nicht.",
+          "history": "Krank bin ich nicht. Mein Mann sagt immer, ich bin zäh wie Leder.",
+          "lastMeal": "Ich habe gerade Abendbrot gemacht, für die Kinder. Die warten doch auf mich.",
+          "event": "Da war so viel Rauch, und dann hat mich ein Mann rausgebracht. Jetzt muss ich aber heim.",
+          "risk": "Ich gehe jetzt nach Hause, das ist gleich da vorne um die Ecke."
+        },
+        "sources": [
+          "ERC Leitlinien 2021, Kapitel Kreislaufstillstand unter besonderen Umständen: akzidentelle Hypothermie (Lott C. et al., Resuscitation 2021)",
+          "Paal P. et al.: Accidental Hypothermia: 2021 Update. Int J Environ Res Public Health 2022 (Stadieneinteilung, Wärmeerhalt, vorsichtige Lagerung)",
+          "AWMF S2k-Leitlinie 044-001: Behandlung thermischer Verletzungen im Erwachsenenalter (Kühlung nur kleinflächig und kurz, Vermeidung einer Hypothermie)",
+          "AWMF S2k-Leitlinie 040-012: Diagnostik und Therapie der Kohlenmonoxidvergiftung (Sauerstoffgabe bei Rauchgasexposition, eingeschränkte Aussagekraft der Pulsoxymetrie)",
+          "mSTaRT-Sichtungsalgorithmus (Kanz K.-G. et al., Notfall + Rettungsmedizin 2006) inkl. Nachsichtung Gehfähiger",
+          "DGGG/DGPPN S3-Leitlinie Demenzen (AWMF 038-013): Umgang mit Weglauftendenz und herausforderndem Verhalten"
+        ]
+      },
+      "meta": {
+        "category": "Geriatrie",
+        "tags": [
+          "Demenz",
+          "Weglauftendenz",
+          "Hypothermie",
+          "Rauchgasexposition",
+          "Verbrennung klein",
+          "Betreuung",
+          "Nachsichtung"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          }
+        ],
+        "harmful": [
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 22,
+        "spo2": 95,
+        "hr": 98,
+        "bp": "155/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 14,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 2,
+        "exam": {
+          "temp": "35,4 °C (Ohr)",
+          "skin": "Haut kühl und nass, Füße kalt, leichtes Kältezittern",
+          "burn": "Ca. 3 × 2 cm große Rötung mit kleiner Blase am rechten Handrücken, deutlich unter 1 % KOF, oberflächlich (Grad 1–2a)",
+          "airway": "Kein Ruß im Mund oder an der Nase, keine versengten Nasenhaare, Stimme normal, kein Stridor",
+          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Hustenreiz",
+          "mental": "Zeitlich, örtlich und situativ desorientiert (vorbestehende Demenz), zur Person orientiert, befolgt einfache Aufforderungen, vergisst sie aber nach kurzer Zeit",
+          "pupils": "Mittelweit, isokor, prompt lichtreagibel"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "calm",
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "4"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 18,
+            "spo2": 96,
+            "hr": 86,
+            "bp": "145/80",
+            "exam": {
+              "temp": "35,8 °C (Ohr)",
+              "skin": "Unter der Rettungsdecke trocken und langsam wärmer, Zittern lässt nach",
+              "mental": "Ruhig, sitzt neben dem Helfer, hält ihn weiter für ihren Sohn und erzählt von früher"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 16,
+            "spo2": 98,
+            "hr": 82,
+            "bp": "145/80",
+            "pain": 1,
+            "exam": {
+              "temp": "36,0 °C (Ohr)",
+              "lungs": "Vesikuläres Atemgeräusch beidseits, Hustenreiz deutlich weniger",
+              "mental": "Ruhig und zugewandt, bleibt beim Helfer sitzen"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "hr": 102,
+            "recap": 3,
+            "exam": {
+              "temp": "35,0 °C (Ohr)",
+              "skin": "Kalt und nass, deutliches Kältezittern, Füße weiß-bläulich",
+              "mental": "Bleibt beim Helfer, wird aber unruhig, will immer wieder aufstehen und nach Hause"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "hr": 108,
+            "bp": "165/90",
+            "recap": 3,
+            "pain": 3,
+            "exam": {
+              "temp": "34,6 °C (Ohr)",
+              "skin": "Starkes Kältezittern, Lippen bläulich, Füße eiskalt",
+              "mental": "Klagt über Kälte, klammert sich an den Helfer"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "rr": 18,
+            "spo2": 92,
+            "hr": 100,
+            "bp": "160/90",
+            "recap": 4,
+            "gcs": 13,
+            "pain": 3,
+            "exam": {
+              "temp": "34,0 °C (Ohr)",
+              "skin": "Sitzt zusammengekauert, eiskalte nasse Haut, starkes Kältezittern",
+              "mental": "Zunehmend schläfrig, antwortet nur noch kurz"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 18,
+            "hr": 92,
+            "bp": "150/85",
+            "recap": 3,
+            "exam": {
+              "temp": "35,2 °C (Ohr)",
+              "skin": "Unter der Rettungsdecke langsam wärmer, zittert noch",
+              "mental": "Ruhiger, bleibt beim Helfer sitzen"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "hr": 104,
+            "recap": 3,
+            "exam": {
+              "temp": "35,0 °C (Ohr)",
+              "skin": "Rettungsdecke hängt lose über einer Schulter, Nachthemd und Füße nass und kalt, zittert",
+              "mental": "Steht abseits im Dunkeln und sucht den Weg nach Hause, reagiert freundlich auf Ansprache"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "calm"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "walking": false,
+            "rr": 18,
+            "spo2": 92,
+            "hr": 110,
+            "bp": "170/95",
+            "recap": 4,
+            "gcs": 13,
+            "pain": 3,
+            "exam": {
+              "temp": "34,4 °C (Ohr)",
+              "skin": "Wird abseits im Dunkeln liegend gefunden, zusammengekauert, durchnässt, starkes Kältezittern, Füße bläulich, kleine Schürfwunde am rechten Knie",
+              "mental": "Verwirrt, weint, ruft nach den Kindern, befolgt einfache Aufforderungen nur zögernd"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "walking": false,
+            "rr": 18,
+            "spo2": 94,
+            "hr": 96,
+            "bp": "155/85",
+            "recap": 3,
+            "gcs": 14,
+            "exam": {
+              "temp": "34,8 °C (Ohr)",
+              "skin": "Unter Rettungsdecke und Decken, zittert noch kräftig, Haut langsam wärmer",
+              "mental": "Ruhiger, desorientiert wie zu Beginn"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "walking": false,
+            "rr": 14,
+            "spo2": 90,
+            "hr": 56,
+            "bp": "135/80",
+            "recap": 5,
+            "gcs": 11,
+            "followsCommands": false,
+            "pain": 1,
+            "exam": {
+              "temp": "33,6 °C (Ohr)",
+              "skin": "Kältezittern hat aufgehört, Haut eiskalt und marmoriert",
+              "mental": "Somnolent, murmelt Unverständliches, befolgt keine Aufforderungen mehr",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "13",
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "walking": false,
+            "rr": 14,
+            "spo2": 92,
+            "hr": 60,
+            "bp": "135/80",
+            "recap": 4,
+            "gcs": 12,
+            "followsCommands": true,
+            "pain": 1,
+            "exam": {
+              "temp": "33,8 °C (Ohr), unter Wärmeerhalt keine weitere Auskühlung",
+              "skin": "Eingepackt, Haut kalt, wieder leichtes Zittern",
+              "mental": "Schläfrig, auf Ansprache erweckbar, befolgt einfache Aufforderungen"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "walking": false,
+            "rr": 10,
+            "spo2": 88,
+            "hr": 46,
+            "bp": "110/65",
+            "recap": 5,
+            "gcs": 9,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "temp": "32,8 °C (Ohr)",
+              "skin": "Eiskalt, marmoriert, kein Kältezittern",
+              "mental": "Reagiert nur auf Schmerzreiz mit Stöhnen",
+              "pupils": "Mittelweit, isokor, träge lichtreagibel",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "14"
+            }
+          ],
+          "dead": false
+        },
+        "14": {
+          "findings": {
+            "walking": false,
+            "rr": 12,
+            "spo2": 91,
+            "hr": 50,
+            "bp": "115/70",
+            "recap": 5,
+            "gcs": 10,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "temp": "32,9 °C (Ohr), unter Wärmeerhalt stabil",
+              "skin": "Eingepackt, Haut eiskalt",
+              "mental": "Öffnet auf Schmerzreiz die Augen, stöhnt",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-eb8b72",
+      "version": 1,
+      "title": "Rauchgasexposition mit verdecktem akutem Koronarsyndrom",
+      "picture": "Mann, ca. 70 Jahre, steht im durchnässten Schlafanzug und in Hausschuhen, läuft geschäftig umher und trägt mehrere Decken unter dem Arm. Rußspuren an den Nasenlöchern, keine sichtbaren Wunden. Hustet immer wieder, Haare nass vom Regen, Hände zittern leicht. Wirkt munter und abwehrend und sagt: „Mir fehlt nichts, kümmern Sie sich lieber um die anderen!“",
+      "profile": {
+        "temperament": "Hilfsbereit, stolz, spielt Beschwerden herunter und will nicht als Patient gelten. Will ständig weiter helfen und muss aktiv zur Ruhe gebracht werden.",
+        "pitfall": "Ab Phase 3 hat er ein Druckgefühl hinter dem Brustbein, das er verschweigt. Er reibt sich unauffällig die Brust und setzt sich zwischendurch kurz hin. Erst auf direkte Nachfrage („Drückt es in der Brust?“) gibt er es zu und wiegelt sofort ab („Das ist nur die Kälte“). Er ist weiter gehfähig und wirkt dadurch wie ein grüner Patient. Der SpO2-Wert ist wegen der Rauchgas- bzw. CO-Exposition trügerisch normal.",
+        "anamnesis": {
+          "symptoms": "Ich muss ein bisschen husten und habe leichte Kopfschmerzen, aber das ist nicht der Rede wert. Mir geht es gut.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme morgens ASS 100, einen Betablocker und eine Tablette gegen das Cholesterin. Mein Nitrospray liegt drinnen auf dem Nachttisch.",
+          "history": "Ich habe es mit den Herzkranzgefäßen und habe vor sechs Jahren zwei Stents bekommen. Außerdem habe ich Bluthochdruck.",
+          "lastMeal": "Abendbrot gab es um halb sechs, danach habe ich nur noch Tee getrunken.",
+          "event": "Ich bin vom Rauchmelder wach geworden, und auf dem Flur war alles voller Qualm. Ich habe noch geholfen, meine Zimmernachbarin rauszubringen, und dabei ordentlich Rauch abbekommen.",
+          "risk": "Ich habe vierzig Jahre geraucht, aber seit den Stents nicht mehr. Bei Anstrengung drückt es manchmal ein bisschen, aber das geht immer schnell wieder weg."
+        },
+        "sources": [
+          "AWMF S2k-Leitlinie Diagnostik und Therapie der Kohlenmonoxidvergiftung (Reg.-Nr. 040-012): hochdosierte Sauerstoffgabe bei symptomatischer Rauchgas-/CO-Exposition unabhängig vom SpO2, Pulsoxymetrie unzuverlässig",
+          "ESC Guidelines for the management of acute coronary syndromes 2023 (Deutsche Gesellschaft für Kardiologie, Pocket-Leitlinie ACS)",
+          "ERC Leitlinien 2021 (German Resuscitation Council): Erste Hilfe bei Brustschmerz, Kreislaufstillstand unter besonderen Umständen, akzidentelle Hypothermie",
+          "mSTaRT-Vorsichtungsalgorithmus mit Nachsichtung Gehfähiger (Kanz et al., Notfall + Rettungsmedizin)",
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (Reg.-Nr. 187-023): Wärmeerhalt und Vermeidung von Hypothermie"
+        ]
+      },
+      "meta": {
+        "category": "Internistisch",
+        "tags": [
+          "Rauchgas",
+          "CO-Exposition",
+          "Akutes Koronarsyndrom",
+          "KHK",
+          "Unterkühlung",
+          "Nachsichtung",
+          "Pflegeheim"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "calm"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "ecg"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing",
+          "shock_position",
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 20,
+        "spo2": 97,
+        "hr": 92,
+        "bp": "150/90",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 2,
+        "exam": {
+          "ecg": "Sinusrhythmus",
+          "lungs": "Vesikuläres Atemgeräusch beidseits, vereinzelt trockenes Giemen nach Hustenstößen, keine Rasselgeräusche",
+          "airway": "Ruß an den Nasenlöchern, Mund und Rachen ohne Ruß, Stimme klar, keine Heiserkeit, keine Schluckbeschwerden",
+          "skin": "Rosig, kühl, Schlafanzug durchnässt",
+          "temperature": "35,8 °C",
+          "chest": "Gibt keine Brustschmerzen an",
+          "neuro": "Wach, orientiert, Pupillen isokor und prompt lichtreagibel, leichter Kopfschmerz",
+          "spo2_hinweis": "SpO2-Messwert nach Rauchgas- bzw. CO-Exposition unzuverlässig (falsch hoch)",
+          "bodycheck": "Keine Verletzungen, keine Verbrennungen"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm",
+                "calm"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 18,
+            "hr": 84,
+            "bp": "140/85",
+            "pain": 1,
+            "exam": {
+              "temperature": "36,1 °C",
+              "neuro": "Wach, orientiert, Kopfschmerz rückläufig",
+              "chest": "Keine Brustschmerzen, Husten seltener",
+              "skin": "Rosig, warm unter der Rettungsdecke"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 24,
+            "spo2": 96,
+            "hr": 104,
+            "bp": "165/95",
+            "recap": 2,
+            "pain": 4,
+            "exam": {
+              "ecg": "ST-Senkung",
+              "chest": "Auf direkte Nachfrage Druck- und Engegefühl hinter dem Brustbein mit Ausstrahlung in den linken Arm, spielt es herunter",
+              "skin": "Blass, kaltschweißig, zittert",
+              "temperature": "35,4 °C",
+              "behavior": "Setzt sich immer wieder kurz hin, reibt sich die Brust, ist kurzatmig beim Sprechen"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm",
+                "calm"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "walking": false,
+            "rr": 20,
+            "spo2": 97,
+            "hr": 90,
+            "bp": "145/85",
+            "pain": 2,
+            "exam": {
+              "ecg": "ST-Senkung",
+              "chest": "Druckgefühl deutlich rückläufig, keine Ausstrahlung mehr",
+              "skin": "Blass, nicht mehr schweißig",
+              "temperature": "35,9 °C",
+              "behavior": "Sitzt ruhig in die Decke gewickelt, akzeptiert die Versorgung"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "walking": false,
+            "rr": 28,
+            "spo2": 92,
+            "hr": 116,
+            "bp": "110/70",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 8,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "chest": "Starker drückender Schmerz hinter dem Brustbein, Ausstrahlung in linken Arm und Kiefer, Todesangst",
+              "skin": "Grau-blass, kaltschweißig, zittert stark",
+              "temperature": "35,1 °C",
+              "lungs": "Vesikuläres Atemgeräusch, basal beidseits leise feuchte Rasselgeräusche",
+              "behavior": "Sitzt zusammengesunken am Boden, kann nicht mehr aufstehen, verlangsamt"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm",
+                "calm",
+                "upper_body_up"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "rr": 22,
+            "spo2": 95,
+            "hr": 100,
+            "bp": "120/80",
+            "recap": 3,
+            "gcs": 15,
+            "pain": 5,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "chest": "Brustschmerz etwas gebessert, aber anhaltend",
+              "skin": "Blass, kühl, weniger schweißig",
+              "temperature": "35,6 °C",
+              "behavior": "Sitzt mit erhöhtem Oberkörper, ruhig, ängstlich, braucht dringend Notarzt und Transport"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "walking": false,
+            "rr": 32,
+            "spo2": 87,
+            "hr": 128,
+            "bp": "75/50",
+            "radialPulse": false,
+            "recap": 4,
+            "gcs": 12,
+            "pain": 8,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "lungs": "Feuchte Rasselgeräusche beidseits bis zur Lungenmitte, Atemnot",
+              "skin": "Grau, marmoriert, kaltschweißig",
+              "temperature": "34,8 °C",
+              "behavior": "Verwirrt, stöhnt, reagiert verzögert auf Ansprache",
+              "monitor": "Gehäufte VES"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "warm",
+                "calm",
+                "upper_body_up"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "walking": false,
+            "rr": 28,
+            "spo2": 91,
+            "hr": 118,
+            "bp": "90/60",
+            "radialPulse": true,
+            "recap": 3,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "lungs": "Feuchte Rasselgeräusche basal beidseits",
+              "skin": "Blass, kühl, schweißig",
+              "behavior": "Wach, ängstlich, kritisch krank, sofortiger Transport mit Notarzt erforderlich"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "walking": false,
+            "breathing": false,
+            "rr": 0,
+            "spo2": 0,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "skin": "Grau-zyanotisch, kalt"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    }
+  ]
+}

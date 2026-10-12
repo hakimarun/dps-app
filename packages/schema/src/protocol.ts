@@ -68,7 +68,8 @@ export const ClientMsg = z.discriminatedUnion("type", [
 ]);
 
 export const Level = z.enum(["einsteiger", "fortgeschritten", "experte"]);
-export const ApproveReq = z.object({ item: z.string().max(64), approved: z.boolean() });
+export const Audience = z.enum(["sanh", "rs", "notsan"]); // Zielgruppe generierter Fälle: Sanitätshelfer, Rettungssanitäter, Notfallsanitäter
+export type Audience = z.infer<typeof Audience>;
 export const CreateExerciseReq = z.object({
   scenario: z.string().max(64),
   patients: z.array(z.string().max(64)).min(1).max(100),
@@ -82,8 +83,9 @@ export const CreateExerciseReq = z.object({
   phaseMinutes: z.number().int().min(5).max(30).optional(),
   random: z.boolean().optional(),
   vitals: z.enum(["numbers", "live", "text"]).default("numbers"),
+  late: z.record(z.string().max(64), z.number().int().min(1).max(90)).optional(), // A8: Patient taucht erst ab dieser Minute auf
 });
-export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional() });
+export const GenerateReq = z.object({ brief: z.string().trim().min(10).max(2000), idea: z.string().max(10).optional(), audience: Audience.default("rs") });
 // Formular-Editor (A1/A4): Fall im Bibliotheksformat, geprüft wird auf dem Server.
 export const CaseSaveReq = z.object({ patient: z.record(z.string(), z.unknown()) });
 export const ScenarioSaveReq = z.object({
@@ -93,7 +95,15 @@ export const ScenarioSaveReq = z.object({
   units: z.array(z.object({ kind: z.enum(["RTW", "NEF", "KTW"]), arrivesAt: z.number().min(0).max(120) })).min(1).max(20),
   patients: z.array(z.string().max(64)).min(1).max(100),
 });
-export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
+// Neues KI-Szenario: Zahl der Patienten je Sichtungskategorie zu Beginn (zusammen 1–15).
+const SkCount = z.number().int().min(0).max(15).default(0);
+export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), mix: z.object({ I: SkCount, II: SkCount, III: SkCount, EX: SkCount }), audience: Audience.default("rs") })
+  .refine((r) => { const n = r.mix.I + r.mix.II + r.mix.III + r.mix.EX; return n >= 1 && n <= 15; }, "zusammen 1 bis 15 Patienten");
+// Fortschritt einer KI-Erzeugung (Szenario oder nachgenerierter Patient), für die Anzeige während der Erstellung.
+export type GenJob = {
+  stage: "lage" | "patienten" | "fertig" | "fehler"; total: number; done: number; failed: number; error: string | null;
+  items: { title: string; target: string | null; sk: string | null; ok: boolean; problem: string | null }[];
+};
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release", "speed"]), factor: z.union([z.literal(1), z.literal(2), z.literal(4)]).optional() }); // release: Berichte freigeben; speed: Tempo (D5)
 // A6: Szenario als Datei zum Austausch zwischen Organisationen: Lage, Fahrzeuge und alle Fallverläufe, ohne Konto- oder Personendaten.
 export const ScenarioBundle = z.object({
@@ -129,6 +139,7 @@ export type ObserverView = {
 export const InjectReq = z.discriminatedUnion("type", [
   z.object({ type: z.literal("set"), patient: z.string().max(64), to: z.string().max(64) }),
   z.object({ type: z.literal("message"), text: z.string().trim().min(1).max(300) }),
+  z.object({ type: z.literal("arrive"), unit: z.string().max(64) }), // Leitung: nachgefordertes Fahrzeug ist da
   z.object({ type: z.literal("mood"), patient: z.string().max(64), temperament: z.string().trim().max(40) }), // G11, leer = wie im Fall
 ]);
 
@@ -199,7 +210,7 @@ export type View = {
   messages: { t: number; text: string }[]; // Nachrichten der Leitung, neueste zuletzt
   stock: { id: string; title: string; inventory: Record<string, number> }[]; // andere Fahrzeuge vor Ort, zum Material holen (C10)
   // nur für die Führung (B3): Lage ohne Soll-Werte und angeforderte Fahrzeuge
-  lage?: { patients: { id: string; triage: Sk | null; place: string; cleared: boolean; left: boolean }[]; vehicles: { title: string; arrivesAt: number; arrived: boolean; seats: number }[]; clearance: boolean } | null;
+  lage?: { patients: { id: string; triage: Sk | null; place: string; cleared: boolean; left: boolean }[]; vehicles: { title: string; arrived: boolean; seats: number }[]; clearance: boolean } | null;
 };
 
 export type LeitungView = {
@@ -225,6 +236,7 @@ export type LeitungView = {
   }[];
   helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null; idle: number | null }[];
   trupps: (Trupp & { members: string[] })[];
+  requests: { unit: string; title: string; at: number; by: string; arrived: boolean }[]; // Nachforderungen der Führung, Eintreffen bestätigt die Leitung
   events: { t: number; text: string }[]; // neueste zuerst
   observer: string | null; // Beobachter-Code (E7)
 };

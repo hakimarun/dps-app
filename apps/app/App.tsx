@@ -213,7 +213,7 @@ function Helfer({ t, server, code, onExit, solo }: { t: Theme; server: string; c
         </View>
       )}
       {sheet === "lage" && conn.view?.lage && (
-        <LageSheet t={t} lage={conn.view.lage} min={min} onRequest={(kind) => send({ type: "request", kind })} onClear={(patient) => send({ type: "clear", patient })} onClose={() => setSheet(null)} />
+        <LageSheet t={t} lage={conn.view.lage} onRequest={(kind) => send({ type: "request", kind })} onClear={(patient) => send({ type: "clear", patient })} onClose={() => setSheet(null)} />
       )}
       {solo && w && conn.clock?.status === "running" && (
         <View style={{ paddingHorizontal: 20, paddingBottom: 8 }}>
@@ -717,21 +717,21 @@ function Go({ onDone }: { onDone: () => void }) {
 }
 
 // B3: Führung (OrgL, LNA, UA-Leiter): Verstärkung bei der Leitstelle anfordern und entscheiden, wer zuerst abtransportiert wird.
-function LageSheet({ t, lage, min, onRequest, onClear, onClose }: {
-  t: Theme; lage: NonNullable<ViewData["lage"]>; min: number; onRequest: (kind: "rtw" | "nef" | "nktw" | "ktw") => void; onClear: (patient: string) => void; onClose: () => void;
+function LageSheet({ t, lage, onRequest, onClear, onClose }: {
+  t: Theme; lage: NonNullable<ViewData["lage"]>; onRequest: (kind: "rtw" | "nef" | "nktw" | "ktw") => void; onClear: (patient: string) => void; onClose: () => void;
 }) {
   const waiting = lage.patients.filter((p) => !p.left);
   return (
     <Sheet t={t} title="Lage & Verstärkung" onClose={onClose}>
       <Text style={{ color: t.text, fontWeight: "900", fontSize: 18 }}>Verstärkung bei der Leitstelle anfordern</Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-        {([["rtw", "RTW", "10 min"], ["nef", "NEF", "8 min"], ["nktw", "NKTW", "12 min"], ["ktw", "KTW", "15 min"]] as const).map(([kind, label, eta]) => (
-          <View key={kind} style={{ flexGrow: 1, flexBasis: "45%" }}><Button t={t} label={label} note={`in ${eta}`} onPress={() => onRequest(kind)} /></View>
+        {([["rtw", "RTW"], ["nef", "NEF"], ["nktw", "NKTW"], ["ktw", "KTW"]] as const).map(([kind, label]) => (
+          <View key={kind} style={{ flexGrow: 1, flexBasis: "45%" }}><Button t={t} label={label} onPress={() => onRequest(kind)} /></View>
         ))}
       </View>
       {lage.vehicles.map((v, i) => (
         <Text key={i} style={{ color: v.arrived ? t.text : t.quiet }}>
-          {v.title} · {v.arrived ? `vor Ort${v.seats ? ` · ${v.seats} Platz frei` : ""}` : `kommt in ${clock(Math.max(0, v.arrivesAt - min) * 60000)}`}
+          {v.title} · {v.arrived ? `vor Ort${v.seats ? ` · ${v.seats} Platz frei` : ""}` : "angefordert, noch nicht da"}
         </Text>
       ))}
       <Text style={{ color: t.text, fontWeight: "900", fontSize: 18, marginTop: 8 }}>Transportreihenfolge</Text>

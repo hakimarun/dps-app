@@ -137,7 +137,7 @@ test("Prüfungen: Scan, beschäftigt, Material, Eintreffzeit, Phasenwechsel", ()
   assert.equal(validate(s, act(4, "p04", "pelvic_binder")), "kein pelvic_binder mehr");
   assert.equal(validate(s, act(4, "p01", "tourniquet")), "erst Patient scannen");
   apply(s, scan(4, "p02", "h2"));
-  assert.equal(validate(s, act(4, "p02", "needle_decompression", "h2")), "Einheit noch nicht eingetroffen");
+  assert.equal(validate(s, act(4, "p02", "needle_decompression", "h2")), "Euer Fahrzeug NEF 1 trifft erst ab Minute 10 ein");
   assert.equal(validate(s, { t: 4, type: "phase", patient: "p01", to: "4-tot" }), "Phasenwechsel erzeugt nur die Engine");
 });
 
@@ -173,7 +173,7 @@ test("Aufnahme und Übergabe: Ort, Fahrzeugplätze, Eintreffen, Stillstand nach 
 
 test("Übergabe nur ohne laufende Maßnahme am Patienten", () => {
   const { s } = run([scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), scan(2, "p05", "h2")], 3);
-  assert.equal(validate(s, handover(3, "p05", "rtw1", "h2")), "erst laufende Maßnahmen beenden");
+  assert.equal(validate(s, handover(3, "p05", "rtw1", "h2")), "erst laufende Maßnahme beenden: Atemweg freihalten");
 });
 
 test("Messgeräte: EKG aus der Herzfrequenz, Blutzucker und Temperatur, sofern der Fall nichts festlegt", () => {
@@ -244,5 +244,26 @@ test("Material holen: von einem anderen Fahrzeug vor Ort in die eigene Einheit, 
   apply(s, fetch(11, "nef1", "needle"));
   assert.equal(s.units.rtw1.inventory.needle, 2);
   assert.equal(s.units.nef1.inventory.needle, 1);
-  assert.equal(validate(s, fetch(11, "nef1", "tourniquet")), "kein tourniquet mehr auf diesem Fahrzeug");
+  assert.equal(validate(s, fetch(11, "nef1", "tourniquet")), "dieses Material gibt es auf dem Fahrzeug nicht");
+  apply(s, fetch(11, "nef1", "needle"));
+  assert.equal(validate(s, fetch(11, "nef1", "needle")), "kein needle mehr auf diesem Fahrzeug");
+});
+
+test("Zufallselemente: später entdeckte Patienten und Verlaufsvarianten", () => {
+  // P01 taucht erst bei Minute 15 auf: vorher nicht scanbar, sein Verlauf beginnt erst dann
+  const late = initial(scenario, defs, { ...defaultSettings, late: { p01: 15 } }, 1);
+  apply(late, join(0, "h1", "rtw1"));
+  assert.equal(validate(late, scan(5, "p01")), "Diesen Patienten gibt es hier noch nicht");
+  tick(late, 20);
+  assert.equal(phaseOf(late, "p01"), "1"); // ohne Verzögerung wäre er bei 15 in Phase 2
+  assert.equal(validate(late, scan(20, "p01")), null);
+  tick(late, 31);
+  assert.equal(phaseOf(late, "p01"), "2-schock"); // 15 + 15
+  // Verlaufsvarianten nur mit Zufall: Phasendauer je Patient 80–120 %, fest je Seed
+  const paces = (seed: number, random: boolean) => Object.values(initial(scenario, defs, { ...defaultSettings, random }, seed).patients).map((p) => p.pace);
+  assert.ok(paces(1, false).every((x) => x === 1));
+  const a = paces(1, true), b = paces(2, true);
+  assert.ok(a.every((x) => x >= 0.8 && x <= 1.2));
+  assert.deepEqual(a, paces(1, true)); // reproduzierbar
+  assert.notDeepEqual(a, b);
 });

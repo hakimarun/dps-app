@@ -13,6 +13,7 @@ export async function printPage(ex: Exercise): Promise<string> {
         <h1>${id.toUpperCase()}</h1>
         <div class="qr">${await qr(`dps:${ex.code}:${id}`)}</div>
         <p>${esc(ex.defs.patients[id].picture)}</p>
+        ${ex.settings.late?.[id] ? `<p class="late">Erst ab Minute ${ex.settings.late[id]} auslegen (taucht später auf)</p>` : ""}
         <footer>Übungspatient · Übung ${ex.code} · nur in dieser Übung gültig · ohne Kamera eintippen: ${/^p\d+$/.test(id) ? Number(id.slice(1)) : id.toUpperCase()}</footer>
       </section>`),
   );
@@ -27,6 +28,7 @@ export async function printPage(ex: Exercise): Promise<string> {
   .qr svg { width: 75mm; height: 75mm; }
   p { margin: 6mm 0 0; font-size: 13pt; text-align: center; max-width: 150mm; }
   footer { margin-top: auto; font-size: 9pt; color: #555; }
+  .late { font-weight: 700; border: 2px solid #111; padding: 2mm 4mm; }
   .join h1 { font-size: 24pt; } .join .code { font-size: 48pt; font-weight: 700; letter-spacing: 4pt; margin: 10mm 0; }
   @media screen { .hint { padding: 12px 18px; background: #f2f2f2; } }
   @media print { .hint { display: none; } }

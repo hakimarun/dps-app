@@ -1,0 +1,3105 @@
+{
+  "format": "dps-szenario",
+  "version": 1,
+  "exported": "2026-10-12",
+  "scenario": {
+    "title": "MANV A-Bahn: Reisebus mit Seniorengruppe auf der Seite",
+    "situation": "Ein Reisebus mit 32 Senioren ist am Nachmittag auf der trockenen Autobahn nach einem Auffahrunfall auf einen Lkw auf die rechte Seite gekippt, die Polizei sichert die Einsatzstelle. Viele Fahrgäste haben sich selbst über die Dachluke befreit. Mehrere Personen liegen noch im Bus oder daneben, viele nehmen Blutverdünner und Herzmedikamente. Zunächst sind nur ein RTW und ein KTW vor Ort, weitere Kräfte folgen nach 10 bis 15 Minuten.",
+    "patients": [
+      "ki-edfcfe",
+      "ki-9f0514",
+      "ki-9ca006",
+      "ki-059761",
+      "ki-7b7278",
+      "ki-28a638",
+      "ki-a121b3",
+      "ki-e8cd88"
+    ],
+    "units": [
+      {
+        "id": "rtw1",
+        "title": "RTW 1",
+        "arrivesAt": 0,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw1",
+        "title": "KTW 1",
+        "arrivesAt": 0,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      },
+      {
+        "id": "nef1",
+        "title": "NEF 1",
+        "arrivesAt": 10,
+        "seats": 0,
+        "inventory": {
+          "needle": 2,
+          "ett": 2,
+          "analgesic": 4,
+          "iv_cannula": 2,
+          "infusion": 2,
+          "o2_mask": 1,
+          "bvm": 1,
+          "chest_seal": 1,
+          "hemostatic": 1,
+          "glucose": 2,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "rtw2",
+        "title": "RTW 2",
+        "arrivesAt": 12,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "rtw3",
+        "title": "RTW 3",
+        "arrivesAt": 13,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "rtw4",
+        "title": "RTW 4",
+        "arrivesAt": 15,
+        "seats": 1,
+        "inventory": {
+          "tourniquet": 2,
+          "dressing": 4,
+          "wendl": 1,
+          "o2_mask": 2,
+          "needle": 1,
+          "iv_cannula": 4,
+          "infusion": 4,
+          "analgesic": 2,
+          "pelvic_binder": 1,
+          "splint": 1,
+          "rescue_blanket": 4,
+          "ett": 0,
+          "cervical_collar": 2,
+          "vacuum_mattress": 1,
+          "bvm": 1,
+          "chest_seal": 2,
+          "hemostatic": 2,
+          "burn_dressing": 2,
+          "glucose": 1,
+          "pacer_pads": 1
+        }
+      },
+      {
+        "id": "ktw2",
+        "title": "KTW 2",
+        "arrivesAt": 15,
+        "seats": 2,
+        "inventory": {
+          "dressing": 4,
+          "o2_mask": 1,
+          "rescue_blanket": 4,
+          "cervical_collar": 1,
+          "bvm": 1,
+          "burn_dressing": 1
+        }
+      }
+    ]
+  },
+  "patients": [
+    {
+      "id": "ki-edfcfe",
+      "version": 1,
+      "title": "Instabile Beckenfraktur mit Schock unter Antikoagulation",
+      "picture": "Mann, ca. 78 Jahre, liegt eingezwängt zwischen zwei Sitzreihen halb auf der rechten Seite, die Beine unter der vorderen Sitzbank. Gesicht blass, Stirn kaltschweißig, Hände kalt. Er hält sich mit einer Hand die rechte Hüfte, keine sichtbare Blutung. Wach, ruhig und höflich, sagt lächelnd: „Mir geht's ganz gut, nur die Hüfte zwickt ein bisschen. Kümmern Sie sich lieber um die anderen.“",
+      "profile": {
+        "temperament": "ruhig, höflich, bescheiden, wiegelt freundlich ab",
+        "pitfall": "Klagt nur über leichte Hüftschmerzen und schickt die Helfer zu anderen Patienten. Der fehlende Radialispuls, die kaltschweißige Blässe und die Einnahme von Apixaban werden leicht übersehen. Unter Bisoprolol steigt die Herzfrequenz trotz schwerem Schock nur mäßig an.",
+        "anamnesis": {
+          "symptoms": "Eigentlich tut mir nur die rechte Hüfte ein bisschen weh. Mir ist etwas schwindelig und ich friere, aber das wird schon wieder.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme Eliquis zur Blutverdünnung, Bisoprolol für den Blutdruck und morgens eine Wassertablette.",
+          "history": "Ich habe Bluthochdruck und hatte letztes Jahr eine Thrombose im Bein. Sonst bin ich für mein Alter ganz fit.",
+          "lastMeal": "Wir haben vor ungefähr zwei Stunden an der Raststätte Kaffee getrunken und Kuchen gegessen.",
+          "event": "Es gab einen heftigen Ruck, dann ist alles umgekippt. Ich bin mit der Hüfte gegen die Armlehne geknallt und komme seitdem nicht mehr hoch.",
+          "risk": "Die Blutverdünnung habe ich heute Morgen wie immer genommen."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung, AWMF-Register 187-023, Version 2022 (Beckengurt bei Verdacht auf instabile Beckenverletzung, permissive Hypotension, Wärmeerhalt)",
+          "ERC Guidelines 2021: Kreislaufstillstand in besonderen Situationen – traumatischer Kreislaufstillstand (Behandlung reversibler Ursachen wie Hypovolämie)",
+          "mSTaRT-Algorithmus (Kanz et al., Notfall + Rettungsmedizin) zur Vorsichtung im MANV",
+          "PHTLS – Prehospital Trauma Life Support, aktuelle deutsche Auflage (geriatrisches Trauma, Betablocker maskieren Tachykardie, Antikoagulation)",
+          "Fachinformation Apixaban (Eliquis): erhöhtes Blutungsrisiko"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Beckenfraktur",
+          "Hämorrhagischer Schock",
+          "Antikoagulation",
+          "Hypothermie",
+          "Geriatrisches Trauma",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "pelvic_binder"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "vacuum_mattress"
+            ],
+            "within": 45
+          },
+          {
+            "actions": [
+              "handover"
+            ],
+            "within": 45
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "recovery_position"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 24,
+        "spo2": 93,
+        "hr": 104,
+        "bp": "75/50",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 3,
+        "exam": {
+          "pelvis": "Bei vorsichtiger Kompression ist der Beckenring instabil und federt. Der Patient verzieht das Gesicht vor Schmerz. Prellmarke und beginnendes Hämatom über der rechten Hüfte und in der Leiste.",
+          "abdomen": "Unterbauch druckschmerzhaft und leicht gespannt, Oberbauch weich.",
+          "lungs": "Beidseits belüftet, vesikuläres Atemgeräusch, keine Seitendifferenz.",
+          "pupils": "Isokor, mittelweit, prompt lichtreagibel.",
+          "body": "Keine äußere Blutung. Prellmarke rechte Hüfte und Becken, rechtes Bein leicht außenrotiert. Kopf, Thorax und Wirbelsäule ohne Auffälligkeiten.",
+          "skin": "Blass, kaltschweißig, Hände und Füße kalt.",
+          "temperature": "35,8 °C",
+          "ecg": "Sinustachykardie"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "warm"
+              ],
+              "active": [],
+              "then": "4"
+            },
+            {
+              "when": [
+                "pelvic_binder"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "2",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "breathing": true,
+            "rr": 4,
+            "spo2": 60,
+            "hr": 35,
+            "bp": "nicht messbar",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "breathing_note": "Schnappatmung, keine normale Atmung, Karotispuls kaum tastbar. Reanimationspflichtig.",
+              "ecg": "Sinusbradykardie",
+              "skin": "Grau-blass, marmoriert, eiskalt.",
+              "temperature": "34,8 °C",
+              "pupils": "Weit, träge lichtreagibel."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pelvic_binder",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [
+                "cpr"
+              ],
+              "then": "3"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "breathing": true,
+            "rr": 8,
+            "spo2": 85,
+            "hr": 120,
+            "bp": "70/40",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "breathing_note": "Wieder eigene Atmung, aber flach und unzureichend. Karotispuls tastbar, tief bewusstlos. Sofortige Notarztversorgung und Transport nötig.",
+              "ecg": "Sinustachykardie",
+              "temperature": "34,6 °C"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 22,
+            "spo2": 94,
+            "hr": 100,
+            "bp": "88/55",
+            "radialPulse": true,
+            "recap": 3,
+            "gcs": 15,
+            "pain": 3,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel. Der Patient sagt, so sei es besser.",
+              "skin": "Blass, weniger schweißig, unter der Rettungsdecke etwas wärmer.",
+              "temperature": "35,7 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 20,
+            "spo2": 95,
+            "hr": 94,
+            "bp": "95/60",
+            "radialPulse": true,
+            "recap": 3,
+            "gcs": 15,
+            "pain": 3,
+            "exam": {
+              "skin": "Blass, trocken, Hände etwas wärmer.",
+              "temperature": "35,8 °C",
+              "ecg": "Sinusrhythmus"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 24,
+            "spo2": 93,
+            "hr": 106,
+            "bp": "82/50",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 14,
+            "pain": 3,
+            "exam": {
+              "skin": "Blass, kaltschweißig, Radialispuls nur schwach tastbar.",
+              "temperature": "35,4 °C"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 28,
+            "spo2": 91,
+            "hr": 112,
+            "bp": "72/45",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 12,
+            "followsCommands": true,
+            "pain": 3,
+            "exam": {
+              "skin": "Fahl, marmoriert, kaltschweißig.",
+              "temperature": "35,0 °C",
+              "behavior": "Verlangsamt und schläfrig, antwortet nur noch knapp."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 28,
+            "spo2": 92,
+            "hr": 110,
+            "bp": "78/48",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 13,
+            "pain": 3,
+            "exam": {
+              "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel.",
+              "skin": "Zittert, Haut kalt und marmoriert.",
+              "temperature": "35,0 °C",
+              "behavior": "Schläfrig, sagt leise: „Mir ist so kalt.“"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "5"
+            },
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "2",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "breathing_note": "Keine Atmung, kein Puls, Pulsoxymetrie ohne Signal.",
+              "pupils": "Weit, lichtstarr."
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-9f0514",
+      "version": 1,
+      "title": "Offener Pneumothorax bei COPD-Patientin",
+      "picture": "Frau, ca. 70 Jahre, sitzt auf dem Boden, nach vorn gebeugt, und stützt sich mit den Armen auf die Knie. Sie trägt eine dicke Strickjacke und hält sie mit der rechten Hand vor der Brust zusammen. An der rechten Seite ist die Jacke dunkel verfärbt und feucht. Sie atmet schnell und angestrengt mit Lippenbremse, ist blass und schwitzt. Sie ist ängstlich, greift nach jedem Helfer, der vorbeikommt, und sagt: „Bleiben Sie bei mir! Ich krieg so schlecht Luft, aber das ist meine COPD, das ist immer so.“",
+      "profile": {
+        "temperament": "ängstlich, klammert sich an Helfer, lässt nur ungern los",
+        "pitfall": "Sie erklärt ihre Atemnot mit ihrer COPD („Ich bin immer so kurzatmig“). Die schlürfende Wunde an der rechten Brustwand liegt unter der Strickjacke, die sie zuhält. Ohne Freimachen des Oberkörpers bzw. Bodycheck wird die Wunde übersehen.",
+        "anamnesis": {
+          "symptoms": "Ich kriege so schlecht Luft, aber das ist bei mir immer so, ich habe ja COPD. Rechts an der Seite sticht es bei jedem Atemzug.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme Eliquis als Blutverdünner, weil ich mal eine Thrombose im Bein hatte. Außerdem habe ich ein Spray für die Lunge und eine Tablette für den Blutdruck.",
+          "history": "Ich habe COPD, rauche aber seit zehn Jahren nicht mehr. Hohen Blutdruck habe ich auch.",
+          "lastMeal": "Wir hatten vor ungefähr zwei Stunden an der Raststätte Kaffee und Kuchen.",
+          "event": "Es hat fürchterlich gekracht, dann ist alles umgekippt und ich bin gegen das Fenster geflogen. Irgendwer hat mich hier rausgezogen.",
+          "risk": "Mein Lungenspray liegt noch in meiner Handtasche, die habe ich verloren."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung, AWMF-Reg.-Nr. 187-023, Version 2022 (Thoraxtrauma, offener Pneumothorax, Verschluss mit ventiliertem Verband)",
+          "S3-Leitlinie Sauerstoff in der Akuttherapie beim Erwachsenen, AWMF-Reg.-Nr. 020-021, 2021 (SpO2-Ziel 88–92 % bei COPD mit Hyperkapnierisiko, Sauerstoff bei Hypoxämie nicht vorenthalten)",
+          "European Resuscitation Council Guidelines 2021 (ABCDE-Vorgehen, Beutel-Masken-Beatmung, Reanimation)",
+          "PHTLS – Prehospital Trauma Life Support, 9./10. Auflage (offener Pneumothorax, ventilierte Chest Seals)",
+          "mSTaRT-Sichtungsalgorithmus (Kanz et al., Notfall + Rettungsmedizin) für die Vorsichtung bei MANV",
+          "Nationale VersorgungsLeitlinie COPD, 2. Auflage 2021"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Thoraxtrauma",
+          "Offener Pneumothorax",
+          "COPD",
+          "Antikoagulation",
+          "Senioren",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "body_check"
+            ],
+            "within": 5
+          },
+          {
+            "actions": [
+              "chest_seal"
+            ],
+            "within": 10
+          },
+          {
+            "actions": [
+              "oxygen"
+            ],
+            "within": 10
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 34,
+        "spo2": 87,
+        "hr": 116,
+        "bp": "150/90",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 6,
+        "exam": {
+          "chest": "Unter der Strickjacke an der rechten seitlichen Brustwand eine ca. 3 cm lange, klaffende Schnittwunde. Beim Einatmen ist ein schlürfendes Geräusch zu hören, beim Ausatmen tritt schaumiges Blut aus. Die rechte Brustkorbhälfte hebt sich weniger.",
+          "auscultation": "Rechts deutlich abgeschwächtes Atemgeräusch, links verlängertes Ausatmen mit leisem Giemen.",
+          "skin": "Blass, kaltschweißig",
+          "speech": "Spricht in kurzen Sätzen, muss zwischendurch Luft holen.",
+          "pupils": "Isokor, prompt lichtreagibel",
+          "abdomen": "Weich, kein Druckschmerz",
+          "pelvis": "Stabil, kein Schmerz",
+          "bodycheck": "Schnittwunde an der rechten Brustwand (s. Thorax), Prellmarke an der rechten Schulter, sonst keine Verletzungen.",
+          "ecg": "Sinustachykardie",
+          "temperature": "36,4 °C"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "chest_seal",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "chest_seal"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 24,
+            "spo2": 91,
+            "hr": 102,
+            "bp": "145/85",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr. Die rechte Brustkorbhälfte hebt sich etwas besser.",
+              "speech": "Spricht in ganzen Sätzen, noch etwas kurzatmig.",
+              "skin": "Blass, leicht schweißig"
+            }
+          },
+          "rules": [],
+          "else": "4",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 28,
+            "spo2": 89,
+            "hr": 110,
+            "bp": "145/90",
+            "pain": 5,
+            "exam": {
+              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
+              "speech": "Spricht in kurzen Sätzen, weiter deutlich angestrengt."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 20,
+            "spo2": 92,
+            "hr": 96,
+            "bp": "140/85",
+            "pain": 4,
+            "exam": {
+              "chest": "Chest Seal sitzt dicht, das Ventil entlüftet regelrecht. Die rechte Brustkorbhälfte hebt sich etwas besser.",
+              "speech": "Spricht in ganzen Sätzen, beruhigt sich etwas.",
+              "skin": "Blass, trocken"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 38,
+            "spo2": 81,
+            "hr": 130,
+            "bp": "155/95",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 7,
+            "exam": {
+              "skin": "Lippen und Finger zyanotisch, kaltschweißig",
+              "speech": "Spricht nur noch einzelne Worte, wirkt erschöpft und unruhig."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "chest_seal",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "6"
+            },
+            {
+              "when": [
+                "chest_seal"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 28,
+            "spo2": 89,
+            "hr": 114,
+            "bp": "150/90",
+            "recap": 2,
+            "gcs": 15,
+            "pain": 6,
+            "exam": {
+              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
+              "skin": "Blass, Lippen noch leicht bläulich",
+              "speech": "Spricht in kurzen Sätzen, weiter angestrengt."
+            }
+          },
+          "rules": [],
+          "else": "2",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 8,
+            "spo2": 68,
+            "hr": 138,
+            "bp": "110/70",
+            "recap": 4,
+            "gcs": 9,
+            "followsCommands": false,
+            "pain": 5,
+            "exam": {
+              "skin": "Ausgeprägt zyanotisch, grau-fahl",
+              "speech": "Spricht nicht mehr, stöhnt nur noch auf Schmerzreiz.",
+              "breathing": "Flache, langsame Atemzüge, erschöpft"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "chest_seal"
+              ],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "8"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 14,
+            "spo2": 86,
+            "hr": 122,
+            "bp": "115/75",
+            "recap": 3,
+            "gcs": 10,
+            "followsCommands": false,
+            "exam": {
+              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet regelrecht.",
+              "breathing": "Unter Beutel-Masken-Beatmung heben sich beide Brustkorbhälften.",
+              "skin": "Zyanose rückläufig, blass"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "skin": "Grau-zyanotisch"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-9ca006",
+      "version": 1,
+      "title": "Kopfplatzwunde unter Marcumar mit sich entwickelnder Hirnblutung und Schenkelhalsfraktur",
+      "picture": "Frau, ca. 80 Jahre, liegt auf dem Rücken am Boden, das rechte Bein nach außen gedreht. Platzwunde am behaarten Kopf rechts, die stark sickernd blutet; Blut läuft über Gesicht, Hals und Bluse. Wach und blass, schimpft energisch und versucht vergeblich, sich aufzurichten. Sie sagt: „Wo ist meine Handtasche? Holen Sie mir sofort meine Tasche! Ich würde ja aufstehen, aber mein Bein!“",
+      "profile": {
+        "temperament": "resolut, ungeduldig und bestimmend; ab Phase 2 zunehmend verlangsamt, wiederholt sich und wird verwirrt",
+        "pitfall": "Die stark blutende Kopfplatzwunde wirkt dramatisch und bindet die Aufmerksamkeit, ist aber mit einem Druckverband gut beherrschbar. Die eigentliche Gefahr ist die Hirnblutung unter Marcumar: Ohne wiederholte Kontrolle von Bewusstsein und Pupillen wird die schleichende Eintrübung übersehen. Die Patientin rutscht unbemerkt von Kategorie II in Kategorie I. Sie verlangt ständig ihre Handtasche, in der Marcumar-Ausweis und Medikamentenplan stecken.",
+        "anamnesis": {
+          "symptoms": "Mein rechtes Bein tut höllisch weh, oben an der Hüfte. Der Kopf blutet, aber das ist halb so wild, ein bisschen brummt er.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme Marcumar wegen meinem Herzen, dazu Tabletten für den Blutdruck und eine Wassertablette. Mein Marcumar-Ausweis ist in meiner Handtasche.",
+          "history": "Ich habe Vorhofflimmern und hohen Blutdruck. Vor drei Jahren habe ich ein neues Knie links bekommen.",
+          "lastMeal": "Wir hatten mittags an der Raststätte Kaffee und Kuchen.",
+          "event": "Es hat fürchterlich gerumst, dann sind wir umgekippt und ich bin mit dem Kopf gegen die Scheibe geknallt. Seitdem komme ich nicht mehr hoch.",
+          "risk": "Mein Gerinnungswert ist meistens etwas zu hoch, letzte Woche war er bei 3,5."
+        },
+        "sources": [
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (Registernummer 187-023), DGU, aktuelle Fassung 2022: präklinisches Management, Immobilisation, SHT, antikoagulierte Patienten",
+          "AWMF S2e-Leitlinie Schädel-Hirn-Trauma im Erwachsenenalter (DGNC/DGN): Bewusstseins- und Pupillenkontrolle, Oberkörperhochlagerung 30°, erhöhtes Blutungsrisiko unter Antikoagulation",
+          "AWMF S2e-Leitlinie Schenkelhalsfraktur des Erwachsenen (DGU/DGOU)",
+          "AWMF S3-Leitlinie Sauerstoff in der Akuttherapie beim Erwachsenen (2021): Ziel-SpO2 92–96 %",
+          "European Resuscitation Council (ERC) Guidelines 2021: Atemwegsmanagement und Beatmung beim bewusstlosen Patienten",
+          "mSTaRT-Vorsichtungsalgorithmus (modified Simple Triage and Rapid Treatment) mit Nachsichtung",
+          "PHTLS – Prehospital Trauma Life Support, Kapitel Geriatrisches Trauma und Schädel-Hirn-Trauma"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Schädel-Hirn-Trauma",
+          "Antikoagulation",
+          "Hirnblutung",
+          "Schenkelhalsfraktur",
+          "Geriatrie",
+          "Nachsichtung",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "pressure_dressing"
+            ],
+            "within": 10
+          },
+          {
+            "actions": [
+              "check_pupils"
+            ],
+            "within": 20
+          },
+          {
+            "actions": [
+              "cervical_collar"
+            ],
+            "within": 20
+          },
+          {
+            "actions": [
+              "oxygen",
+              "upper_body_up"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "vacuum_mattress"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "handover"
+            ],
+            "within": 45
+          }
+        ],
+        "harmful": [
+          "shock_position",
+          "tourniquet",
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 18,
+        "spo2": 95,
+        "hr": 96,
+        "bp": "165/90",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 7,
+        "exam": {
+          "head": "Ca. 5 cm lange klaffende Platzwunde rechts parietal, stark sickernd blutend, kein spritzendes Gefäß, Haare blutverklebt. Kein tastbarer Knochenversatz.",
+          "pupils": "Isokor, mittelweit, beidseits prompt lichtreagibel.",
+          "neuro": "Wach, zu Person, Ort und Zeit orientiert, bewegt alle Extremitäten seitengleich, leichte Kopfschmerzen.",
+          "spine": "Kein eindeutiger Druckschmerz der Halswirbelsäule, Kopfanprall bei Umsturz, Untersuchung durch Schmerz im Bein eingeschränkt.",
+          "leg": "Rechtes Bein verkürzt und außenrotiert, starker Leistenschmerz rechts, Bewegung schmerzbedingt unmöglich. Fußpulse beidseits tastbar, Sensibilität erhalten.",
+          "pelvis": "Becken stabil, Druckschmerz an der rechten Hüfte und Leiste.",
+          "abdomen": "Bauch weich, kein Druckschmerz.",
+          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
+          "body": "Platzwunde am Kopf, Fehlstellung des rechten Beins, kleine Hämatome an beiden Unterarmen, sonst keine weiteren Verletzungen.",
+          "ecg": "Vorhofflimmern",
+          "glucose": "112 mg/dl",
+          "temperature": "36,1 °C"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "handover"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "hr": 90,
+            "bp": "175/95",
+            "gcs": 14,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht weitgehend, Verband leicht durchgeblutet.",
+              "pupils": "Rechte Pupille minimal weiter als links, beide noch lichtreagibel.",
+              "neuro": "Klagt über zunehmende Kopfschmerzen und Übelkeit, fragt wiederholt nach ihrer Handtasche, zeitlich nicht mehr sicher orientiert."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "handover"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "check_pupils",
+                "upper_body_up",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 20,
+            "spo2": 94,
+            "hr": 104,
+            "bp": "150/85",
+            "recap": 3,
+            "gcs": 14,
+            "exam": {
+              "head": "Platzwunde blutet weiterhin stark sickernd, Blut läuft über Gesicht und Hals, deutliche Blutlache unter dem Kopf.",
+              "pupils": "Rechte Pupille minimal weiter als links, beide noch lichtreagibel.",
+              "neuro": "Klagt über zunehmende Kopfschmerzen und Übelkeit, fragt wiederholt nach ihrer Handtasche, zeitlich nicht mehr sicher orientiert."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "check_pupils",
+                "upper_body_up",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "4"
+            },
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 18,
+            "spo2": 98,
+            "hr": 76,
+            "bp": "185/100",
+            "gcs": 13,
+            "pain": 6,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht.",
+              "pupils": "Rechte Pupille deutlich weiter als links, rechts verzögert lichtreagibel.",
+              "neuro": "Schläfrig, öffnet die Augen auf Ansprache, antwortet verlangsamt und teils verwirrt, befolgt noch Aufforderungen, die linke Hand drückt schwächer."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "handover"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 22,
+            "spo2": 92,
+            "hr": 62,
+            "bp": "195/105",
+            "gcs": 10,
+            "followsCommands": false,
+            "pain": 5,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht.",
+              "pupils": "Anisokor, rechte Pupille weit und träge lichtreagibel, links eng und prompt.",
+              "neuro": "Somnolent bis soporös, öffnet die Augen nur auf Schmerzreiz, murmelt unverständlich, befolgt keine Aufforderungen mehr, bewegt den linken Arm kaum, hat einmal erbrochen."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "handover",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "11"
+            },
+            {
+              "when": [
+                "oxygen",
+                "upper_body_up",
+                "check_pupils"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 24,
+            "spo2": 90,
+            "hr": 98,
+            "bp": "145/80",
+            "recap": 3,
+            "gcs": 10,
+            "followsCommands": false,
+            "pain": 5,
+            "exam": {
+              "head": "Platzwunde blutet unverändert stark sickernd, große Blutlache, Kleidung blutdurchtränkt.",
+              "pupils": "Anisokor, rechte Pupille weit und träge lichtreagibel, links eng und prompt.",
+              "neuro": "Somnolent bis soporös, öffnet die Augen nur auf Schmerzreiz, murmelt unverständlich, befolgt keine Aufforderungen mehr, bewegt den linken Arm kaum, hat einmal erbrochen."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "oxygen",
+                "upper_body_up"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 18,
+            "spo2": 96,
+            "hr": 64,
+            "bp": "190/100",
+            "gcs": 11,
+            "followsCommands": false,
+            "pain": 5,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht.",
+              "pupils": "Anisokor, rechte Pupille weit und träge lichtreagibel, links eng und prompt.",
+              "neuro": "Öffnet die Augen auf Ansprache, spricht verwirrte Worte, lokalisiert Schmerzreize, befolgt keine Aufforderungen. Atemweg frei, Schluckreflex vorhanden."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "handover"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 8,
+            "spo2": 84,
+            "hr": 50,
+            "bp": "215/110",
+            "gcs": 6,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "pupils": "Rechte Pupille weit und lichtstarr, links eng und träge.",
+              "neuro": "Bewusstlos, auf Schmerzreiz Strecken der Arme, keine Schutzreflexe.",
+              "airway": "Schnarchende, unregelmäßige Atmung mit Atempausen, Erbrochenes im Mund."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "airway_open"
+              ],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "12"
+            },
+            {
+              "when": [
+                "intubation"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "9",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "pupils": "Beidseits weit und lichtstarr.",
+              "ecg": "Asystolie"
+            }
+          },
+          "rules": [],
+          "dead": true
+        },
+        "10": {
+          "findings": {
+            "hr": 90,
+            "bp": "170/90",
+            "pain": 6,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht.",
+              "neuro": "Wach und orientiert, leichte Kopfschmerzen, schimpft über die verlorene Handtasche."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 18,
+            "spo2": 97,
+            "hr": 68,
+            "bp": "185/100",
+            "gcs": 12,
+            "followsCommands": true,
+            "pain": 5,
+            "exam": {
+              "head": "Druckverband sitzt, Blutung steht.",
+              "pupils": "Anisokor, rechte Pupille weiter und träge lichtreagibel.",
+              "neuro": "Schläfrig, öffnet die Augen auf Ansprache, verlangsamt und verwirrt, befolgt einfache Aufforderungen, linksseitige Schwäche."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 12,
+            "spo2": 94,
+            "hr": 58,
+            "bp": "200/105",
+            "gcs": 6,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "pupils": "Rechte Pupille weit und lichtstarr, links eng und träge.",
+              "neuro": "Bewusstlos, auf Schmerzreiz Strecken der Arme.",
+              "airway": "Atemweg freigemacht und abgesaugt, Beatmung mit Sauerstoff, Thorax hebt sich seitengleich. Sofortiger Transport in eine Klinik mit Neurochirurgie erforderlich."
+            }
+          },
+          "rules": [],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-059761",
+      "version": 1,
+      "title": "Offene Unterschenkelfraktur mit verschleiertem Schock unter Betablocker",
+      "picture": "Mann, ca. 70 Jahre, sitzt auf dem Boden und stützt sich mit beiden Händen nach hinten ab. Der rechte Unterschenkel ist deutlich fehlgestellt. Das Hosenbein ist zerrissen und blutdurchtränkt. Aus einer offenen Wunde sickert gleichmäßig Blut, darunter bildet sich eine kleine Blutlache. Er ist wach, presst die Lippen aufeinander und spricht kaum. Knapp sagt er: „Geht schon. Kümmern Sie sich um die anderen.“",
+      "profile": {
+        "temperament": "wortkarg und stoisch, beißt die Zähne zusammen, spielt Schmerzen und Beschwerden herunter, will andere zuerst versorgt wissen",
+        "pitfall": "Er nimmt Bisoprolol. Die Herzfrequenz bleibt trotz zunehmenden Blutverlusts zwischen 72 und 98/min und täuscht Stabilität vor. Der Schock zeigt sich nur an fallendem Blutdruck, verlängerter Rekapillarisierung, blasser kaltschweißiger Haut, wachsender Blutlache und Eintrübung. Durch ASS blutet die Wunde länger nach. Er spielt die Schmerzen herunter.",
+        "anamnesis": {
+          "symptoms": "Das Bein tut weh, aber es geht schon. Mir ist nur ein bisschen kalt.",
+          "event": "Der Bus ist plötzlich umgekippt, und ich bin mit dem Bein gegen den Vordersitz geknallt. Ein Mitreisender hat mich rausgezogen, laufen kann ich nicht.",
+          "medication": "Ich nehme Bisoprolol für den Blutdruck und jeden Morgen eine ASS 100.",
+          "history": "Ich habe Bluthochdruck und vor fünf Jahren einen Stent am Herzen bekommen. Normalerweise ist mein Blutdruck eher zu hoch.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "lastMeal": "Ich habe mittags an der Raststätte ein Schnitzel gegessen.",
+          "risk": "Ich habe vor zehn Jahren mit dem Rauchen aufgehört, Alkohol trinke ich nur selten."
+        },
+        "sources": [
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung, AWMF-Register 187-023, Version 2022 (präklinische Blutungskontrolle, Volumentherapie, Wärmeerhalt, Frakturversorgung)",
+          "ERC Leitlinien 2021: Erste Hilfe (Blutungskontrolle, Frakturen) und Kreislaufstillstand unter besonderen Umständen (traumatischer Kreislaufstillstand, Hypovolämie)",
+          "mSTaRT-Algorithmus zur Vorsichtung beim MANV (Kanz et al., Notfall + Rettungsmedizin 2006)",
+          "PHTLS – Prehospital Trauma Life Support, 10. Auflage (Schockerkennung, geriatrisches Trauma, maskierte Tachykardie unter Betablockern)",
+          "ATLS 10th Edition: hämorrhagischer Schock, Einfluss von Betablockern auf die Kreislaufreaktion bei älteren Patienten"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Fraktur",
+          "offene Fraktur",
+          "Blutung",
+          "hämorrhagischer Schock",
+          "Betablocker",
+          "Thrombozytenaggregationshemmer",
+          "Senior",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "measure_bp"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "pressure_dressing"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "splint"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "cool_large"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": true,
+        "rr": 20,
+        "spo2": 95,
+        "hr": 72,
+        "bp": "130/80",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 7,
+        "exam": {
+          "Unterschenkel rechts": "Offene Fraktur mit Achsfehlstellung, Knochenfragment in der Wunde sichtbar, gleichmäßig sickernde, nicht spritzende Blutung, Hose blutdurchtränkt",
+          "DMS rechter Fuß": "Fußpulse schwach tastbar, Sensibilität erhalten, Motorik schmerzbedingt eingeschränkt",
+          "Haut": "leicht blass, Hände etwas kühl",
+          "Bodycheck": "Prellmarke an der linken Schulter, sonst keine weiteren Verletzungen, Becken stabil, Abdomen weich",
+          "ecg": "Sinusrhythmus"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "splint"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "pressure_dressing",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "splint"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "3"
+            },
+            {
+              "when": [
+                "tourniquet"
+              ],
+              "active": [],
+              "then": "3"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 18,
+            "hr": 74,
+            "bp": "120/75",
+            "recap": 2,
+            "pain": 5,
+            "exam": {
+              "Unterschenkel rechts": "Blutung versorgt, Verband nicht durchgeblutet, Bein geschient",
+              "DMS rechter Fuß": "Fußpulse tastbar, Sensibilität erhalten"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "analgesia"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "rr": 22,
+            "hr": 80,
+            "bp": "110/70",
+            "recap": 3,
+            "pain": 8,
+            "exam": {
+              "Unterschenkel rechts": "Blutung versorgt, Bein nicht ruhiggestellt, Fragmente verschieben sich bei Bewegung, Verband blutet leicht durch",
+              "Haut": "blass, kühl"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 24,
+            "spo2": 94,
+            "hr": 82,
+            "bp": "95/60",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 8,
+            "exam": {
+              "Unterschenkel rechts": "Anhaltend sickernde Blutung, Blutlache deutlich größer, geschätzt etwa 1 Liter",
+              "Haut": "blass, kaltschweißig",
+              "Bewusstsein": "etwas verlangsamt, antwortet nur knapp"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "splint"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "pressure_dressing",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "splint"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "tourniquet"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 16,
+            "hr": 72,
+            "bp": "125/80",
+            "recap": 2,
+            "pain": 3,
+            "exam": {
+              "Unterschenkel rechts": "Blutung versorgt, Bein geschient, DMS erhalten",
+              "Haut": "rosig, warm"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "rr": 18,
+            "hr": 76,
+            "bp": "120/75",
+            "recap": 2,
+            "pain": 6
+          },
+          "rules": [
+            {
+              "when": [
+                "analgesia"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "rr": 22,
+            "hr": 84,
+            "bp": "105/65",
+            "recap": 3,
+            "pain": 8,
+            "exam": {
+              "Unterschenkel rechts": "Bein weiter nicht ruhiggestellt, Verband durchgeblutet, Fehlstellung unverändert",
+              "Haut": "blass, kühl, leicht schweißig"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "rr": 18,
+            "hr": 80,
+            "bp": "110/70",
+            "recap": 2,
+            "pain": 5,
+            "exam": {
+              "Unterschenkel rechts": "Bein geschient, Verband hält, DMS erhalten"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "analgesia"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "rr": 22,
+            "hr": 80,
+            "bp": "100/65",
+            "recap": 3,
+            "gcs": 15,
+            "pain": 5,
+            "exam": {
+              "Unterschenkel rechts": "Blutung gestillt, Bein ruhiggestellt",
+              "Haut": "noch blass und kühl"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "13",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "rr": 26,
+            "hr": 84,
+            "bp": "90/60",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 9,
+            "exam": {
+              "Unterschenkel rechts": "Blutung weitgehend gestillt, Bein nicht ruhiggestellt, starke Bewegungsschmerzen",
+              "Haut": "blass, kaltschweißig"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "else": "15",
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "rr": 30,
+            "spo2": 92,
+            "hr": 92,
+            "bp": "75/45",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 12,
+            "pain": 8,
+            "exam": {
+              "Unterschenkel rechts": "Weiter sickernde Blutung, große Blutlache, geschätzt 1,5 bis 2 Liter",
+              "Haut": "grau-blass, kaltschweißig, marmoriert",
+              "Bewusstsein": "verwirrt, unruhig, fragt immer wieder, wo er ist"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "16"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "16"
+            }
+          ],
+          "else": "17",
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "rr": 18,
+            "hr": 76,
+            "bp": "110/70",
+            "recap": 2,
+            "gcs": 15,
+            "pain": 5,
+            "exam": {
+              "Haut": "wieder rosiger, wärmer"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "analgesia"
+              ],
+              "active": [],
+              "then": "14"
+            }
+          ],
+          "dead": false
+        },
+        "13": {
+          "findings": {
+            "rr": 22,
+            "hr": 82,
+            "bp": "95/60",
+            "recap": 3,
+            "gcs": 15,
+            "pain": 6
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "dead": false
+        },
+        "14": {
+          "findings": {
+            "rr": 16,
+            "hr": 74,
+            "bp": "110/70",
+            "recap": 2,
+            "gcs": 15,
+            "pain": 3
+          },
+          "rules": [],
+          "dead": false
+        },
+        "15": {
+          "findings": {
+            "rr": 26,
+            "hr": 86,
+            "bp": "85/55",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 9,
+            "exam": {
+              "Unterschenkel rechts": "Bein nicht ruhiggestellt, Verband durchgeblutet",
+              "Haut": "blass, kaltschweißig"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "13"
+            }
+          ],
+          "dead": false
+        },
+        "16": {
+          "findings": {
+            "rr": 26,
+            "spo2": 94,
+            "hr": 88,
+            "bp": "90/55",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 14,
+            "pain": 8,
+            "exam": {
+              "Unterschenkel rechts": "Blutung gestillt, Bein noch nicht ruhiggestellt",
+              "Haut": "blass, kühl"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "splint"
+              ],
+              "active": [],
+              "then": "9"
+            },
+            {
+              "when": [
+                "vacuum_mattress"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "dead": false
+        },
+        "17": {
+          "findings": {
+            "rr": 34,
+            "spo2": 88,
+            "hr": 98,
+            "bp": "60 palp.",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 8,
+            "followsCommands": false,
+            "pain": 5,
+            "exam": {
+              "Haut": "grau, kaltschweißig, marmoriert",
+              "Bewusstsein": "somnolent bis soporös, reagiert nur auf Schmerzreiz"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "pressure_dressing",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "18"
+            },
+            {
+              "when": [
+                "tourniquet",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "18"
+            }
+          ],
+          "else": "19",
+          "dead": false
+        },
+        "18": {
+          "findings": {
+            "rr": 28,
+            "spo2": 92,
+            "hr": 92,
+            "bp": "80/50",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 11,
+            "followsCommands": true,
+            "pain": 7,
+            "exam": {
+              "Zustand": "kritisch, braucht sofortigen Transport mit Notarzt in ein Traumazentrum"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "19": {
+          "findings": {
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "Haut": "grau, kalt"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-7b7278",
+      "version": 1,
+      "title": "Stummer Herzinfarkt bei gehfähigem Diabetiker",
+      "picture": "Mann, ca. 75 Jahre, läuft umher und hilft anderen beim Aufstehen. Oberflächliche Schürfwunden an beiden Händen. Wirkt etwas blass, auf der Stirn steht leichter Schweiß. Er reibt sich ab und zu über die Brust und sagt: „Mir ist nur ein bisschen flau, kümmern Sie sich erst um die anderen.“",
+      "profile": {
+        "temperament": "hilfsbereit, freundlich, spielt eigene Beschwerden herunter und will lieber anderen helfen",
+        "pitfall": "Der Brustdruck wird dem Gurt oder dem Schreck zugeschrieben. Als Diabetiker spürt der Patient den Infarkt kaum. Er ist gehfähig und wird deshalb grün gesichtet. Ohne EKG bei der Nachsichtung bleibt der STEMI unerkannt. Nach 15 Minuten wird der Kreislauf instabil, später kommen Kammertachykardie und Kammerflimmern.",
+        "anamnesis": {
+          "symptoms": "Ich habe so einen Druck auf der Brust, aber das ist bestimmt nur vom Gurt. Mir ist auch ein bisschen übel, und ich schwitze komisch.",
+          "event": "Es gab einen lauten Knall, dann ist der Bus auf die Seite gekippt. Ich hing im Gurt und bin dann selbst durch die Dachluke rausgeklettert.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme Metformin für den Zucker, Ramipril für den Blutdruck und jeden Morgen eine ASS 100.",
+          "history": "Ich habe seit fünfzehn Jahren Zucker und hohen Blutdruck. Am Herzen hatte ich noch nie etwas.",
+          "lastMeal": "Wir hatten vor ungefähr einer Stunde Kaffee und Kuchen an der Raststätte.",
+          "risk": "Ich habe über dreißig Jahre geraucht und erst vor fünf Jahren aufgehört."
+        },
+        "sources": [
+          "ESC Guidelines for the management of acute coronary syndromes 2023 (Byrne et al., Eur Heart J 2023)",
+          "ERC Leitlinien 2021: Erweiterte Reanimationsmaßnahmen für Erwachsene, Postreanimationsbehandlung (German Resuscitation Council)",
+          "ERC Leitlinien 2021: Erste Hilfe – Brustschmerz und Sauerstoffgabe nur bei Hypoxämie",
+          "S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (AWMF 187-023, 2022) – Sichtung und präklinisches Management",
+          "mSTaRT-Algorithmus (modified Simple Triage and Rapid Treatment), Berufsfeuerwehr München / Kanz et al.",
+          "Nationale VersorgungsLeitlinie Typ-2-Diabetes (2023) – stumme Myokardischämie bei autonomer Neuropathie"
+        ]
+      },
+      "meta": {
+        "category": "Internistisch",
+        "tags": [
+          "Akutes Koronarsyndrom",
+          "STEMI",
+          "Diabetes mellitus",
+          "atypische Beschwerden",
+          "Rhythmusstörung",
+          "Nachsichtung",
+          "Senioren"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "ecg"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "upper_body_up"
+            ],
+            "within": 20
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing",
+          "glucose",
+          "shock_position"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 20,
+        "spo2": 95,
+        "hr": 96,
+        "bp": "145/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 3,
+        "exam": {
+          "ecg": "STEMI (ST-Hebung)",
+          "glucose": "245 mg/dl",
+          "hands": "Oberflächliche Schürfwunden an beiden Handflächen, kaum blutend",
+          "thorax": "Keine Gurtmarke, Thorax stabil, kein Druckschmerz, Schmerz lässt sich durch Druck nicht auslösen",
+          "lung": "Vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche",
+          "skin": "Leicht blass, feuchte Stirn",
+          "pupils": "Isokor, prompt lichtreagibel"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "ecg"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "walking": false,
+            "hr": 90,
+            "bp": "140/85",
+            "pain": 3,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "skin": "Leicht blass, feuchte Stirn, sitzt jetzt in Ruhe"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "upper_body_up",
+                "iv_access"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "walking": false,
+            "rr": 24,
+            "spo2": 93,
+            "hr": 112,
+            "bp": "105/70",
+            "recap": 3,
+            "pain": 5,
+            "exam": {
+              "ecg": "VES",
+              "skin": "Blass, kaltschweißig",
+              "general": "Hat sich hingesetzt, hat einmal erbrochen, sagt: Mir ist auf einmal ganz schlecht."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "ecg"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "walking": false,
+            "rr": 18,
+            "spo2": 96,
+            "hr": 84,
+            "bp": "135/80",
+            "pain": 2,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "skin": "Etwas blass, trocken",
+              "general": "Liegt ruhig mit erhöhtem Oberkörper, Venenzugang liegt, transportbereit für die Herzkatheter-Klinik"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "walking": false,
+            "rr": 22,
+            "hr": 100,
+            "bp": "120/75",
+            "pain": 4,
+            "exam": {
+              "ecg": "VES",
+              "skin": "Blass, feuchte Stirn"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "upper_body_up",
+                "iv_access"
+              ],
+              "active": [],
+              "then": "4"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "rr": 26,
+            "spo2": 89,
+            "hr": 118,
+            "bp": "95/60",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 5,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "skin": "Blass-grau, kaltschweißig",
+              "lung": "Feinblasige Rasselgeräusche basal beidseits"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "oxygen",
+                "iv_access"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "7",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "walking": false,
+            "rr": 30,
+            "spo2": 86,
+            "hr": 180,
+            "bp": "75/50",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 13,
+            "pain": 6,
+            "exam": {
+              "ecg": "Kammertachykardie",
+              "skin": "Grau, marmoriert, kaltschweißig",
+              "lung": "Rasselgeräusche beidseits"
+            }
+          },
+          "rules": [],
+          "else": "8",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "walking": false,
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Kammerflimmern",
+              "skin": "Zyanotisch, grau"
+            }
+          },
+          "rules": [
+            {
+              "when": [],
+              "active": [
+                "cpr"
+              ],
+              "then": "9"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "walking": false,
+            "breathing": true,
+            "rr": 8,
+            "spo2": 88,
+            "hr": 110,
+            "bp": "85/55",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "general": "Spontankreislauf nach Reanimation mit AED, Schnappatmung, nicht erweckbar"
+            }
+          },
+          "rules": [
+            {
+              "when": [],
+              "active": [
+                "bag_valve"
+              ],
+              "then": "12"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "walking": false,
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie"
+            }
+          },
+          "rules": [],
+          "dead": true
+        },
+        "11": {
+          "findings": {
+            "walking": false,
+            "rr": 22,
+            "spo2": 94,
+            "hr": 104,
+            "bp": "105/70",
+            "recap": 3,
+            "gcs": 15,
+            "pain": 4,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "skin": "Blass, noch feucht",
+              "general": "Unter Sauerstoff und mit Venenzugang grenzwertig stabil, sofortiger Transport mit Notarzt erforderlich"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "walking": false,
+            "breathing": true,
+            "rr": 12,
+            "spo2": 94,
+            "hr": 100,
+            "bp": "95/60",
+            "radialPulse": true,
+            "recap": 3,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "STEMI (ST-Hebung)",
+              "general": "Spontankreislauf nach Reanimation, wird mit Beutel und Maske beatmet, bewusstlos"
+            }
+          },
+          "rules": [],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-28a638",
+      "version": 1,
+      "title": "Hypoglykämie bei insulinpflichtigem Diabetes mit Stirnprellung",
+      "picture": "Frau, ca. 70 Jahre, sitzt am Straßenrand auf dem Boden und hält ihre Handtasche fest. Kleine Prellung an der rechten Stirn, keine offene Wunde, keine Blutung. Wirkt etwas verlangsamt und unsicher, schaut sich suchend um und lächelt freundlich. Sagt: „Ach, mir geht es gut. Ich weiß nur gerade nicht genau, wo wir eigentlich hinwollten.“",
+      "profile": {
+        "temperament": "anfangs freundlich und redselig, wiederholt sich; ab Phase 4 gereizt, abwehrend und aggressiv, schlägt Hände weg und will weglaufen",
+        "pitfall": "Die Verwirrtheit wird der Stirnprellung (Schädel-Hirn-Trauma) oder einer Demenz zugeschrieben, und der Blutzucker wird nicht gemessen. Nur die Blutzuckermessung deckt die zunehmende Unterzuckerung auf. Als Gehfähige (Grün) wird die Patientin leicht übersehen und muss nachgesichtet werden.",
+        "anamnesis": {
+          "symptoms": "Mir ist irgendwie komisch und ein bisschen zittrig. Der Kopf tut nur ein wenig weh, wo ich mich gestoßen habe.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich spritze Insulin, heute früh habe ich wie immer gespritzt. Außerdem nehme ich eine Tablette für den Blutdruck. Einen Blutverdünner nehme ich nicht.",
+          "history": "Ich habe seit über zwanzig Jahren Zucker und einen hohen Blutdruck. Vergesslich bin ich eigentlich nicht.",
+          "lastMeal": "Ich habe heute früh nur einen Kaffee getrunken, weil ich im Bus nicht essen wollte. Mein Brot ist noch in der Tasche.",
+          "event": "Es hat plötzlich furchtbar gekracht, und dann sind wir umgekippt. Ich bin mit dem Kopf gegen die Scheibe gestoßen und dann selbst oben hinausgeklettert.",
+          "risk": "Ohnmächtig war ich nicht, glaube ich. Übel ist mir nicht, und erbrochen habe ich auch nicht."
+        },
+        "sources": [
+          "ERC Leitlinien 2021, Kapitel Erste Hilfe: Hypoglykämie – orale Glukosegabe bei wachen, schluckfähigen Patienten",
+          "Deutsche Diabetes Gesellschaft (DDG): S3-Leitlinie Therapie des Typ-1-Diabetes und Praxisempfehlungen zur Hypoglykämie",
+          "AWMF S2e-Leitlinie 008-001 Schädel-Hirn-Trauma im Erwachsenenalter (Differenzialdiagnosen der Bewusstseinsstörung, Blutzuckermessung)",
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (Registernr. 187-023), präklinische Versorgung",
+          "DGN-Leitlinie Erster epileptischer Anfall und Epilepsien im Erwachsenenalter (symptomatischer Anfall bei Hypoglykämie)",
+          "mSTaRT-Sichtungsalgorithmus inkl. Nachsichtung Gehfähiger (Kanz et al., Notfall + Rettungsmedizin)",
+          "Bundeseinheitliche Algorithmen und Behandlungspfade (BPR/SAA) für Notfallsanitäter: Hypoglykämie"
+        ]
+      },
+      "meta": {
+        "category": "Internistisch",
+        "tags": [
+          "Hypoglykämie",
+          "Diabetes mellitus",
+          "Insulin",
+          "Krampfanfall",
+          "Bewusstseinsstörung",
+          "Geriatrie",
+          "Nachsichtung",
+          "Falle SHT/Demenz"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "blood_glucose"
+            ],
+            "within": 15
+          },
+          {
+            "actions": [
+              "glucose"
+            ],
+            "within": 30
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 16,
+        "spo2": 96,
+        "hr": 92,
+        "bp": "150/85",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 14,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 2,
+        "exam": {
+          "glucose": "52 mg/dl",
+          "head": "Kleine Prellmarke an der rechten Stirn, keine Wunde, keine Schwellung, kein Austritt von Blut oder Liquor aus Nase oder Ohren",
+          "pupils": "isokor, mittelweit, prompt lichtreagibel",
+          "skin": "leicht blass, etwas feucht, Hände zittern leicht",
+          "neuro": "zeitlich unscharf orientiert, wiederholt Fragen, keine Lähmungen, Sprache etwas verlangsamt",
+          "bodycheck": "keine weiteren Verletzungen, Becken stabil, Bauch weich, Insulinpen in der Handtasche"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "glucose"
+              ],
+              "active": [],
+              "then": "2"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "hr": 86,
+            "bp": "145/85",
+            "gcs": 15,
+            "exam": {
+              "glucose": "105 mg/dl",
+              "skin": "rosig, trocken, kein Zittern mehr",
+              "neuro": "voll orientiert, wundert sich über ihre eigene Verwirrtheit"
+            }
+          },
+          "rules": [],
+          "else": "3",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "hr": 84,
+            "bp": "145/80",
+            "gcs": 15,
+            "pain": 1,
+            "exam": {
+              "glucose": "125 mg/dl",
+              "skin": "rosig, trocken",
+              "neuro": "voll orientiert, keine neurologischen Ausfälle"
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "rr": 20,
+            "hr": 112,
+            "bp": "165/90",
+            "gcs": 13,
+            "followsCommands": false,
+            "exam": {
+              "glucose": "38 mg/dl",
+              "skin": "kaltschweißig, blass, deutliches Zittern",
+              "neuro": "desorientiert zu Ort und Zeit, aggressiv und abwehrend, befolgt keine Aufforderungen, will weglaufen, keine Lähmungen",
+              "pupils": "isokor, eher weit, lichtreagibel"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "glucose"
+              ],
+              "active": [],
+              "then": "5"
+            }
+          ],
+          "else": "6",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "rr": 17,
+            "hr": 96,
+            "bp": "150/85",
+            "gcs": 14,
+            "followsCommands": true,
+            "exam": {
+              "glucose": "88 mg/dl",
+              "skin": "noch leicht feucht, Zittern lässt nach",
+              "neuro": "zunehmend orientiert, beruhigt sich, entschuldigt sich für ihr Verhalten"
+            }
+          },
+          "rules": [],
+          "else": "3",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "rr": 8,
+            "spo2": 86,
+            "hr": 130,
+            "bp": "175/95",
+            "recap": 2,
+            "gcs": 5,
+            "followsCommands": false,
+            "exam": {
+              "glucose": "28 mg/dl",
+              "neuro": "generalisierter tonisch-klonischer Krampfanfall, nicht ansprechbar",
+              "mouth": "Speichel vor dem Mund, Zungenbiss seitlich, Atmung unregelmäßig",
+              "skin": "nass geschwitzt, blass, Lippen leicht zyanotisch",
+              "ecg": "Sinustachykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "glucose"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "8",
+          "dead": false
+        },
+        "7": {
+          "findings": {
+            "walking": false,
+            "rr": 18,
+            "spo2": 93,
+            "hr": 105,
+            "bp": "155/85",
+            "gcs": 12,
+            "followsCommands": true,
+            "exam": {
+              "glucose": "92 mg/dl",
+              "neuro": "Krampfanfall beendet, schläfrig, öffnet auf Ansprache die Augen, befolgt einfache Aufforderungen, keine Lähmungen",
+              "mouth": "Zungenbiss seitlich, Atemweg frei",
+              "skin": "feucht, Farbe kehrt zurück"
+            }
+          },
+          "rules": [],
+          "else": "5",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "walking": false,
+            "rr": 10,
+            "spo2": 85,
+            "hr": 115,
+            "bp": "150/85",
+            "recap": 3,
+            "gcs": 4,
+            "followsCommands": false,
+            "exam": {
+              "glucose": "22 mg/dl",
+              "neuro": "nach dem Krampfanfall bewusstlos, Strecksynergismen auf Schmerzreiz, keine Augenöffnung",
+              "mouth": "schnarchende Atmung, Speichel im Mund",
+              "pupils": "isokor, weit, träge lichtreagibel",
+              "skin": "kaltschweißig, blass"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "glucose"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "walking": false,
+            "rr": 16,
+            "spo2": 92,
+            "hr": 108,
+            "bp": "150/85",
+            "recap": 2,
+            "gcs": 10,
+            "followsCommands": false,
+            "exam": {
+              "glucose": "85 mg/dl",
+              "neuro": "erwacht langsam, öffnet auf Ansprache die Augen, stöhnt, noch verwirrt",
+              "mouth": "Atemweg frei, Zungenbiss",
+              "skin": "feucht, Farbe bessert sich"
+            }
+          },
+          "rules": [],
+          "else": "7",
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "walking": false,
+            "rr": 6,
+            "spo2": 75,
+            "hr": 48,
+            "bp": "100/60",
+            "recap": 3,
+            "gcs": 3,
+            "followsCommands": false,
+            "exam": {
+              "glucose": "18 mg/dl",
+              "neuro": "tief bewusstlos, keine Reaktion auf Schmerzreiz",
+              "mouth": "flache, schnarchende Atmung",
+              "pupils": "weit, kaum lichtreagibel",
+              "skin": "blass-zyanotisch, kühl",
+              "ecg": "Sinusbradykardie"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "glucose"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "else": "11",
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "walking": false,
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "pupils": "weit, lichtstarr"
+            }
+          },
+          "rules": [],
+          "dead": true
+        }
+      }
+    },
+    {
+      "id": "ki-a121b3",
+      "version": 1,
+      "title": "Stumpfes Bauchtrauma mit Milzverletzung und verzögertem Schock",
+      "picture": "Mann, ca. 45 Jahre, in dunkler Uniformhose und Diensthemd, läuft aufgeregt hin und her und will immer wieder zurück. Das Hemd ist aus der Hose gerutscht, quer über dem Unterbauch ist ein rötlicher, streifenförmiger Abdruck zu sehen. Keine blutenden Wunden. Gesicht gerötet, leicht verschwitzt, gestikuliert hektisch. Er ruft: „Mir fehlt nichts! Kümmern Sie sich um meine Leute, ich muss da wieder rein!“",
+      "profile": {
+        "temperament": "Hektisch, schuldbewusst und schwer zu bremsen. Lehnt Untersuchungen zunächst ab, lässt sich aber durch ruhige, bestimmte Ansprache und eine klare Aufgabe zum Hinsetzen und Hinlegen bewegen. Ab Phase 2 wird er stiller, klagt über Übelkeit und Schmerzen in der linken Schulter.",
+        "pitfall": "Adrenalin und Schuldgefühl verdecken die Schmerzen. Der Patient ist gehfähig, wird grün gesichtet und lehnt jede Untersuchung ab („Ich bin nicht verletzt!“). Die Gurtmarke über dem Bauch und der Druckschmerz im linken Oberbauch werden leicht übersehen. Nach 20 bis 25 Minuten treten Schockzeichen auf, dazu ein Schmerz in der linken Schulter (Kehr-Zeichen). Die steigende Atemfrequenz kann fälschlich als Aufregung oder Hyperventilation gedeutet werden. Ohne Nachsichtung wird der Schock zu spät erkannt.",
+        "anamnesis": {
+          "symptoms": "Mir fehlt nichts, wirklich! Mir tut höchstens der Bauch ein bisschen weh, wo der Gurt war, das ist nichts.",
+          "event": "Der Lkw vor mir hat plötzlich voll gebremst, ich bin draufgefahren und dann ist der Bus umgekippt. Der Gurt hat mich gehalten, ich bin selbst rausgeklettert.",
+          "allergies": "Nein, Allergien habe ich keine.",
+          "medication": "Ich nehme nur eine Tablette gegen den Blutdruck, Ramipril heißt die, glaube ich. Blutverdünner nehme ich nicht.",
+          "history": "Ich habe Bluthochdruck, sonst bin ich gesund. Operiert wurde ich noch nie.",
+          "lastMeal": "Gegen zwölf habe ich auf dem Rastplatz ein Brötchen gegessen und einen Kaffee getrunken.",
+          "risk": "Ich rauche, ungefähr eine Schachtel am Tag. Alkohol trinke ich im Dienst natürlich nicht."
+        },
+        "sources": [
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (AWMF-Register 187-023), Version 2022: präklinisches Management stumpfes Abdominaltrauma, permissive Hypotension, Wärmeerhalt",
+          "European Resuscitation Council (ERC) Leitlinien 2021, Kapitel Erste Hilfe: Erkennen und Lagerung bei Schock",
+          "mSTaRT-Sichtungsalgorithmus (Kanz KG et al., Notfall + Rettungsmedizin 2006) und Nachsichtung nach Konsensuskonferenz Sichtung (BBK/Schutzkommission)",
+          "PHTLS – Prehospital Trauma Life Support, deutsche Ausgabe, 9. Auflage: Abdominaltrauma, Gurtzeichen, Kehr-Zeichen, Volumenmangelschock",
+          "Weißbuch/ATLS-Schockklassifikation (American College of Surgeons, ATLS 10th Edition) zur Abschätzung von Vitalwerten bei Blutverlust"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "Stumpfes Bauchtrauma",
+          "Milzverletzung",
+          "Gurtmarke",
+          "Volumenmangelschock",
+          "Nachsichtung",
+          "MANV"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "examine_abdomen"
+            ],
+            "within": 20
+          },
+          {
+            "actions": [
+              "shock_position"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "warm"
+            ],
+            "within": 30
+          },
+          {
+            "actions": [
+              "handover"
+            ],
+            "within": 45
+          }
+        ],
+        "harmful": [
+          "bag_rebreathing",
+          "upper_body_up"
+        ]
+      },
+      "base": {
+        "walking": true,
+        "breathing": true,
+        "rr": 22,
+        "spo2": 98,
+        "hr": 104,
+        "bp": "145/90",
+        "radialPulse": true,
+        "recap": 2,
+        "gcs": 15,
+        "followsCommands": true,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": false,
+        "pain": 1,
+        "exam": {
+          "abdomen": "Streifenförmige Gurtmarke quer über dem Unterbauch. Bauch weich, leichter Druckschmerz im linken Oberbauch, den der Patient herunterspielt.",
+          "skin": "Gesicht gerötet, leicht verschwitzt, warm.",
+          "bodycheck": "Gurtmarke über dem Unterbauch, Prellmarke links an der Schulter durch den Schultergurt. Druckschmerz an den unteren linken Rippen. Keine äußeren Blutungen, Extremitäten frei beweglich.",
+          "pelvis": "Becken stabil, kein Druckschmerz.",
+          "lungs": "Beidseits vesikuläres Atemgeräusch, keine Nebengeräusche.",
+          "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
+          "ecg": "Sinustachykardie",
+          "temp": "36,8 °C"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [
+            {
+              "when": [
+                "examine_abdomen",
+                "shock_position"
+              ],
+              "active": [],
+              "then": "7"
+            },
+            {
+              "when": [
+                "body_check",
+                "shock_position"
+              ],
+              "active": [],
+              "then": "7"
+            }
+          ],
+          "else": "2",
+          "dead": false
+        },
+        "2": {
+          "findings": {
+            "rr": 24,
+            "hr": 114,
+            "bp": "130/85",
+            "recap": 3,
+            "pain": 4,
+            "exam": {
+              "abdomen": "Gurtmarke über dem Unterbauch. Deutlicher Druckschmerz im linken Oberbauch, beginnende Abwehrspannung.",
+              "skin": "Zunehmend blass, kaltschweißig.",
+              "bodycheck": "Gurtmarke über dem Unterbauch, Druckschmerz an den unteren linken Rippen. Klagt über Schmerzen in der linken Schulter, setzt sich hin und sagt, ihm sei plötzlich schlecht."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "examine_abdomen",
+                "shock_position",
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            },
+            {
+              "when": [
+                "body_check",
+                "shock_position",
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "3": {
+          "findings": {
+            "walking": false,
+            "rr": 26,
+            "spo2": 95,
+            "hr": 128,
+            "bp": "100/70",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "abdomen": "Gurtmarke über dem Unterbauch. Ausgeprägte Abwehrspannung im linken Oberbauch, Bauch zunehmend gespannt.",
+              "skin": "Blass, kaltschweißig, marmoriert an den Knien.",
+              "bodycheck": "Sitzt zusammengesunken am Boden, unruhig. Gurtmarke über dem Unterbauch, Schmerz in der linken Schulter, keine äußeren Blutungen."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "shock_position",
+                "warm",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "shock_position",
+                "warm"
+              ],
+              "active": [],
+              "then": "11"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "4": {
+          "findings": {
+            "walking": false,
+            "rr": 32,
+            "spo2": 92,
+            "hr": 142,
+            "bp": "70 palp.",
+            "radialPulse": false,
+            "recap": 5,
+            "gcs": 10,
+            "followsCommands": false,
+            "pain": 7,
+            "exam": {
+              "abdomen": "Bauch gespannt und vorgewölbt, starke Abwehrspannung.",
+              "skin": "Fahl-grau, kaltschweißig, ausgeprägte Marmorierung."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "shock_position",
+                "warm",
+                "oxygen",
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "12"
+            }
+          ],
+          "else": "5",
+          "dead": false
+        },
+        "5": {
+          "findings": {
+            "walking": false,
+            "rr": 36,
+            "spo2": 84,
+            "hr": 148,
+            "bp": "50 palp.",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 6,
+            "followsCommands": false,
+            "pain": 7,
+            "exam": {
+              "abdomen": "Bauch prall gespannt.",
+              "skin": "Fahl-grau, kalt, zyanotische Lippen."
+            }
+          },
+          "rules": [],
+          "else": "6",
+          "dead": false
+        },
+        "6": {
+          "findings": {
+            "walking": false,
+            "breathing": false,
+            "rr": 0,
+            "spo2": 50,
+            "hr": 0,
+            "bp": "0",
+            "radialPulse": false,
+            "recap": 6,
+            "gcs": 3,
+            "followsCommands": false,
+            "pain": 0,
+            "exam": {
+              "ecg": "Asystolie",
+              "skin": "Fahl-grau, kalt."
+            }
+          },
+          "rules": [],
+          "dead": true
+        },
+        "7": {
+          "findings": {
+            "walking": false,
+            "rr": 20,
+            "hr": 106,
+            "bp": "130/85",
+            "recap": 2,
+            "pain": 3,
+            "exam": {
+              "abdomen": "Gurtmarke über dem Unterbauch. Druckschmerz im linken Oberbauch, leichte Abwehrspannung.",
+              "skin": "Etwas blass, leicht schwitzig."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "warm"
+              ],
+              "active": [],
+              "then": "8"
+            }
+          ],
+          "else": "3",
+          "dead": false
+        },
+        "8": {
+          "findings": {
+            "walking": false,
+            "rr": 22,
+            "spo2": 97,
+            "hr": 112,
+            "bp": "115/75",
+            "recap": 3,
+            "pain": 4,
+            "exam": {
+              "abdomen": "Gurtmarke über dem Unterbauch. Deutlicher Druckschmerz im linken Oberbauch mit Abwehrspannung.",
+              "skin": "Blass, kühl, unter der Rettungsdecke nicht zitternd."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "9"
+            }
+          ],
+          "else": "10",
+          "dead": false
+        },
+        "9": {
+          "findings": {
+            "walking": false,
+            "rr": 20,
+            "spo2": 97,
+            "hr": 104,
+            "bp": "110/70",
+            "recap": 3,
+            "pain": 4,
+            "exam": {
+              "abdomen": "Druckschmerz und Abwehrspannung im linken Oberbauch, unverändert.",
+              "skin": "Blass, warm zugedeckt."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "10": {
+          "findings": {
+            "walking": false,
+            "rr": 24,
+            "spo2": 95,
+            "hr": 118,
+            "bp": "95/60",
+            "recap": 3,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "abdomen": "Abwehrspannung im linken Oberbauch, Bauch etwas gespannt.",
+              "skin": "Blass, kühl, kaltschweißig."
+            }
+          },
+          "rules": [],
+          "dead": false
+        },
+        "11": {
+          "findings": {
+            "walking": false,
+            "rr": 26,
+            "spo2": 95,
+            "hr": 124,
+            "bp": "95/65",
+            "recap": 4,
+            "gcs": 14,
+            "pain": 6,
+            "exam": {
+              "abdomen": "Ausgeprägte Abwehrspannung im linken Oberbauch, Bauch zunehmend gespannt.",
+              "skin": "Blass, kaltschweißig."
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "10"
+            }
+          ],
+          "else": "4",
+          "dead": false
+        },
+        "12": {
+          "findings": {
+            "walking": false,
+            "rr": 28,
+            "spo2": 94,
+            "hr": 130,
+            "bp": "85/55",
+            "radialPulse": true,
+            "recap": 4,
+            "gcs": 13,
+            "followsCommands": true,
+            "pain": 6,
+            "exam": {
+              "abdomen": "Bauch gespannt, starke Abwehrspannung.",
+              "skin": "Blass, kalt, Marmorierung rückläufig."
+            }
+          },
+          "rules": [],
+          "dead": false
+        }
+      }
+    },
+    {
+      "id": "ki-e8cd88",
+      "version": 1,
+      "title": "Nicht überlebbares offenes Schädel-Hirn-Trauma mit Einklemmung",
+      "picture": "Mann, ca. 80 Jahre, liegt bäuchlings, der Unterkörper ist bis zur Hüfte unter einer schweren Last eingeklemmt. Großflächig zertrümmerter Schädel mit klaffender Wunde am Hinterkopf, Hirngewebe ist sichtbar, große Blutlache unter dem Kopf. Keine Bewegung, keine sichtbare Atmung, keine Reaktion auf Ansprache oder Schmerzreiz. Haut grau-blass, Lippen zyanotisch.",
+      "profile": {
+        "temperament": "nicht ansprechbar, verstorben",
+        "pitfall": "Angehörige aus der Reisegruppe stehen daneben, fordern lautstark und wiederholt eine Reanimation und versuchen, Helfer festzuhalten. Richtig: Atemweg einmal freimachen, Atmung prüfen, als EX sichten und kennzeichnen. Angehörige kurz und klar informieren, die Betreuung an nachrückende Kräfte oder PSNV übergeben und sich den behandelbaren Patienten zuwenden. Eine Reanimation bindet in der Anfangsphase die einzigen Kräfte vor Ort.",
+        "anamnesis": {},
+        "sources": [
+          "AWMF S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung, Registernummer 187-023, Version 4.0 (2022): Kapitel Präklinik, traumatisch bedingter Kreislaufstillstand",
+          "European Resuscitation Council Guidelines 2021: Kreislaufstillstand unter besonderen Umständen (traumatischer Kreislaufstillstand)",
+          "European Resuscitation Council Guidelines 2021: Ethik und Entscheidungen am Lebensende, Verzicht auf Reanimation bei mit dem Leben nicht vereinbaren Verletzungen",
+          "Kanz KG et al.: mSTaRT-Trauma-Triage-Algorithmus, Notfall + Rettungsmedizin 2006",
+          "Bundesamt für Bevölkerungsschutz und Katastrophenhilfe (BBK): Konsensus-Konferenzen zur Sichtung bei Großschadenslagen und Katastrophen, Sichtungskategorien inkl. EX",
+          "Konsensuspapier Psychosoziale Notfallversorgung (PSNV) des BBK: Betreuung von Angehörigen an Einsatzstellen"
+        ]
+      },
+      "meta": {
+        "category": "Trauma",
+        "tags": [
+          "MANV",
+          "Schädel-Hirn-Trauma",
+          "Einklemmung",
+          "Sichtung EX",
+          "Angehörige",
+          "Ressourcenbindung",
+          "Senioren"
+        ],
+        "difficulty": "fortgeschritten"
+      },
+      "scoring": {
+        "critical": [
+          {
+            "actions": [
+              "airway_open"
+            ],
+            "within": 2
+          }
+        ],
+        "harmful": [
+          "cpr",
+          "bag_valve",
+          "intubation",
+          "iv_access",
+          "fluids"
+        ]
+      },
+      "base": {
+        "walking": false,
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "recap": 6,
+        "gcs": 3,
+        "followsCommands": false,
+        "spurtingBleeding": false,
+        "stridor": false,
+        "lethalInjury": true,
+        "pain": 0,
+        "exam": {
+          "ecg": "Asystolie",
+          "head": "Offenes Schädel-Hirn-Trauma mit Kalottenzertrümmerung und Austritt von Hirngewebe am Hinterkopf",
+          "pupils": "Beidseits maximal weit, lichtstarr",
+          "airway": "Nach Esmarch-Handgriff und Absaugen keine Spontanatmung",
+          "pulse": "Kein Karotis- und kein Radialispuls tastbar",
+          "body": "Becken und Beine unter schwerer Last eingeklemmt, nicht zugänglich",
+          "skin": "Grau-blass, kühl, zyanotisch"
+        }
+      },
+      "start": "1",
+      "phases": {
+        "1": {
+          "findings": {},
+          "rules": [],
+          "dead": true
+        }
+      }
+    }
+  ]
+}

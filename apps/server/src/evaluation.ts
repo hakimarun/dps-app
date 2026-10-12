@@ -68,7 +68,7 @@ function compute(ex: Exercise, T: number): Evaluation {
   const missedByPatient = new Map<string, string[]>();
   for (const id of ex.scenario.patients) {
     for (const c of P[id].scoring.critical) {
-      const deadline = c.within * scale;
+      const deadline = end.patients[id].appears + c.within * scale; // später entdeckte Patienten (A8): ab Auftauchen
       const names = c.actions.map(title).join(" oder ");
       const done = [
         ...starts

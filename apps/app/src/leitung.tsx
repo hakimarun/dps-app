@@ -1,4 +1,4 @@
-// Spielleitung: ohne Konto (Geräteschlüssel), Bibliothek mit eigener Freigabe,
+// Spielleitung: ohne Konto (Geräteschlüssel), Bibliothek,
 // Übung anlegen, QR-Zettel, Start/Pause/Ende und Live-Lage.
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Animated, Easing, Image, Linking, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
@@ -20,6 +20,7 @@ const STATUS_COLOR: Record<Status, string> = { ready: FUN.blue, running: FUN.gre
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
 const LEVEL_MINUTES: Record<Level, number> = { einsteiger: 20, fortgeschritten: 15, experte: 12 }; // wie LEVELS im Server
 // G11: Temperamente zum Umschalten in der Live-Lage
+const LATE_STEPS = [0, 10, 15, 20];
 const MOODS = ["kooperativ", "ängstlich", "panisch", "aggressiv", "verwirrt", "verharmlosend"];
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
 // Spielleitung ohne Konto: Das Gerät holt sich beim ersten Mal einen Schlüssel, daran hängen seine Spiele und Fälle.
@@ -109,10 +110,12 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [vitals, setVitals] = useState<"numbers" | "live" | "text">("numbers");
   const [phaseMinutes, setPhaseMinutes] = useState<number | null>(null);
   const [random, setRandom] = useState<boolean | null>(null);
+  const [late, setLate] = useState<Record<string, number>>({}); // A8: Patient taucht erst ab dieser Minute auf
   const [error, setError] = useState<string | null>(null);
   const sc = lib?.scenarios.find((s) => s.id === scenario) ?? lib?.scenarios[0];
   const byId = new Map(lib?.patients.map((p) => [p.id, p]));
-  useEffect(() => setPicked(sc?.patients.filter((id) => byId.get(id)?.approved) ?? []), [sc?.id, lib]);
+  const playable = (id: string) => !!byId.get(id) && !byId.get(id)!.errors.length;
+  useEffect(() => setPicked(sc?.patients.filter(playable) ?? []), [sc?.id, lib]);
   const toggle = (id: string) => setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingBottom: 20 }}>
@@ -121,14 +124,25 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {lib?.scenarios.map((s) => <Chip key={s.id} t={t} label={s.title} selected={sc?.id === s.id} onPress={() => setScenario(s.id)} />)}
       </View>
-      <Text style={{ color: t.quiet }}>Patienten (Musterfälle und von dir freigegebene eigene Fälle)</Text>
+      <Text style={{ color: t.quiet }}>Patienten</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         {sc?.patients.map((id) => {
           const p = byId.get(id);
-          return <Chip key={id} t={t} label={`${id.toUpperCase()} ${p?.title ?? ""}`} selected={picked.includes(id)} disabled={!p?.approved} onPress={() => toggle(id)} />;
+          return <Chip key={id} t={t} label={`${id.toUpperCase()} ${p?.title ?? ""}`} selected={picked.includes(id)} disabled={!playable(id)} onPress={() => toggle(id)} />;
         })}
       </View>
-      {lib && !sc?.patients.some((id) => byId.get(id)?.approved) && <Text style={{ color: t.quiet }}>Gib zuerst Fälle in der Bibliothek frei.</Text>}
+      {lib && !sc?.patients.some(playable) && <Text style={{ color: t.quiet }}>Dieses Szenario hat noch keine spielbaren Fälle.</Text>}
+      {picked.length > 1 && (
+        <>
+          <Text style={{ color: t.quiet }}>Später entdeckt (Lageänderung): Tippen schaltet um. Den Zettel erst zu dieser Minute auslegen.</Text>
+          <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+            {picked.map((id) => (
+              <Chip key={id} t={t} label={`${id.toUpperCase()} ${late[id] ? `ab Minute ${late[id]}` : "sofort"}`} selected={!!late[id]}
+                onPress={() => setLate((l) => { const next = LATE_STEPS[(LATE_STEPS.indexOf(l[id] ?? 0) + 1) % LATE_STEPS.length]; const { [id]: _, ...rest } = l; return next ? { ...rest, [id]: next } : rest; })} />
+            ))}
+          </View>
+        </>
+      )}
       <Text style={{ color: t.quiet }}>Sichtungsalgorithmus</Text>
       <View style={{ flexDirection: "row", gap: 8 }}>
         {ALGOS.map(([id, label]) => <Chip key={id} t={t} label={label} selected={algorithm === id} onPress={() => setAlgorithm(id)} />)}
@@ -148,7 +162,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
         <Chip t={t} label={`wie Stufe (${LEVEL_MINUTES[level]} min)`} selected={phaseMinutes === null} onPress={() => setPhaseMinutes(null)} />
         {[10, 12, 15, 20, 25].map((m) => <Chip key={m} t={t} label={`${m} min`} selected={phaseMinutes === m} onPress={() => setPhaseMinutes(m)} />)}
       </View>
-      <Text style={{ color: t.quiet }}>Zufall (z. B. misslungene Entlastungspunktion)</Text>
+      <Text style={{ color: t.quiet }}>Zufall (Maßnahmen können misslingen, Phasen dauern je Patient 80–120 %)</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         <Chip t={t} label={`wie Stufe (${level === "experte" ? "an" : "aus"})`} selected={random === null} onPress={() => setRandom(null)} />
         <Chip t={t} label="an" selected={random === true} onPress={() => setRandom(true)} />
@@ -163,7 +177,7 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
       </View>
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <Button t={t} strong label="Übung anlegen" disabled={!sc || picked.length === 0}
-        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, einheiten, vitals, ...(phaseMinutes ? { phaseMinutes } : {}), ...(random !== null ? { random } : {}) }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
+        onPress={() => api<{ code: string }>(session, "/api/exercises", { scenario: sc!.id, patients: picked, algorithm, level, einheiten, vitals, late, ...(phaseMinutes ? { phaseMinutes } : {}), ...(random !== null ? { random } : {}) }).then(({ code }) => onCreated(code), (e: Error) => setError(e.message))} />
       <Button t={t} label="Abbrechen" onPress={onCancel} />
     </ScrollView>
   );
@@ -208,7 +222,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   const [replaying, setReplaying] = useState(false);
   const [steer, setSteer] = useState<string | null>(null); // E5: Patient, dessen Phase die Leitung setzt
   const [message, setMessage] = useState("");
-  const inject = (body: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string }) =>
+  const inject = (body: { type: "set"; patient: string; to: string } | { type: "arrive"; unit: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string }) =>
     api(session, `/api/exercises/${code}/inject`, body).then(() => setError(null), (e: Error) => setError(e.message));
   const ctl = (type: "start" | "pause" | "resume" | "end") => api(session, `/api/exercises/${code}/control`, { type }).catch((e: Error) => setError(e.message));
   // J2: Vor dem Start die Lobby (auch für den Beamer), Start mit Countdown 3-2-1.
@@ -278,6 +292,18 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
           <View style={{ width: 120 }}><Button t={t} strong label="Senden" disabled={!message.trim()} onPress={() => (inject({ type: "message", text: message.trim() }), setMessage(""))} /></View>
         </View>
       )}
+      {/* Nachforderungen der Führung: Fahrzeug ist erst da, wenn die Leitung es bestätigt */}
+      {v?.requests.map((r) => (
+        <Card key={r.unit} t={t} color={t.line}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: t.text, fontWeight: "900" }}>{r.title}</Text>
+              <Text style={{ color: t.quiet }}>nachgefordert {clock(r.at * 60000)} von {r.by}{r.arrived ? " · vor Ort" : ""}</Text>
+            </View>
+            {live && !r.arrived && <View style={{ width: 120 }}><Button t={t} strong label="Ist da" onPress={() => inject({ type: "arrive", unit: r.unit })} /></View>}
+          </View>
+        </Card>
+      ))}
       {v?.patients.map((p) => (
         <Card key={p.id} t={t} color={p.triage ? skColor(t, p.triage) : t.line} onPress={live ? () => setSteer(p.id) : undefined}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>

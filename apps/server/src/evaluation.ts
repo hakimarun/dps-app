@@ -39,7 +39,7 @@ function compute(ex: Exercise, T: number): Evaluation {
   const acc = new Map<string, Acc>();
   for (const [id, h] of Object.entries(end.participants))
     acc.set(id, {
-      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [], notes: [],
+      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [], notes: [], feedback: null,
         skills: Object.fromEntries(AXES.map((x) => [x, { ok: 0, total: 0 }])) as Skills },
       good: [], improve: [], patients: new Set(), badges: new Set(), scarce: { used: false, wasted: false },
     });
@@ -183,6 +183,8 @@ function compute(ex: Exercise, T: number): Evaluation {
     const { helper, kind, text, patient } = r.event;
     if (helper) acc.get(helper)?.report.notes.push(`${kind === "gut" ? "Gut: " : kind === "besser" ? "Besser: " : ""}${patient ? `${patient.toUpperCase()}: ` : ""}${text}`);
   }
+
+  for (const r of ofType("feedback")) { const a = acc.get(r.event.helper); if (a) a.report.feedback = r.event.text || null; } // der letzte gilt
 
   // Auslastung: Zeit in Maßnahmen geteilt durch Zeit seit Beitritt.
   for (const [id, a] of acc) {

@@ -1,7 +1,7 @@
 // Praxisanleiter (Meilenstein 3): Anmeldung per E-Mail-Code, Bibliothek mit eigener Freigabe,
 // Übung anlegen, QR-Zettel, Start/Pause/Ende und Live-Lage.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Animated, Easing, Image, Linking, Platform, Pressable, ScrollView, Text, View } from "react-native";
+import { Animated, Easing, Image, Linking, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
@@ -550,6 +550,7 @@ function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; ses
           {h.badges.length > 0 && <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>{h.badges.map((b) => <Badge key={b} t={t} label={b} />)}</View>}
           {h.improve.map((x, i) => <Text key={i} style={{ color: t.quiet }}>• {x}</Text>)}
           {h.notes?.map((x, i) => <Text key={`n${i}`} style={{ color: t.text }}>◦ {x}</Text>)}
+          <FeedbackBox t={t} session={session} code={code} helper={h.id} saved={h.feedback ?? null} onSaved={load} />
         </View>
       ))}
       {ev.released ? (
@@ -558,6 +559,27 @@ function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; ses
         <Button t={t} strong label="Berichte für Helfer freigeben"
           onPress={() => api(session, `/api/exercises/${code}/control`, { type: "release" }).then(load, (e: Error) => setError(e.message))} />
       )}
+    </View>
+  );
+}
+
+// G10: Rückmeldung je Helfer. Die KI schlägt einen Text vor, die Leitung ändert und speichert ihn; er erscheint im Bericht.
+function FeedbackBox({ t, session, code, helper, saved, onSaved }: { t: Theme; session: Session; code: string; helper: string; saved: string | null; onSaved: () => void }) {
+  const [text, setText] = useState(saved ?? "");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const call = (body: { text?: string }) => api<{ text?: string }>(session, `/api/exercises/${code}/feedback`, { helper, ...body });
+  const suggest = () => (setBusy(true), call({}).then((r) => (setText(r.text ?? ""), setError(null)), (e: Error) => setError(e.message)).finally(() => setBusy(false)));
+  const save = () => call({ text: text.trim() }).then(() => (setError(null), onSaved()), (e: Error) => setError(e.message));
+  return (
+    <View style={{ gap: 6, marginTop: 4 }}>
+      <TextInput value={text} onChangeText={setText} multiline maxLength={1200} placeholder="Rückmeldung an diese Person (erscheint im Bericht)" placeholderTextColor={t.quiet}
+        accessibilityLabel="Rückmeldung" style={{ minHeight: 70, borderWidth: 2, borderColor: t.edge, backgroundColor: t.card, borderRadius: 12, padding: 10, color: t.text, textAlignVertical: "top" }} />
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        <View style={{ flex: 1 }}><Button t={t} label={busy ? "KI schreibt …" : "KI-Vorschlag"} disabled={busy} onPress={suggest} /></View>
+        <View style={{ flex: 1 }}><Button t={t} strong label={text.trim() === (saved ?? "") ? "Gespeichert" : "Speichern"} disabled={text.trim() === (saved ?? "")} onPress={save} /></View>
+      </View>
+      {error && <Text style={{ color: t.red }}>{error}</Text>}
     </View>
   );
 }

@@ -11,7 +11,7 @@ import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, InjectReq, NoteReq, ScenarioBundle, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, FeedbackReq, GenerateReq, InjectReq, NoteReq, ScenarioBundle, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
@@ -20,6 +20,7 @@ import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
+import { suggestFeedback } from "./feedback.ts";
 import { imageGenFromEnv } from "./images.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
@@ -425,6 +426,25 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const now = Date.now();
     if (m[2] === "report.html") return send(res, 200, reportPage(ex, evaluate(ex, now), timeline(ex, minutes(ex, now))), "text/html");
     return m[2] === "replay" ? send(res, 200, replay(ex, now)) : send(res, 200, csv(ex, now), "text/csv");
+  }
+  // G10: Feedback je Helfer: KI-Vorschlag (ohne text) oder geprüften Text speichern (mit text; leer nimmt ihn zurück).
+  if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/feedback$/))) {
+    const ex = exercises.get(m[1]);
+    if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
+    const r = FeedbackReq.parse(await body(req));
+    if (r.text !== undefined) {
+      const error = inject(ex, { type: "feedback", helper: r.helper, text: r.text }, Date.now());
+      if (error) throw new HttpError(409, error);
+      broadcast(ex);
+      return send(res, 200, { ok: true });
+    }
+    if (!generatorAi) throw new HttpError(503, "KI ist auf dem Server nicht eingerichtet");
+    const report = evaluate(ex, Date.now()).helpers.find((h) => h.id === r.helper);
+    if (!report) throw new HttpError(404, "unbekannter Helfer");
+    const text = await suggestFeedback(generatorAi, ex, r.helper, report).catch((e) => {
+      throw new HttpError(502, `KI-Fehler: ${e instanceof Error ? e.message : e}`);
+    });
+    return send(res, 200, { text });
   }
   if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/inject$/))) {
     const ex = exercises.get(m[1]);

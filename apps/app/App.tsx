@@ -483,6 +483,12 @@ function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"
           </View>
         </Pop>
       )}
+      {me.feedback && (
+        <View style={{ gap: 4, backgroundColor: t.card, borderRadius: 12, padding: 14, borderLeftWidth: 6, borderLeftColor: t.accent }}>
+          <Text style={{ color: t.text, fontWeight: "600" }}>Rückmeldung der Leitung</Text>
+          <Text style={{ color: t.text }}>{me.feedback}</Text>
+        </View>
+      )}
       {me.notes?.length > 0 && (
         <View style={{ gap: 4, borderWidth: 2, borderColor: t.edge, borderRadius: 12, padding: 14 }}>
           <Text style={{ color: t.text, fontWeight: "600" }}>Beobachtet</Text>

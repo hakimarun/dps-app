@@ -79,7 +79,7 @@ ${ev.patients.map((p) => `<tr><td><b>${p.id.toUpperCase()}</b> ${esc(p.title)}${
 <h2>Helfer</h2>
 ${ev.helpers.map((h) => `<div class="helper"><b>${esc(h.name)}</b> (${esc(h.unit)}) · ${h.points} Punkte · ${Math.round(h.busyShare * 100)} % in Maßnahmen${h.badges.length ? ` · ${h.badges.map(esc).join(", ")}` : ""}
 ${skills(h.skills) ? `<div class="meta">${skills(h.skills)}</div>` : ""}
-${h.good.length ? `Gut gelaufen:${li(h.good)}` : ""}${h.improve.length ? `Nächstes Mal:${li(h.improve)}` : ""}${h.notes.length ? `Beobachtet:${li(h.notes)}` : ""}</div>`).join("") || "<p>keine Helfer</p>"}
+${h.feedback ? `<p><i>Rückmeldung:</i> ${esc(h.feedback)}</p>` : ""}${h.good.length ? `Gut gelaufen:${li(h.good)}` : ""}${h.improve.length ? `Nächstes Mal:${li(h.improve)}` : ""}${h.notes.length ? `Beobachtet:${li(h.notes)}` : ""}</div>`).join("") || "<p>keine Helfer</p>"}
 <h2>Protokoll</h2>
 <table class="log">${events.map((e) => `<tr><td>${m(e.t)}</td><td>${esc(e.text)}</td></tr>`).join("")}</table>
 </body></html>`;

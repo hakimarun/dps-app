@@ -82,6 +82,8 @@ export const ScenarioBundle = z.object({
   patients: z.array(z.record(z.string(), z.unknown())).min(1).max(60), // Fallverläufe im Szenarioformat, beim Import geprüft
 });
 export type ScenarioBundle = z.infer<typeof ScenarioBundle>;
+// G10: Feedback je Helfer: KI-Vorschlag holen, geprüften Text speichern (leer = zurücknehmen).
+export const FeedbackReq = z.object({ helper: z.string().max(64), text: z.string().trim().max(1200).optional() });
 // E7: Notiz eines Beobachters (Beobachter-Code der Übung, ohne Konto).
 export const NoteReq = z.object({
   by: z.string().trim().min(1).max(40),
@@ -125,6 +127,7 @@ export type HelperReport = {
   good: string[]; // höchstens 3
   improve: string[]; // höchstens 3, wichtigste zuerst
   notes: string[]; // Beobachtungen zu dieser Person (F5)
+  feedback: string | null; // Rückmeldung der Leitung (G10, ggf. aus KI-Vorschlag)
   skills: Skills;
 };
 

@@ -258,3 +258,23 @@ test("Bericht als Druckseite: Kennzahlen, Helfer und Protokoll, Namen escaped", 
   assert.match(html, /Tourniquet anlegen an P01/);
   assert.match(html, /<td>20:00<\/td>|<td>1:00<\/td>/);
 });
+
+test("KI-Feedback: Fakten ohne Namen, Vorschlag über die KI, gespeicherter Text im Bericht und nicht im Protokoll", async () => {
+  const { evaluate } = await import("../src/evaluation.ts");
+  const { feedbackFacts, suggestFeedback } = await import("../src/feedback.ts");
+  const { ex, p } = joined(running(), "Anna");
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "tourniquet" }, 2 * MIN), 2 * MIN);
+  control(ex, "end", 20 * MIN);
+  const r = evaluate(ex, 20 * MIN).helpers[0];
+  const facts = feedbackFacts(ex, p, r);
+  assert.match(facts, /2:00 Tourniquet anlegen an P01/);
+  assert.ok(!facts.includes("Anna"), "kein Name an die KI");
+  let seen = "";
+  const fake = { name: "fake", json: async (_t: string, _s: string, user: string) => ((seen = user), { text: " Gut gemacht. " }) } as never;
+  assert.equal(await suggestFeedback(fake, ex, p, r), "Gut gemacht.");
+  assert.equal(seen, facts);
+  assert.equal(inject(ex, { type: "feedback", helper: p, text: "Tourniquet nach 2 min, stark." }, 21 * MIN), null);
+  assert.equal(evaluate(ex, 21 * MIN).helpers[0].feedback, "Tourniquet nach 2 min, stark.");
+  assert.ok(!leitungView(ex, 21 * MIN).events.some((e) => /Feedback/.test(e.text)));
+});

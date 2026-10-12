@@ -287,6 +287,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;
       case "set": return `Leitung setzt ${P(e.patient)} in Phase ${e.to}`;
       case "message": return `Leitung an alle: ${e.text}`;
+      case "feedback": return "Feedback gespeichert";
       case "note": return `${NOTE_LABEL[e.kind]} (${e.by})${e.helper ? ` zu ${name(e.helper)}` : ""}${e.patient ? `${e.helper ? " an" : " zu"} ${P(e.patient)}` : ""}: ${e.text}`;
     }
   };
@@ -295,6 +296,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
   return [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...generated.filter((e) => e.type === "phase")]
     .sort((a, b) => a.t - b.t)
     .filter((e) => {
+      if (e.type === "feedback") return false; // gehört in den Bericht, nicht ins Protokoll
       if (e.type !== "phase" && e.type !== "set") return true;
       if (e.type === "phase" && prev[e.patient] === e.to) return false;
       prev[e.patient] = e.to;
@@ -364,11 +366,11 @@ export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung
 export const NOTE_LABEL = { note: "Beobachtung", gut: "Beobachtung gut", besser: "Beobachtung besser" } as const;
 export function inject(
   ex: Exercise,
-  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | Omit<Extract<Event, { type: "note" }>, "t">,
+  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | Omit<Extract<Event, { type: "note" }>, "t"> | Omit<Extract<Event, { type: "feedback" }>, "t">,
   now: number,
 ): string | null {
   const st = status(ex);
-  if (st === "ready" || (st === "ended" && e.type !== "note")) return NOT_RUNNING[st]; // Notizen auch nach dem Ende, vor dem Debriefing
+  if (st === "ready" || (st === "ended" && e.type !== "note" && e.type !== "feedback")) return NOT_RUNNING[st]; // Notizen und Feedback auch nach dem Ende
   const t = minutes(ex, now);
   const event = { ...e, t } as Event;
   const error = validate(stateAt(ex, t), event);

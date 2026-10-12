@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Patient, Sk } from "@dps/schema";
 import { api, type LibPatient, type LibScenario, type Session } from "./api";
-import { Button, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
+import { Button, Chip, Field, Overlay, Sheet, Title, skColor, type Theme } from "./ui";
 
 import { BOOLS, CATEGORIES, DIFFS, EMPTY, EXAMS, NUMS, TOPICS, emptyPhase, fromPatient, toPatient, type Form, type Phase, type Rule, type Tri } from "./caseform";
 
@@ -87,7 +87,7 @@ export function CaseEditor({ t, session, initial, onClose, onSaved }: { t: Theme
     );
   };
   return (
-    <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.bg, paddingTop: 48 }}>
+    <Overlay t={t} onClose={onClose}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 10, paddingBottom: 40 }}>
         <Title t={t}>{initial ? "Fall bearbeiten" : "Neuer Fall"}</Title>
         {initial && <Text style={{ color: t.quiet }}>Eigene Fälle bekommen beim Speichern eine neue Version, die neu freigegeben werden muss. Musterfälle und Fälle anderer werden als Kopie gespeichert.</Text>}
@@ -206,7 +206,7 @@ export function CaseEditor({ t, session, initial, onClose, onSaved }: { t: Theme
         <ActionPicker t={t} title={picker.title} actions={pickerActions} value={picker.value}
           onChange={(v) => (picker.set(v), setPicker({ ...picker, value: v }))} onClose={() => setPicker(null)} />
       )}
-    </View>
+    </Overlay>
   );
 }
 

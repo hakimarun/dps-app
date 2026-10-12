@@ -35,7 +35,8 @@ export function ProfileScreen({ onExit }: { onExit: () => void }) {
         const { ok, total } = p.skills[x];
         const share = total ? ok / total : 0;
         return (
-          <View key={x} style={{ gap: 4 }} accessible accessibilityLabel={`${LABEL[x]}: ${total ? `${ok} von ${total} richtig` : "noch nicht bewertet"}`}>
+          <View key={x} style={{ gap: 4 }} accessible accessibilityRole="progressbar" accessibilityLabel={LABEL[x]}
+            aria-valuemin={0} aria-valuemax={Math.max(total, 1)} aria-valuenow={ok} aria-valuetext={total ? `${ok} von ${total} richtig` : "noch nicht bewertet"}>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text style={{ color: "#111", fontWeight: "800" }}>{LABEL[x]}</Text>
               <Text style={{ color: "#555" }}>{total ? `${ok} von ${total}` : "noch offen"}</Text>

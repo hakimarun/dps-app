@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Badge, Button, Card, Chip, Field, Logo, Sheet, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
+import { Badge, Button, Card, Chip, Field, Logo, Sheet, pressed, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
@@ -74,7 +74,7 @@ function Home({ t, session, onLogout, onExit }: { t: Theme; session: Session; on
         <Logo t={{ ...light, marke: FUN.red }} size={34} />
         <View style={{ flexDirection: "row", gap: 8, flex: 1, justifyContent: "flex-end" }}>
           {([["uebungen", "Übungen"], ["bibliothek", "Bibliothek"]] as const).map(([id, label]) => (
-            <Pressable key={id} accessibilityRole="button" accessibilityState={{ selected: tab === id }} onPress={() => setTab(id)}
+            <Pressable key={id} accessibilityRole="button" accessibilityState={{ selected: tab === id }} {...pressed(tab === id)} onPress={() => setTab(id)}
               style={{ paddingHorizontal: 16, paddingVertical: 10, borderRadius: 22, backgroundColor: tab === id ? "#FFFFFF" : "rgba(255,255,255,0.18)" }}>
               <Text style={{ color: tab === id ? STAGE : "#FFFFFF", fontWeight: "900" }}>{label}</Text>
             </Pressable>
@@ -364,11 +364,11 @@ function Lobby({ t, session, code, view, error, onStart, onBack, onEnd }: {
           <Breathe>
             <View style={{ backgroundColor: WHITE, borderRadius: 18, paddingHorizontal: 22, paddingVertical: 12, alignItems: "center" }}>
               <Text style={{ color: "#333", fontWeight: "700" }}>Übungscode</Text>
-              <Text accessibilityLabel={`Übungscode ${code.split("").join(" ")}`} style={{ color: "#111", fontSize: 64, fontWeight: "900", letterSpacing: 6 }}>{code}</Text>
+              <Text accessibilityRole="header" accessibilityLabel={`Übungscode ${code.split("").join(" ")}`} style={{ color: "#111", fontSize: 64, fontWeight: "900", letterSpacing: 6 }}>{code}</Text>
             </View>
           </Breathe>
           <View style={{ backgroundColor: WHITE, borderRadius: 18, padding: 10 }}>
-            <Image source={{ uri: `${httpBase(session.server)}/qr/${code}.png` }} style={{ width: 180, height: 180 }} accessibilityLabel="QR-Code zum Beitreten" />
+            <Image source={{ uri: `${httpBase(session.server)}/qr/${code}.png` }} style={{ width: 180, height: 180 }} accessibilityRole="image" accessibilityLabel="QR-Code zum Beitreten" />
           </View>
         </View>
         <Text style={{ color: WHITE, opacity: 0.9 }}>dPS-App öffnen → „Ich übe“ → Code eingeben oder QR-Code scannen</Text>

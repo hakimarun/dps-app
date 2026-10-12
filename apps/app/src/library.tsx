@@ -83,7 +83,7 @@ function Group({ label, count }: { label: string; count: number }) {
   return (
     <View style={{ flexDirection: "row", marginTop: 16, marginBottom: 2 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: TILE[i], borderRadius: 10, paddingHorizontal: 12, paddingVertical: 6 }}>
-        <Text style={{ color: "#FFFFFF", fontSize: 15 }}>{SHAPES[i]}</Text>
+        <Text aria-hidden style={{ color: "#FFFFFF", fontSize: 15 }}>{SHAPES[i]}</Text>
         <Text style={{ color: "#FFFFFF", fontWeight: "900" }}>{label} · {count}</Text>
       </View>
     </View>

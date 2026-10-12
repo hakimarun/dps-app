@@ -1,6 +1,6 @@
 // Gemeinsame Bausteine: Farben (nur als Bedeutung), Knöpfe, Felder, Titel, Overlay.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AccessibilityInfo, Animated, Easing, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { AccessibilityInfo, Animated, Easing, Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Sk } from "@dps/schema";
 
 // marke: warmes Rot (J1), nur in Lobby, Bibliothek und Auswertung – im Einsatz ist Rot der Sichtung vorbehalten.
@@ -30,7 +30,7 @@ export const clock = (ms: number) => {
 };
 
 export function Title({ t, children }: { t: Theme; children: ReactNode }) {
-  return <Text style={{ color: t.text, fontSize: 30, fontWeight: "900", letterSpacing: -0.3 }}>{children}</Text>;
+  return <Text accessibilityRole="header" style={{ color: t.text, fontSize: 30, fontWeight: "900", letterSpacing: -0.3 }}>{children}</Text>;
 }
 
 export function Field({ t, label, value, onChange, keyboard }: { t: Theme; label: string; value: string; onChange: (v: string) => void; keyboard?: "email-address" | "number-pad" }) {
@@ -68,9 +68,12 @@ export function Button({ t, label, note, onPress, disabled, strong, color }: {
 }
 
 // Auswahl-Pille (Filter, Einheit, Einstellungen).
+// Auswahlzustand für Screenreader im Web (aria-pressed); auf dem Handy reicht accessibilityState.
+export const pressed = (on: boolean) => ({ "aria-pressed": on }) as object;
+
 export function Chip({ t, label, selected, onPress, disabled }: { t: Theme; label: string; selected: boolean; onPress: () => void; disabled?: boolean }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected, disabled }} disabled={disabled} onPress={onPress} style={{ maxWidth: "100%" }}>
+    <Pressable accessibilityRole="button" accessibilityState={{ selected, disabled }} {...pressed(selected)} disabled={disabled} onPress={onPress} style={{ maxWidth: "100%" }}>
       {({ pressed }) => (
         <View style={{ borderRadius: 22, backgroundColor: selected ? t.accentEdge : t.edge, paddingBottom: pressed ? 1 : 3, marginTop: pressed ? 2 : 0, opacity: disabled ? 0.4 : 1 }}>
           <View style={{ minHeight: 42, paddingHorizontal: 15, paddingVertical: 6, justifyContent: "center", borderRadius: 22, backgroundColor: selected ? t.accent : t.card }}>
@@ -82,9 +85,18 @@ export function Chip({ t, label, selected, onPress, disabled }: { t: Theme; labe
   );
 }
 
+// Vollbild-Ebene als Modal (N12): Tastatur und Screenreader bleiben im Dialog, die Zurück-Taste (Android) schließt.
+export function Overlay({ t, onClose, children }: { t: Theme; onClose: () => void; children: ReactNode }) {
+  return (
+    <Modal visible transparent animationType="none" onRequestClose={onClose}>
+      <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: 48 }}>{children}</View>
+    </Modal>
+  );
+}
+
 export function Sheet({ t, title, onClose, children }: { t: Theme; title: string; onClose: () => void; children: ReactNode }) {
   return (
-    <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.bg, paddingTop: 48 }}>
+    <Overlay t={t} onClose={onClose}>
       {/* Kopf bleibt beim Scrollen stehen, Schließen immer sichtbar oben rechts */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 20, paddingBottom: 10 }}>
         <View style={{ width: 8, alignSelf: "stretch", borderRadius: 4, backgroundColor: t.accent }} />
@@ -100,7 +112,7 @@ export function Sheet({ t, title, onClose, children }: { t: Theme; title: string
         {children}
         <Button t={t} label="Schließen" onPress={onClose} />
       </ScrollView>
-    </View>
+    </Overlay>
   );
 }
 
@@ -178,7 +190,7 @@ export function Flash({ t, value, children }: { t: Theme; value: unknown; childr
 // Eigenes Logo (J1): Wortmarke auf Markenrot, bewusst ohne Kreuz.
 export function Logo({ t, size = 56 }: { t: Theme; size?: number }) {
   return (
-    <View accessibilityLabel="dPS" style={{ width: size * 1.6, height: size, borderRadius: size / 4, backgroundColor: t.marke, alignItems: "center", justifyContent: "center" }}>
+    <View accessibilityRole="image" accessibilityLabel="dPS" style={{ width: size * 1.6, height: size, borderRadius: size / 4, backgroundColor: t.marke, alignItems: "center", justifyContent: "center" }}>
       <Text style={{ color: "#FFFFFF", fontSize: size * 0.45, fontWeight: "800", letterSpacing: 1 }}>dPS</Text>
     </View>
   );

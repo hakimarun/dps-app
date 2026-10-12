@@ -36,7 +36,7 @@ export function Solo({ onExit, play }: { onExit: () => void; play: (game: SoloGa
     <PinScreen fullBleed color={FUN.green} footer={<PinLink label="Zurück" onPress={onExit} />}>
       <Text style={{ color: "#111", fontSize: 26, fontWeight: "900", textAlign: "center" }}>Fall des Tages</Text>
       <Text style={{ color: "#333", textAlign: "center" }}>Ein Patient, 5 bis 10 Minuten, ohne QR-Code. Jeden Tag ein neuer Fall.</Text>
-      <View style={{ alignItems: "center", gap: 2, paddingVertical: 6 }} accessible accessibilityLabel={`Serie: ${days} ${days === 1 ? "Tag" : "Tage"} in Folge`}>
+      <View style={{ alignItems: "center", gap: 2, paddingVertical: 6 }}>
         <Wiggle trigger={days}><Text style={{ color: FUN.green, fontSize: 56, fontWeight: "900" }}>{days}</Text></Wiggle>
         <Text style={{ color: "#333", fontWeight: "800" }}>{days === 1 ? "Tag" : "Tage"} in Folge{streak.paused ? " · pausiert" : ""}</Text>
       </View>

@@ -12,7 +12,7 @@ import { ProfileScreen, addToProfile } from "./src/profile";
 import { Observe } from "./src/observe";
 import { canListen, canSpeak, listen, speak, stopSpeaking } from "./src/speech";
 import { voiceFor } from "./src/voice";
-import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
+import { Badge, Button, Chip, Field, Flash, Logo, Overlay, Pop, SK, Sheet, Title, clock, dark, light, pressed, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
 import { httpBase } from "./src/api";
@@ -180,7 +180,7 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
             const disabled = !conn.view!.unitArrived || missing.length > 0;
             const note = !conn.view!.unitArrived ? "Einheit noch nicht da" : missing.length ? `kein ${MATERIAL[missing[0][0]] ?? missing[0][0]}` : a.minutes === null ? "dauerhaft" : a.minutes < 1 ? `${a.minutes * 60} s` : `${a.minutes} min`;
             // Katalog ist nach Gruppen sortiert: Überschrift, wenn eine neue Gruppe beginnt.
-            const head = a.group !== w.actions[i - 1]?.group ? [<Text key={`g-${a.group}`} style={{ color: t.quiet, fontWeight: "600", marginTop: i ? 8 : 0 }}>{a.group}</Text>] : [];
+            const head = a.group !== w.actions[i - 1]?.group ? [<Text key={`g-${a.group}`} accessibilityRole="header" style={{ color: t.quiet, fontWeight: "600", marginTop: i ? 8 : 0 }}>{a.group}</Text>] : [];
             return [
               ...head,
               <Button key={a.id} t={t} label={a.title} note={note} disabled={disabled}
@@ -568,8 +568,8 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
     </View>
   );
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined}
-      style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: t.bg, paddingTop: 48 }}>
+    <Overlay t={t} onClose={onClose}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : undefined} style={{ flex: 1 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16, paddingBottom: 10, borderBottomWidth: 1, borderColor: t.line }}>
         <Pressable accessibilityRole="button" accessibilityLabel="Zurück zum Patienten" onPress={onClose} hitSlop={12}>
           <Text style={{ color: t.text, fontSize: 28 }}>‹</Text>
@@ -601,7 +601,7 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
           onSubmitEditing={() => text.trim().length > 1 && (ask(text.trim()), setText(""))}
           style={{ flex: 1, minHeight: 48, borderWidth: 1, borderColor: t.line, borderRadius: 24, paddingHorizontal: 16, color: t.text, fontSize: 16 }} />
         {canListen && ai && (
-          <Pressable accessibilityRole="button" accessibilityLabel={listening ? "Zuhören beenden" : "Frage sprechen"} accessibilityState={{ selected: listening }}
+          <Pressable accessibilityRole="button" accessibilityLabel={listening ? "Zuhören beenden" : "Frage sprechen"} accessibilityState={{ selected: listening }} {...pressed(listening)}
             disabled={!online || !!waiting} onPress={mic}
             style={({ pressed }) => ({ width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center",
               backgroundColor: listening ? t.accent : t.card, borderWidth: 2, borderColor: listening ? t.accent : t.edge, opacity: !online || waiting ? 0.3 : pressed ? 0.7 : 1 })}>
@@ -616,6 +616,7 @@ function Chat({ t, patient, picture, dialog, ai, online, error, onAsk, onClose }
         </Pressable>
       </View>
     </KeyboardAvoidingView>
+    </Overlay>
   );
 }
 

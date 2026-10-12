@@ -128,7 +128,7 @@ export function Tile({ i, label, big }: { i: number; label: string; big?: boolea
   return (
     <View style={{ borderRadius: 10, backgroundColor: "rgba(0,0,0,0.25)", paddingBottom: 4 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: color, borderRadius: 10, paddingHorizontal: big ? 20 : 14, paddingVertical: big ? 14 : 9 }}>
-        <Text style={{ color: W, fontSize: big ? 22 : 16 }}>{SHAPES[i % 4]}</Text>
+        <Text aria-hidden style={{ color: W, fontSize: big ? 22 : 16 }}>{SHAPES[i % 4]}</Text>
         <Text style={{ color: W, fontSize: big ? 26 : 17, fontWeight: "900" }}>{label}</Text>
       </View>
     </View>

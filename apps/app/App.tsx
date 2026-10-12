@@ -712,15 +712,15 @@ function Go({ onDone }: { onDone: () => void }) {
 
 // B3: Führung (OrgL, LNA, UA-Leiter): Verstärkung bei der Leitstelle anfordern und entscheiden, wer zuerst abtransportiert wird.
 function LageSheet({ t, lage, min, onRequest, onClear, onClose }: {
-  t: Theme; lage: NonNullable<ViewData["lage"]>; min: number; onRequest: (kind: "rtw" | "nef" | "ktw") => void; onClear: (patient: string) => void; onClose: () => void;
+  t: Theme; lage: NonNullable<ViewData["lage"]>; min: number; onRequest: (kind: "rtw" | "nef" | "nktw" | "ktw") => void; onClear: (patient: string) => void; onClose: () => void;
 }) {
   const waiting = lage.patients.filter((p) => !p.left);
   return (
     <Sheet t={t} title="Lage & Verstärkung" onClose={onClose}>
       <Text style={{ color: t.text, fontWeight: "900", fontSize: 18 }}>Verstärkung bei der Leitstelle anfordern</Text>
-      <View style={{ flexDirection: "row", gap: 8 }}>
-        {([["rtw", "RTW", "10 min"], ["nef", "NEF", "8 min"], ["ktw", "KTW", "15 min"]] as const).map(([kind, label, eta]) => (
-          <View key={kind} style={{ flex: 1 }}><Button t={t} label={label} note={`in ${eta}`} onPress={() => onRequest(kind)} /></View>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        {([["rtw", "RTW", "10 min"], ["nef", "NEF", "8 min"], ["nktw", "NKTW", "12 min"], ["ktw", "KTW", "15 min"]] as const).map(([kind, label, eta]) => (
+          <View key={kind} style={{ flexGrow: 1, flexBasis: "45%" }}><Button t={t} label={label} note={`in ${eta}`} onPress={() => onRequest(kind)} /></View>
         ))}
       </View>
       {lage.vehicles.map((v, i) => (

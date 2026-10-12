@@ -46,7 +46,7 @@ export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("end") }),
   z.object({ type: z.literal("assist"), patient: z.string() }), // bei einer wartenden Zwei-Helfer-Maßnahme mithelfen (C7)
   z.object({ type: z.literal("fetch"), from: z.string().max(64), item: z.string().max(64) }), // Material von einem anderen Fahrzeug holen (C10)
-  z.object({ type: z.literal("request"), kind: z.enum(["rtw", "nef", "ktw"]) }), // Führung: Verstärkung nachfordern (B3)
+  z.object({ type: z.literal("request"), kind: z.enum(["rtw", "nef", "nktw", "ktw"]) }), // Führung: Verstärkung nachfordern (B3)
   z.object({ type: z.literal("clear"), patient: z.string() }), // Führung: Patient zum Transport freigeben (B3)
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
   z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),

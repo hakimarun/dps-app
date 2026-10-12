@@ -305,4 +305,5 @@ test("Funkrufnamen: je Fahrzeugklasse eigene Kennzahl, kein Rufname doppelt, auc
   const rnd = () => rolls.shift()!;
   assert.equal(callsign("RTW", used, rnd), "70/83/1");
   assert.equal(callsign("RTW", used, rnd), "41/83/2"); // 70/83/1 übersprungen
+  assert.equal(withCallsigns([{ title: "NKTW 1" }])[0].title.split("/")[1], "26"); // Notfall-KTW
 });

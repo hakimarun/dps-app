@@ -11,6 +11,7 @@ export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15
 export const REINFORCEMENT = {
   rtw: { label: "RTW", minutes: 10, seats: 1, inventory: { tourniquet: 2, dressing: 4, wendl: 1, o2_mask: 2, needle: 1, iv_cannula: 4, infusion: 4, analgesic: 2, pelvic_binder: 1, splint: 1, rescue_blanket: 4, cervical_collar: 2, vacuum_mattress: 1, bvm: 1, chest_seal: 2, hemostatic: 2, burn_dressing: 2, glucose: 1, pacer_pads: 1 } },
   nef: { label: "NEF", minutes: 8, seats: 0, inventory: { needle: 2, ett: 2, analgesic: 4, iv_cannula: 2, infusion: 2, o2_mask: 1, bvm: 1, chest_seal: 1, hemostatic: 1, glucose: 2, pacer_pads: 1 } },
+  nktw: { label: "NKTW", minutes: 12, seats: 1, inventory: { tourniquet: 1, dressing: 4, rescue_blanket: 4, o2_mask: 2, cervical_collar: 1, bvm: 1, glucose: 1, splint: 1 } },
   ktw: { label: "KTW", minutes: 15, seats: 1, inventory: { dressing: 4, rescue_blanket: 4, o2_mask: 1, cervical_collar: 1 } },
 } as const satisfies Record<string, { label: string; minutes: number; seats: number; inventory: Record<string, number> }>;
 

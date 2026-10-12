@@ -428,9 +428,10 @@ export function observerView(ex: Exercise, now: number): ObserverView {
 
 // Funkrufnamen der Simulationsfahrzeuge: Wache/Kennzahl der Fahrzeugklasse/laufende Nummer, z. B. "70/83/1".
 // Kein Rufname kommt in einer Übung zweimal vor, auch nicht bei wiederholter Nachforderung.
-// Kennzahlen nach verbreitetem BOS-Schema; anpassen, wenn die eigene Leitstelle andere nutzt.
-export const CLASS_CODE: Record<string, number> = { ELW: 11, NAW: 81, NEF: 82, RTW: 83, KTW: 85 };
-export const vehicleClass = (title: string) => title.match(/^(ELW|NAW|NEF|RTW|KTW)\b/i)?.[1].toUpperCase() ?? null;
+// Kennzahlen nach dem Funkrufnamen- und OPTA-Plan Baden-Württemberg (26 = KTW B, Notfall-KTW); andere Länder weichen ab,
+// z. B. Rheinland-Pfalz und Saarland mit NKTW 84, Hessen mit KTW-B 93.
+export const CLASS_CODE: Record<string, number> = { ELW: 11, NKTW: 26, NAW: 81, NEF: 82, RTW: 83, KTW: 85 };
+export const vehicleClass = (title: string) => title.match(/^(ELW|NKTW|NAW|NEF|RTW|KTW)\b/i)?.[1].toUpperCase() ?? null;
 export function callsign(cls: string, used: Set<string>, rnd: (min: number, max: number) => number = randomInt): string {
   for (;;) {
     const c = `${rnd(10, 100)}/${CLASS_CODE[cls] ?? 99}/${rnd(1, 4)}`;

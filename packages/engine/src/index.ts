@@ -28,6 +28,8 @@ export type Event =
   // Führung (B3): Verstärkung bei der Leitstelle nachfordern (trifft nach der Anfahrzeit ein) und Patienten zum Transport freigeben.
   | { t: number; type: "request"; participant: string; kind: keyof typeof REINFORCEMENT; unit: string; title: string }
   | { t: number; type: "clear"; participant: string; patient: string }
+  // Leitung ändert das Temperament eines Patienten (G11); leer = zurück zum Fall.
+  | { t: number; type: "mood"; patient: string; temperament: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
   | { t: number; type: "admit"; participant: string; patient: string; place: Place }
   // Gespräch mit dem Patienten; ändert den Zustand nicht, wird für die Auswertung protokolliert.
@@ -52,6 +54,7 @@ export type PatientState = {
   place: Place | "fundort" | "abtransport";
   left: boolean; // abtransportiert: läuft nicht weiter
   cleared: boolean; // von der Führung zum Transport freigegeben (B3)
+  mood: string | null; // Temperament, von der Leitung live geändert (G11); null = wie im Fall
 };
 export type ParticipantState = { unit: string; patient: string | null; busy: Running | null };
 export type Defs = { patients: Record<string, Patient>; actions: Record<string, Action> };
@@ -70,7 +73,7 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
   for (const id of scenario.patients) {
     const p = defs.patients[id];
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
-    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false };
+    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false, mood: null };
   }
   const units: State["units"] = {};
   for (const u of scenario.units) units[u.id] = { title: u.title, arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
@@ -81,6 +84,7 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
 export function validate(s: State, e: Event): string | null {
   if (e.type === "phase") return "Phasenwechsel erzeugt nur die Engine";
   if (e.type === "message") return e.text.trim() ? null : "Nachricht fehlt";
+  if (e.type === "mood") return s.patients[e.patient] ? null : "unbekannter Patient";
   if (e.type === "feedback") return !s.participants[e.helper] ? "unbekannter Helfer" : null;
   if (e.type === "note")
     return !e.text.trim() ? "Notiz fehlt" : e.helper && !s.participants[e.helper] ? "unbekannter Helfer" : e.patient && !s.patients[e.patient] ? "unbekannter Patient" : null;
@@ -190,6 +194,9 @@ export function apply(s: State, e: Event): State {
     case "clear":
       s.patients[e.patient].cleared = true;
       break;
+    case "mood":
+      s.patients[e.patient].mood = e.temperament.trim() || null;
+      break;
     case "fetch": {
       const own = s.units[s.participants[e.participant].unit].inventory;
       s.units[e.from].inventory[e.item]--;
@@ -241,6 +248,9 @@ function nextPhase(s: State, id: string): string {
   // Keine Regel und kein "else": Phase bleibt, die Regeln werden nach der nächsten Phasendauer erneut geprüft.
   return rule?.then ?? ph.else ?? ps.phase;
 }
+
+// Aktuelles Temperament: von der Leitung geändert oder wie im Fall.
+export const temperament = (s: State, id: string) => s.patients[id].mood ?? String(s.defs.patients[id].profile.temperament ?? "kooperativ");
 
 export function phaseDef(s: State, id: string): Phase {
   return s.defs.patients[id].phases[s.patients[id].phase];

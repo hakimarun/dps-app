@@ -186,7 +186,7 @@ test("Führung: fordert Verstärkung an (trifft nach Anfahrzeit ein) und gibt di
   const [lead, sich] = [join("OrgL", trupps[0]), join("Sam", trupps[1])];
   assert.equal(send(sich, 1, { type: "request", kind: "rtw" }), "Verstärkung und Transportfreigabe macht die Führung");
   assert.equal(send(lead, 2, { type: "request", kind: "rtw" }), null);
-  const isNew = (v: { title: string }) => /^RTW \d+\/83\/\d \(nachgefordert\)$/.test(v.title); // Funkrufname nach Fahrzeugklasse
+  const isNew = (v: { title: string }) => /^RTW \d+\/83-\d \(nachgefordert\)$/.test(v.title); // Funkrufname nach Fahrzeugklasse
   assert.equal(viewFor(ex, stateAt(ex, 5), sich).vehicles.find(isNew)?.arrived, false);
   assert.equal(viewFor(ex, stateAt(ex, 12), sich).vehicles.find(isNew)?.arrived, true); // 2 + 10 min
   assert.equal(send(sich, 12, { type: "scan", patient: "p09" }), null);
@@ -199,11 +199,11 @@ test("Führung: fordert Verstärkung an (trifft nach Anfahrzeit ein) und gibt di
   assert.equal(viewFor(ex, stateAt(ex, 14), sich).lage, null); // nur die Führung sieht die Lage
   const texts = timeline(ex, 14).map((e) => e.text);
   assert.ok(texts.includes("OrgL fordert RTW bei der Leitstelle an (Eintreffen 12:00)"));
-  assert.ok(texts.some((x) => /Sam übergibt P09 an RTW \d+\/83\/\d \(nachgefordert\)/.test(x)));
+  assert.ok(texts.some((x) => /Sam übergibt P09 an RTW \d+\/83-\d \(nachgefordert\)/.test(x)));
   // weitere Nachforderungen: jeder Rufname nur einmal
   for (let i = 0; i < 6; i++) send(lead, 15, { type: "request", kind: i % 2 ? "nef" : "rtw" });
   const titles = Object.values(stateAt(ex, 15).units).map((u) => u.title);
-  const signs = titles.flatMap((x) => x.match(/\d+\/\d+\/\d+/g) ?? []);
+  const signs = titles.flatMap((x) => x.match(/\d+\/\d+-\d+/g) ?? []);
   assert.equal(new Set(signs).size, signs.length);
-  assert.ok(signs.some((x) => /\/82\//.test(x))); // NEF-Kennzahl
+  assert.ok(signs.some((x) => /\/82-/.test(x))); // NEF-Kennzahl
 });

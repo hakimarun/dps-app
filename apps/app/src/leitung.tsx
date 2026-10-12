@@ -19,6 +19,8 @@ const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", pau
 const STATUS_COLOR: Record<Status, string> = { ready: FUN.blue, running: FUN.green, paused: FUN.gold, ended: FUN.purple };
 const LEVELS: [Level, string][] = [["einsteiger", "Einsteiger"], ["fortgeschritten", "Fortgeschritten"], ["experte", "Experte"]];
 const LEVEL_MINUTES: Record<Level, number> = { einsteiger: 20, fortgeschritten: 15, experte: 12 }; // wie LEVELS im Server
+// G11: Temperamente zum Umschalten in der Live-Lage
+const MOODS = ["kooperativ", "ängstlich", "panisch", "aggressiv", "verwirrt", "verharmlosend"];
 const ALGOS: [string, string][] = [["mstart", "mSTaRT"], ["prior", "PRIOR"], ["asav", "ASAV"]];
 // Spielleitung ohne Konto: Das Gerät holt sich beim ersten Mal einen Schlüssel, daran hängen seine Spiele und Fälle.
 export function Leitung({ t, server, startNew, onExit }: { t: Theme; server: string; startNew: boolean; onExit: () => void }) {
@@ -202,7 +204,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   const [replaying, setReplaying] = useState(false);
   const [steer, setSteer] = useState<string | null>(null); // E5: Patient, dessen Phase die Leitung setzt
   const [message, setMessage] = useState("");
-  const inject = (body: { type: "set"; patient: string; to: string } | { type: "message"; text: string }) =>
+  const inject = (body: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string }) =>
     api(session, `/api/exercises/${code}/inject`, body).then(() => setError(null), (e: Error) => setError(e.message));
   const ctl = (type: "start" | "pause" | "resume" | "end") => api(session, `/api/exercises/${code}/control`, { type }).catch((e: Error) => setError(e.message));
   // J2: Vor dem Start die Lobby (auch für den Beamer), Start mit Countdown 3-2-1.
@@ -216,6 +218,22 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {steering.phases.map((ph) => <Chip key={ph} t={t} label={ph} selected={ph === steering.phase} onPress={() => (inject({ type: "set", patient: steering.id, to: ph }), setSteer(null))} />)}
         </View>
+        {/* G11: Temperament live ändern, Gespräche mitlesen */}
+        <Text style={{ color: t.text, fontSize: 18, fontWeight: "900", marginTop: 8 }}>Temperament</Text>
+        <Text style={{ color: t.quiet }}>Jetzt: {steering.mood}. Wirkt sofort auf die nächsten Antworten.</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+          {MOODS.map((m) => <Chip key={m} t={t} label={m} selected={steering.mood === m} onPress={() => inject({ type: "mood", patient: steering.id, temperament: m })} />)}
+          <Chip t={t} label="wie im Fall" selected={false} onPress={() => inject({ type: "mood", patient: steering.id, temperament: "" })} />
+        </View>
+        <Text style={{ color: t.text, fontSize: 18, fontWeight: "900", marginTop: 8 }}>Gespräche ({steering.dialog.length})</Text>
+        {steering.dialog.length === 0 && <Text style={{ color: t.quiet }}>Noch niemand hat mit dem Patienten gesprochen.</Text>}
+        {steering.dialog.map((d, i) => (
+          <View key={i} style={{ backgroundColor: t.card, borderRadius: 12, padding: 10, gap: 4 }}>
+            <Text style={{ color: t.quiet, fontSize: 12 }}>{clock(d.t * 60000)} · {d.who}</Text>
+            <Text style={{ color: t.text, fontWeight: "700" }}>„{d.q}“</Text>
+            <Text style={{ color: t.text }}>→ {d.a}</Text>
+          </View>
+        ))}
       </Sheet>
     );
   const live = st === "running" || st === "paused";

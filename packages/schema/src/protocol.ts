@@ -129,6 +129,7 @@ export type ObserverView = {
 export const InjectReq = z.discriminatedUnion("type", [
   z.object({ type: z.literal("set"), patient: z.string().max(64), to: z.string().max(64) }),
   z.object({ type: z.literal("message"), text: z.string().trim().min(1).max(300) }),
+  z.object({ type: z.literal("mood"), patient: z.string().max(64), temperament: z.string().trim().max(40) }), // G11, leer = wie im Fall
 ]);
 
 export type Intent = z.infer<typeof Intent>;
@@ -219,6 +220,8 @@ export type LeitungView = {
     place: string;
     trend: "besser" | "schlechter" | "gleich"; // Soll-SK jetzt gegenüber Übungsbeginn
     phases: string[]; // alle Phasen des Falls, zum Setzen von Hand (E5)
+    mood: string; // aktuelles Temperament (G11)
+    dialog: { t: number; who: string; q: string; a: string }[]; // Gespräche mit diesem Patienten, live für die Leitung (G11)
   }[];
   helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null; idle: number | null }[];
   trupps: (Trupp & { members: string[] })[];

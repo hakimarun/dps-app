@@ -2,7 +2,7 @@
 // Punktewerte nach der Punktetabelle im Systementwurf (Startwerte, im Pilot kalibrieren).
 import type { Sk } from "@dps/schema";
 import { AXES, Role as RoleEnum, type Axis, type Evaluation, type HelperReport, type Role, type Skills, type Team } from "@dps/schema/protocol";
-import { phaseDef, targetSk, type Event } from "@dps/engine";
+import { phaseDef, targetSk, temperament, type Event } from "@dps/engine";
 import { minutes, released, roleOf, stateAt, truppOf, type Exercise, type Rec, SOLO, SOLO_MINUTES } from "./exercise.ts";
 
 const POINTS = { criticalTimely: 15, criticalLate: 5, triageCorrect: 10, triageCorrection: 8, overOne: 3, under: -10, harmful: -10, calm: 5, deadPatient: -5, handoverComplete: 5 };
@@ -132,7 +132,7 @@ function compute(ex: Exercise, T: number): Evaluation {
     a.report.actions++;
     const s = at(r);
     if (P[id].scoring.harmful.includes(action)) add(who, POINTS.harmful, undefined, [3, `${title(action)} bei ${id.toUpperCase()} schadet`]);
-    if (action === "calm" && /panisch|aggressiv/.test(String(P[id].profile.temperament ?? ""))) {
+    if (action === "calm" && /panisch|aggressiv/.test(temperament(s, id))) {
       add(who, POINTS.calm, `${id.toUpperCase()} beruhigt`);
       a.badges.add("Ruhepol");
     }

@@ -7,7 +7,7 @@ import { Action, Patient, Scenario, type Sk } from "@dps/schema";
 import { TOPIC_LABEL, type ClientMsg, type LeitungView, type ObserverView, type Role, type Status, type Trupp, type View, roleRule } from "@dps/schema/protocol";
 import type { Ai } from "./ai.ts";
 import { askPatient } from "./dialog.ts";
-import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State, REINFORCEMENT } from "@dps/engine";
+import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State, REINFORCEMENT, temperament } from "@dps/engine";
 
 export type Library = { defs: Defs; scenarios: Record<string, Scenario> };
 
@@ -158,7 +158,7 @@ export function submit(
     const atT = minutes(ex, msg.at);
     const t = msg.at <= now && atT >= nowT - BUFFER_MINUTES ? atT : nowT;
     if (i.type === "request") {
-      // Fahrzeug-ID fortlaufend je Typ, Titel mit neuem Funkrufnamen, z. B. "RTW 41/83/2 (nachgefordert)"
+      // Fahrzeug-ID fortlaufend je Typ, Titel mit neuem Funkrufnamen, z. B. "RTW 41/83-2 (nachgefordert)"
       const n = ex.records.filter((r) => r.event.type === "request" && r.event.kind === i.kind).length + 1;
       const label = REINFORCEMENT[i.kind].label;
       const sign = callsign(label, usedCallsigns(Object.values(stateAt(ex, nowT).units).map((u) => u.title)));
@@ -276,7 +276,9 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
               : null;
     const before = targetSk(start, id);
     const trend = target === before ? "gleich" : target === "EX" || RANK[target] > RANK[before] ? "schlechter" : "besser"; // verstorben zählt als schlechter
-    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place], trend, phases: Object.keys(ex.defs.patients[id].phases) } as const;
+    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place], trend, phases: Object.keys(ex.defs.patients[id].phases), mood: temperament(s, id),
+      dialog: ex.records.flatMap((r) => (r.t <= t && r.event.type === "ask" && r.event.patient === id ? [{ t: r.t, who: name(r.event.participant), q: r.event.question, a: r.event.answer }] : [])).slice(-12),
+    } as const;
   });
   // E2: Leerlauf = Zeit seit der letzten Aktion (bei Maßnahmen: seit ihrem Ende)
   const lastActive = new Map<string, number>();
@@ -320,6 +322,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;
       case "set": return `Leitung setzt ${P(e.patient)} in Phase ${e.to}`;
       case "message": return `Leitung an alle: ${e.text}`;
+      case "mood": return e.temperament.trim() ? `Leitung ändert das Temperament von ${P(e.patient)}: ${e.temperament.trim()}` : `Leitung setzt das Temperament von ${P(e.patient)} zurück`;
       case "feedback": return "Feedback gespeichert";
       case "note": return `${NOTE_LABEL[e.kind]} (${e.by})${e.helper ? ` zu ${name(e.helper)}` : ""}${e.patient ? `${e.helper ? " an" : " zu"} ${P(e.patient)}` : ""}: ${e.text}`;
     }
@@ -399,7 +402,7 @@ export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung
 export const NOTE_LABEL = { note: "Beobachtung", gut: "Beobachtung gut", besser: "Beobachtung besser" } as const;
 export function inject(
   ex: Exercise,
-  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | Omit<Extract<Event, { type: "note" }>, "t"> | Omit<Extract<Event, { type: "feedback" }>, "t">,
+  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | { type: "mood"; patient: string; temperament: string } | Omit<Extract<Event, { type: "note" }>, "t"> | Omit<Extract<Event, { type: "feedback" }>, "t">,
   now: number,
 ): string | null {
   const st = status(ex);
@@ -426,7 +429,7 @@ export function observerView(ex: Exercise, now: number): ObserverView {
   };
 }
 
-// Funkrufnamen der Simulationsfahrzeuge: Wache/Kennzahl der Fahrzeugklasse/laufende Nummer, z. B. "70/83/1".
+// Funkrufnamen der Simulationsfahrzeuge im BW-Format Wache/Kennzahl der Fahrzeugklasse-laufende Nummer, z. B. "70/83-1".
 // Kein Rufname kommt in einer Übung zweimal vor, auch nicht bei wiederholter Nachforderung.
 // Kennzahlen nach dem Funkrufnamen- und OPTA-Plan Baden-Württemberg (26 = KTW B, Notfall-KTW); andere Länder weichen ab,
 // z. B. Rheinland-Pfalz und Saarland mit NKTW 84, Hessen mit KTW-B 93.
@@ -434,15 +437,15 @@ export const CLASS_CODE: Record<string, number> = { ELW: 11, NKTW: 26, NAW: 81, 
 export const vehicleClass = (title: string) => title.match(/^(ELW|NKTW|NAW|NEF|RTW|KTW)\b/i)?.[1].toUpperCase() ?? null;
 export function callsign(cls: string, used: Set<string>, rnd: (min: number, max: number) => number = randomInt): string {
   for (;;) {
-    const c = `${rnd(10, 100)}/${CLASS_CODE[cls] ?? 99}/${rnd(1, 4)}`;
+    const c = `${rnd(10, 100)}/${CLASS_CODE[cls] ?? 99}-${rnd(1, 4)}`;
     if (!used.has(c)) return (used.add(c), c);
   }
 }
-// Szenario-Fahrzeuge beim Anlegen einer Übung benennen: "RTW 1" → "RTW 70/83/1".
+// Szenario-Fahrzeuge beim Anlegen einer Übung benennen: "RTW 1" → "RTW 70/83-1".
 export function withCallsigns<U extends { title: string }>(units: U[], used = new Set<string>()): U[] {
   return units.map((u) => {
     const cls = vehicleClass(u.title);
     return cls ? { ...u, title: `${cls} ${callsign(cls, used)}` } : u;
   });
 }
-export const usedCallsigns = (titles: string[]) => new Set(titles.flatMap((t) => t.match(/\d+\/\d+\/\d+/g) ?? []));
+export const usedCallsigns = (titles: string[]) => new Set(titles.flatMap((t) => t.match(/\d+\/\d+-\d+/g) ?? []));

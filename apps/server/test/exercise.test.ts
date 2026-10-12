@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { caseOfDay, control, createExercise, csv, inject, observerView, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
+import { caseOfDay, control, createExercise, csv, inject, submitAsk, observerView, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { DatabaseSync } from "node:sqlite";
 import { deleteExercisesBefore, loadExercises, myApprovals, newDevice, openDb, saveExercise, setApproval, userByToken } from "../src/db.ts";
 import { evaluate } from "../src/evaluation.ts";
@@ -298,12 +298,32 @@ test("Tempo der Übungszeit: 2× lässt Übungsminuten doppelt so schnell laufen
 test("Funkrufnamen: je Fahrzeugklasse eigene Kennzahl, kein Rufname doppelt, auch wenn der Zufall sich wiederholt", async () => {
   const { callsign, withCallsigns } = await import("../src/exercise.ts");
   const named = withCallsigns(lib.scenarios.busunfall.units);
-  assert.deepEqual(named.map((u) => u.title.replace(/ \d+\//, " W/").replace(/\/\d$/, "/n")), ["RTW W/83/n", "NEF W/82/n", "RTW W/83/n", "KTW W/85/n"]);
+  assert.deepEqual(named.map((u) => u.title.replace(/ \d+\//, " W/").replace(/-\d$/, "-n")), ["RTW W/83-n", "NEF W/82-n", "RTW W/83-n", "KTW W/85-n"]);
   assert.equal(new Set(named.map((u) => u.title)).size, named.length);
   const rolls = [70, 1, 70, 1, 70, 1, 41, 2]; // Zufall liefert zweimal dasselbe
   const used = new Set<string>();
   const rnd = () => rolls.shift()!;
-  assert.equal(callsign("RTW", used, rnd), "70/83/1");
-  assert.equal(callsign("RTW", used, rnd), "41/83/2"); // 70/83/1 übersprungen
-  assert.equal(withCallsigns([{ title: "NKTW 1" }])[0].title.split("/")[1], "26"); // Notfall-KTW
+  assert.equal(callsign("RTW", used, rnd), "70/83-1");
+  assert.equal(callsign("RTW", used, rnd), "41/83-2"); // 70/83-1 übersprungen
+  assert.equal(withCallsigns([{ title: "NKTW 1" }])[0].title.split("/")[1].split("-")[0], "26"); // Notfall-KTW
+});
+
+test("Temperament live ändern: wirkt auf Gespräch und Auswertung, Leitung sieht die Gespräche", async () => {
+  const { evaluate } = await import("../src/evaluation.ts");
+  const { ex, p } = joined();
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  for (let i = 0; i < 5; i++) await submitAsk(ex, p, msg({ type: "ask", patient: "p01", topic: "allergies" }, 2 * MIN), 2 * MIN, null);
+  assert.match(viewFor(ex, stateAt(ex, 2), p).patient!.dialog.at(-1)!.a, /Zum 5\. Mal/); // kooperativ: seufzt
+  assert.equal(inject(ex, { type: "mood", patient: "p01", temperament: "aggressiv" }, 3 * MIN), null);
+  await submitAsk(ex, p, msg({ type: "ask", patient: "p01", topic: "allergies" }, 4 * MIN), 4 * MIN, null);
+  assert.match(viewFor(ex, stateAt(ex, 4), p).patient!.dialog.at(-1)!.a, /schreit/); // jetzt aggressiv
+  const lp = leitungView(ex, 4 * MIN).patients[0];
+  assert.equal(lp.mood, "aggressiv");
+  assert.equal(lp.dialog.length, 6);
+  assert.equal(lp.dialog[0].who, "Anna");
+  assert.ok(leitungView(ex, 4 * MIN).events.some((e) => e.text === "Leitung ändert das Temperament von P01: aggressiv"));
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "calm" }, 5 * MIN), 5 * MIN);
+  control(ex, "end", 10 * MIN);
+  assert.ok(evaluate(ex, 10 * MIN).helpers[0].badges.includes("Ruhepol")); // beruhigt den nun aggressiven Patienten
+  assert.equal(inject(ex, { type: "mood", patient: "p01", temperament: "" }, 10 * MIN), "Übung beendet");
 });

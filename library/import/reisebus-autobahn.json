@@ -271,13 +271,13 @@
         "exam": {
           "pelvis": "Bei vorsichtiger Kompression ist der Beckenring instabil und federt. Der Patient verzieht das Gesicht vor Schmerz. Prellmarke und beginnendes Hämatom über der rechten Hüfte und in der Leiste.",
           "abdomen": "Unterbauch druckschmerzhaft und leicht gespannt, Oberbauch weich.",
-          "lungs": "Beidseits belüftet, vesikuläres Atemgeräusch, keine Seitendifferenz.",
+          "auscultation": "Beidseits belüftet, vesikuläres Atemgeräusch, keine Seitendifferenz.",
           "pupils": "Isokor, mittelweit, prompt lichtreagibel.",
-          "body": "Keine äußere Blutung. Prellmarke rechte Hüfte und Becken, rechtes Bein leicht außenrotiert. Kopf, Thorax und Wirbelsäule ohne Auffälligkeiten.",
+          "bodycheck": "Keine äußere Blutung. Prellmarke rechte Hüfte und Becken, rechtes Bein leicht außenrotiert. Kopf, Thorax und Wirbelsäule ohne Auffälligkeiten.",
           "skin": "Blass, kaltschweißig, Hände und Füße kalt.",
-          "temperature": "35,8 °C",
           "ecg": "Sinustachykardie"
-        }
+        },
+        "temp": 35.8
       },
       "start": "1",
       "phases": {
@@ -319,9 +319,9 @@
               "breathing_note": "Schnappatmung, keine normale Atmung, Karotispuls kaum tastbar. Reanimationspflichtig.",
               "ecg": "Sinusbradykardie",
               "skin": "Grau-blass, marmoriert, eiskalt.",
-              "temperature": "34,8 °C",
               "pupils": "Weit, träge lichtreagibel."
-            }
+            },
+            "temp": 34.8
           },
           "rules": [
             {
@@ -353,9 +353,9 @@
             "pain": 0,
             "exam": {
               "breathing_note": "Wieder eigene Atmung, aber flach und unzureichend. Karotispuls tastbar, tief bewusstlos. Sofortige Notarztversorgung und Transport nötig.",
-              "ecg": "Sinustachykardie",
-              "temperature": "34,6 °C"
-            }
+              "ecg": "Sinustachykardie"
+            },
+            "temp": 34.6
           },
           "rules": [],
           "dead": false
@@ -372,9 +372,9 @@
             "pain": 3,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel. Der Patient sagt, so sei es besser.",
-              "skin": "Blass, weniger schweißig, unter der Rettungsdecke etwas wärmer.",
-              "temperature": "35,7 °C"
-            }
+              "skin": "Blass, weniger schweißig, unter der Rettungsdecke etwas wärmer."
+            },
+            "temp": 35.7
           },
           "rules": [
             {
@@ -401,9 +401,9 @@
             "pain": 3,
             "exam": {
               "skin": "Blass, trocken, Hände etwas wärmer.",
-              "temperature": "35,8 °C",
               "ecg": "Sinusrhythmus"
-            }
+            },
+            "temp": 35.8
           },
           "rules": [],
           "dead": false
@@ -419,9 +419,9 @@
             "gcs": 14,
             "pain": 3,
             "exam": {
-              "skin": "Blass, kaltschweißig, Radialispuls nur schwach tastbar.",
-              "temperature": "35,4 °C"
-            }
+              "skin": "Blass, kaltschweißig, Radialispuls nur schwach tastbar."
+            },
+            "temp": 35.4
           },
           "rules": [
             {
@@ -449,9 +449,9 @@
             "pain": 3,
             "exam": {
               "skin": "Fahl, marmoriert, kaltschweißig.",
-              "temperature": "35,0 °C",
               "behavior": "Verlangsamt und schläfrig, antwortet nur noch knapp."
-            }
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -478,9 +478,9 @@
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel.",
               "skin": "Zittert, Haut kalt und marmoriert.",
-              "temperature": "35,0 °C",
               "behavior": "Schläfrig, sagt leise: „Mir ist so kalt.“"
-            }
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -606,17 +606,16 @@
         "lethalInjury": false,
         "pain": 6,
         "exam": {
-          "chest": "Unter der Strickjacke an der rechten seitlichen Brustwand eine ca. 3 cm lange, klaffende Schnittwunde. Beim Einatmen ist ein schlürfendes Geräusch zu hören, beim Ausatmen tritt schaumiges Blut aus. Die rechte Brustkorbhälfte hebt sich weniger.",
+          "bodycheck": "Unter der Strickjacke an der rechten seitlichen Brustwand eine ca. 3 cm lange, klaffende Schnittwunde. Beim Einatmen ist ein schlürfendes Geräusch zu hören, beim Ausatmen tritt schaumiges Blut aus. Die rechte Brustkorbhälfte hebt sich weniger.; Schnittwunde an der rechten Brustwand (s. Thorax), Prellmarke an der rechten Schulter, sonst keine Verletzungen.",
           "auscultation": "Rechts deutlich abgeschwächtes Atemgeräusch, links verlängertes Ausatmen mit leisem Giemen.",
           "skin": "Blass, kaltschweißig",
           "speech": "Spricht in kurzen Sätzen, muss zwischendurch Luft holen.",
           "pupils": "Isokor, prompt lichtreagibel",
           "abdomen": "Weich, kein Druckschmerz",
           "pelvis": "Stabil, kein Schmerz",
-          "bodycheck": "Schnittwunde an der rechten Brustwand (s. Thorax), Prellmarke an der rechten Schulter, sonst keine Verletzungen.",
-          "ecg": "Sinustachykardie",
-          "temperature": "36,4 °C"
-        }
+          "ecg": "Sinustachykardie"
+        },
+        "temp": 36.4
       },
       "start": "1",
       "phases": {
@@ -650,7 +649,7 @@
             "bp": "145/85",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr. Die rechte Brustkorbhälfte hebt sich etwas besser.",
+              "bodycheck": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr. Die rechte Brustkorbhälfte hebt sich etwas besser.",
               "speech": "Spricht in ganzen Sätzen, noch etwas kurzatmig.",
               "skin": "Blass, leicht schweißig"
             }
@@ -667,7 +666,7 @@
             "bp": "145/90",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
+              "bodycheck": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
               "speech": "Spricht in kurzen Sätzen, weiter deutlich angestrengt."
             }
           },
@@ -690,7 +689,7 @@
             "bp": "140/85",
             "pain": 4,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil entlüftet regelrecht. Die rechte Brustkorbhälfte hebt sich etwas besser.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil entlüftet regelrecht. Die rechte Brustkorbhälfte hebt sich etwas besser.",
               "speech": "Spricht in ganzen Sätzen, beruhigt sich etwas.",
               "skin": "Blass, trocken"
             }
@@ -742,7 +741,7 @@
             "gcs": 15,
             "pain": 6,
             "exam": {
-              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
+              "bodycheck": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet beim Ausatmen, kein Schlürfen mehr.",
               "skin": "Blass, Lippen noch leicht bläulich",
               "speech": "Spricht in kurzen Sätzen, weiter angestrengt."
             }
@@ -791,7 +790,7 @@
             "gcs": 10,
             "followsCommands": false,
             "exam": {
-              "chest": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet regelrecht.",
+              "bodycheck": "Chest Seal an der rechten Brustwand sitzt dicht, das Ventil entlüftet regelrecht.",
               "breathing": "Unter Beutel-Masken-Beatmung heben sich beide Brustkorbhälften.",
               "skin": "Zyanose rückläufig, blass"
             }
@@ -925,16 +924,14 @@
           "head": "Ca. 5 cm lange klaffende Platzwunde rechts parietal, stark sickernd blutend, kein spritzendes Gefäß, Haare blutverklebt. Kein tastbarer Knochenversatz.",
           "pupils": "Isokor, mittelweit, beidseits prompt lichtreagibel.",
           "neuro": "Wach, zu Person, Ort und Zeit orientiert, bewegt alle Extremitäten seitengleich, leichte Kopfschmerzen.",
-          "spine": "Kein eindeutiger Druckschmerz der Halswirbelsäule, Kopfanprall bei Umsturz, Untersuchung durch Schmerz im Bein eingeschränkt.",
-          "leg": "Rechtes Bein verkürzt und außenrotiert, starker Leistenschmerz rechts, Bewegung schmerzbedingt unmöglich. Fußpulse beidseits tastbar, Sensibilität erhalten.",
+          "bodycheck": "Kein eindeutiger Druckschmerz der Halswirbelsäule, Kopfanprall bei Umsturz, Untersuchung durch Schmerz im Bein eingeschränkt.; Rechtes Bein verkürzt und außenrotiert, starker Leistenschmerz rechts, Bewegung schmerzbedingt unmöglich. Fußpulse beidseits tastbar, Sensibilität erhalten.; Platzwunde am Kopf, Fehlstellung des rechten Beins, kleine Hämatome an beiden Unterarmen, sonst keine weiteren Verletzungen.",
           "pelvis": "Becken stabil, Druckschmerz an der rechten Hüfte und Leiste.",
           "abdomen": "Bauch weich, kein Druckschmerz.",
-          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
-          "body": "Platzwunde am Kopf, Fehlstellung des rechten Beins, kleine Hämatome an beiden Unterarmen, sonst keine weiteren Verletzungen.",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
           "ecg": "Vorhofflimmern",
-          "glucose": "112 mg/dl",
-          "temperature": "36,1 °C"
-        }
+          "glucose": "112 mg/dl"
+        },
+        "temp": 36.1
       },
       "start": "1",
       "phases": {
@@ -1341,10 +1338,8 @@
         "lethalInjury": false,
         "pain": 7,
         "exam": {
-          "Unterschenkel rechts": "Offene Fraktur mit Achsfehlstellung, Knochenfragment in der Wunde sichtbar, gleichmäßig sickernde, nicht spritzende Blutung, Hose blutdurchtränkt",
-          "DMS rechter Fuß": "Fußpulse schwach tastbar, Sensibilität erhalten, Motorik schmerzbedingt eingeschränkt",
+          "bodycheck": "Offene Fraktur mit Achsfehlstellung, Knochenfragment in der Wunde sichtbar, gleichmäßig sickernde, nicht spritzende Blutung, Hose blutdurchtränkt; Fußpulse schwach tastbar, Sensibilität erhalten, Motorik schmerzbedingt eingeschränkt; Prellmarke an der linken Schulter, sonst keine weiteren Verletzungen, Becken stabil, Abdomen weich",
           "Haut": "leicht blass, Hände etwas kühl",
-          "Bodycheck": "Prellmarke an der linken Schulter, sonst keine weiteren Verletzungen, Becken stabil, Abdomen weich",
           "ecg": "Sinusrhythmus"
         }
       },
@@ -1411,8 +1406,7 @@
             "recap": 2,
             "pain": 5,
             "exam": {
-              "Unterschenkel rechts": "Blutung versorgt, Verband nicht durchgeblutet, Bein geschient",
-              "DMS rechter Fuß": "Fußpulse tastbar, Sensibilität erhalten"
+              "bodycheck": "Blutung versorgt, Verband nicht durchgeblutet, Bein geschient; Fußpulse tastbar, Sensibilität erhalten"
             }
           },
           "rules": [
@@ -1436,7 +1430,7 @@
             "recap": 3,
             "pain": 8,
             "exam": {
-              "Unterschenkel rechts": "Blutung versorgt, Bein nicht ruhiggestellt, Fragmente verschieben sich bei Bewegung, Verband blutet leicht durch",
+              "bodycheck": "Blutung versorgt, Bein nicht ruhiggestellt, Fragmente verschieben sich bei Bewegung, Verband blutet leicht durch",
               "Haut": "blass, kühl"
             }
           },
@@ -1469,7 +1463,7 @@
             "gcs": 14,
             "pain": 8,
             "exam": {
-              "Unterschenkel rechts": "Anhaltend sickernde Blutung, Blutlache deutlich größer, geschätzt etwa 1 Liter",
+              "bodycheck": "Anhaltend sickernde Blutung, Blutlache deutlich größer, geschätzt etwa 1 Liter",
               "Haut": "blass, kaltschweißig",
               "Bewusstsein": "etwas verlangsamt, antwortet nur knapp"
             }
@@ -1533,7 +1527,7 @@
             "recap": 2,
             "pain": 3,
             "exam": {
-              "Unterschenkel rechts": "Blutung versorgt, Bein geschient, DMS erhalten",
+              "bodycheck": "Blutung versorgt, Bein geschient, DMS erhalten",
               "Haut": "rosig, warm"
             }
           },
@@ -1567,7 +1561,7 @@
             "recap": 3,
             "pain": 8,
             "exam": {
-              "Unterschenkel rechts": "Bein weiter nicht ruhiggestellt, Verband durchgeblutet, Fehlstellung unverändert",
+              "bodycheck": "Bein weiter nicht ruhiggestellt, Verband durchgeblutet, Fehlstellung unverändert",
               "Haut": "blass, kühl, leicht schweißig"
             }
           },
@@ -1597,7 +1591,7 @@
             "recap": 2,
             "pain": 5,
             "exam": {
-              "Unterschenkel rechts": "Bein geschient, Verband hält, DMS erhalten"
+              "bodycheck": "Bein geschient, Verband hält, DMS erhalten"
             }
           },
           "rules": [
@@ -1620,7 +1614,7 @@
             "gcs": 15,
             "pain": 5,
             "exam": {
-              "Unterschenkel rechts": "Blutung gestillt, Bein ruhiggestellt",
+              "bodycheck": "Blutung gestillt, Bein ruhiggestellt",
               "Haut": "noch blass und kühl"
             }
           },
@@ -1646,7 +1640,7 @@
             "gcs": 14,
             "pain": 9,
             "exam": {
-              "Unterschenkel rechts": "Blutung weitgehend gestillt, Bein nicht ruhiggestellt, starke Bewegungsschmerzen",
+              "bodycheck": "Blutung weitgehend gestillt, Bein nicht ruhiggestellt, starke Bewegungsschmerzen",
               "Haut": "blass, kaltschweißig"
             }
           },
@@ -1680,7 +1674,7 @@
             "gcs": 12,
             "pain": 8,
             "exam": {
-              "Unterschenkel rechts": "Weiter sickernde Blutung, große Blutlache, geschätzt 1,5 bis 2 Liter",
+              "bodycheck": "Weiter sickernde Blutung, große Blutlache, geschätzt 1,5 bis 2 Liter",
               "Haut": "grau-blass, kaltschweißig, marmoriert",
               "Bewusstsein": "verwirrt, unruhig, fragt immer wieder, wo er ist"
             }
@@ -1773,7 +1767,7 @@
             "gcs": 14,
             "pain": 9,
             "exam": {
-              "Unterschenkel rechts": "Bein nicht ruhiggestellt, Verband durchgeblutet",
+              "bodycheck": "Bein nicht ruhiggestellt, Verband durchgeblutet",
               "Haut": "blass, kaltschweißig"
             }
           },
@@ -1814,7 +1808,7 @@
             "gcs": 14,
             "pain": 8,
             "exam": {
-              "Unterschenkel rechts": "Blutung gestillt, Bein noch nicht ruhiggestellt",
+              "bodycheck": "Blutung gestillt, Bein noch nicht ruhiggestellt",
               "Haut": "blass, kühl"
             }
           },
@@ -1886,9 +1880,7 @@
             "gcs": 11,
             "followsCommands": true,
             "pain": 7,
-            "exam": {
-              "Zustand": "kritisch, braucht sofortigen Transport mit Notarzt in ein Traumazentrum"
-            }
+            "exam": {}
           },
           "rules": [],
           "dead": false
@@ -1994,8 +1986,8 @@
           "ecg": "STEMI (ST-Hebung)",
           "glucose": "245 mg/dl",
           "hands": "Oberflächliche Schürfwunden an beiden Handflächen, kaum blutend",
-          "thorax": "Keine Gurtmarke, Thorax stabil, kein Druckschmerz, Schmerz lässt sich durch Druck nicht auslösen",
-          "lung": "Vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche",
+          "bodycheck": "Keine Gurtmarke, Thorax stabil, kein Druckschmerz, Schmerz lässt sich durch Druck nicht auslösen",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche",
           "skin": "Leicht blass, feuchte Stirn",
           "pupils": "Isokor, prompt lichtreagibel"
         }
@@ -2122,7 +2114,7 @@
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
               "skin": "Blass-grau, kaltschweißig",
-              "lung": "Feinblasige Rasselgeräusche basal beidseits"
+              "auscultation": "Feinblasige Rasselgeräusche basal beidseits"
             }
           },
           "rules": [
@@ -2152,7 +2144,7 @@
             "exam": {
               "ecg": "Kammertachykardie",
               "skin": "Grau, marmoriert, kaltschweißig",
-              "lung": "Rasselgeräusche beidseits"
+              "auscultation": "Rasselgeräusche beidseits"
             }
           },
           "rules": [],
@@ -2701,11 +2693,11 @@
           "skin": "Gesicht gerötet, leicht verschwitzt, warm.",
           "bodycheck": "Gurtmarke über dem Unterbauch, Prellmarke links an der Schulter durch den Schultergurt. Druckschmerz an den unteren linken Rippen. Keine äußeren Blutungen, Extremitäten frei beweglich.",
           "pelvis": "Becken stabil, kein Druckschmerz.",
-          "lungs": "Beidseits vesikuläres Atemgeräusch, keine Nebengeräusche.",
+          "auscultation": "Beidseits vesikuläres Atemgeräusch, keine Nebengeräusche.",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
-          "ecg": "Sinustachykardie",
-          "temp": "36,8 °C"
-        }
+          "ecg": "Sinustachykardie"
+        },
+        "temp": 36.8
       },
       "start": "1",
       "phases": {
@@ -3088,7 +3080,7 @@
           "pupils": "Beidseits maximal weit, lichtstarr",
           "airway": "Nach Esmarch-Handgriff und Absaugen keine Spontanatmung",
           "pulse": "Kein Karotis- und kein Radialispuls tastbar",
-          "body": "Becken und Beine unter schwerer Last eingeklemmt, nicht zugänglich",
+          "bodycheck": "Becken und Beine unter schwerer Last eingeklemmt, nicht zugänglich",
           "skin": "Grau-blass, kühl, zyanotisch"
         }
       },

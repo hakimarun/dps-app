@@ -290,7 +290,7 @@
         "lethalInjury": false,
         "pain": 8,
         "exam": {
-          "chest": "Streifenförmige Prellmarke über der rechten Thoraxhälfte. Rechts Druckschmerz und Krepitation über mehreren Rippen, die rechte Thoraxhälfte bewegt sich kaum mit.",
+          "bodycheck": "Streifenförmige Prellmarke über der rechten Thoraxhälfte. Rechts Druckschmerz und Krepitation über mehreren Rippen, die rechte Thoraxhälfte bewegt sich kaum mit.; Schürfwunden an beiden Unterarmen, keine weiteren Verletzungen. Wirbelsäule ohne Klopfschmerz.",
           "auscultation": "Rechts kein Atemgeräusch, links vesikuläres Atemgeräusch. Wegen der lauten Musik ist der Befund nur bei gezieltem Seitenvergleich zu erkennen.",
           "percussion": "Rechts hypersonorer Klopfschall.",
           "neck": "Halsvenen gestaut und zunehmend prall, Trachea noch mittelständig.",
@@ -299,10 +299,9 @@
           "pupils": "Isokor, prompt lichtreagibel.",
           "abdomen": "Weich, kein Druckschmerz, keine Prellmarken.",
           "pelvis": "Stabil, kein Kompressionsschmerz.",
-          "bodycheck": "Schürfwunden an beiden Unterarmen, keine weiteren Verletzungen. Wirbelsäule ohne Klopfschmerz.",
-          "temperature": "36,9 °C",
           "smell": "Deutlicher Alkoholgeruch."
-        }
+        },
+        "temp": 36.9
       },
       "start": "1",
       "phases": {
@@ -329,7 +328,7 @@
             "recap": 2,
             "pain": 8,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt, beim Einstechen ist Luft zischend entwichen. Rechts weiterhin Krepitation und Druckschmerz, die Thoraxhälfte bewegt sich wieder etwas mit.",
+              "bodycheck": "Punktionskanüle rechts liegt, beim Einstechen ist Luft zischend entwichen. Rechts weiterhin Krepitation und Druckschmerz, die Thoraxhälfte bewegt sich wieder etwas mit.",
               "auscultation": "Rechts deutlich abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht mehr gestaut.",
               "skin": "Blass, Zyanose rückläufig.",
@@ -368,7 +367,7 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "chest": "Rechte Thoraxhälfte gebläht, keine Atemexkursion. Schnappatmung.",
+              "bodycheck": "Rechte Thoraxhälfte gebläht, keine Atemexkursion. Schnappatmung.",
               "neck": "Halsvenen maximal gestaut, Trachea nach links verlagert.",
               "skin": "Zentrale Zyanose, kaltschweißig, marmoriert.",
               "pupils": "Mittelweit, träge lichtreagibel.",
@@ -397,7 +396,7 @@
             "gcs": 15,
             "pain": 4,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt. Er atmet unter Analgesie tiefer, die rechte Thoraxhälfte bewegt sich mit.",
+              "bodycheck": "Punktionskanüle rechts liegt. Er atmet unter Analgesie tiefer, die rechte Thoraxhälfte bewegt sich mit.",
               "auscultation": "Rechts abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht gestaut.",
               "skin": "Rosig, leicht schweißig.",
@@ -416,7 +415,7 @@
             "recap": 2,
             "pain": 8,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt. Schmerzbedingt flache Schonatmung, er hält sich die rechte Brustseite.",
+              "bodycheck": "Punktionskanüle rechts liegt. Schmerzbedingt flache Schonatmung, er hält sich die rechte Brustseite.",
               "auscultation": "Rechts abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht gestaut.",
               "skin": "Blass, keine Zyanose mehr.",
@@ -443,7 +442,7 @@
             "recap": 3,
             "pain": 9,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt. Schmerzbedingte flache Schonatmung.",
+              "bodycheck": "Punktionskanüle rechts liegt. Schmerzbedingte flache Schonatmung.",
               "auscultation": "Rechts abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht gestaut.",
               "skin": "Blass, leichte Lippenzyanose.",
@@ -472,7 +471,7 @@
             "gcs": 14,
             "pain": 9,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt. Erschöpfte, flache Atmung, Einsatz der Atemhilfsmuskulatur.",
+              "bodycheck": "Punktionskanüle rechts liegt. Erschöpfte, flache Atmung, Einsatz der Atemhilfsmuskulatur.",
               "auscultation": "Rechts abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht gestaut.",
               "skin": "Blass, Lippenzyanose.",
@@ -502,7 +501,7 @@
             "followsCommands": true,
             "pain": 7,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt, beim Einstechen ist Luft unter Druck zischend entwichen. Die rechte Thoraxhälfte bewegt sich wieder mit.",
+              "bodycheck": "Punktionskanüle rechts liegt, beim Einstechen ist Luft unter Druck zischend entwichen. Die rechte Thoraxhälfte bewegt sich wieder mit.",
               "auscultation": "Rechts deutlich abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen kaum noch gestaut, Trachea mittelständig.",
               "skin": "Blass, kaltschweißig, Zyanose rückläufig.",
@@ -535,7 +534,7 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "chest": "Rechte Thoraxhälfte gebläht, keine Atembewegung.",
+              "bodycheck": "Rechte Thoraxhälfte gebläht, keine Atembewegung.",
               "neck": "Halsvenen maximal gestaut, Trachea nach links verlagert.",
               "skin": "Zentrale Zyanose, marmoriert.",
               "pupils": "Weit, lichtstarr.",
@@ -555,7 +554,7 @@
             "gcs": 14,
             "pain": 7,
             "exam": {
-              "chest": "Punktionskanüle rechts liegt. Schmerzbedingt flache Atmung.",
+              "bodycheck": "Punktionskanüle rechts liegt. Schmerzbedingt flache Atmung.",
               "auscultation": "Rechts abgeschwächtes Atemgeräusch, links vesikulär.",
               "neck": "Halsvenen nicht gestaut.",
               "skin": "Blass, keine Zyanose mehr.",
@@ -674,12 +673,11 @@
           "abdomen": "weich, kein Druckschmerz",
           "bodycheck": "mehrere oberflächliche Schnittwunden an beiden Händen und Unterarmen, sonst keine weiteren relevanten Verletzungen",
           "pupils": "mittelweit, isokor, prompt lichtreagibel",
-          "lungs": "seitengleiches Atemgeräusch, Tachypnoe",
+          "auscultation": "seitengleiches Atemgeräusch, Tachypnoe",
           "ecg": "Sinustachykardie",
-          "spo2_note": "Pulsoxymetrie wegen Zentralisation wackelig, Signal schwankend",
-          "temp": "36,0 °C",
           "glucose": "104 mg/dl"
-        }
+        },
+        "temp": 36
       },
       "start": "1",
       "phases": {
@@ -1017,11 +1015,11 @@
           "pupils": "mittelweit, isokor, prompt lichtreagibel",
           "neuro": "verwaschene Sprache, zeitlich nicht orientiert, Stand- und Gangunsicherheit, keine Halbseitensymptomatik",
           "breath": "deutlicher Alkoholgeruch",
-          "lung": "vesikuläres Atemgeräusch beidseits",
+          "auscultation": "vesikuläres Atemgeräusch beidseits",
           "bodycheck": "Schürfwunde am rechten Handrücken, sonst keine Verletzungen; Insulinpen in der Hosentasche, Diabetikerausweis im Portemonnaie",
-          "ecg": "Sinustachykardie",
-          "temperature": "36,4 °C"
-        }
+          "ecg": "Sinustachykardie"
+        },
+        "temp": 36.4
       },
       "start": "1",
       "phases": {
@@ -1148,7 +1146,7 @@
               "glucose": "22 mg/dl",
               "neuro": "tief bewusstlos, keine Reaktion auf Schmerzreiz, erneut kurze Krampfanfälle",
               "airway": "gurgelnde, schnarchende Atmung, Erbrochenes im Mund",
-              "lung": "grobblasige Rasselgeräusche rechts basal",
+              "auscultation": "grobblasige Rasselgeräusche rechts basal",
               "pupils": "weit, isokor, träge lichtreagibel"
             }
           },
@@ -1177,7 +1175,7 @@
             "exam": {
               "glucose": "135 mg/dl",
               "neuro": "somnolent, öffnet die Augen auf Ansprache, unverständliche Worte, keine Krampfaktivität",
-              "lung": "feinblasige Rasselgeräusche rechts basal",
+              "auscultation": "feinblasige Rasselgeräusche rechts basal",
               "airway": "Atemweg frei nach Absaugen"
             }
           },
@@ -1329,15 +1327,14 @@
         "pain": 6,
         "exam": {
           "abdomen": "Quer verlaufende Prellmarke im Oberbauch (Abdruck einer Gitterstrebe), deutlicher Druckschmerz im linken Oberbauch mit beginnender Abwehrspannung, Bauch noch weich.",
-          "shoulder": "Schmerzen in der linken Schulter ohne äußere Verletzung, Schulter frei beweglich, kein Druckschmerz über Schlüsselbein oder Schultergelenk.",
-          "lungs": "Beidseits seitengleich belüftet, keine Rasselgeräusche, Atmung schmerzbedingt etwas flach.",
+          "bodycheck": "Schmerzen in der linken Schulter ohne äußere Verletzung, Schulter frei beweglich, kein Druckschmerz über Schlüsselbein oder Schultergelenk.; Prellmarke quer über dem Oberbauch, druckschmerzhafte untere Rippen links ohne Instabilität, oberflächliche Schnittwunden an beiden Handflächen durch Glasscherben, sonst keine Verletzungen. Kein Hinweis auf Kopf- oder Wirbelsäulenverletzung.",
+          "auscultation": "Beidseits seitengleich belüftet, keine Rasselgeräusche, Atmung schmerzbedingt etwas flach.",
           "pelvis": "Becken stabil, kein Kompressions- oder Druckschmerz.",
           "pupils": "Beidseits mittelweit, isokor, prompte Lichtreaktion.",
-          "body_check": "Prellmarke quer über dem Oberbauch, druckschmerzhafte untere Rippen links ohne Instabilität, oberflächliche Schnittwunden an beiden Handflächen durch Glasscherben, sonst keine Verletzungen. Kein Hinweis auf Kopf- oder Wirbelsäulenverletzung.",
           "skin": "Leicht blass, warm, trocken.",
-          "temperature": "36,6 °C",
           "breath": "Leichter Alkoholgeruch."
-        }
+        },
+        "temp": 36.6
       },
       "start": "1",
       "phases": {
@@ -1638,14 +1635,14 @@
         "exam": {
           "pelvis": "Bei vorsichtiger einmaliger Kompression stark schmerzhaft mit federnder Instabilität. Das rechte Bein ist außenrotiert und leicht verkürzt. Prellmarke über dem rechten Beckenkamm.",
           "abdomen": "Weich, Druckschmerz im Unterbauch und in der rechten Leiste, keine Abwehrspannung. Beginnendes Hämatom an der rechten Leiste.",
-          "lungs": "Beidseits vesikuläres Atemgeräusch, seitengleich belüftet.",
+          "auscultation": "Beidseits vesikuläres Atemgeräusch, seitengleich belüftet.",
           "pupils": "Isokor, mittelweit, Lichtreaktion prompt.",
-          "body_check": "Schürfwunden an Händen und Unterarmen, Schuhabdrücke auf der Kleidung an Hüfte und Oberschenkeln. Hämatom am Damm in Entwicklung. Halswirbelsäule und Brustkorb ohne Druckschmerz, Thorax stabil. Keine äußere Blutung. Durchblutung, Motorik und Sensibilität der Füße erhalten, Motorik schmerzbedingt eingeschränkt.",
+          "bodycheck": "Schürfwunden an Händen und Unterarmen, Schuhabdrücke auf der Kleidung an Hüfte und Oberschenkeln. Hämatom am Damm in Entwicklung. Halswirbelsäule und Brustkorb ohne Druckschmerz, Thorax stabil. Keine äußere Blutung. Durchblutung, Motorik und Sensibilität der Füße erhalten, Motorik schmerzbedingt eingeschränkt.",
           "skin": "Etwas blass, warm und trocken.",
           "ecg": "Sinusrhythmus, 78/min",
-          "glucose": "118 mg/dl",
-          "temperature": "36,4 °C"
-        }
+          "glucose": "118 mg/dl"
+        },
+        "temp": 36.4
       },
       "start": "1",
       "phases": {
@@ -2140,18 +2137,18 @@
         "pain": 3,
         "exam": {
           "Atmung": "schnell und flach, spricht in kurzen Sätzen, keine Einziehungen, kein Stridor",
-          "Lunge": "vesikuläres Atemgeräusch beidseits, seitengleich belüftet, keine Rasselgeräusche",
+          "auscultation": "vesikuläres Atemgeräusch beidseits, seitengleich belüftet, keine Rasselgeräusche",
           "Hände": "Kribbeln in beiden Händen, Pfötchenstellung beidseits, periorales Kribbeln",
           "Haut": "oberflächliche Schürfwunden an beiden Unterarmen, leicht sickernd, keine Fremdkörper sichtbar",
-          "Bodycheck": "Thorax stabil, kein Kompressionsschmerz, keine Prellmarken; keine weiteren Verletzungen",
-          "Becken": "stabil, kein Druckschmerz",
-          "Abdomen": "weich, kein Druckschmerz",
-          "Pupillen": "mittelweit, isokor, prompte Lichtreaktion",
+          "bodycheck": "Thorax stabil, kein Kompressionsschmerz, keine Prellmarken; keine weiteren Verletzungen",
+          "pelvis": "stabil, kein Druckschmerz",
+          "abdomen": "weich, kein Druckschmerz",
+          "pupils": "mittelweit, isokor, prompte Lichtreaktion",
           "ecg": "Sinustachykardie",
           "glucose": "96 mg/dl",
-          "Temperatur": "36,9 °C",
           "Verhalten": "panisch, weint, schaut sich hektisch nach der Mutter um, will weglaufen"
-        }
+        },
+        "temp": 36.9
       },
       "start": "1",
       "phases": {
@@ -2379,16 +2376,16 @@
         "pain": 4,
         "exam": {
           "head": "ca. 3 cm lange Platzwunde am Hinterkopf rechts, sickernde Blutung, tastbare Schwellung rechts temporo-parietal",
-          "wrist": "rechtes Handgelenk geschwollen, Druckschmerz über dem Speichenende, keine Fehlstellung, Durchblutung, Motorik und Sensibilität intakt",
+          "bodycheck": "rechtes Handgelenk geschwollen, Druckschmerz über dem Speichenende, keine Fehlstellung, Durchblutung, Motorik und Sensibilität intakt",
           "pupils": "isokor, mittelweit, prompt lichtreagibel",
           "neuro": "lallende Sprache, Gangunsicherheit, zur Person orientiert, zeitlich unsicher, kurze Bewusstlosigkeit nur auf Nachfrage, Kraft seitengleich",
           "odor": "starker Alkoholgeruch",
-          "lungs": "vesikuläres Atemgeräusch beidseits",
+          "auscultation": "vesikuläres Atemgeräusch beidseits",
           "abdomen": "weich, kein Druckschmerz",
           "pelvis": "stabil, kein Druckschmerz",
-          "glucose": "108 mg/dl",
-          "temp": "36.9 °C"
-        }
+          "glucose": "108 mg/dl"
+        },
+        "temp": 36.9
       },
       "start": "1",
       "phases": {
@@ -2495,7 +2492,7 @@
               "pupils": "rechts weit und lichtstarr, links eng und reagibel",
               "neuro": "öffnet die Augen nicht, unverständliche Laute, ungezielte Abwehr",
               "airway": "gurgelnde Atmung, Erbrochenes in Mund und Rachen",
-              "lungs": "grobblasige Rasselgeräusche rechts basal"
+              "auscultation": "grobblasige Rasselgeräusche rechts basal"
             }
           },
           "rules": [
@@ -2592,8 +2589,7 @@
             "pain": 3,
             "exam": {
               "pupils": "Anisokorie: rechts weiter als links, rechts träge lichtreagibel",
-              "neuro": "schläfrig, öffnet die Augen auf Ansprache, Kraft der linken Hand vermindert",
-              "transport": "frühzeitig als Kategorie I nachgesichtet und mit Voranmeldung zur Neurochirurgie abtransportiert, Prognose gut"
+              "neuro": "schläfrig, öffnet die Augen auf Ansprache, Kraft der linken Hand vermindert"
             }
           },
           "rules": [],
@@ -2610,8 +2606,7 @@
             "followsCommands": false,
             "pain": 2,
             "exam": {
-              "pupils": "rechts weit und lichtstarr, links eng und reagibel",
-              "transport": "mit gesichertem Atemweg und Voranmeldung zur Neurochirurgie abtransportiert, Prognose ernst"
+              "pupils": "rechts weit und lichtstarr, links eng und reagibel"
             }
           },
           "rules": [],
@@ -2629,8 +2624,7 @@
             "pain": 0,
             "exam": {
               "pupils": "rechts weit und lichtstarr, links eng",
-              "airway": "intubiert, kontrolliert beatmet, etCO2 36 mmHg",
-              "transport": "intubiert und beatmet mit Voranmeldung zur Neurochirurgie abtransportiert, Prognose ernst"
+              "airway": "intubiert, kontrolliert beatmet, etCO2 36 mmHg"
             }
           },
           "rules": [],
@@ -2697,8 +2691,7 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "pupils": "beidseits weit und lichtstarr",
-              "transport": "beatmet mit Einklemmungszeichen zur Neurochirurgie abtransportiert, Prognose infaust"
+              "pupils": "beidseits weit und lichtstarr"
             }
           },
           "rules": [],
@@ -2775,13 +2768,12 @@
         "exam": {
           "airway": "Nach Esmarch-Handgriff Atemweg frei, etwas blutiger Schaum im Mund, keine Spontanatmung, keine Schnappatmung",
           "face": "Gesicht, Hals und oberer Thorax livide-zyanotisch, scharf abgegrenzt; massenhaft Petechien an Gesicht, Hals, Lidern und Mundschleimhaut; subkonjunktivale Einblutungen beidseits",
-          "thorax": "Thorax massiv eingedrückt, beidseits instabile Brustwand mit Krepitation über mehreren Rippenserien, keine Atemexkursion",
+          "bodycheck": "Thorax massiv eingedrückt, beidseits instabile Brustwand mit Krepitation über mehreren Rippenserien, keine Atemexkursion; Schürfwunden an Armen und Händen, Glassplitter in der Kleidung, keine aktive Blutung",
           "auscultation": "Beidseits kein Atemgeräusch, keine Herztöne",
           "pulse": "Kein Karotispuls, kein Radialispuls tastbar",
           "pupils": "Beidseits weit und lichtstarr",
           "ecg": "Asystolie",
-          "skin": "Haut am Körperstamm unterhalb der Kompressionszone blass, Extremitäten noch warm",
-          "bodycheck": "Schürfwunden an Armen und Händen, Glassplitter in der Kleidung, keine aktive Blutung"
+          "skin": "Haut am Körperstamm unterhalb der Kompressionszone blass, Extremitäten noch warm"
         }
       },
       "start": "1",

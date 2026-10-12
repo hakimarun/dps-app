@@ -38,6 +38,32 @@ export type GenPatient = z.infer<typeof GenPatient>;
 
 const kv = (list: { key: string; value: string }[] | undefined) => Object.fromEntries((list ?? []).map((e) => [e.key, e.value]));
 
+// Untersuchungsbefunde nur unter den Schlüsseln, die eine Maßnahme aufdeckt; sonst stünden sie ohne Untersuchung offen da
+// und "Lunge abhören" zeigte nichts. Modelle erfinden gern eigene Schlüssel (lung, Lunge, chest, Becken …).
+const EXAM_ALIAS: Record<string, string> = {
+  lung: "auscultation", lungs: "auscultation", lunge: "auscultation", auskultation: "auscultation", perkussion: "percussion",
+  pupil: "pupils", pupillen: "pupils", becken: "pelvis", bauch: "abdomen", ekg: "ecg", monitor: "ecg", blutzucker: "glucose", bz: "glucose", co: "spco",
+  body: "bodycheck", body_check: "bodycheck", injuries: "bodycheck", chest: "bodycheck", thorax: "bodycheck", spine: "bodycheck", leg: "bodycheck",
+  wrist: "bodycheck", shoulder: "bodycheck", "unterschenkel rechts": "bodycheck", "dms rechter fuß": "bodycheck",
+};
+// Messnotizen, die schon ein Messwert abbildet, und Hinweise, die die Lösung verraten
+const EXAM_DROP = new Set(["pulse_oximetry", "pulse_oximetry_note", "spo2_note", "spo2_hinweis", "zustand", "transport"]);
+const TEMP = new Set(["temp", "temperature", "temperatur"]);
+const EXAM_KEYS = new Set(["auscultation", "percussion", "pupils", "pelvis", "abdomen", "burn", "airway", "bodycheck", "glucose", "ecg", "spco", "befast", "death", "motor"]);
+export function tidyExam<F extends { exam?: Record<string, string>; temp?: number }>(f: F): F {
+  if (!f.exam) return f;
+  const exam: Record<string, string> = {};
+  let temp = f.temp;
+  for (const [key, value] of Object.entries(f.exam)) {
+    const k = key.trim().toLowerCase();
+    if (EXAM_DROP.has(k)) continue;
+    if (TEMP.has(k)) { temp ??= Number(value.replace(",", ".").match(/\d+(\.\d+)?/)?.[0]) || undefined; continue; } // wird erst mit "Temperatur messen" sichtbar
+    const to = EXAM_ALIAS[k] ?? (EXAM_KEYS.has(k) ? k : key);
+    exam[to] = exam[to] ? `${exam[to]}; ${value}` : value;
+  }
+  return { ...f, exam, ...(temp !== undefined ? { temp } : {}) };
+}
+
 // Kleine Modelle benennen Phasen frei ("2-schock") und verweisen dann ungenau ("2-versorgt"):
 // Phasen fortlaufend nummerieren und Verweise exakt oder über die führende Zahl zuordnen.
 // Was sich gar nicht zuordnen lässt, fällt weg (Regel ohne Ziel, Phase endet dort), statt den ganzen Fall scheitern zu lassen.
@@ -79,10 +105,10 @@ export function toPatient(g: GenPatient, id: string): unknown {
     profile: { temperament: g.temperament, pitfall: g.pitfall, anamnesis: Object.fromEntries(g.anamnesis.map((a) => [a.topic, a.answer])), sources: g.sources },
     meta: { category: g.category, tags: g.tags, difficulty: g.difficulty },
     scoring: { critical: g.critical, harmful: g.harmful },
-    base: { ...g.base, exam: kv(g.base.exam) },
+    base: tidyExam({ ...g.base, exam: kv(g.base.exam) }),
     start: g.start,
     phases: Object.fromEntries(
-      g.phases.map((p) => [p.id, { findings: { ...p.findings, ...(p.findings.exam ? { exam: kv(p.findings.exam) } : {}) }, rules: p.rules, else: p.else, dead: p.dead }]),
+      g.phases.map(({ findings: { exam, ...rest }, ...p }) => [p.id, { findings: tidyExam({ ...rest, ...(exam ? { exam: kv(exam) } : {}) }), rules: p.rules, else: p.else, dead: p.dead }]),
     ),
   };
 }
@@ -137,6 +163,7 @@ export async function generate(ai: Ai, brief: string, actions: Record<string, Ac
     "Du erstellst einen Übungspatienten für eine Simulation von Großschadenslagen (MANV) im deutschen Rettungsdienst.",
     "Der Patient läuft in Phasen von 15 Minuten. Jede Phase hat Befunde (nur Änderungen gegenüber der Ausgangslage), Regeln (wenn Maßnahmen erledigt bzw. gerade laufen, dann Folgephase) und eine Folgephase 'else', wenn keine Regel greift. Unbehandelt soll sich ein kritischer Patient verschlechtern; mit den richtigen Maßnahmen stabilisieren. Ohne 'else' und Regeln ist eine Phase ein Endzustand. Tote Phasen: dead=true, keine Atmung, Puls 0.",
     "Vitalwerte: rr = Atemzüge pro Minute (normal 12–20, kritisch unter 10 oder über 30, nie über 60), hr = Herzschläge pro Minute (0–200), spo2 in Prozent (50–100), gcs 3–15, recap = Rekapillarisierungszeit in Sekunden (1–6), pain 0–10.",
+    "Untersuchungsbefunde in exam nur unter diesen Schlüsseln, sie werden erst durch die passende Maßnahme sichtbar: auscultation (Lunge abhören), percussion, pupils, pelvis, abdomen, burn, airway, bodycheck (Verletzungen am Körper), glucose, ecg, spco (CO-Messung), befast (Schlaganfall-Test), death (Todeszeichen). Was man ohne Untersuchung sieht (Haut, Verhalten, Geruch), unter kurzen deutschen Schlüsseln; Körpertemperatur als Zahl im Feld temp.",
     "Ein EKG-Befund gehört in exam unter dem Schlüssel 'ecg'. Der Monitor kennt: Sinusrhythmus, Sinustachykardie, Sinusbradykardie, Vorhofflimmern, Vorhofflattern, AV-Block I, AV-Block II Typ Wenckebach, AV-Block II Typ Mobitz II, AV-Block III, Kammertachykardie, Kammerflimmern, STEMI (ST-Hebung), ST-Senkung, VES, Asystolie. Ohne Angabe gilt ein Sinusrhythmus passend zur Herzfrequenz; Blutzucker unter 'glucose' (z. B. \"45 mg/dl\"), sonst normal.",
     "Phasen-IDs sind fortlaufende Zahlen als Text: \"1\", \"2\", \"3\" … 'start', 'then' und 'else' nennen nur IDs, die es unter 'phases' gibt.",
     "Sichtung nach mSTaRT: gehfähig = III (Gehfähige werden gegen Rot-Kriterien nachgesichtet); tödliche Verletzung = EX; keine Atmung, AF unter 10 oder über 30, spritzende Blutung, kein Radialispuls oder befolgt keine Aufforderungen = I; sonst II.",

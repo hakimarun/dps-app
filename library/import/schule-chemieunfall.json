@@ -231,12 +231,12 @@
           "wound": "Ca. 6 cm lange, tiefe, klaffende Schnittwunde an der Innenseite des rechten Unterarms kurz oberhalb des Handgelenks. Hellrotes Blut spritzt pulsierend. Keine sichtbaren Glassplitter mehr in der Wunde.",
           "burn": "Rötung und einzelne kleine Brandblasen an Handinnenflächen und Fingern beidseits, oberflächlich, zusammen deutlich unter 5 % Körperoberfläche.",
           "skin": "Leicht blass, warm, trocken.",
-          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
           "eyes": "Augen leicht gerötet, sie gibt kurzes Brennen durch den Rauch an, kein Fremdkörper.",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion beidseits.",
-          "temp": "36,5 °C",
           "bodycheck": "Außer dem rechten Unterarm und den Händen keine weiteren Verletzungen."
-        }
+        },
+        "temp": 36.5
       },
       "start": "1",
       "phases": {
@@ -295,9 +295,9 @@
             "pain": 4,
             "exam": {
               "wound": "Verband sitzt, Blutung steht.",
-              "skin": "Rosig, warm, trocken.",
-              "temp": "36,4 °C"
-            }
+              "skin": "Rosig, warm, trocken."
+            },
+            "temp": 36.4
           },
           "rules": [],
           "dead": false
@@ -312,9 +312,9 @@
             "pain": 5,
             "exam": {
               "wound": "Verband sitzt, Blutung steht.",
-              "skin": "Blass, kühl, Kältezittern.",
-              "temp": "35,9 °C"
-            }
+              "skin": "Blass, kühl, Kältezittern."
+            },
+            "temp": 35.9
           },
           "rules": [
             {
@@ -400,9 +400,9 @@
             "pain": 5,
             "exam": {
               "wound": "Blutung steht.",
-              "skin": "Noch blass, aber trocken und wärmer.",
-              "temp": "36,2 °C"
-            }
+              "skin": "Noch blass, aber trocken und wärmer."
+            },
+            "temp": 36.2
           },
           "rules": [],
           "dead": false
@@ -419,9 +419,9 @@
             "pain": 6,
             "exam": {
               "wound": "Blutung steht.",
-              "skin": "Blass, kalt, ausgeprägtes Kältezittern.",
-              "temp": "35,6 °C"
-            }
+              "skin": "Blass, kalt, ausgeprägtes Kältezittern."
+            },
+            "temp": 35.6
           },
           "rules": [
             {
@@ -566,7 +566,6 @@
             "pain": 0,
             "exam": {
               "ecg": "Asystolie",
-              "pulse_oximetry": "Kein messbares Signal.",
               "skin": "Wachsbleich, kalt.",
               "pupils": "Weit, lichtstarr beidseits."
             }
@@ -655,13 +654,13 @@
           "burn": "Verbrennung 2. Grades an der Vorderseite beider Oberschenkel, zusammen ca. 8 % Körperoberfläche: Rötung, teils geplatzte Blasen, feuchter Wundgrund, stark schmerzhaft. Die Jeans ist angesengt, aber nicht mit der Haut verklebt. Gesicht, Hände und Genitalbereich sind nicht betroffen.",
           "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche.",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
-          "body_check": "Keine weiteren Verletzungen. Gesicht und Nasenhaare unversehrt, kein Ruß im Mund, keine Heiserkeit.",
+          "bodycheck": "Keine weiteren Verletzungen. Gesicht und Nasenhaare unversehrt, kein Ruß im Mund, keine Heiserkeit.",
           "abdomen": "Weich, kein Druckschmerz.",
           "pelvis": "Stabil, kein Schmerz.",
-          "temperature": "36,6 °C",
           "ecg": "Sinustachykardie",
           "glucose": "105 mg/dl"
-        }
+        },
+        "temp": 36.6
       },
       "start": "1",
       "phases": {
@@ -709,9 +708,9 @@
             "hr": 105,
             "pain": 5,
             "exam": {
-              "temperature": "36,1 °C",
               "skin": "Haut an den Beinen nass und kühl. Er fröstelt, Gänsehaut an den Armen, klagt: „Mir wird kalt.“"
-            }
+            },
+            "temp": 36.1
           },
           "rules": [
             {
@@ -739,9 +738,9 @@
             "recap": 3,
             "pain": 6,
             "exam": {
-              "temperature": "35,7 °C",
               "skin": "Er zittert deutlich am ganzen Körper, die Lippen sind leicht bläulich und die Haut ist kalt. Er jammert: „Mir ist so kalt, hört auf mit dem Wasser!“"
-            }
+            },
+            "temp": 35.7
           },
           "rules": [
             {
@@ -771,9 +770,9 @@
             "gcs": 14,
             "pain": 6,
             "exam": {
-              "temperature": "35,2 °C",
               "skin": "Er zittert stark, ist blass, die Lippen sind bläulich. Er wirkt matt und antwortet verlangsamt."
-            }
+            },
+            "temp": 35.2
           },
           "rules": [
             {
@@ -801,9 +800,9 @@
             "pain": 4,
             "exam": {
               "burn": "Brandwunden an beiden Oberschenkeln steril und locker abgedeckt, ca. 8 % KOF, 2. Grades.",
-              "temperature": "36,4 °C",
               "skin": "Unter der Rettungsdecke warm, kein Zittern."
-            }
+            },
+            "temp": 36.4
           },
           "rules": [
             {
@@ -823,9 +822,9 @@
             "pain": 3,
             "exam": {
               "burn": "Brandwunden an beiden Oberschenkeln steril und locker abgedeckt, ca. 8 % KOF, 2. Grades.",
-              "temperature": "36,5 °C",
               "skin": "Warm, kein Zittern. Er liegt ruhig und spricht gefasst: „Geht schon besser, danke.“"
-            }
+            },
+            "temp": 36.5
           },
           "rules": [],
           "dead": false
@@ -837,9 +836,9 @@
             "pain": 5,
             "exam": {
               "burn": "Brandwunden an beiden Oberschenkeln gekühlt, liegen offen, ca. 8 % KOF, 2. Grades. Etwas Schmutz vom Boden am Wundrand.",
-              "temperature": "36,3 °C",
               "skin": "Unter der Rettungsdecke warm, kein Zittern."
-            }
+            },
+            "temp": 36.3
           },
           "rules": [
             {
@@ -894,9 +893,9 @@
             "pain": 9,
             "exam": {
               "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF. Die Blasen werden größer und nässen, Schmutz vom Boden in den offenen Wunden.",
-              "temperature": "36,2 °C",
               "skin": "Er fröstelt auf dem kalten Boden, ist sehr unruhig und schreit vor Schmerzen."
-            }
+            },
+            "temp": 36.2
           },
           "rules": [
             {
@@ -944,9 +943,9 @@
             "pain": 9,
             "exam": {
               "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF, stark nässend und verschmutzt.",
-              "temperature": "35,7 °C",
               "skin": "Er zittert, ist blass und kaltschweißig und weint vor Schmerzen."
-            }
+            },
+            "temp": 35.7
           },
           "rules": [
             {
@@ -978,9 +977,9 @@
             "pain": 9,
             "exam": {
               "burn": "Verbrennung 2. Grades an beiden Oberschenkeln, ca. 8 % KOF, stark nässend und verschmutzt.",
-              "temperature": "35,3 °C",
               "skin": "Er zittert stark, ist blass, die Lippen sind leicht bläulich. Er wirkt erschöpft und antwortet verlangsamt."
-            }
+            },
+            "temp": 35.3
           },
           "rules": [
             {
@@ -1089,9 +1088,9 @@
           "eyes": "Bindehäute beidseits gerötet, Tränenfluss, Brennen",
           "skin": "Blass, kühl, nicht zyanotisch",
           "ecg": "Sinustachykardie",
-          "temp": "36,6 °C",
           "pupils": "Mittelweit, seitengleich, prompt lichtreagibel"
-        }
+        },
+        "temp": 36.6
       },
       "start": "1",
       "phases": {
@@ -1429,9 +1428,9 @@
           "pupils": "Mittelweit, isokor, prompt lichtreagibel",
           "hands": "Kribbeln in beiden Händen und um den Mund, beginnende Verkrampfung der Finger",
           "bodycheck": "Keine Verletzungen von Kopf bis Fuß",
-          "temperature": "36,7 °C",
           "glucose": "98 mg/dl"
-        }
+        },
+        "temp": 36.7
       },
       "start": "1",
       "phases": {
@@ -1640,7 +1639,7 @@
           "burn": "Linker Handrücken und Finger gleichmäßig gerötet, Haut trocken und intakt, keine Blasen, Rötung lässt sich wegdrücken, ca. 1 % KOF",
           "face": "Keine Rußspuren an Mund und Nase, Augenbrauen und Wimpern intakt, Stimme normal, kein Husten",
           "eyes": "Augen nicht gerötet, kein Tränen",
-          "lung": "Vesikuläres Atemgeräusch beidseits, keine Spastik, keine Rasselgeräusche",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Spastik, keine Rasselgeräusche",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion beidseits",
           "skin": "Übrige Haut rosig, warm, unverletzt"
         }
@@ -1852,10 +1851,10 @@
         "exam": {
           "eyes": "Beide Augen stark gerötet, starker Tränenfluss, kneift die Lider krampfhaft zusammen, sieht verschwommen",
           "pupils": "Isokor, mittelweit, prompt lichtreagibel, starke Lichtempfindlichkeit",
-          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Reizhusten",
-          "bodycheck": "Keine Verbrennungen, keine Wunden, Kleidung riecht stechend, Gesichtshaut leicht gerötet",
-          "temp": "36,6 °C"
-        }
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Reizhusten",
+          "bodycheck": "Keine Verbrennungen, keine Wunden, Kleidung riecht stechend, Gesichtshaut leicht gerötet"
+        },
+        "temp": 36.6
       },
       "start": "1",
       "phases": {
@@ -1888,7 +1887,7 @@
             "pain": 2,
             "exam": {
               "eyes": "Rötung deutlich rückläufig, nur noch leichtes Tränen, kann die Augen öffnen, sieht wieder fast klar",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, kein Giemen, nur noch gelegentliches Hüsteln"
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, kein Giemen, nur noch gelegentliches Hüsteln"
             }
           },
           "rules": [],
@@ -1900,7 +1899,7 @@
             "pain": 4,
             "exam": {
               "eyes": "Rötung etwas weniger, tränen noch, reibt sich aber weiterhin die Augen, sieht leicht verschwommen",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten etwas weniger"
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten etwas weniger"
             }
           },
           "rules": [
@@ -1923,7 +1922,7 @@
             "pain": 7,
             "exam": {
               "eyes": "Augen stark gerötet, Lider leicht geschwollen, krampfhafter Lidschluss, sieht nur noch Umrisse, reibt ständig",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten häufiger"
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten häufiger"
             }
           },
           "rules": [
@@ -1953,7 +1952,7 @@
             "pain": 4,
             "exam": {
               "eyes": "Augen noch gerötet, mäßiger Tränenfluss, kann die Augen kurz öffnen, sieht leicht verschwommen",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, gelegentlicher Reizhusten"
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, gelegentlicher Reizhusten"
             }
           },
           "rules": [],
@@ -1966,7 +1965,7 @@
             "pain": 5,
             "exam": {
               "eyes": "Augen gerötet, Lider leicht geschwollen, tränen stark, reibt weiter, sieht verschwommen",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten"
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, Reizhusten"
             }
           },
           "rules": [
@@ -1988,7 +1987,7 @@
             "pain": 8,
             "exam": {
               "eyes": "Lider deutlich geschwollen, Augen kaum zu öffnen, sieht nur hell und dunkel, weint und reibt ständig",
-              "lungs": "Vesikuläres Atemgeräusch, vereinzelt leises Giemen beidseits, quälender Reizhusten"
+              "auscultation": "Vesikuläres Atemgeräusch, vereinzelt leises Giemen beidseits, quälender Reizhusten"
             }
           },
           "rules": [
@@ -2011,7 +2010,7 @@
             "pain": 8,
             "exam": {
               "eyes": "Lider stark geschwollen, Augen nicht mehr zu öffnen, sieht nur noch hell und dunkel",
-              "lungs": "Leises Giemen beidseits, anhaltender quälender Reizhusten, klagt über Engegefühl in der Brust"
+              "auscultation": "Leises Giemen beidseits, anhaltender quälender Reizhusten, klagt über Engegefühl in der Brust"
             }
           },
           "rules": [],
@@ -2091,13 +2090,13 @@
         "pain": 2,
         "exam": {
           "wound": "Oberflächliche, ca. 1 cm lange Schnittwunde an der Kuppe des linken Zeigefingers, blutet kaum, kein Fremdkörper sichtbar.",
-          "lung": "Beidseits vesikuläres Atemgeräusch, kein Giemen, kein Husten.",
+          "auscultation": "Beidseits vesikuläres Atemgeräusch, kein Giemen, kein Husten.",
           "eyes": "Augen nicht gerötet, kein Tränenfluss, kein Brennen angegeben.",
           "pupils": "Isokor, mittelweit, prompt lichtreagibel.",
           "skin": "Blass, Hände kühl, keine Verbrennungen, keine Rötung im Gesicht.",
-          "temperature": "36,4 °C",
           "psyche": "Orientiert, antwortet aber verzögert und einsilbig, starrt vor sich hin, wirkt abwesend."
-        }
+        },
+        "temp": 36.4
       },
       "start": "1",
       "phases": {
@@ -2138,9 +2137,9 @@
             "pain": 1,
             "exam": {
               "skin": "Gesichtsfarbe rosiger, Hände wieder warm.",
-              "temperature": "36,6 °C",
               "psyche": "Spricht über das Erlebte, weint zwischendurch, lässt sich trösten, nimmt wieder Blickkontakt auf, fragt nach ihren Eltern."
-            }
+            },
+            "temp": 36.6
           },
           "rules": [],
           "dead": false
@@ -2150,9 +2149,9 @@
             "hr": 92,
             "exam": {
               "skin": "Blass, Hände kalt, zittert sichtbar.",
-              "temperature": "36,0 °C",
               "psyche": "Nimmt zögerlich Blickkontakt auf, erzählt leise vom Knall, sagt mehrfach: „Mir ist so kalt.“"
-            }
+            },
+            "temp": 36
           },
           "rules": [
             {
@@ -2171,9 +2170,9 @@
             "hr": 98,
             "exam": {
               "skin": "Blass, Hände etwas wärmer.",
-              "temperature": "36,4 °C",
               "psyche": "Hält die Decke fest, starrt weiter ins Leere, antwortet nur mit Nicken oder Kopfschütteln."
-            }
+            },
+            "temp": 36.4
           },
           "rules": [
             {
@@ -2193,9 +2192,9 @@
             "recap": 3,
             "exam": {
               "skin": "Blass, Hände und Lippen kühl, zittert.",
-              "temperature": "35,9 °C",
               "psyche": "Zieht sich weiter zurück, hat die Knie angezogen, antwortet kaum noch, nickt höchstens."
-            }
+            },
+            "temp": 35.9
           },
           "rules": [
             {
@@ -2231,9 +2230,9 @@
             "gcs": 14,
             "exam": {
               "skin": "Blass, Hände kalt, Lippen leicht bläulich, zittert stark.",
-              "temperature": "35,5 °C",
               "psyche": "Wirkt wie erstarrt, reagiert erst nach mehrfacher, lauter Ansprache, antwortet wortkarg und unsicher, folgt einfachen Aufforderungen aber noch."
-            }
+            },
+            "temp": 35.5
           },
           "rules": [
             {
@@ -2255,9 +2254,9 @@
             "gcs": 14,
             "exam": {
               "skin": "Blass, Hände kalt, Lippen bläulich, zittert stark.",
-              "temperature": "35,2 °C",
               "psyche": "Apathisch, starrt regungslos vor sich hin, spricht nicht mehr von sich aus, folgt Aufforderungen nur langsam."
-            }
+            },
+            "temp": 35.2
           },
           "rules": [
             {
@@ -2280,9 +2279,9 @@
             "gcs": 15,
             "exam": {
               "skin": "Noch blass, Hände langsam wärmer, zittert kaum noch.",
-              "temperature": "36,0 °C",
               "psyche": "Taut langsam auf, beginnt zu weinen und vom Erlebten zu erzählen, möchte, dass jemand bei ihr bleibt, fragt nach ihrer Freundin."
-            }
+            },
+            "temp": 36
           },
           "rules": [],
           "dead": false
@@ -2293,9 +2292,9 @@
             "recap": 3,
             "exam": {
               "skin": "Blass, Hände kalt, Lippen leicht bläulich, zittert stark.",
-              "temperature": "35,5 °C",
               "psyche": "Spricht leise mit dem Helfer, klappert mit den Zähnen und sagt: „Mir ist so kalt, ich will nach Hause.“"
-            }
+            },
+            "temp": 35.5
           },
           "rules": [
             {
@@ -2314,9 +2313,9 @@
             "gcs": 14,
             "exam": {
               "skin": "Blass, Hände nicht mehr kalt.",
-              "temperature": "36,2 °C",
               "psyche": "Sitzt eingewickelt und regungslos da, reagiert erst nach mehrfacher Ansprache, antwortet wortkarg und unsicher, wirkt völlig abwesend."
-            }
+            },
+            "temp": 36.2
           },
           "rules": [
             {

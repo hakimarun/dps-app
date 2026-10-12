@@ -2,14 +2,14 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { z } from "zod";
 import type { Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
 import { caseOf, control, createExercise, loadLibrary, stateAt, submit, submitAsk, viewFor } from "../src/exercise.ts";
 import { evaluate } from "../src/evaluation.ts";
 import { local, type Ai } from "../src/ai.ts";
-import { check, generate, generateFrame, toPatient, type GenPatient } from "../src/generator.ts";
+import { check, generate, generateFrame, tidyExam, toPatient, type GenPatient } from "../src/generator.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
 const MIN = 60000;
@@ -249,4 +249,31 @@ test("Bibliothek: jeder Fall besteht die Fallprüfung, jedes Szenario kennt sein
     for (const id of s.patients) assert.ok(lib.defs.patients[caseOf(lib.defs, id)], `${s.id}: Patient ${id} fehlt`);
     assert.ok(s.units.some((u) => u.arrivesAt === 0), `${s.id}: ein Fahrzeug ist von Anfang an da`);
   }
+});
+
+test("Bibliothek und Import-Dateien: jede genannte Maßnahme gibt es, ihr Material liegt auf einem Fahrzeug, Untersuchungen zeigen einen Befund", () => {
+  const dir = new URL("../../../library/import/", import.meta.url);
+  const imported = readdirSync(dir).flatMap((f) => (JSON.parse(readFileSync(new URL(f, dir), "utf8")) as { patients: unknown[] }).patients) as typeof all;
+  const all = Object.values(lib.defs.patients);
+  const stock = new Set(Object.values(lib.scenarios).flatMap((s) => s.units.flatMap((u) => Object.keys(u.inventory).filter((k) => u.inventory[k] > 0))));
+  for (const p of [...all, ...imported]) {
+    assert.deepEqual(check(p, lib.defs.actions).errors, [], p.id); // u. a. unbekannte Maßnahmen
+    const exams = new Set([p.base.exam, ...Object.values(p.phases).map((ph) => ph.findings.exam ?? {})].flatMap((e) => Object.keys(e ?? {})));
+    const needed = [...Object.values(p.phases).flatMap((ph) => ph.rules.flatMap((r) => [...r.when, ...r.active])), ...p.scoring.critical.flatMap((c) => c.actions)];
+    for (const a of new Set([...needed, ...p.scoring.harmful])) {
+      if (a === "handover") continue;
+      for (const m of Object.keys(lib.defs.actions[a].material)) assert.ok(stock.has(m), `${p.id}: ${a} braucht ${m}, das auf keinem Fahrzeug liegt`);
+    }
+    for (const a of new Set(needed)) {
+      const shows = (lib.defs.actions[a]?.reveals ?? []).filter((r) => r.startsWith("exam."));
+      if (shows.length) assert.ok(shows.some((r) => exams.has(r.slice(5))), `${p.id}: ${a} wird verlangt, zeigt aber keinen Befund`);
+    }
+    for (const e of [p.base, ...Object.values(p.phases).map((ph) => ph.findings)]) assert.deepEqual(tidyExam(e as never), e, `${p.id}: Befundschlüssel nicht vereinheitlicht`);
+  }
+});
+
+test("Befundschlüssel: Untersuchungen unter festen Schlüsseln, Temperatur als Messwert, Lösungshinweise fallen weg", () => {
+  assert.deepEqual(tidyExam({ exam: { Lunge: "Giemen", chest: "Prellmarke", thorax: "stabil", Haut: "blass", Zustand: "braucht Notarzt", temperature: "35,6 °C (Ohr)" } }), {
+    exam: { auscultation: "Giemen", bodycheck: "Prellmarke; stabil", Haut: "blass" }, temp: 35.6,
+  });
 });

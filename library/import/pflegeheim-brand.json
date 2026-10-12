@@ -251,18 +251,18 @@
         "pain": 4,
         "exam": {
           "airway": "Ruß an Nase, Mund und im Rachen, Nasenhaare versengt, heisere Stimme, beginnender inspiratorischer Stridor, Husten mit schwarzem Auswurf",
-          "lung": "Giemen beidseits, verlängerte Ausatmung, keine Seitendifferenz",
+          "auscultation": "Giemen beidseits, verlängerte Ausatmung, keine Seitendifferenz",
           "skin": "Gesicht rosig, Haut kühl und nass vom Regen, Kältezittern, keine relevanten Hautverbrennungen",
           "burn": "Keine flächigen Hautverbrennungen, nur Rußauflagerungen im Gesicht und versengte Nasenhaare",
           "pupils": "isokor, mittelweit, prompte Lichtreaktion",
           "neuro": "wach, leicht verwirrt und verlangsamt, klagt über Kopfschmerz und Übelkeit, bewegt alle Extremitäten",
-          "temp": "35,2 °C",
           "ecg": "Sinustachykardie",
           "glucose": "118 mg/dl",
           "abdomen": "weich, kein Druckschmerz",
           "pelvis": "stabil, kein Schmerz",
           "bodycheck": "Keine äußeren Verletzungen, nasse Kleidung und nasse Decke, kalte Füße"
-        }
+        },
+        "temp": 35.2
       },
       "start": "1",
       "phases": {
@@ -297,11 +297,11 @@
             "pain": 3,
             "exam": {
               "airway": "Ruß im Gesicht, heisere Stimme, leiser inspiratorischer Stridor, nicht zunehmend",
-              "lung": "leises Giemen beidseits",
+              "auscultation": "leises Giemen beidseits",
               "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
-              "neuro": "wach, orientiert, Kopfschmerz etwas besser, ruhiger",
-              "temp": "35,5 °C"
-            }
+              "neuro": "wach, orientiert, Kopfschmerz etwas besser, ruhiger"
+            },
+            "temp": 35.5
           },
           "rules": [],
           "else": "5",
@@ -315,9 +315,9 @@
             "exam": {
               "airway": "heisere Stimme, inspiratorischer Stridor unverändert",
               "skin": "rosig, kalt und nass, starkes Kältezittern",
-              "neuro": "wach, verwirrt, Kopfschmerz etwas besser",
-              "temp": "34,8 °C"
-            }
+              "neuro": "wach, verwirrt, Kopfschmerz etwas besser"
+            },
+            "temp": 34.8
           },
           "rules": [
             {
@@ -341,12 +341,12 @@
             "pain": 5,
             "exam": {
               "airway": "deutlich lauter inspiratorischer Stridor, Stimme kaum noch hörbar, Einziehungen am Hals",
-              "lung": "Giemen und feuchte Rasselgeräusche beidseits",
+              "auscultation": "Giemen und feuchte Rasselgeräusche beidseits",
               "skin": "weiterhin rosig, kalt und nass, Kältezittern",
               "neuro": "schläfrig, öffnet die Augen auf Ansprache, verwaschene Sprache, befolgt einfache Aufforderungen verzögert",
-              "temp": "34,5 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.5
           },
           "rules": [
             {
@@ -370,12 +370,12 @@
             "pain": 3,
             "exam": {
               "airway": "heisere Stimme, leiser inspiratorischer Stridor, stabil – dringend Klinik mit Intubationsbereitschaft",
-              "lung": "leises Giemen beidseits",
+              "auscultation": "leises Giemen beidseits",
               "skin": "rosig, warm unter der Rettungsdecke",
               "neuro": "wach, orientiert, ruhig bei Ansprache mit ihrem Namen",
-              "temp": "35,8 °C",
               "ecg": "Sinusrhythmus"
-            }
+            },
+            "temp": 35.8
           },
           "rules": [],
           "dead": false
@@ -390,11 +390,11 @@
             "pain": 4,
             "exam": {
               "airway": "inspiratorischer Stridor, nicht weiter zunehmend, Stimme heiser – Notarzt und frühe Intubation erforderlich",
-              "lung": "Giemen und vereinzelte Rasselgeräusche beidseits",
+              "auscultation": "Giemen und vereinzelte Rasselgeräusche beidseits",
               "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
-              "neuro": "schläfrig, aber erweckbar, befolgt Aufforderungen",
-              "temp": "35,0 °C"
-            }
+              "neuro": "schläfrig, aber erweckbar, befolgt Aufforderungen"
+            },
+            "temp": 35
           },
           "rules": [],
           "dead": false
@@ -411,12 +411,12 @@
             "pain": 0,
             "exam": {
               "airway": "hochgradiger Stridor, kaum Luftfluss, Schaukelatmung",
-              "lung": "stark abgeschwächtes Atemgeräusch, Rasselgeräusche beidseits",
+              "auscultation": "stark abgeschwächtes Atemgeräusch, Rasselgeräusche beidseits",
               "skin": "blass-grau, kalt, Lippen bläulich",
               "neuro": "reagiert nur noch auf Schmerzreiz mit Stöhnen",
-              "temp": "34,2 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.2
           },
           "rules": [
             {
@@ -442,11 +442,11 @@
             "pain": 0,
             "exam": {
               "airway": "Beutel-Masken-Beatmung mit Sauerstoff unter erhöhtem Widerstand möglich, Stridor – sofortige Intubation durch Notarzt erforderlich",
-              "lung": "beatmet, Atemgeräusch beidseits, Rasselgeräusche",
+              "auscultation": "beatmet, Atemgeräusch beidseits, Rasselgeräusche",
               "skin": "blass, kalt, Lippen wieder rosiger",
-              "neuro": "bewusstlos, reagiert auf Schmerzreiz mit Abwehrbewegung",
-              "temp": "34,4 °C"
-            }
+              "neuro": "bewusstlos, reagiert auf Schmerzreiz mit Abwehrbewegung"
+            },
+            "temp": 34.4
           },
           "rules": [],
           "dead": false
@@ -466,7 +466,7 @@
             "pain": 0,
             "exam": {
               "airway": "keine Atmung, kein Luftfluss",
-              "lung": "kein Atemgeräusch",
+              "auscultation": "kein Atemgeräusch",
               "skin": "zyanotisch, kalt",
               "neuro": "keine Reaktion, Pupillen weit",
               "ecg": "Sinusbradykardie"
@@ -595,19 +595,17 @@
         "lethalInjury": false,
         "pain": 6,
         "exam": {
-          "chest": "Ca. 4 cm lange Schnittwunde links seitlich am Brustkorb, etwa 5. Interkostalraum in der vorderen Axillarlinie. Schlürfendes Geräusch bei der Einatmung, schaumig-blutiges Sekret, mäßige venöse Blutung, nicht spritzend.",
+          "bodycheck": "Ca. 4 cm lange Schnittwunde links seitlich am Brustkorb, etwa 5. Interkostalraum in der vorderen Axillarlinie. Schlürfendes Geräusch bei der Einatmung, schaumig-blutiges Sekret, mäßige venöse Blutung, nicht spritzend.; Mehrere oberflächliche Schnittwunden an beiden Unterarmen, kaum blutend. Becken stabil, Bauch weich. Keine weiteren Verletzungen.",
           "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär. Vereinzelt Giemen beidseits.",
           "airway": "Ruß an Nase und Mund, Hustenreiz, Stimme leicht heiser, kein Stridor. Gesichtshaare nicht versengt.",
           "head": "Kopfschmerz und leichter Schwindel. Keine äußeren Kopfverletzungen.",
-          "pulse_oximetry_note": "Bei Rauchgasexposition kann der SpO2-Wert durch CO-Hämoglobin falsch hoch sein.",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
-          "body_check": "Mehrere oberflächliche Schnittwunden an beiden Unterarmen, kaum blutend. Becken stabil, Bauch weich. Keine weiteren Verletzungen.",
           "abdomen": "Weich, kein Druckschmerz, keine Abwehrspannung.",
           "pelvis": "Stabil, kein Druckschmerz.",
-          "temp": "36,0 °C, Haut kalt und nass.",
           "ecg": "Sinustachykardie",
           "glucose": "118 mg/dl"
-        }
+        },
+        "temp": 36
       },
       "start": "1",
       "phases": {
@@ -641,7 +639,7 @@
             "bp": "130/80",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr, geringe Nachblutung am Rand.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr, geringe Nachblutung am Rand.",
               "auscultation": "Links weiterhin abgeschwächtes Atemgeräusch, rechts vesikulär.",
               "head": "Kopfschmerz unter Sauerstoff langsam rückläufig."
             }
@@ -666,9 +664,8 @@
             "bp": "130/80",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
-              "head": "Kopfschmerz nimmt zu, leichte Übelkeit.",
-              "pulse_oximetry_note": "Bei Rauchgasexposition kann der SpO2-Wert durch CO-Hämoglobin falsch hoch sein."
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
+              "head": "Kopfschmerz nimmt zu, leichte Übelkeit."
             }
           },
           "rules": [
@@ -693,7 +690,7 @@
             "gcs": 14,
             "pain": 7,
             "exam": {
-              "chest": "Lautes schlürfendes Geräusch. Die Wundränder legen sich bei der Ausatmung teilweise ventilartig an. Zunehmende Blutung, nicht spritzend.",
+              "bodycheck": "Lautes schlürfendes Geräusch. Die Wundränder legen sich bei der Ausatmung teilweise ventilartig an. Zunehmende Blutung, nicht spritzend.",
               "auscultation": "Links kaum Atemgeräusch, rechts vesikulär.",
               "neck": "Halsvenen leicht gefüllt.",
               "behavior": "Spricht nur noch in kurzen Sätzen, will trotzdem aufstehen und zurück ins Haus."
@@ -727,11 +724,11 @@
             "bp": "130/80",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch.",
               "auscultation": "Links leicht abgeschwächtes Atemgeräusch, rechts vesikulär.",
-              "temp": "36,0 °C, unter der Rettungsdecke kein Kältezittern mehr.",
               "behavior": "Ruhiger, fragt aber immer wieder nach Zimmer 4 und 7."
-            }
+            },
+            "temp": 36
           },
           "rules": [
             {
@@ -752,10 +749,10 @@
             "bp": "135/85",
             "pain": 5,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
-              "temp": "35,2 °C, starkes Kältezittern, Haut kalt und nass.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet.",
               "behavior": "Klappert mit den Zähnen und sagt: „Mir ist so kalt.“"
-            }
+            },
+            "temp": 35.2
           },
           "rules": [
             {
@@ -776,10 +773,10 @@
             "bp": "125/80",
             "pain": 2,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
-              "temp": "36,1 °C, unter der Rettungsdecke.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet.",
               "behavior": "Deutlich entspannter und transportbereit."
-            }
+            },
+            "temp": 36.1
           },
           "rules": [],
           "dead": false
@@ -793,9 +790,8 @@
             "gcs": 14,
             "pain": 6,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet.",
-              "head": "Starker Kopfschmerz, Übelkeit, wirkt verlangsamt und wiederholt sich.",
-              "pulse_oximetry_note": "Der SpO2-Wert wirkt passabel, kann aber durch CO-Hämoglobin falsch hoch sein."
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet.",
+              "head": "Starker Kopfschmerz, Übelkeit, wirkt verlangsamt und wiederholt sich."
             }
           },
           "rules": [
@@ -817,7 +813,7 @@
             "bp": "120/80",
             "pain": 6,
             "exam": {
-              "chest": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
+              "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
               "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär."
             }
           },
@@ -844,7 +840,7 @@
             "gcs": 12,
             "pain": 8,
             "exam": {
-              "chest": "Die Wunde ist durch Gewebe und Kleidung verlegt, kein schlürfendes Geräusch mehr. Linke Thoraxhälfte bewegt sich kaum mit.",
+              "bodycheck": "Die Wunde ist durch Gewebe und Kleidung verlegt, kein schlürfendes Geräusch mehr. Linke Thoraxhälfte bewegt sich kaum mit.",
               "auscultation": "Links aufgehobenes Atemgeräusch, rechts vesikulär.",
               "neck": "Halsvenen deutlich gestaut.",
               "skin": "Blass-zyanotisch, kaltschweißig.",
@@ -882,7 +878,7 @@
             "gcs": 14,
             "pain": 7,
             "exam": {
-              "chest": "Entlastet, Chest Seal bzw. Punktionsstelle versorgt.",
+              "bodycheck": "Entlastet, Chest Seal bzw. Punktionsstelle versorgt.",
               "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär.",
               "neck": "Halsvenen nicht mehr gestaut.",
               "behavior": "Etwas klarer, sehr erschöpft."
@@ -1037,18 +1033,18 @@
         "lethalInjury": false,
         "pain": 7,
         "exam": {
-          "injuries": "Rechtes Handgelenk bajonettförmig fehlgestellt und geschwollen, geschlossen. Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
+          "bodycheck": "Rechtes Handgelenk bajonettförmig fehlgestellt und geschwollen, geschlossen. Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
           "pelvis": "Druckschmerz über Schambein und rechter Leiste. Bei einmaliger vorsichtiger Kompression instabil, nicht wiederholen! Die Patientin vermeidet jede Bewegung des rechten Beins.",
           "abdomen": "Bauch weich, rechter Unterbauch leicht druckempfindlich, keine Abwehrspannung.",
           "head": "Keine Kopfverletzung erkennbar. Kein Bewusstseinsverlust laut Patientin, HWS ohne Druckschmerz.",
           "airway": "Keine Rußspuren an Gesicht, Mund oder Nase, kein Husten, Stimme klar.",
-          "lungs": "Beidseits seitengleich belüftet, keine Rasselgeräusche.",
+          "auscultation": "Beidseits seitengleich belüftet, keine Rasselgeräusche.",
           "pupils": "Isokor, mittelweit, prompte Lichtreaktion.",
           "skin": "Kalt, blass, Nachthemd durchnässt, deutliches Kältezittern.",
-          "temperature": "35,6 °C (Ohr)",
           "glucose": "112 mg/dl",
           "ecg": "Sinusrhythmus"
-        }
+        },
+        "temp": 35.6
       },
       "start": "1",
       "phases": {
@@ -1091,9 +1087,9 @@
             "pain": 5,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt auf Höhe der großen Rollhügel, Patientin in Vakuummatratze. Leistenschmerz gebessert.",
-              "skin": "Kühl, blass, trocken in Rettungsdecke und Decken eingepackt. Kältezittern lässt nach.",
-              "temperature": "35,5 °C (Ohr)"
-            }
+              "skin": "Kühl, blass, trocken in Rettungsdecke und Decken eingepackt. Kältezittern lässt nach."
+            },
+            "temp": 35.5
           },
           "rules": [
             {
@@ -1114,9 +1110,9 @@
             "pain": 6,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt. Bei jeder Umlagerung ohne Immobilisation verzieht die Patientin vor Schmerz das Gesicht.",
-              "skin": "Kühl, blass, in Rettungsdecke eingepackt, noch Kältezittern.",
-              "temperature": "35,4 °C (Ohr)"
-            }
+              "skin": "Kühl, blass, in Rettungsdecke eingepackt, noch Kältezittern."
+            },
+            "temp": 35.4
           },
           "rules": [
             {
@@ -1138,9 +1134,9 @@
             "pain": 6,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt, Leistenschmerz etwas gebessert.",
-              "skin": "Kalt, nass, blass, starkes Kältezittern. Liegt weiter ungeschützt auf dem Asphalt.",
-              "temperature": "34,9 °C (Ohr)"
-            }
+              "skin": "Kalt, nass, blass, starkes Kältezittern. Liegt weiter ungeschützt auf dem Asphalt."
+            },
+            "temp": 34.9
           },
           "rules": [
             {
@@ -1171,9 +1167,9 @@
             "exam": {
               "pelvis": "Druckschmerz über Schambein und rechter Leiste, instabil. Auf direkte Nachfrage gibt die Patientin zu, dass die Leiste schon seit dem Sturz weh tut.",
               "abdomen": "Rechter Unterbauch druckempfindlich, beginnendes Hämatom in der rechten Leiste, keine Abwehrspannung.",
-              "skin": "Kalt, nass, blass, starkes Kältezittern.",
-              "temperature": "35,0 °C (Ohr)"
-            }
+              "skin": "Kalt, nass, blass, starkes Kältezittern."
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -1202,11 +1198,11 @@
             "bp": "135/80",
             "pain": 4,
             "exam": {
-              "injuries": "Rechtes Handgelenk in Fehlstellung geschient und gepolstert, Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
+              "bodycheck": "Rechtes Handgelenk in Fehlstellung geschient und gepolstert, Durchblutung, Motorik und Sensibilität der Finger erhalten. Schürfwunde am rechten Ellenbogen.",
               "pelvis": "Beckengurt sitzt korrekt, Patientin in Vakuummatratze. Leistenschmerz gebessert.",
-              "skin": "Kühl, trocken eingepackt, kein Kältezittern mehr.",
-              "temperature": "35,5 °C (Ohr)"
-            }
+              "skin": "Kühl, trocken eingepackt, kein Kältezittern mehr."
+            },
+            "temp": 35.5
           },
           "rules": [],
           "dead": false
@@ -1219,9 +1215,9 @@
             "pain": 7,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt. Ohne Immobilisation bei jeder Bewegung starke Schmerzen, die Patientin stöhnt.",
-              "skin": "Kühl, blass, in Rettungsdecke eingepackt, leichtes Kältezittern.",
-              "temperature": "35,3 °C (Ohr)"
-            }
+              "skin": "Kühl, blass, in Rettungsdecke eingepackt, leichtes Kältezittern."
+            },
+            "temp": 35.3
           },
           "rules": [
             {
@@ -1245,9 +1241,9 @@
             "pain": 6,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt.",
-              "skin": "Kalt, nass, marmoriert, das Kältezittern lässt nach.",
-              "temperature": "34,2 °C (Ohr)"
-            }
+              "skin": "Kalt, nass, marmoriert, das Kältezittern lässt nach."
+            },
+            "temp": 34.2
           },
           "rules": [
             {
@@ -1273,9 +1269,9 @@
             "exam": {
               "pelvis": "Instabil, deutlicher Leistenschmerz rechts, zunehmendes Hämatom in Leiste und Schamregion.",
               "abdomen": "Unterbauch druckempfindlich, Hämatom in der rechten Leiste, keine Abwehrspannung.",
-              "skin": "Kalt, nass, blass-marmoriert, kaum noch Kältezittern.",
-              "temperature": "34,4 °C (Ohr)"
-            }
+              "skin": "Kalt, nass, blass-marmoriert, kaum noch Kältezittern."
+            },
+            "temp": 34.4
           },
           "rules": [
             {
@@ -1308,9 +1304,9 @@
             "pain": 5,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt, das Hämatom in der Leiste nimmt trotzdem langsam zu.",
-              "skin": "Kalt, nass, marmoriert, kein Kältezittern mehr.",
-              "temperature": "33,8 °C (Ohr)"
-            }
+              "skin": "Kalt, nass, marmoriert, kein Kältezittern mehr."
+            },
+            "temp": 33.8
           },
           "rules": [
             {
@@ -1336,9 +1332,9 @@
             "pain": 5,
             "exam": {
               "pelvis": "Ausgedehntes Hämatom in Leiste und Schamregion rechts.",
-              "skin": "Kalt, grau-marmoriert, kein Kältezittern.",
-              "temperature": "33,6 °C (Ohr)"
-            }
+              "skin": "Kalt, grau-marmoriert, kein Kältezittern."
+            },
+            "temp": 33.6
           },
           "rules": [
             {
@@ -1366,9 +1362,9 @@
             "pain": 6,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt, Hämatom in der Leiste stabil.",
-              "skin": "Kalt, blass, in Rettungsdecke und Decken eingepackt.",
-              "temperature": "34,6 °C (Ohr)"
-            }
+              "skin": "Kalt, blass, in Rettungsdecke und Decken eingepackt."
+            },
+            "temp": 34.6
           },
           "rules": [],
           "dead": false
@@ -1385,9 +1381,9 @@
             "followsCommands": false,
             "pain": 3,
             "exam": {
-              "skin": "Kalt, grau, marmoriert.",
-              "temperature": "33,2 °C (Ohr)"
-            }
+              "skin": "Kalt, grau, marmoriert."
+            },
+            "temp": 33.2
           },
           "rules": [],
           "else": "15",
@@ -1404,9 +1400,9 @@
             "pain": 5,
             "exam": {
               "pelvis": "Beckengurt sitzt korrekt, ausgedehntes Hämatom in der Leiste.",
-              "skin": "Kalt, blass-marmoriert, in Rettungsdecke eingepackt.",
-              "temperature": "34,0 °C (Ohr)"
-            }
+              "skin": "Kalt, blass-marmoriert, in Rettungsdecke eingepackt."
+            },
+            "temp": 34
           },
           "rules": [],
           "dead": false
@@ -1424,9 +1420,9 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "ecg": "Asystolie",
-              "temperature": "32,8 °C (Ohr)"
-            }
+              "ecg": "Asystolie"
+            },
+            "temp": 32.8
           },
           "rules": [],
           "dead": true
@@ -1521,17 +1517,16 @@
         "exam": {
           "airway": "frei; keine Rußspuren in Mund und Nase, keine Schwellung, Stimme unauffällig, kein Husten",
           "skin": "blass bis rosig, kühl, nass vom Regen; Schlafanzug riecht stark nach Rauch",
-          "lung": "vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche, kein Giemen",
+          "auscultation": "vesikuläres Atemgeräusch beidseits, keine Rasselgeräusche, kein Giemen",
           "pupils": "isokor, mittelweit, prompt lichtreagibel",
           "neuro": "zeitlich und örtlich desorientiert, verlangsamt, befolgt einfache Aufforderungen, keine Lähmungen; laut Pflege sonst ruhig, kennt sein Zimmer und die Pflegekräfte",
           "abdomen": "weich, kein Druckschmerz",
           "pelvis": "stabil, kein Schmerz",
-          "body_check": "keine Verletzungen, keine Verbrennungen; Füße bloß und kalt",
-          "spo2_note": "Pulsoxymeter zeigt 97 %; CO-Oxymetrie nicht vorhanden",
-          "temp": "35,4 °C",
+          "bodycheck": "keine Verletzungen, keine Verbrennungen; Füße bloß und kalt",
           "glucose": "118 mg/dl",
           "ecg": "Sinustachykardie"
-        }
+        },
+        "temp": 35.4
       },
       "start": "1",
       "phases": {
@@ -1565,9 +1560,9 @@
             "pain": 3,
             "exam": {
               "neuro": "ruhiger, behält die Maske auf, hält die Hand des Helfers; Kopfschmerz und Übelkeit lassen nach",
-              "skin": "kühl, nass, zittert am ganzen Körper",
-              "temp": "35,0 °C"
-            }
+              "skin": "kühl, nass, zittert am ganzen Körper"
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -1590,9 +1585,9 @@
             "pain": 5,
             "exam": {
               "neuro": "unruhig und ängstlich, reißt sich die Sauerstoffmaske immer wieder herunter, schlägt nach Helfern, ruft: „Lasst mich in Ruhe!“",
-              "skin": "kühl, nass, zittert",
-              "temp": "35,0 °C"
-            }
+              "skin": "kühl, nass, zittert"
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -1620,9 +1615,9 @@
               "airway": "erneut erbrochen, Erbrochenes im Mund, gurgelndes Atemgeräusch",
               "neuro": "somnolent, öffnet die Augen nur auf Ansprache, unverständliche Worte, befolgt keine Aufforderungen mehr, einzelne Muskelzuckungen an den Armen",
               "skin": "kalt, nass, zittert",
-              "temp": "34,9 °C",
               "ecg": "ST-Senkung"
-            }
+            },
+            "temp": 34.9
           },
           "rules": [
             {
@@ -1645,9 +1640,9 @@
             "pain": 2,
             "exam": {
               "neuro": "kooperativ, behält die Maske auf; laut Pflege fast wieder „wie sonst“, Kopfschmerz nur noch leicht, keine Übelkeit",
-              "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
-              "temp": "35,6 °C"
-            }
+              "skin": "unter Rettungsdecke trocken, Zittern lässt nach"
+            },
+            "temp": 35.6
           },
           "rules": [],
           "dead": false
@@ -1660,9 +1655,9 @@
             "pain": 3,
             "exam": {
               "neuro": "behält die Maske auf, Kopfschmerz und Übelkeit rückläufig, klagt: „Mir ist so kalt.“",
-              "skin": "kalt, nass, starkes Kältezittern, Lippen bläulich",
-              "temp": "34,8 °C"
-            }
+              "skin": "kalt, nass, starkes Kältezittern, Lippen bläulich"
+            },
+            "temp": 34.8
           },
           "rules": [
             {
@@ -1686,9 +1681,9 @@
             "pain": 2,
             "exam": {
               "neuro": "zunehmend schläfrig und verlangsamt, befolgt einfache Aufforderungen; Kopfschmerz und Übelkeit rückläufig",
-              "skin": "kalt, blass-marmoriert, Kältezittern lässt nach",
-              "temp": "34,0 °C"
-            }
+              "skin": "kalt, blass-marmoriert, Kältezittern lässt nach"
+            },
+            "temp": 34
           },
           "rules": [],
           "dead": false
@@ -1706,9 +1701,9 @@
               "airway": "frei nach Absaugen, kein Gurgeln mehr",
               "neuro": "schläfrig, desorientiert, befolgt einfache Aufforderungen, keine Muskelzuckungen mehr",
               "skin": "kalt, nass, zittert",
-              "temp": "34,7 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.7
           },
           "rules": [
             {
@@ -1735,9 +1730,9 @@
               "neuro": "generalisierter Krampfanfall mit rhythmischen Zuckungen aller Extremitäten, nicht ansprechbar, Zungenbiss",
               "airway": "Speichel und Erbrochenes vor dem Mund, gurgelnde, unregelmäßige Atmung",
               "pupils": "weit, träge lichtreagibel",
-              "temp": "34,7 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.7
           },
           "rules": [
             {
@@ -1766,9 +1761,9 @@
               "airway": "frei",
               "neuro": "weiterhin verwirrter als sonst, aber ruhig, behält die Maske auf, befolgt Aufforderungen",
               "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
-              "temp": "35,3 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 35.3
           },
           "rules": [],
           "dead": false
@@ -1786,9 +1781,9 @@
               "neuro": "Krampf hat aufgehört, nachschlafend, öffnet die Augen auf Schmerzreiz, wehrt gezielt ab, stöhnt",
               "airway": "frei in Seitenlage, Atmung regelmäßig",
               "pupils": "isokor, mittelweit, lichtreagibel",
-              "temp": "34,6 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.6
           },
           "rules": [],
           "dead": false
@@ -1807,9 +1802,9 @@
               "airway": "Erbrochenes im Rachen, schnarchende, sehr flache Atmung",
               "skin": "kalt, grau-zyanotisch",
               "pupils": "weit, kaum lichtreagibel",
-              "temp": "34,4 °C",
               "ecg": "Sinusbradykardie"
-            }
+            },
+            "temp": 34.4
           },
           "rules": [
             {
@@ -1838,9 +1833,9 @@
               "airway": "frei nach Absaugen, Brustkorb hebt sich unter Beutel-Masken-Beatmung, Eigenatmung flach",
               "neuro": "bewusstlos, ungezielte Bewegungen auf Schmerzreiz",
               "skin": "kalt, blass",
-              "temp": "34,3 °C",
               "ecg": "Sinustachykardie"
-            }
+            },
+            "temp": 34.3
           },
           "rules": [],
           "dead": false
@@ -1942,14 +1937,14 @@
         "lethalInjury": false,
         "pain": 2,
         "exam": {
-          "temp": "35,4 °C (Ohr)",
           "skin": "Haut kühl und nass, Füße kalt, leichtes Kältezittern",
           "burn": "Ca. 3 × 2 cm große Rötung mit kleiner Blase am rechten Handrücken, deutlich unter 1 % KOF, oberflächlich (Grad 1–2a)",
           "airway": "Kein Ruß im Mund oder an der Nase, keine versengten Nasenhaare, Stimme normal, kein Stridor",
-          "lungs": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Hustenreiz",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, keine Nebengeräusche, trockener Hustenreiz",
           "mental": "Zeitlich, örtlich und situativ desorientiert (vorbestehende Demenz), zur Person orientiert, befolgt einfache Aufforderungen, vergisst sie aber nach kurzer Zeit",
           "pupils": "Mittelweit, isokor, prompt lichtreagibel"
-        }
+        },
+        "temp": 35.4
       },
       "start": "1",
       "phases": {
@@ -1989,10 +1984,10 @@
             "hr": 86,
             "bp": "145/80",
             "exam": {
-              "temp": "35,8 °C (Ohr)",
               "skin": "Unter der Rettungsdecke trocken und langsam wärmer, Zittern lässt nach",
               "mental": "Ruhig, sitzt neben dem Helfer, hält ihn weiter für ihren Sohn und erzählt von früher"
-            }
+            },
+            "temp": 35.8
           },
           "rules": [
             {
@@ -2013,10 +2008,10 @@
             "bp": "145/80",
             "pain": 1,
             "exam": {
-              "temp": "36,0 °C (Ohr)",
-              "lungs": "Vesikuläres Atemgeräusch beidseits, Hustenreiz deutlich weniger",
+              "auscultation": "Vesikuläres Atemgeräusch beidseits, Hustenreiz deutlich weniger",
               "mental": "Ruhig und zugewandt, bleibt beim Helfer sitzen"
-            }
+            },
+            "temp": 36
           },
           "rules": [],
           "dead": false
@@ -2026,10 +2021,10 @@
             "hr": 102,
             "recap": 3,
             "exam": {
-              "temp": "35,0 °C (Ohr)",
               "skin": "Kalt und nass, deutliches Kältezittern, Füße weiß-bläulich",
               "mental": "Bleibt beim Helfer, wird aber unruhig, will immer wieder aufstehen und nach Hause"
-            }
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -2050,10 +2045,10 @@
             "recap": 3,
             "pain": 3,
             "exam": {
-              "temp": "34,6 °C (Ohr)",
               "skin": "Starkes Kältezittern, Lippen bläulich, Füße eiskalt",
               "mental": "Klagt über Kälte, klammert sich an den Helfer"
-            }
+            },
+            "temp": 34.6
           },
           "rules": [
             {
@@ -2078,10 +2073,10 @@
             "gcs": 13,
             "pain": 3,
             "exam": {
-              "temp": "34,0 °C (Ohr)",
               "skin": "Sitzt zusammengekauert, eiskalte nasse Haut, starkes Kältezittern",
               "mental": "Zunehmend schläfrig, antwortet nur noch kurz"
-            }
+            },
+            "temp": 34
           },
           "rules": [
             {
@@ -2101,10 +2096,10 @@
             "bp": "150/85",
             "recap": 3,
             "exam": {
-              "temp": "35,2 °C (Ohr)",
               "skin": "Unter der Rettungsdecke langsam wärmer, zittert noch",
               "mental": "Ruhiger, bleibt beim Helfer sitzen"
-            }
+            },
+            "temp": 35.2
           },
           "rules": [],
           "dead": false
@@ -2114,10 +2109,10 @@
             "hr": 104,
             "recap": 3,
             "exam": {
-              "temp": "35,0 °C (Ohr)",
               "skin": "Rettungsdecke hängt lose über einer Schulter, Nachthemd und Füße nass und kalt, zittert",
               "mental": "Steht abseits im Dunkeln und sucht den Weg nach Hause, reagiert freundlich auf Ansprache"
-            }
+            },
+            "temp": 35
           },
           "rules": [
             {
@@ -2142,10 +2137,10 @@
             "gcs": 13,
             "pain": 3,
             "exam": {
-              "temp": "34,4 °C (Ohr)",
               "skin": "Wird abseits im Dunkeln liegend gefunden, zusammengekauert, durchnässt, starkes Kältezittern, Füße bläulich, kleine Schürfwunde am rechten Knie",
               "mental": "Verwirrt, weint, ruft nach den Kindern, befolgt einfache Aufforderungen nur zögernd"
-            }
+            },
+            "temp": 34.4
           },
           "rules": [
             {
@@ -2169,10 +2164,10 @@
             "recap": 3,
             "gcs": 14,
             "exam": {
-              "temp": "34,8 °C (Ohr)",
               "skin": "Unter Rettungsdecke und Decken, zittert noch kräftig, Haut langsam wärmer",
               "mental": "Ruhiger, desorientiert wie zu Beginn"
-            }
+            },
+            "temp": 34.8
           },
           "rules": [],
           "dead": false
@@ -2189,11 +2184,11 @@
             "followsCommands": false,
             "pain": 1,
             "exam": {
-              "temp": "33,6 °C (Ohr)",
               "skin": "Kältezittern hat aufgehört, Haut eiskalt und marmoriert",
               "mental": "Somnolent, murmelt Unverständliches, befolgt keine Aufforderungen mehr",
               "ecg": "Sinusbradykardie"
-            }
+            },
+            "temp": 33.6
           },
           "rules": [
             {
@@ -2219,10 +2214,10 @@
             "followsCommands": true,
             "pain": 1,
             "exam": {
-              "temp": "33,8 °C (Ohr), unter Wärmeerhalt keine weitere Auskühlung",
               "skin": "Eingepackt, Haut kalt, wieder leichtes Zittern",
               "mental": "Schläfrig, auf Ansprache erweckbar, befolgt einfache Aufforderungen"
-            }
+            },
+            "temp": 33.8
           },
           "rules": [],
           "dead": false
@@ -2239,12 +2234,12 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "temp": "32,8 °C (Ohr)",
               "skin": "Eiskalt, marmoriert, kein Kältezittern",
               "mental": "Reagiert nur auf Schmerzreiz mit Stöhnen",
               "pupils": "Mittelweit, isokor, träge lichtreagibel",
               "ecg": "Sinusbradykardie"
-            }
+            },
+            "temp": 32.8
           },
           "rules": [
             {
@@ -2269,11 +2264,11 @@
             "followsCommands": false,
             "pain": 0,
             "exam": {
-              "temp": "32,9 °C (Ohr), unter Wärmeerhalt stabil",
               "skin": "Eingepackt, Haut eiskalt",
               "mental": "Öffnet auf Schmerzreiz die Augen, stöhnt",
               "ecg": "Sinusbradykardie"
-            }
+            },
+            "temp": 32.9
           },
           "rules": [],
           "dead": false
@@ -2368,15 +2363,13 @@
         "pain": 2,
         "exam": {
           "ecg": "Sinusrhythmus",
-          "lungs": "Vesikuläres Atemgeräusch beidseits, vereinzelt trockenes Giemen nach Hustenstößen, keine Rasselgeräusche",
+          "auscultation": "Vesikuläres Atemgeräusch beidseits, vereinzelt trockenes Giemen nach Hustenstößen, keine Rasselgeräusche",
           "airway": "Ruß an den Nasenlöchern, Mund und Rachen ohne Ruß, Stimme klar, keine Heiserkeit, keine Schluckbeschwerden",
           "skin": "Rosig, kühl, Schlafanzug durchnässt",
-          "temperature": "35,8 °C",
-          "chest": "Gibt keine Brustschmerzen an",
-          "neuro": "Wach, orientiert, Pupillen isokor und prompt lichtreagibel, leichter Kopfschmerz",
-          "spo2_hinweis": "SpO2-Messwert nach Rauchgas- bzw. CO-Exposition unzuverlässig (falsch hoch)",
-          "bodycheck": "Keine Verletzungen, keine Verbrennungen"
-        }
+          "bodycheck": "Gibt keine Brustschmerzen an; Keine Verletzungen, keine Verbrennungen",
+          "neuro": "Wach, orientiert, Pupillen isokor und prompt lichtreagibel, leichter Kopfschmerz"
+        },
+        "temp": 35.8
       },
       "start": "1",
       "phases": {
@@ -2403,11 +2396,11 @@
             "bp": "140/85",
             "pain": 1,
             "exam": {
-              "temperature": "36,1 °C",
               "neuro": "Wach, orientiert, Kopfschmerz rückläufig",
-              "chest": "Keine Brustschmerzen, Husten seltener",
+              "bodycheck": "Keine Brustschmerzen, Husten seltener",
               "skin": "Rosig, warm unter der Rettungsdecke"
-            }
+            },
+            "temp": 36.1
           },
           "rules": [],
           "dead": false
@@ -2422,11 +2415,11 @@
             "pain": 4,
             "exam": {
               "ecg": "ST-Senkung",
-              "chest": "Auf direkte Nachfrage Druck- und Engegefühl hinter dem Brustbein mit Ausstrahlung in den linken Arm, spielt es herunter",
+              "bodycheck": "Auf direkte Nachfrage Druck- und Engegefühl hinter dem Brustbein mit Ausstrahlung in den linken Arm, spielt es herunter",
               "skin": "Blass, kaltschweißig, zittert",
-              "temperature": "35,4 °C",
               "behavior": "Setzt sich immer wieder kurz hin, reibt sich die Brust, ist kurzatmig beim Sprechen"
-            }
+            },
+            "temp": 35.4
           },
           "rules": [
             {
@@ -2452,11 +2445,11 @@
             "pain": 2,
             "exam": {
               "ecg": "ST-Senkung",
-              "chest": "Druckgefühl deutlich rückläufig, keine Ausstrahlung mehr",
+              "bodycheck": "Druckgefühl deutlich rückläufig, keine Ausstrahlung mehr",
               "skin": "Blass, nicht mehr schweißig",
-              "temperature": "35,9 °C",
               "behavior": "Sitzt ruhig in die Decke gewickelt, akzeptiert die Versorgung"
-            }
+            },
+            "temp": 35.9
           },
           "rules": [],
           "dead": false
@@ -2473,12 +2466,12 @@
             "pain": 8,
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
-              "chest": "Starker drückender Schmerz hinter dem Brustbein, Ausstrahlung in linken Arm und Kiefer, Todesangst",
+              "bodycheck": "Starker drückender Schmerz hinter dem Brustbein, Ausstrahlung in linken Arm und Kiefer, Todesangst",
               "skin": "Grau-blass, kaltschweißig, zittert stark",
-              "temperature": "35,1 °C",
-              "lungs": "Vesikuläres Atemgeräusch, basal beidseits leise feuchte Rasselgeräusche",
+              "auscultation": "Vesikuläres Atemgeräusch, basal beidseits leise feuchte Rasselgeräusche",
               "behavior": "Sitzt zusammengesunken am Boden, kann nicht mehr aufstehen, verlangsamt"
-            }
+            },
+            "temp": 35.1
           },
           "rules": [
             {
@@ -2507,11 +2500,11 @@
             "pain": 5,
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
-              "chest": "Brustschmerz etwas gebessert, aber anhaltend",
+              "bodycheck": "Brustschmerz etwas gebessert, aber anhaltend",
               "skin": "Blass, kühl, weniger schweißig",
-              "temperature": "35,6 °C",
               "behavior": "Sitzt mit erhöhtem Oberkörper, ruhig, ängstlich, braucht dringend Notarzt und Transport"
-            }
+            },
+            "temp": 35.6
           },
           "rules": [],
           "dead": false
@@ -2528,13 +2521,12 @@
             "gcs": 12,
             "pain": 8,
             "exam": {
-              "ecg": "STEMI (ST-Hebung)",
-              "lungs": "Feuchte Rasselgeräusche beidseits bis zur Lungenmitte, Atemnot",
+              "ecg": "STEMI (ST-Hebung); Gehäufte VES",
+              "auscultation": "Feuchte Rasselgeräusche beidseits bis zur Lungenmitte, Atemnot",
               "skin": "Grau, marmoriert, kaltschweißig",
-              "temperature": "34,8 °C",
-              "behavior": "Verwirrt, stöhnt, reagiert verzögert auf Ansprache",
-              "monitor": "Gehäufte VES"
-            }
+              "behavior": "Verwirrt, stöhnt, reagiert verzögert auf Ansprache"
+            },
+            "temp": 34.8
           },
           "rules": [
             {
@@ -2564,7 +2556,7 @@
             "pain": 6,
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
-              "lungs": "Feuchte Rasselgeräusche basal beidseits",
+              "auscultation": "Feuchte Rasselgeräusche basal beidseits",
               "skin": "Blass, kühl, schweißig",
               "behavior": "Wach, ängstlich, kritisch krank, sofortiger Transport mit Notarzt erforderlich"
             }

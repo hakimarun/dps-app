@@ -2,8 +2,9 @@
 //   node apps/server/src/main.ts --port 3000 --data data
 // E-Mail: SMTP_URL (z. B. smtps://user:pass@host) und MAIL_FROM setzen; ohne SMTP_URL steht der Anmeldecode im Log.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
+import { extname, join, resolve as resolvePath, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 import { randomInt } from "node:crypto";
 import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
@@ -20,7 +21,9 @@ import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
 
-const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" } } });
+const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
+const webDir = resolvePath(opt.web ?? fileURLToPath(new URL("../../app/dist/", import.meta.url)));
+const MIME: Record<string, string> = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".ico": "image/x-icon", ".svg": "image/svg+xml", ".ttf": "font/ttf", ".woff2": "font/woff2" };
 mkdirSync(opt.data, { recursive: true });
 const db = openDb(join(opt.data, "dps.sqlite"));
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
@@ -114,7 +117,14 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   const route = `${req.method} ${url.pathname}`;
   let m: RegExpMatchArray | null;
 
-  if (route === "GET /") return send(res, 200, "dps-server ok\n", "text/plain");
+  // Web-App (npm run build:web): Helfer öffnen nur die Adresse des Servers, ohne Installation.
+  if (req.method === "GET" && !/^\/(api|print|qr)\//.test(url.pathname)) {
+    if (!existsSync(webDir)) return url.pathname === "/" ? send(res, 200, "dps-server ok\n", "text/plain") : send(res, 404, "nicht gefunden", "text/plain");
+    const file = resolvePath(webDir, `.${decodeURIComponent(url.pathname)}`);
+    const path = file.startsWith(webDir + sep) && existsSync(file) && statSync(file).isFile() ? file : join(webDir, "index.html"); // Einstieg für alle anderen Pfade
+    res.writeHead(200, { "content-type": MIME[extname(path)] ?? "application/octet-stream", "cache-control": path.includes("/_expo/") ? "max-age=31536000, immutable" : "no-cache" });
+    return res.end(readFileSync(path));
+  }
   if ((m = route.match(/^GET \/print\/([A-Z0-9]{6})$/))) {
     const ex = exercises.get(m[1]);
     return ex ? send(res, 200, await printPage(ex), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
@@ -311,12 +321,23 @@ function onMessage(ws: WebSocket, raw: string) {
 }
 
 // Sendet jedem Client seiner Übung die eigene Sicht, aber nur bei Änderung.
+// Nach der Freigabe ist die Übung beendet und die Auswertung ändert sich nicht mehr: einmal rechnen statt jede Sekunde.
+const evaluations = new WeakMap<Exercise, { key: string; ev: ReturnType<typeof evaluate> }>();
+function finalEvaluation(ex: Exercise, now: number) {
+  const key = `${ex.records.length}/${ex.controls.length}`;
+  const hit = evaluations.get(ex);
+  if (hit?.key === key) return hit.ev;
+  const ev = evaluate(ex, now);
+  evaluations.set(ex, { key, ev });
+  return ev;
+}
+
 function broadcast(ex: Exercise, withClock = false) {
   const now = Date.now();
   const mine = [...clients].filter(([, c]) => c.ex === ex);
   if (!mine.length) return;
   const s = stateAt(ex, minutes(ex, now));
-  const ev = released(ex) ? evaluate(ex, now) : null; // Bericht erst nach Freigabe durch die Leitung
+  const ev = released(ex) ? finalEvaluation(ex, now) : null; // Bericht erst nach Freigabe durch die Leitung
   for (const [ws, c] of mine) {
     if (withClock) out(ws, clock(ex, now));
     if (!c.watch && !c.participant) continue;

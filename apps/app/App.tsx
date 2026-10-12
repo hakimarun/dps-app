@@ -9,13 +9,16 @@ import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, STAGE, Stage, Tile } from "./src/fun";
+import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
 import { Leitung } from "./src/leitung";
 
 const VITALS: [string, string, string?][] = [["AF", "rr"], ["HF", "hr"], ["RR", "bp"], ["SpO₂", "spo2", " %"], ["GCS", "gcs"], ["Rekap", "recap", " s"]];
 const EXAM: Record<string, string> = {
   auscultation: "Auskultation", percussion: "Perkussion", pupils: "Pupillen", motor: "Motorik", pelvis: "Becken",
-  abdomen: "Bauch", burn: "Verbrennung", airway: "Atemweg",
+  abdomen: "Bauch", burn: "Verbrennung", airway: "Atemweg", ecg: "EKG", glucose: "Blutzucker", bodycheck: "Bodycheck",
 };
+// Vitalwert-Karte → Messgerät, sobald der Wert gemessen ist.
+const CARD_DEVICE: Record<string, DeviceKind> = { hr: "ecg", bp: "bp", spo2: "spo2" };
 const MATERIAL: Record<string, string> = {
   tourniquet: "Tourniquet", dressing: "Verband", wendl: "Wendl-Tubus", o2_mask: "O₂-Maske", needle: "Punktionsnadel", ett: "Tubus",
   iv_cannula: "Venenkanüle", infusion: "Infusion", analgesic: "Analgetikum", pelvic_binder: "Beckengurt", splint: "Schiene", rescue_blanket: "Rettungsdecke",
@@ -263,12 +266,18 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
   const busyTitle = busy && (conn.welcome!.actions.find((a) => a.id === busy.action)?.title ?? busy.action);
   const exam = Object.entries((f.exam as Record<string, string>) ?? {});
   // J3: Häkchen, wenn die eigene Maßnahme fertig ist (Vibration kommt aus Helfer).
-  const lastBusy = useRef<string | null>(null);
+  // Messung fertig: Wert im passenden Gerät zeigen (EKG-Monitor, Blutdruck, Blutzucker …).
+  const lastBusy = useRef<{ id: string; title: string } | null>(null);
   const [finished, setFinished] = useState<string | null>(null);
+  const [device, setDevice] = useState<DeviceKind | null>(null);
   useEffect(() => {
-    if (lastBusy.current && !busyTitle) setFinished(lastBusy.current);
-    lastBusy.current = busyTitle || null;
-  }, [busyTitle]);
+    if (lastBusy.current && !busy) {
+      setFinished(lastBusy.current.title);
+      if (DEVICE_OF[lastBusy.current.id]) setDevice(DEVICE_OF[lastBusy.current.id]);
+    }
+    lastBusy.current = busy ? { id: busy.action, title: String(busyTitle) } : null;
+  }, [busy?.action]);
+  const hasDevice = (k: DeviceKind) => (k === "ecg" ? !!(f.exam as Record<string, string> | undefined)?.ecg : k === "temp" ? f.temp !== undefined : k === "glucose" ? !!(f.exam as Record<string, string> | undefined)?.glucose : f[k] !== undefined);
   useEffect(() => {
     if (!finished) return;
     const i = setTimeout(() => setFinished(null), 2500);
@@ -292,7 +301,8 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         {p.left && <Text style={{ color: t.text, fontWeight: "600" }}>Abtransportiert. Scanne den nächsten Patienten.</Text>}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {VITALS.map(([label, k, unit]) => (
-            <View key={`${p.id}-${k}`} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10 }}>
+            <Pressable key={`${p.id}-${k}`} disabled={!CARD_DEVICE[k] || !hasDevice(CARD_DEVICE[k])} onPress={() => setDevice(CARD_DEVICE[k])}
+              accessibilityRole={CARD_DEVICE[k] && hasDevice(CARD_DEVICE[k]) ? "button" : undefined} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10 }}>
               <Flash t={t} value={f[k]}>
                 <View style={{ padding: 10 }}>
                   <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
@@ -301,16 +311,21 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
                   </Text>
                 </View>
               </Flash>
-            </View>
+            </Pressable>
           ))}
         </View>
         <Text style={{ color: t.quiet, fontSize: 12 }}>– = noch nicht gemessen</Text>
         {exam.map(([k, val]) => (
-          <Text key={k} style={{ color: t.text }}>
+          <Text key={k} style={{ color: t.text }} onPress={k === "ecg" || k === "glucose" ? () => setDevice(k) : undefined}>
             <Text style={{ fontWeight: "600" }}>{EXAM[k] ?? k}: </Text>
-            {val}
+            {val}{k === "ecg" || k === "glucose" ? "  ›" : ""}
           </Text>
         ))}
+        {f.temp !== undefined && (
+          <Text style={{ color: t.text }} onPress={() => setDevice("temp")}>
+            <Text style={{ fontWeight: "600" }}>Temperatur: </Text>{String(f.temp).replace(".", ",")} °C  ›
+          </Text>
+        )}
       </ScrollView>
       <View style={{ padding: 20, gap: 10, borderTopWidth: 1, borderColor: t.line }}>
         {finished && !busy && (
@@ -339,6 +354,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
           </View>
         )}
       </View>
+      {device && hasDevice(device) && <DeviceSheet kind={device} f={f as never} onClose={() => setDevice(null)} />}
     </View>
   );
 }

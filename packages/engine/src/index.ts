@@ -172,12 +172,23 @@ export function findings(s: State, id: string): Findings {
 }
 
 // Was der Helfer sieht: Befunde, die eine Maßnahme aufdeckt, erst nach dieser Maßnahme.
+// Messwerte, die ein Fall nicht eigens festlegt: EKG aus der Herzfrequenz, Blutzucker und Temperatur im Normbereich.
+export function ecgOf(hr: number): string {
+  if (hr === 0) return "Asystolie (Nulllinie)";
+  if (hr < 60) return "Sinusbradykardie";
+  if (hr > 100) return "Sinustachykardie";
+  return "Sinusrhythmus";
+}
+const withDefaults = (f: Findings): Findings => ({
+  ...f, temp: f.temp ?? 36.5, exam: { ecg: ecgOf(f.hr), glucose: "98 mg/dl", ...f.exam },
+});
+
 export function visible(s: State, id: string): Partial<Findings> {
   const done = new Set(s.patients[id].done);
   const gates = new Map<string, string[]>();
   for (const a of Object.values(s.defs.actions)) for (const k of a.reveals) gates.set(k, [...(gates.get(k) ?? []), a.id]);
   const shown = (k: string) => !gates.has(k) || gates.get(k)!.some((a) => done.has(a));
-  const { exam, ...rest } = findings(s, id);
+  const { exam, ...rest } = withDefaults(findings(s, id));
   const out: Partial<Findings> = Object.fromEntries(Object.entries(rest).filter(([k]) => shown(k)));
   out.exam = Object.fromEntries(Object.entries(exam).filter(([k]) => shown(`exam.${k}`)));
   return out;

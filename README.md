@@ -43,6 +43,30 @@ Helfer treten mit dem Code ihres Trupps bei; Sichtungstrupps sichten nur und lei
 Auf dem Handy: Expo Go oder Development Build, als Server `ws://<IP des Rechners>:3000` eintragen.
 QR-Codes enthalten `dps:<CODE>:p01` und gelten nur für ihre Übung; ohne Kamera lässt sich die Patientennummer eintippen.
 
+## Pilot: ohne App-Installation
+
+Der Server liefert die App als Web-App mit aus. Helfer öffnen am Handy nur seine Adresse.
+
+```bash
+npm install
+npm run build:web
+npm run server
+```
+
+- **Vor Ort im WLAN:** Laptop und Handys im selben Netz, Helfer öffnen `http://<IP des Laptops>:3000`. Ohne HTTPS erlauben
+  Handy-Browser keine Kamera; Patienten- und Übungscodes werden dann eingetippt (die Zettel tragen dafür Nummern und Codes).
+- **Im Internet mit HTTPS** (Kamera und QR-Scan im Browser): Server hinter einen Reverse-Proxy mit Zertifikat, z. B. Caddy:
+
+  ```text
+  dps.example.org {
+    reverse_proxy localhost:3000
+  }
+  ```
+
+  WebSocket läuft über dieselbe Adresse (`wss://`), die App erkennt sie automatisch.
+- **Daten:** alles steckt in `data/dps.sqlite` (Konten, Freigaben, Übungen, Protokolle); vor und nach dem Pilot sichern.
+- **Last:** `apps/server/test/load.test.ts` simuliert 12 Helfer über 60 Minuten; eine Aktualisierung dauert wenige Millisekunden.
+
 ## KI (optional)
 
 Ohne KI funktioniert alles: Patienten antworten auf die SAMPLER-Vorschläge aus ihrem Profil. Mit KI sind freie Fragen und der Fallgenerator möglich.

@@ -2,6 +2,7 @@
 // Jede Aktion bekommt eine id und ihren Zeitpunkt (in Serverzeit), landet in einer gespeicherten Warteschlange
 // und wird gesendet, sobald eine Verbindung besteht. Der Server ignoriert doppelt gesendete ids.
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { ClientMsg, Intent, ServerMsg, View } from "@dps/schema/protocol";
 
@@ -21,7 +22,9 @@ export type Conn = {
   code: string; // Übungscode
 };
 
-export const DEFAULT_SERVER = process.env.EXPO_PUBLIC_SERVER_URL ?? "ws://localhost:3000";
+// Vom dPS-Server ausgelieferte Web-App (Produktionsbuild): derselbe Host. Sonst Umgebung oder lokal.
+const sameOrigin = Platform.OS === "web" && !__DEV__ && typeof location !== "undefined" ? `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}` : null;
+export const DEFAULT_SERVER = process.env.EXPO_PUBLIC_SERVER_URL ?? sameOrigin ?? "ws://localhost:3000";
 const key = (code: string) => `dps:${code.toUpperCase()}`;
 const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 

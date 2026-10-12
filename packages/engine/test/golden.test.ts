@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { apply, defaultSettings, initial, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
+import { apply, defaultSettings, ecgOf, initial, targetSk, tick, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
 
 const lib = new URL("../../../library/", import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, lib), "utf8"));
@@ -164,4 +164,16 @@ test("Aufnahme und Übergabe: Ort, Fahrzeugplätze, Eintreffen, Stillstand nach 
 test("Übergabe nur ohne laufende Maßnahme am Patienten", () => {
   const { s } = run([scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), scan(2, "p05", "h2")], 3);
   assert.equal(validate(s, handover(3, "p05", "rtw1", "h2")), "erst laufende Maßnahmen beenden");
+});
+
+test("Messgeräte: EKG aus der Herzfrequenz, Blutzucker und Temperatur, sofern der Fall nichts festlegt", () => {
+  const { s } = run([scan(0, "p01"), act(1, "p01", "ecg"), act(5, "p01", "blood_glucose"), act(7, "p01", "measure_temp")], 9);
+  const f = visible(s, "p01");
+  assert.equal(f.exam?.ecg, ecgOf(f.hr!));
+  assert.equal(f.exam?.glucose, "98 mg/dl");
+  assert.equal(f.temp, 36.5);
+  const p04 = run([scan(0, "p04"), act(1, "p04", "ecg")], 5).s;
+  assert.equal(visible(p04, "p04").exam?.ecg, "Vorhofflimmern, Tachyarrhythmie");
+  assert.equal(visible(run([scan(0, "p01")], 1).s, "p01").exam?.ecg, undefined); // erst nach der Messung
+  assert.deepEqual([ecgOf(0), ecgOf(45), ecgOf(80), ecgOf(130)], ["Asystolie (Nulllinie)", "Sinusbradykardie", "Sinusrhythmus", "Sinustachykardie"]);
 });

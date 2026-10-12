@@ -9,7 +9,8 @@
   "scripts": {
     "test": "node --test",
     "typecheck": "tsc",
-    "server": "node apps/server/src/main.ts"
+    "server": "node apps/server/src/main.ts",
+    "build:web": "npm run build:web -w @dps/app"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",

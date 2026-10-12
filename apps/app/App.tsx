@@ -65,10 +65,6 @@ export default function App() {
               <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("profil")}>Mein Profil</Text>
               <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("beobachter")}>Ich beobachte</Text>
             </View>
-            {/* N13 */}
-            <Text style={{ color: "#FFFFFF", opacity: 0.85, fontSize: 13, textAlign: "center", marginTop: 8 }}>
-              Nur für Ausbildung und Übung. Kein Medizinprodukt – nicht im Realeinsatz verwenden.
-            </Text>
           </ScrollView>
         </Stage>
       )}

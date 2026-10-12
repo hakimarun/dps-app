@@ -11,7 +11,7 @@ import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, InjectReq, NoteReq, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, InjectReq, NoteReq, ScenarioBundle, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
@@ -129,11 +129,11 @@ class HttpError extends Error {
   }
 }
 
-async function body(req: IncomingMessage): Promise<unknown> {
+async function body(req: IncomingMessage, limit = 64_000): Promise<unknown> {
   let size = 0;
   const chunks: Buffer[] = [];
   for await (const c of req) {
-    if ((size += c.length) > 64_000) throw new HttpError(413, "Anfrage zu groß");
+    if ((size += c.length) > limit) throw new HttpError(413, "Anfrage zu groß");
     chunks.push(c);
   }
   try { return JSON.parse(Buffer.concat(chunks).toString() || "{}"); } catch { throw new HttpError(400, "kein gültiges JSON"); }
@@ -245,14 +245,14 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
         // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht freigebbar
         ...[...drafts.values()].filter((d) => !d.report.ok).map((d) => ({
           id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, approved: false, approvals: 0, uses: 0,
-          meta: { category: d.origin === "eigen" ? "Eigener Entwurf" : "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: d.origin ?? "ki", errors: d.report.errors,
+          meta: { category: d.origin === "eigen" ? "Eigener Entwurf" : d.origin === "import" ? "Importierter Entwurf" : "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: d.origin ?? "ki", errors: d.report.errors,
           editable: d.owner === user.id, image: null,
         })),
       ],
       imageGen: !!imageGen,
       scenarios: Object.values(scenarios).map((s) => ({
         id: s.id, title: s.title, patients: s.patients, situation: s.situation ?? null, job: jobs.get(s.id) ?? null,
-        origin: s.id.startsWith("ki-") ? "ki" : s.id.startsWith("eigen-") ? "eigen" : "muster", editable: s.owner === user.id,
+        origin: s.id.startsWith("ki-") ? "ki" : s.id.startsWith("eigen-") ? "eigen" : s.id.startsWith("imp-") ? "import" : "muster", editable: s.owner === user.id,
         units: s.units.map((u) => ({ kind: u.title.slice(0, 3), title: u.title, arrivesAt: u.arrivesAt, seats: u.seats })),
       })),
     });
@@ -323,6 +323,40 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     detachPatients(db, id);
     scenarios[id] = { ...sc, owner: user.id };
     return send(res, 201, { id });
+  }
+  // A6: Szenario als Datei exportieren und importieren.
+  if ((m = route.match(/^GET \/api\/scenarios\/([a-z0-9-]{1,64})\/export$/))) {
+    const sc = scenarios[m[1]];
+    if (!sc) throw new HttpError(404, "unbekanntes Szenario");
+    const bundle: ScenarioBundle = {
+      format: "dps-szenario", version: 1, exported: new Date().toISOString().slice(0, 10),
+      scenario: { title: sc.title, situation: sc.situation ?? null, patients: sc.patients, units: sc.units },
+      patients: sc.patients.map((id) => (drafts.get(id)?.patient ?? lib.defs.patients[id]) as Record<string, unknown>),
+    };
+    return send(res, 200, bundle);
+  }
+  if (route === "POST /api/scenarios/import") {
+    const b = ScenarioBundle.parse(await body(req, 2_000_000));
+    // Jeder Fall wird eine eigene Kopie mit neuer ID, geprüft wie ein Fall aus dem Editor; fehlerhafte bleiben als Entwurf draußen.
+    const ids = new Map<string, string>();
+    const failed: { title: string; errors: string[] }[] = [];
+    for (const raw of b.patients) {
+      const id = `imp-${crypto.randomUUID().slice(0, 6)}`;
+      const p = { ...raw, id, version: 1 };
+      const report = check(p, lib.defs.actions);
+      const d: Draft = { id, owner: user.id, created: Date.now(), brief: `Import: ${String(raw.title ?? "")}`, patient: p, report, origin: "import" };
+      saveDraft(db, d);
+      drafts.set(id, d);
+      if (report.ok) (lib.defs.patients[id] = Patient.parse(p)), ids.set(String(raw.id), id);
+      else failed.push({ title: String(raw.title ?? raw.id ?? "?"), errors: report.errors });
+    }
+    const patients = b.scenario.patients.flatMap((old) => ids.get(old) ?? []);
+    if (!patients.length) throw new HttpError(400, `kein Fall hat die Prüfung bestanden: ${failed.map((f) => `${f.title} (${f.errors[0] ?? "?"})`).join("; ")}`);
+    const id = `imp-s${crypto.randomUUID().slice(0, 5)}`;
+    const sc = { id, title: b.scenario.title, situation: b.scenario.situation ?? undefined, patients, units: b.scenario.units };
+    saveScenario(db, user.id, "Import", sc, Date.now());
+    scenarios[id] = { ...sc, owner: user.id };
+    return send(res, 201, { id, imported: patients.length, failed });
   }
   if (route === "POST /api/scenarios") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet");

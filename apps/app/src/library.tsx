@@ -1,9 +1,9 @@
 // Bibliothek für Praxisanleiter: spielbare Fälle (Muster und KI-Entwürfe), 100 Fallideen, 100 Szenarien.
 // Übersicht durch Suche, Filter (Status, Kategorie, Sichtungskategorie) und Gruppen je Kategorie.
 import { useEffect, useState, type ReactNode } from "react";
-import { Image, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Image, Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Findings, Patient, Sk } from "@dps/schema";
-import { api, httpBase, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
+import { api, download, httpBase, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
 import { Button, Card, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
 import { SHAPES, TILE } from "./fun";
 import { CaseEditor, ScenarioEditor } from "./editor";
@@ -329,6 +329,8 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
   const [play, setPlay] = useState<string | null>(null); // spielbares Szenario (id), damit der Fortschritt live bleibt
   const [gen, setGen] = useState<null | { title: string; brief: string; count?: number; scenario?: string }>(null);
   const [edit, setEdit] = useState<LibScenario | "neu" | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
   const cases = lib.lib?.patients ?? [];
   const playable = lib.lib?.scenarios ?? [];
   const playing = playable.find((s) => s.id === play);
@@ -342,12 +344,13 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 10, paddingBottom: 20 }}>
         <Title t={t}>Szenarien</Title>
         <Button t={t} label="Neues Szenario (Formular)" onPress={() => setEdit("neu")} />
+        <Button t={t} label="Szenario aus Datei importieren" onPress={() => setImporting(true)} />
         <Button t={t} label="Neues Szenario mit KI" disabled={!ideas?.generator} note={ideas?.generator ? undefined : "KI-Fallgenerator ist auf dem Server nicht eingerichtet"}
           onPress={() => setGen({ title: "Neues Szenario mit KI", brief: "", count: 6 })} />
         <Text style={{ color: t.text, fontWeight: "900", fontSize: 20, marginTop: 12 }}>Spielbar · {playable.length}</Text>
         {playable.map((s) => (
           <Row key={s.id} t={t} color={s.origin === "ki" ? t.gold : t.line} title={s.title} onPress={() => setPlay(s.id)}
-            lines={[{ text: `${s.patients.length} Patienten · ${s.origin === "ki" ? "KI-Szenario" : "Muster"}` }, ...(s.job ? [jobLine(t, s.job)] : [])]} />
+            lines={[{ text: `${s.patients.length} Patienten · ${ORIGIN[s.origin]}` }, ...(s.job ? [jobLine(t, s.job)] : [])]} />
         ))}
         <Text style={{ color: t.text, fontWeight: "900", fontSize: 20, marginTop: 12 }}>Ideen · {shown.length} von {all.length}</Text>
         <Field t={t} label="Suche (Titel, Lage, Besonderheit)" value={q} onChange={setQ} />
@@ -395,10 +398,14 @@ function ScenarioList({ t, session, ideas, lib }: { t: Theme; session: Session; 
             );
           })}
           <Button t={t} label={playing.editable ? "Bearbeiten" : "Als Kopie bearbeiten"} onPress={() => setEdit(playing)} />
+          <Button t={t} label="Als Datei exportieren" note="zum Austausch mit anderen Organisationen"
+            onPress={() => download(session, `/api/scenarios/${playing.id}/export`, `dps-szenario-${playing.id}.json`).then(() => setExportError(null), (e: Error) => setExportError(e.message))} />
+          {exportError && <Text style={{ color: t.red }}>{exportError}</Text>}
           <Button t={t} strong label="Patient dazugenerieren" disabled={!ideas?.generator} note={ideas?.generator ? undefined : "KI-Fallgenerator ist nicht eingerichtet"}
             onPress={() => setGen({ title: `Patient für „${playing.title}“`, brief: "", scenario: playing.id })} />
         </Sheet>
       )}
+      {importing && <ImportSheet t={t} session={session} onClose={() => setImporting(false)} onDone={(id) => (setImporting(false), setPlay(id), lib.load())} />}
       {gen && <ScenarioGenSheet t={t} session={session} {...gen} onClose={() => setGen(null)} onDone={(id) => (setGen(null), setPlay(id), lib.load())} />}
     </>
   );
@@ -450,6 +457,49 @@ function ScenarioGenSheet({ t, session, title, brief: initial, count: initialCou
       )}
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <Button t={t} strong label={busy ? "KI arbeitet …" : scenario ? "Patient erzeugen" : "Szenario erzeugen"} disabled={busy || brief.trim().length < 10} onPress={run} />
+    </Sheet>
+  );
+}
+
+const ORIGIN: Record<LibScenario["origin"], string> = { muster: "Muster", ki: "KI-Szenario", eigen: "eigenes Szenario", import: "importiert" };
+
+// A6: Szenario-Datei einlesen. Im Web per Dateiauswahl, auf dem Handy den Inhalt einfügen.
+// Jeder Fall wird geprüft und bekommt eine eigene ID; spielbar erst nach deiner Freigabe unter „Fälle“.
+function ImportSheet({ t, session, onClose, onDone }: { t: Theme; session: Session; onClose: () => void; onDone: (id: string) => void }) {
+  const [file, setFile] = useState<{ name: string; text: string } | null>(null);
+  const [pasted, setPasted] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<{ id: string; imported: number; failed: { title: string; errors: string[] }[] } | null>(null);
+  const pick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json,application/json";
+    input.onchange = () => void input.files?.[0]?.text().then((text) => (setFile({ name: input.files![0].name, text }), setError(null)));
+    input.click();
+  };
+  const run = () => {
+    let bundle: unknown;
+    try { bundle = JSON.parse(file?.text ?? pasted); } catch { return setError("Das ist keine gültige Szenario-Datei (JSON)."); }
+    api<NonNullable<typeof result>>(session, "/api/scenarios/import", bundle).then(setResult, (e: Error) => setError(e.message));
+  };
+  if (result)
+    return (
+      <Sheet t={t} title="Import fertig" onClose={() => onDone(result.id)}>
+        <Text style={{ color: t.text }}>{result.imported} {result.imported === 1 ? "Fall" : "Fälle"} übernommen. Prüfe und gib sie unter „Fälle“ frei, dann sind sie in Übungen wählbar.</Text>
+        {result.failed.map((f, i) => <Text key={i} style={{ color: t.red }}>Nicht übernommen: {f.title} – {f.errors.join("; ")}</Text>)}
+        <Button t={t} strong label="Zum Szenario" onPress={() => onDone(result.id)} />
+      </Sheet>
+    );
+  return (
+    <Sheet t={t} title="Szenario importieren" onClose={onClose}>
+      <Text style={{ color: t.quiet }}>Eine Datei, die mit „Als Datei exportieren“ entstanden ist (auch aus einer anderen Organisation).</Text>
+      {Platform.OS === "web" && <Button t={t} label={file ? `Datei: ${file.name} (${Math.round(file.text.length / 1024)} KB)` : "Datei wählen"} onPress={pick} />}
+      {!file && (
+        <TextInput value={pasted} onChangeText={setPasted} multiline placeholder="… oder Inhalt der Datei hier einfügen" placeholderTextColor={t.quiet} accessibilityLabel="Inhalt der Szenario-Datei"
+          style={{ minHeight: 120, maxHeight: 240, borderWidth: 2, borderColor: t.edge, backgroundColor: t.card, borderRadius: 12, padding: 12, color: t.text, fontFamily: Platform.OS === "web" ? "monospace" : undefined }} />
+      )}
+      {error && <Text style={{ color: t.red }}>{error}</Text>}
+      <Button t={t} strong label="Importieren" disabled={!file && !pasted.trim()} onPress={run} />
     </Sheet>
   );
 }

@@ -1,9 +1,9 @@
 // F4/F6: Nach der Übung Minute für Minute nachspielen (Debriefing) und das Ereignisprotokoll als CSV mitnehmen.
 import { useEffect, useState } from "react";
-import { Platform, Pressable, Share, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import type { Sk } from "@dps/schema";
 import { Button, Card, Sheet, clock, skColor, type Theme } from "./ui";
-import { api, httpBase, type Session } from "./api";
+import { api, download, type Session } from "./api";
 
 type Frame = { t: number; patients: { id: string; phase: string; triage: Sk | null; target: Sk; place: string; dead: boolean; left: boolean }[] };
 type Replay = {
@@ -74,14 +74,4 @@ export function ReplaySheet({ t, session, code, onClose }: { t: Theme; session: 
   );
 }
 
-// Web: Datei herunterladen. Handy: über das Teilen-Menü weitergeben (Mail, Dateien …).
-export async function exportCsv(session: Session, code: string) {
-  const res = await fetch(`${httpBase(session.server)}/api/exercises/${code}/export.csv`, { headers: { authorization: `Bearer ${session.token}` } });
-  if (!res.ok) throw new Error(`Export fehlgeschlagen (${res.status})`);
-  if (Platform.OS !== "web") return void (await Share.share({ title: `dPS-Protokoll ${code}`, message: await res.text() }));
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(await res.blob()); // blob statt text(): text() würde das BOM für Excel abschneiden
-  a.download = `dps-${code}.csv`;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-}
+export const exportCsv = (session: Session, code: string) => download(session, `/api/exercises/${code}/export.csv`, `dps-${code}.csv`);

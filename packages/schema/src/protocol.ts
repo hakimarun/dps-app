@@ -68,6 +68,20 @@ export const ScenarioSaveReq = z.object({
 });
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
+// A6: Szenario als Datei zum Austausch zwischen Organisationen: Lage, Fahrzeuge und alle Fallverläufe, ohne Konto- oder Personendaten.
+export const ScenarioBundle = z.object({
+  format: z.literal("dps-szenario"),
+  version: z.literal(1),
+  exported: z.string().optional(),
+  scenario: z.object({
+    title: z.string().min(1).max(200),
+    situation: z.string().max(2000).nullable().optional(),
+    patients: z.array(z.string()).min(1).max(60),
+    units: z.array(z.object({ id: z.string(), title: z.string(), arrivesAt: z.number().min(0), seats: z.number().int().min(0).default(0), inventory: z.record(z.string(), z.number().int().min(0)) })).min(1).max(30),
+  }),
+  patients: z.array(z.record(z.string(), z.unknown())).min(1).max(60), // Fallverläufe im Szenarioformat, beim Import geprüft
+});
+export type ScenarioBundle = z.infer<typeof ScenarioBundle>;
 // E7: Notiz eines Beobachters (Beobachter-Code der Übung, ohne Konto).
 export const NoteReq = z.object({
   by: z.string().trim().min(1).max(40),

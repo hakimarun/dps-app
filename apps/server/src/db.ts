@@ -119,14 +119,14 @@ export function deleteExercisesBefore(db: Db, before: number): string[] {
 // KI-Entwürfe für die Bibliothek (G8/G9).
 export type Draft = {
   id: string; owner: string; created: number; brief: string; patient: unknown; report: { ok: boolean; errors: string[]; warnings: string[]; sk: string | null };
-  origin?: "ki" | "eigen"; // aus dem KI-Generator oder dem Formular-Editor
+  origin?: "ki" | "eigen" | "import"; // aus dem KI-Generator, dem Formular-Editor oder einer Szenario-Datei (A6)
 };
 export function saveDraft(db: Db, d: Draft) {
   db.prepare("insert or replace into drafts (id, owner, created, brief, patient, report, origin) values (?, ?, ?, ?, ?, ?, ?)")
     .run(d.id, d.owner, d.created, d.brief, JSON.stringify(d.patient), JSON.stringify(d.report), d.origin ?? "ki");
 }
 export function loadDrafts(db: Db): Draft[] {
-  const rows = db.prepare("select * from drafts order by created").all() as { id: string; owner: string; created: number; brief: string; patient: string; report: string; origin: "ki" | "eigen" }[];
+  const rows = db.prepare("select * from drafts order by created").all() as { id: string; owner: string; created: number; brief: string; patient: string; report: string; origin: "ki" | "eigen" | "import" }[];
   return rows.map((r) => ({ ...r, patient: JSON.parse(r.patient), report: JSON.parse(r.report) }));
 }
 

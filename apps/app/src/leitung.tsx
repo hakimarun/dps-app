@@ -12,7 +12,7 @@ import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
 import { ReplaySheet, exportCsv } from "./replay";
 
-type ExerciseInfo = { code: string; title: string; status: Status; patients: string[] };
+type ExerciseInfo = { code: string; title: string; status: Status; patients: string[]; observer: string | null };
 type Clock = Extract<ServerMsg, { type: "clock" }>;
 
 const STATUS: Record<Status, string> = { ready: "bereit", running: "läuft", paused: "pausiert", ended: "beendet" };
@@ -106,7 +106,7 @@ function Exercises({ t, session, onOpen }: { t: Theme; session: Session; onOpen:
         <Card key={ex.code} t={t} color={STATUS_COLOR[ex.status]} onPress={() => onOpen(ex.code)}>
           <Text style={{ color: t.text, fontWeight: "900", fontSize: 18, letterSpacing: 1 }}>{ex.code}</Text>
           <Text style={{ color: t.text, fontWeight: "600" }}>{ex.title}</Text>
-          <Text style={{ color: t.quiet }}>{STATUS[ex.status]} · {ex.patients.length} Patienten</Text>
+          <Text style={{ color: t.quiet }}>{STATUS[ex.status]} · {ex.patients.length} Patienten{ex.observer ? ` · Beobachter-Code ${ex.observer}` : ""}</Text>
         </Card>
       ))}
       {list?.length === 0 && <Text style={{ color: t.quiet }}>Noch keine Übungen.</Text>}
@@ -268,7 +268,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
             <Text style={{ color: STAGE, fontWeight: "900" }}>{clock(exerciseMinutes(w.clock, w.offset, now) * 60000)} · {STATUS[st]}</Text>
           </View>
         </View>
-        <Text style={{ color: "#FFFFFF", opacity: 0.85 }}>{v?.title ?? "verbinde …"}</Text>
+        <Text style={{ color: "#FFFFFF", opacity: 0.85 }}>{v?.title ?? "verbinde …"}{v?.observer ? ` · Beobachter-Code ${v.observer}` : ""}</Text>
       </View>
       <View style={{ paddingHorizontal: 20, gap: 12 }}>
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
@@ -547,6 +547,7 @@ function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; ses
           <Text style={{ color: t.text, fontWeight: "600" }}>{h.name} ({h.unit}) · {h.points} Punkte · {Math.round(h.busyShare * 100)} % in Maßnahmen</Text>
           {h.badges.length > 0 && <View style={{ flexDirection: "row", gap: 6, flexWrap: "wrap" }}>{h.badges.map((b) => <Badge key={b} t={t} label={b} />)}</View>}
           {h.improve.map((x, i) => <Text key={i} style={{ color: t.quiet }}>• {x}</Text>)}
+          {h.notes?.map((x, i) => <Text key={`n${i}`} style={{ color: t.text }}>◦ {x}</Text>)}
         </View>
       ))}
       {ev.released ? (

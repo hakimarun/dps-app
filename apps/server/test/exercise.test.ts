@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { caseOfDay, control, createExercise, csv, inject, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
+import { caseOfDay, control, createExercise, csv, inject, observerView, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
 import { evaluate } from "../src/evaluation.ts";
 
@@ -227,4 +227,19 @@ test("Eingriffe der Leitung: Phase setzen läuft von dort weiter, Nachricht erre
   assert.ok(leitungView(ex, 5 * MIN).patients[0].phases.includes("2-versorgt"));
   const fresh = createExercise(header, lib.defs);
   assert.equal(inject(fresh, { type: "message", text: "x" }, 0), "Übung noch nicht gestartet");
+});
+
+test("Beobachter-Notizen: im Protokoll, in der Beobachter-Sicht und im Bericht der Person, auch nach dem Ende", async () => {
+  const { evaluate } = await import("../src/evaluation.ts");
+  const { ex, p } = joined();
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  assert.equal(inject(ex, { type: "note", by: "Mara", text: "Tourniquet sauber und schnell", kind: "gut", helper: p, patient: "p01" }, 3 * MIN), null);
+  assert.equal(inject(ex, { type: "note", by: "Mara", text: "x", kind: "note", helper: "niemand", patient: null }, 3 * MIN), "unbekannter Helfer");
+  control(ex, "end", 10 * MIN);
+  assert.equal(inject(ex, { type: "note", by: "Mara", text: "Übergabe zu leise", kind: "besser", helper: p, patient: null }, 11 * MIN), null);
+  const v = observerView(ex, 11 * MIN);
+  assert.equal(v.notes[0].text, "Beobachtung besser (Mara) zu Anna: Übergabe zu leise");
+  assert.equal(v.notes[1].text, "Beobachtung gut (Mara) zu Anna an P01: Tourniquet sauber und schnell");
+  assert.deepEqual(evaluate(ex, 11 * MIN).helpers[0].notes, ["Gut: P01: Tourniquet sauber und schnell", "Besser: Übergabe zu leise"]);
+  assert.equal(inject(ex, { type: "message", text: "zu spät" }, 11 * MIN), "Übung beendet");
 });

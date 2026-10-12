@@ -9,6 +9,7 @@ import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
 import { Solo, type SoloGame } from "./src/solo";
 import { ProfileScreen, addToProfile } from "./src/profile";
+import { Observe } from "./src/observe";
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
@@ -41,7 +42,7 @@ const STATUS: Record<Status, string> = { ready: "noch nicht gestartet", running:
 
 export default function App() {
   const t = useColorScheme() === "dark" ? dark : light;
-  const [role, setRole] = useState<"helfer" | "leitung" | "solo" | "profil" | null>(null);
+  const [role, setRole] = useState<"helfer" | "leitung" | "solo" | "profil" | "beobachter" | null>(null);
   useEffect(() => {
     AsyncStorage.getItem("dps:role").then((r) => (r === "helfer" || r === "leitung") && setRole(r));
   }, []);
@@ -49,7 +50,7 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: 48 }}>
       <StatusBar style="auto" />
-      {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "profil" ? <ProfileScreen onExit={() => choose(null)} /> : role === "solo" ? (
+      {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "profil" ? <ProfileScreen onExit={() => choose(null)} /> : role === "beobachter" ? <Observe t={t} onExit={() => choose(null)} /> : role === "solo" ? (
         <Solo onExit={() => choose(null)} play={(game) => <Helfer t={t} onExit={() => choose(null)} solo={game} />} />
       ) : role === "leitung" ? <Leitung t={t} onExit={() => choose(null)} /> : (
         <Stage color={FUN.red} style={{ marginTop: -48 }}>
@@ -60,7 +61,10 @@ export default function App() {
             <FlyIn delay={400}><FunButton big label="Ich übe (Helfer)" onPress={() => choose("helfer")} /></FlyIn>
             <FlyIn delay={450}><FunButton label="Fall des Tages (allein üben)" color={FUN.green} text="#FFFFFF" onPress={() => choose("solo")} /></FlyIn>
             <FlyIn delay={500}><FunButton label="Ich leite (Praxisanleiter)" color={FUN.purple} text="#FFFFFF" onPress={() => choose("leitung")} /></FlyIn>
-            <Text style={{ color: "#FFFFFF", fontWeight: "800", textAlign: "center", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("profil")}>Mein Profil</Text>
+            <View style={{ flexDirection: "row", justifyContent: "center", gap: 24 }}>
+              <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("profil")}>Mein Profil</Text>
+              <Text style={{ color: "#FFFFFF", fontWeight: "800", textDecorationLine: "underline" }} accessibilityRole="button" onPress={() => choose("beobachter")}>Ich beobachte</Text>
+            </View>
             {/* N13 */}
             <Text style={{ color: "#FFFFFF", opacity: 0.85, fontSize: 13, textAlign: "center", marginTop: 8 }}>
               Nur für Ausbildung und Übung. Kein Medizinprodukt – nicht im Realeinsatz verwenden.
@@ -482,6 +486,12 @@ function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"
             {list(me.improve)}
           </View>
         </Pop>
+      )}
+      {me.notes?.length > 0 && (
+        <View style={{ gap: 4, borderWidth: 2, borderColor: t.edge, borderRadius: 12, padding: 14 }}>
+          <Text style={{ color: t.text, fontWeight: "600" }}>Beobachtet</Text>
+          {list(me.notes)}
+        </View>
       )}
       <Text style={{ color: t.quiet }}>
         {n(me.patients, "Patient", "Patienten")} · {n(me.actions, "Maßnahme", "Maßnahmen")} · {n(me.triages, "Sichtung", "Sichtungen")} · {Math.round(me.busyShare * 100)} % der Zeit in Maßnahmen

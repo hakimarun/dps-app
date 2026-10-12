@@ -39,7 +39,7 @@ function compute(ex: Exercise, T: number): Evaluation {
   const acc = new Map<string, Acc>();
   for (const [id, h] of Object.entries(end.participants))
     acc.set(id, {
-      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [],
+      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [], notes: [],
         skills: Object.fromEntries(AXES.map((x) => [x, { ok: 0, total: 0 }])) as Skills },
       good: [], improve: [], patients: new Set(), badges: new Set(), scarce: { used: false, wasted: false },
     });
@@ -176,6 +176,12 @@ function compute(ex: Exercise, T: number): Evaluation {
     });
     skill(who, "ressourcen", !waiting);
     if (waiting) add(who, 0, undefined, [2, `${id.toUpperCase()} (Soll ${tgt}) vor ${waiting.toUpperCase()} (Soll ${targetSk(s, waiting)}) abtransportiert`]);
+  }
+
+  // F5: Beobachter-Notizen zu einer Person erscheinen in ihrem Bericht.
+  for (const r of ofType("note")) {
+    const { helper, kind, text, patient } = r.event;
+    if (helper) acc.get(helper)?.report.notes.push(`${kind === "gut" ? "Gut: " : kind === "besser" ? "Besser: " : ""}${patient ? `${patient.toUpperCase()}: ` : ""}${text}`);
   }
 
   // Auslastung: Zeit in Maßnahmen geteilt durch Zeit seit Beitritt.

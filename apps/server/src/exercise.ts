@@ -3,7 +3,7 @@
 // Aktionen an ihrer echten Zeit einsortieren. Keine Ein- und Ausgabe hier, das Speichern machen onRecord/onControl.
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { TOPIC_LABEL, type ClientMsg, type LeitungView, type Role, type Status, type Trupp, type View } from "@dps/schema/protocol";
+import { TOPIC_LABEL, type ClientMsg, type LeitungView, type ObserverView, type Role, type Status, type Trupp, type View } from "@dps/schema/protocol";
 import type { Ai } from "./ai.ts";
 import { askPatient } from "./dialog.ts";
 import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
@@ -21,7 +21,7 @@ export function loadLibrary(dir: URL): Library {
 
 export type Rec = { id: string; t: number; event: Event; name?: string; trupp?: string };
 export type Control = { at: number; type: "start" | "pause" | "resume" | "end" | "release" }; // release: Berichte freigegeben
-export type Header = { code: string; owner: string; scenario: Scenario; settings: Settings; seed: number; created: number; trupps?: Trupp[] };
+export type Header = { code: string; owner: string; scenario: Scenario; settings: Settings; seed: number; created: number; trupps?: Trupp[]; observer?: string }; // observer: Beobachter-Code (E7)
 export type Exercise = Header & {
   defs: Defs;
   records: Rec[];
@@ -262,7 +262,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
   }));
   const trupps = ex.trupps!.map((tr) => ({ ...tr, unit: unit(tr.unit), members: [...ex.truppOf].filter(([, c]) => c === tr.code).map(([pid]) => name(pid)) }));
   const events = timeline(ex, t, generated).reverse().slice(0, 30).map((e) => ({ t: e.t, text: e.text }));
-  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, events };
+  return { code: ex.code, title: ex.scenario.title, status: status(ex), t, counts, patients, helpers, trupps, events, observer: ex.observer ?? null };
 }
 
 // Alle Ereignisse bis t mit Text, aufsteigend: Aktionen der Helfer und echte Phasenwechsel der Patienten.
@@ -287,6 +287,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;
       case "set": return `Leitung setzt ${P(e.patient)} in Phase ${e.to}`;
       case "message": return `Leitung an alle: ${e.text}`;
+      case "note": return `${NOTE_LABEL[e.kind]} (${e.by})${e.helper ? ` zu ${name(e.helper)}` : ""}${e.patient ? `${e.helper ? " an" : " zu"} ${P(e.patient)}` : ""}: ${e.text}`;
     }
   };
   // Nur echte Phasenwechsel; die Engine meldet auch erneute Regelprüfungen in derselben Phase.
@@ -360,15 +361,32 @@ export const SOLO = "solo";
 export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung
 
 // E5: Eingriff der Leitung (Phase setzen, Nachricht an alle) als protokolliertes Ereignis zur aktuellen Übungszeit.
-export function inject(ex: Exercise, e: { type: "set"; patient: string; to: string } | { type: "message"; text: string }, now: number): string | null {
+export const NOTE_LABEL = { note: "Beobachtung", gut: "Beobachtung gut", besser: "Beobachtung besser" } as const;
+export function inject(
+  ex: Exercise,
+  e: { type: "set"; patient: string; to: string } | { type: "message"; text: string } | Omit<Extract<Event, { type: "note" }>, "t">,
+  now: number,
+): string | null {
   const st = status(ex);
-  if (st === "ready" || st === "ended") return NOT_RUNNING[st];
+  if (st === "ready" || (st === "ended" && e.type !== "note")) return NOT_RUNNING[st]; // Notizen auch nach dem Ende, vor dem Debriefing
   const t = minutes(ex, now);
-  const event: Event = { ...e, t };
+  const event = { ...e, t } as Event;
   const error = validate(stateAt(ex, t), event);
   if (error) return error;
   const r: Rec = { id: crypto.randomUUID(), t, event };
   addRecord(ex, r);
   ex.onRecord?.(r);
   return null;
+}
+
+// E7: Was ein Beobachter sieht: Patienten und Helfer zum Zuordnen, dazu alle Notizen.
+export function observerView(ex: Exercise, now: number): ObserverView {
+  const t = minutes(ex, now);
+  const s = stateAt(ex, t);
+  return {
+    title: ex.scenario.title, status: status(ex), t,
+    patients: ex.scenario.patients.map((id) => ({ id, title: ex.defs.patients[id].title })),
+    helpers: Object.keys(s.participants).map((id) => ({ id, name: ex.names.get(id) ?? "?", trupp: truppOf(ex, id)?.name ?? null })),
+    notes: timeline(ex, t).filter((e) => e.type === "note").reverse().map((e) => ({ t: e.t, text: e.text })),
+  };
 }

@@ -68,6 +68,20 @@ export const ScenarioSaveReq = z.object({
 });
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
+// E7: Notiz eines Beobachters (Beobachter-Code der Übung, ohne Konto).
+export const NoteReq = z.object({
+  by: z.string().trim().min(1).max(40),
+  text: z.string().trim().min(1).max(300),
+  kind: z.enum(["note", "gut", "besser"]).default("note"),
+  helper: z.string().max(64).nullable().default(null),
+  patient: z.string().max(64).nullable().default(null),
+});
+export type ObserverView = {
+  title: string; status: Status; t: number;
+  patients: { id: string; title: string }[];
+  helpers: { id: string; name: string; trupp: string | null }[];
+  notes: { t: number; text: string }[]; // als Ereignistext, neueste zuerst
+};
 // E5: Eingriffe der Leitung während der Übung.
 export const InjectReq = z.discriminatedUnion("type", [
   z.object({ type: z.literal("set"), patient: z.string().max(64), to: z.string().max(64) }),
@@ -96,6 +110,7 @@ export type HelperReport = {
   busyShare: number; // Anteil der Zeit in Maßnahmen, 0..1
   good: string[]; // höchstens 3
   improve: string[]; // höchstens 3, wichtigste zuerst
+  notes: string[]; // Beobachtungen zu dieser Person (F5)
   skills: Skills;
 };
 
@@ -160,6 +175,7 @@ export type LeitungView = {
   helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null; idle: number | null }[];
   trupps: (Trupp & { members: string[] })[];
   events: { t: number; text: string }[]; // neueste zuerst
+  observer: string | null; // Beobachter-Code (E7)
 };
 
 export type ActionInfo = { id: string; title: string; minutes: number | null; material: Record<string, number>; group: string };

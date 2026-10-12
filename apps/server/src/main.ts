@@ -11,12 +11,12 @@ import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
 import QRCode from "qrcode";
 import { z } from "zod";
-import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, InjectReq, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
+import { ApproveReq, CaseSaveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, InjectReq, NoteReq, LoginReq, ScenarioGenReq, ScenarioSaveReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
@@ -47,6 +47,7 @@ const exercises = new Map(loadExercises(db, lib.defs).map((ex) => [ex.code, ex])
 setInterval(() => {
   for (const code of deleteExercisesBefore(db, Date.now() - RETENTION_MS)) {
     exercises.get(code)?.trupps?.forEach((tr) => truppCodes.delete(tr.code));
+    observerCodes.delete(exercises.get(code)?.observer ?? "");
     exercises.delete(code);
   }
 }, 24 * 60 * 60_000).unref();
@@ -66,6 +67,12 @@ const startSk = (p: Patient) => (p.phases[p.start].dead ? "EX" : triage({ ...p.b
 const truppCodes = new Map<string, { ex: Exercise; trupp: Trupp }>();
 const indexTrupps = (ex: Exercise) => ex.trupps!.forEach((trupp) => truppCodes.set(trupp.code, { ex, trupp }));
 exercises.forEach(indexTrupps);
+// E7: Beobachter-Codes zeigen auf ihre Übung (nur Notizen schreiben und lesen).
+const observerCodes = new Map<string, Exercise>();
+const indexObserver = (ex: Exercise) => ex.observer && observerCodes.set(ex.observer, ex);
+exercises.forEach(indexObserver);
+const codeTaken = (c: string) => exercises.has(c) || truppCodes.has(c) || observerCodes.has(c);
+const NOTES_MAX = 500; // je Übung
 const resolve = (code: string) => {
   const c = code.toUpperCase();
   const ex = exercises.get(c);
@@ -182,13 +189,28 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     return send(res, 200, { token: r.token });
   }
 
+  // E7: Beobachter mit Beobachter-Code (ohne Konto): Lage zum Zuordnen lesen, Notizen schreiben.
+  if ((m = route.match(/^GET \/api\/observe\/([A-Z0-9]{6})$/))) {
+    const ex = observerCodes.get(m[1]);
+    if (!ex) throw new HttpError(404, "unbekannter Beobachter-Code");
+    return send(res, 200, observerView(ex, Date.now()));
+  }
+  if ((m = route.match(/^POST \/api\/observe\/([A-Z0-9]{6})\/notes$/))) {
+    const ex = observerCodes.get(m[1]);
+    if (!ex) throw new HttpError(404, "unbekannter Beobachter-Code");
+    if (ex.records.filter((r) => r.event.type === "note").length >= NOTES_MAX) throw new HttpError(429, "zu viele Notizen in dieser Übung");
+    const error = inject(ex, { type: "note", ...NoteReq.parse(await body(req)) }, Date.now());
+    if (error) throw new HttpError(409, error);
+    broadcast(ex);
+    return send(res, 201, { ok: true });
+  }
   // Fall des Tages (Solo): ohne Anmeldung, nur im Speicher. Alte Fälle nach 2 h weg, höchstens SOLO_MAX gleichzeitig.
   if (route === "POST /api/solo") {
     const now = Date.now();
     const solo = [...exercises.values()].filter((ex) => ex.owner === SOLO);
     for (const ex of solo) if (now - ex.created > 2 * 60 * 60_000) exercises.delete(ex.code);
     if (solo.filter((ex) => exercises.has(ex.code)).length >= SOLO_MAX) throw new HttpError(503, "Gerade üben sehr viele, bitte später erneut versuchen");
-    const ex = createExercise(soloHeader(lib, newCode((c) => exercises.has(c) || truppCodes.has(c)), now, randomInt(1, 2 ** 31)), lib.defs);
+    const ex = createExercise(soloHeader(lib, newCode(codeTaken), now, randomInt(1, 2 ** 31)), lib.defs);
     control(ex, "start", now);
     exercises.set(ex.code, ex);
     return send(res, 201, { code: ex.code, patient: ex.scenario.patients[0] });
@@ -330,7 +352,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   }
   if (route === "GET /api/exercises") {
     const mine = [...exercises.values()].filter((ex) => ex.owner === user.id).sort((a, b) => b.created - a.created);
-    return send(res, 200, mine.map((ex) => ({ code: ex.code, title: ex.scenario.title, status: status(ex), patients: ex.scenario.patients, created: ex.created, settings: ex.settings, trupps: ex.trupps })));
+    return send(res, 200, mine.map((ex) => ({ code: ex.code, title: ex.scenario.title, status: status(ex), patients: ex.scenario.patients, created: ex.created, settings: ex.settings, trupps: ex.trupps, observer: ex.observer ?? null })));
   }
   if (route === "POST /api/exercises") {
     const r = CreateExerciseReq.parse(await body(req));
@@ -339,7 +361,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const mine = myApprovals(db, user.id);
     const missing = r.patients.filter((id) => !lib.defs.patients[id] || mine.get(id) !== lib.defs.patients[id].version);
     if (missing.length) throw new HttpError(400, `nicht von dir freigegeben: ${missing.join(", ")}`);
-    const taken = (c: string) => exercises.has(c) || truppCodes.has(c) || trupps.some((t) => t.code === c);
+    const taken = (c: string) => codeTaken(c) || trupps.some((t) => t.code === c);
     // Trupps: Transporttrupps auf Fahrzeuge mit Plätzen verteilen, die übrigen reihum auf alle Einheiten.
     const trupps: Trupp[] = [];
     for (const role of ["sichtung", "behandlung", "transport"] as const) {
@@ -348,12 +370,14 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
         trupps.push({ code: newCode(taken), name: `${ROLE_LABEL[role]} ${i + 1}`, role, unit: units[i % units.length].id });
     }
     const code = newCode(taken);
+    const observer = newCode((c) => taken(c) || c === code);
     const ex = saveExercise(db, {
       code, owner: user.id, scenario: { ...sc, patients: r.patients },
-      settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps,
+      settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps, observer,
     }, lib.defs);
     exercises.set(code, ex);
     indexTrupps(ex);
+    indexObserver(ex);
     return send(res, 201, { code });
   }
   if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/evaluation$/))) {

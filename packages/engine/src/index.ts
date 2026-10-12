@@ -21,7 +21,9 @@ export type Event =
   | { t: number; type: "phase"; patient: string; to: string }
   // Eingriffe der Leitung (E5): Patient von Hand in eine Phase setzen, Nachricht an alle Helfer (z. B. Lageänderung).
   | { t: number; type: "set"; patient: string; to: string }
-  | { t: number; type: "message"; text: string };
+  | { t: number; type: "message"; text: string }
+  // Beobachter-Notiz (E7): zu einem Helfer, einem Patienten oder allgemein; ändert den Zustand nicht.
+  | { t: number; type: "note"; by: string; text: string; kind: "note" | "gut" | "besser"; helper: string | null; patient: string | null };
 
 type Running = { action: string; patient: string; until: number | null; ok: boolean };
 export type PatientState = {
@@ -61,6 +63,8 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
 export function validate(s: State, e: Event): string | null {
   if (e.type === "phase") return "Phasenwechsel erzeugt nur die Engine";
   if (e.type === "message") return e.text.trim() ? null : "Nachricht fehlt";
+  if (e.type === "note")
+    return !e.text.trim() ? "Notiz fehlt" : e.helper && !s.participants[e.helper] ? "unbekannter Helfer" : e.patient && !s.patients[e.patient] ? "unbekannter Patient" : null;
   if (e.type === "set") return !s.patients[e.patient] ? "unbekannter Patient" : !s.defs.patients[e.patient].phases[e.to] ? "unbekannte Phase" : null;
   if (e.type === "join") return s.units[e.unit] ? (s.participants[e.participant] ? "schon beigetreten" : null) : "unbekannte Einheit";
   const h = s.participants[e.participant];
@@ -130,6 +134,7 @@ export function apply(s: State, e: Event): State {
       break;
     }
     case "message":
+    case "note":
       break;
     case "set":
     case "phase":

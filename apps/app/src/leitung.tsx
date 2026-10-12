@@ -1,7 +1,7 @@
 // Praxisanleiter (Meilenstein 3): Anmeldung per E-Mail-Code, Bibliothek mit eigener Freigabe,
 // Übung anlegen, QR-Zettel, Start/Pause/Ende und Live-Lage.
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Animated, Easing, Image, Linking, Pressable, ScrollView, Text, View } from "react-native";
+import { Animated, Easing, Image, Linking, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
@@ -10,7 +10,7 @@ import { Badge, Button, Card, Chip, Field, Logo, Sheet, Stars, Title, clock, lig
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
-import { ReplaySheet, exportCsv } from "./replay";
+import { ReplaySheet, exportCsv, openReport } from "./replay";
 
 type ExerciseInfo = { code: string; title: string; status: Status; patients: string[]; observer: string | null };
 type Clock = Extract<ServerMsg, { type: "clock" }>;
@@ -513,6 +513,8 @@ function EvaluationPanel({ t, session, code, onShow, onReplay }: { t: Theme; ses
         <View style={{ flex: 1 }}><Button t={t} label="Replay" onPress={onReplay} /></View>
         <View style={{ flex: 1 }}><Button t={t} label="Protokoll (CSV)" onPress={() => exportCsv(session, code).catch((e: Error) => setError(e.message))} /></View>
       </View>
+      <Button t={t} label="Bericht als PDF" disabled={Platform.OS !== "web"} note={Platform.OS === "web" ? "öffnet die Druckansicht: „Als PDF speichern“" : "in der Web-Ansicht am Laptop"}
+        onPress={() => openReport(session, code).catch((e: Error) => setError(e.message))} />
       {error && <Text style={{ color: t.red }}>{error}</Text>}
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Text style={{ color: t.text, fontWeight: "700", fontSize: 20 }}>Auswertung</Text>

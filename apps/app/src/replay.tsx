@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import type { Sk } from "@dps/schema";
 import { Button, Card, Sheet, clock, skColor, type Theme } from "./ui";
-import { api, download, type Session } from "./api";
+import { api, download, httpBase, type Session } from "./api";
 
 type Frame = { t: number; patients: { id: string; phase: string; triage: Sk | null; target: Sk; place: string; dead: boolean; left: boolean }[] };
 type Replay = {
@@ -75,3 +75,20 @@ export function ReplaySheet({ t, session, code, onClose }: { t: Theme; session: 
 }
 
 export const exportCsv = (session: Session, code: string) => download(session, `/api/exercises/${code}/export.csv`, `dps-${code}.csv`);
+
+// F6: Bericht als Druckseite in neuem Fenster, dort „Als PDF speichern“. Fenster sofort beim Tippen öffnen, sonst blockt der Browser es.
+export async function openReport(session: Session, code: string) {
+  const w = window.open("", "_blank");
+  if (!w) throw new Error("Pop-up blockiert: bitte für diese Seite erlauben");
+  try {
+    const res = await fetch(`${httpBase(session.server)}/api/exercises/${code}/report.html`, { headers: { authorization: `Bearer ${session.token}` } });
+    if (!res.ok) throw new Error(`Bericht fehlgeschlagen (${res.status})`);
+    w.document.write(await res.text());
+    w.document.close();
+    w.focus();
+    w.print();
+  } catch (e) {
+    w.close();
+    throw e;
+  }
+}

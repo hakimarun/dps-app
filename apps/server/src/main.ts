@@ -16,10 +16,10 @@ import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
-import { printPage } from "./print.ts";
+import { printPage, reportPage } from "./print.ts";
 import { imageGenFromEnv } from "./images.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
@@ -419,10 +419,12 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
     return send(res, 200, evaluate(ex, Date.now()));
   }
-  if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/(replay|export\.csv)$/))) {
+  if ((m = route.match(/^GET \/api\/exercises\/([A-Z0-9]{6})\/(replay|export\.csv|report\.html)$/))) {
     const ex = exercises.get(m[1]);
     if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
-    return m[2] === "replay" ? send(res, 200, replay(ex, Date.now())) : send(res, 200, csv(ex, Date.now()), "text/csv");
+    const now = Date.now();
+    if (m[2] === "report.html") return send(res, 200, reportPage(ex, evaluate(ex, now), timeline(ex, minutes(ex, now))), "text/html");
+    return m[2] === "replay" ? send(res, 200, replay(ex, now)) : send(res, 200, csv(ex, now), "text/csv");
   }
   if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/inject$/))) {
     const ex = exercises.get(m[1]);

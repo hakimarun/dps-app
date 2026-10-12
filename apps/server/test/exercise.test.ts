@@ -243,3 +243,18 @@ test("Beobachter-Notizen: im Protokoll, in der Beobachter-Sicht und im Bericht d
   assert.deepEqual(evaluate(ex, 11 * MIN).helpers[0].notes, ["Gut: P01: Tourniquet sauber und schnell", "Besser: Übergabe zu leise"]);
   assert.equal(inject(ex, { type: "message", text: "zu spät" }, 11 * MIN), "Übung beendet");
 });
+
+test("Bericht als Druckseite: Kennzahlen, Helfer und Protokoll, Namen escaped", async () => {
+  const { evaluate } = await import("../src/evaluation.ts");
+  const { reportPage } = await import("../src/print.ts");
+  const { timeline } = await import("../src/exercise.ts");
+  const { ex, p } = joined(running(), "<img src=x onerror=alert(1)>");
+  submit(ex, p, msg({ type: "scan", patient: "p01" }, MIN), MIN);
+  submit(ex, p, msg({ type: "start", patient: "p01", action: "tourniquet" }, 2 * MIN), 2 * MIN);
+  control(ex, "end", 20 * MIN);
+  const html = reportPage(ex, evaluate(ex, 20 * MIN), timeline(ex, 20));
+  assert.ok(!html.includes("<img src=x"), "Name nicht escaped");
+  assert.ok(html.includes("&lt;img src=x onerror=alert(1)&gt;"));
+  assert.match(html, /Tourniquet anlegen an P01/);
+  assert.match(html, /<td>20:00<\/td>|<td>1:00<\/td>/);
+});

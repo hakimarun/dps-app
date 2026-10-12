@@ -6,7 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Badge, Button, Card, Chip, Field, Logo, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
+import { Badge, Button, Card, Chip, Field, Logo, Sheet, Stars, Title, clock, light, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
@@ -224,10 +224,25 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   const [counting, setCounting] = useState(false);
   const [show, setShow] = useState<Evaluation | null>(null);
   const [replaying, setReplaying] = useState(false);
+  const [steer, setSteer] = useState<string | null>(null); // E5: Patient, dessen Phase die Leitung setzt
+  const [message, setMessage] = useState("");
+  const inject = (body: { type: "set"; patient: string; to: string } | { type: "message"; text: string }) =>
+    api(session, `/api/exercises/${code}/inject`, body).then(() => setError(null), (e: Error) => setError(e.message));
   const ctl = (type: "start" | "pause" | "resume" | "end") => api(session, `/api/exercises/${code}/control`, { type }).catch((e: Error) => setError(e.message));
   // J2: Vor dem Start die Lobby (auch für den Beamer), Start mit Countdown 3-2-1.
   if (show) return <Show t={t} ev={show} onClose={() => setShow(null)} />;
   if (replaying) return <ReplaySheet t={t} session={session} code={code} onClose={() => setReplaying(false)} />;
+  const steering = steer ? v?.patients.find((p) => p.id === steer) : null;
+  if (steering)
+    return (
+      <Sheet t={t} title={`${steering.id.toUpperCase()} steuern`} onClose={() => setSteer(null)}>
+        <Text style={{ color: t.quiet }}>{steering.title} · jetzt Phase {steering.phase}. Eine neue Phase gilt sofort und läuft von dort im eigenen Takt weiter.</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+          {steering.phases.map((ph) => <Chip key={ph} t={t} label={ph} selected={ph === steering.phase} onPress={() => (inject({ type: "set", patient: steering.id, to: ph }), setSteer(null))} />)}
+        </View>
+      </Sheet>
+    );
+  const live = st === "running" || st === "paused";
   if (counting) return <Countdown t={t} onDone={() => (setCounting(false), ctl("start"))} />;
   if (st === "ready")
     return <Lobby t={t} session={session} code={code} view={v} error={w.error ?? error} onStart={() => setCounting(true)} onBack={onBack} onEnd={() => ctl("end")} />;
@@ -259,8 +274,14 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
       {st === "ended" && <EvaluationPanel t={t} session={session} code={code} onShow={setShow} onReplay={() => setReplaying(true)} />}
       <View style={{ flexDirection: "row", gap: 6 }}>{(["I", "II", "III", "EX", "offen"] as const).map(skCell)}</View>
+      {live && (
+        <View style={{ flexDirection: "row", gap: 8, alignItems: "flex-end" }}>
+          <View style={{ flex: 1 }}><Field t={t} label="Nachricht an alle Helfer (z. B. Lageänderung)" value={message} onChange={setMessage} /></View>
+          <View style={{ width: 120 }}><Button t={t} strong label="Senden" disabled={!message.trim()} onPress={() => (inject({ type: "message", text: message.trim() }), setMessage(""))} /></View>
+        </View>
+      )}
       {v?.patients.map((p) => (
-        <Card key={p.id} t={t} color={p.triage ? skColor(t, p.triage) : t.line}>
+        <Card key={p.id} t={t} color={p.triage ? skColor(t, p.triage) : t.line} onPress={live ? () => setSteer(p.id) : undefined}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
             <Text style={{ color: t.text, fontWeight: "900", flexShrink: 1 }}>{p.id.toUpperCase()} · {p.title}</Text>
             <Text style={{ color: t.quiet, fontSize: 12 }}>{p.phase}</Text>

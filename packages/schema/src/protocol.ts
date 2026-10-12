@@ -68,6 +68,11 @@ export const ScenarioSaveReq = z.object({
 });
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
 export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
+// E5: Eingriffe der Leitung während der Übung.
+export const InjectReq = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("set"), patient: z.string().max(64), to: z.string().max(64) }),
+  z.object({ type: z.literal("message"), text: z.string().trim().min(1).max(300) }),
+]);
 
 export type Intent = z.infer<typeof Intent>;
 export type ClientMsg = z.infer<typeof ClientMsg>;
@@ -130,6 +135,7 @@ export type View = {
   inventory: Record<string, number>;
   unitArrived: boolean;
   vehicles: { id: string; title: string; seats: number; arrived: boolean }[];
+  messages: { t: number; text: string }[]; // Nachrichten der Leitung, neueste zuletzt
 };
 
 export type LeitungView = {
@@ -149,6 +155,7 @@ export type LeitungView = {
     alert: string | null;
     place: string;
     trend: "besser" | "schlechter" | "gleich"; // Soll-SK jetzt gegenüber Übungsbeginn
+    phases: string[]; // alle Phasen des Falls, zum Setzen von Hand (E5)
   }[];
   helpers: { id: string; name: string; unit: string; trupp: string | null; role: Role; patient: string | null; busy: string | null; idle: number | null }[];
   trupps: (Trupp & { members: string[] })[];

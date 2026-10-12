@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { caseOfDay, control, createExercise, csv, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
+import { caseOfDay, control, createExercise, csv, inject, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
 import { evaluate } from "../src/evaluation.ts";
 
@@ -211,4 +211,20 @@ test("Fall des Tages: früh abschließen zählt den Verlauf bis Minute 10 (unver
   const ev = evaluate(ex, d * day + 12_000);
   assert.equal(ev.patients[0].outcome, "verstorben");
   assert.equal(ev.team.stars, 0);
+});
+
+test("Eingriffe der Leitung: Phase setzen läuft von dort weiter, Nachricht erreicht alle Helfer, beides im Protokoll", () => {
+  const { ex, p } = joined();
+  assert.equal(inject(ex, { type: "set", patient: "p01", to: "3-schock" }, 2 * MIN), null);
+  assert.equal(stateAt(ex, 3).patients.p01.phase, "3-schock");
+  assert.equal(stateAt(ex, 2 + 15).patients.p01.phase, "4-tot"); // eigener Takt ab dem Setzen
+  assert.equal(inject(ex, { type: "set", patient: "p01", to: "erfunden" }, 3 * MIN), "unbekannte Phase");
+  assert.equal(inject(ex, { type: "message", text: "Zweiter Bus gefunden, 4 weitere Verletzte" }, 4 * MIN), null);
+  assert.deepEqual(viewFor(ex, stateAt(ex, 5), p).messages.map((m) => m.text), ["Zweiter Bus gefunden, 4 weitere Verletzte"]);
+  const texts = leitungView(ex, 5 * MIN).events.map((e) => e.text);
+  assert.ok(texts.includes("Leitung setzt P01 in Phase 3-schock"));
+  assert.ok(texts.includes("Leitung an alle: Zweiter Bus gefunden, 4 weitere Verletzte"));
+  assert.ok(leitungView(ex, 5 * MIN).patients[0].phases.includes("2-versorgt"));
+  const fresh = createExercise(header, lib.defs);
+  assert.equal(inject(fresh, { type: "message", text: "x" }, 0), "Übung noch nicht gestartet");
 });

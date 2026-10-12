@@ -193,7 +193,8 @@ function findingsFor(ex: Exercise, s: State, p: string) {
 // Was ein Helfer sehen darf: nur der gescannte Patient, nur aufgedeckte Befunde, kein Titel (der verrät die Diagnose).
 export function viewFor(ex: Exercise, s: State, id: string): View {
   const me = s.participants[id];
-  if (!me) return { me: null, patient: null, inventory: {}, unitArrived: false, vehicles: [] };
+  const messages = ex.records.flatMap((r) => (r.event.type === "message" && r.t <= s.t ? [{ t: r.t, text: r.event.text }] : [])).slice(-3);
+  if (!me) return { me: null, patient: null, inventory: {}, unitArrived: false, vehicles: [], messages };
   const unit = s.units[me.unit];
   const p = me.patient;
   const ps = p ? s.patients[p] : null;
@@ -208,6 +209,7 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
     inventory: unit.inventory,
     unitArrived: s.t >= unit.arrivesAt,
     vehicles: ex.scenario.units.filter((u) => u.seats > 0).map((u) => ({ id: u.id, title: u.title, seats: s.units[u.id].seats, arrived: s.t >= u.arrivesAt })),
+    messages,
   };
 }
 
@@ -245,7 +247,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
               : null;
     const before = targetSk(start, id);
     const trend = target === before ? "gleich" : target === "EX" || RANK[target] > RANK[before] ? "schlechter" : "besser"; // verstorben zählt als schlechter
-    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place], trend } as const;
+    return { id, title: ex.defs.patients[id].title, phase: ph.left || ps.left ? "abtransportiert" : ps.phase, target, triage: ps.triage, helpers, lastContact, alert, place: PLACE[ps.place], trend, phases: Object.keys(ex.defs.patients[id].phases) } as const;
   });
   // E2: Leerlauf = Zeit seit der letzten Aktion (bei Maßnahmen: seit ihrem Ende)
   const lastActive = new Map<string, number>();
@@ -283,17 +285,20 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "admit": return `${name(e.participant)} nimmt ${P(e.patient)} auf: ${PLACE[e.place]}`;
       case "handover": return `${name(e.participant)} übergibt ${P(e.patient)} an ${unit(e.vehicle)} → ${e.destination}`;
       case "phase": return `${P(e.patient)} wechselt in Phase ${e.to}`;
+      case "set": return `Leitung setzt ${P(e.patient)} in Phase ${e.to}`;
+      case "message": return `Leitung an alle: ${e.text}`;
     }
   };
   // Nur echte Phasenwechsel; die Engine meldet auch erneute Regelprüfungen in derselben Phase.
   const prev: Record<string, string> = Object.fromEntries(ex.scenario.patients.map((id) => [id, ex.defs.patients[id].start]));
-  const changes = generated.filter((e) => {
-    if (e.type !== "phase" || prev[e.patient] === e.to) return false;
-    prev[e.patient] = e.to;
-    return true;
-  });
-  return [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...changes]
+  return [...ex.records.filter((r) => r.t <= t).map((r) => r.event), ...generated.filter((e) => e.type === "phase")]
     .sort((a, b) => a.t - b.t)
+    .filter((e) => {
+      if (e.type !== "phase" && e.type !== "set") return true;
+      if (e.type === "phase" && prev[e.patient] === e.to) return false;
+      prev[e.patient] = e.to;
+      return true;
+    })
     .map((e) => {
       const who = "participant" in e ? e.participant : null;
       return { t: e.t, type: e.type, text: text(e), patient: "patient" in e ? e.patient : null, who: who && name(who), trupp: who && (truppOf(ex, who)?.name ?? null) };
@@ -353,3 +358,17 @@ export function soloHeader(lib: Library, code: string, now: number, seed: number
 }
 export const SOLO = "solo";
 export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung
+
+// E5: Eingriff der Leitung (Phase setzen, Nachricht an alle) als protokolliertes Ereignis zur aktuellen Übungszeit.
+export function inject(ex: Exercise, e: { type: "set"; patient: string; to: string } | { type: "message"; text: string }, now: number): string | null {
+  const st = status(ex);
+  if (st === "ready" || st === "ended") return NOT_RUNNING[st];
+  const t = minutes(ex, now);
+  const event: Event = { ...e, t };
+  const error = validate(stateAt(ex, t), event);
+  if (error) return error;
+  const r: Rec = { id: crypto.randomUUID(), t, event };
+  addRecord(ex, r);
+  ex.onRecord?.(r);
+  return null;
+}

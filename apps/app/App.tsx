@@ -101,6 +101,15 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
     prev.current = { busy, patient: v?.patient?.id ?? "", findings };
   }, [conn.view]);
 
+  // E5: neueste Nachricht der Leitung oben, bis der Helfer sie wegtippt; einmal vibrieren, wenn eine neue kommt.
+  const latest = conn.view?.messages?.at(-1) ?? null;
+  const [seenMsg, setSeenMsg] = useState<number | null>(null);
+  const prevMsg = useRef<number | null | undefined>(undefined);
+  useEffect(() => {
+    if (prevMsg.current !== undefined && latest && latest.t !== prevMsg.current) Vibration.vibrate(200);
+    if (conn.view) prevMsg.current = latest?.t ?? null;
+  }, [latest?.t, !!conn.view]);
+
   // Freigegebener Bericht → Kompetenzprofil auf dem Gerät (jede Übung einmal).
   useEffect(() => void (conn.view?.result && addToProfile(`${conn.server}|${conn.code}`, conn.view.result)), [!!conn.view?.result]);
 
@@ -147,6 +156,18 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
         </View>
       )}
       {conn.error && w && <Text style={{ color: t.red, paddingHorizontal: 20, paddingBottom: 8 }}>{conn.error}</Text>}
+      {latest && latest.t !== seenMsg && conn.participant && conn.clock?.status !== "ended" && (
+        <View style={{ marginHorizontal: 20, marginBottom: 8, flexDirection: "row", borderRadius: 14, backgroundColor: t.card, overflow: "hidden" }} accessibilityLiveRegion="polite">
+          <View style={{ width: 8, backgroundColor: t.accent }} />
+          <View style={{ flex: 1, padding: 12, gap: 4 }}>
+            <Text style={{ color: t.quiet, fontSize: 12, fontWeight: "700" }}>Leitung · {clock(latest.t * 60000)}</Text>
+            <Text style={{ color: t.text, fontSize: 16, fontWeight: "600" }}>{latest.text}</Text>
+          </View>
+          <Pressable onPress={() => setSeenMsg(latest.t)} accessibilityRole="button" accessibilityLabel="Nachricht schließen" style={{ paddingHorizontal: 16, justifyContent: "center" }}>
+            <Text style={{ color: t.text, fontWeight: "900", fontSize: 18 }}>✕</Text>
+          </Pressable>
+        </View>
+      )}
       {body}
       {solo && conn.clock?.status === "ended" && <View style={{ padding: 20 }}><Button t={t} strong label="Fertig" onPress={solo.onDone} /></View>}
       {go && <Go onDone={() => setGo(false)} />}

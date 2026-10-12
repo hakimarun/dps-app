@@ -1,0 +1,185 @@
+{
+  "id": "i004",
+  "version": 1,
+  "title": "Sturz mit Querschnittsymptomatik",
+  "picture": "Mann, ca. 55 Jahre, liegt am Fuß einer Treppe auf dem Rücken. Wach und ruhig, bewegt die Arme, aber nicht die Beine: „Ich spüre meine Beine nicht.“ Die Haut an den Beinen ist warm und rosig.",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, ruhig",
+    "anamnesis": {
+      "symptoms": "Ich spüre ab der Brust abwärts nichts mehr, und der Rücken tut weh.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme Metformin wegen Zucker.",
+      "history": "Ich habe Diabetes, sonst nichts.",
+      "lastMeal": "Vor zwei Stunden habe ich zu Mittag gegessen.",
+      "event": "Ich bin die Treppe runter rückwärts gefallen und mit dem Rücken auf die Kante geknallt.",
+      "risk": "Ich habe Diabetes und bin etwas übergewichtig."
+    },
+    "pitfall": "Will sich aufsetzen: „Helfen Sie mir mal hoch, dann geht das schon.“ Warme Haut und langsamer Puls trotz Schock."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Wirbelsäule",
+      "Schock"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "vacuum_mattress"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "measure_bp"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "warm"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": [
+      "upper_body_up",
+      "recovery_position"
+    ]
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 18,
+    "spo2": 95,
+    "hr": 52,
+    "bp": "90/55",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 5,
+    "temp": 36.0,
+    "exam": {
+      "bodycheck": "Druckschmerz und tastbare Stufe an der oberen Brustwirbelsäule; Beine schlaff, keine Bewegung und kein Gefühl ab Brustwarzenhöhe abwärts; Arme frei beweglich; Haut an Beinen warm und rosig",
+      "ecg": "Sinusbradykardie",
+      "pupils": "isokor, prompt lichtreagibel"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "vacuum_mattress",
+            "warm"
+          ],
+          "then": "2-versorgt"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "hr": 48,
+        "bp": "82/50",
+        "temp": 35.4
+      },
+      "rules": [
+        {
+          "when": [
+            "vacuum_mattress",
+            "warm"
+          ],
+          "then": "3-versorgt"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "hr": 45,
+        "bp": "72/40",
+        "radialPulse": false,
+        "recap": 3,
+        "temp": 34.8,
+        "gcs": 14
+      },
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-versorgt"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "hr": 42,
+        "bp": "60 palp.",
+        "radialPulse": false,
+        "recap": 4,
+        "temp": 34.2,
+        "gcs": 13
+      },
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-versorgt"
+        }
+      ]
+    },
+    "2-versorgt": {
+      "findings": {
+        "hr": 54,
+        "bp": "92/58"
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-stabil"
+        }
+      ],
+      "else": "3-versorgt"
+    },
+    "3-versorgt": {
+      "findings": {
+        "hr": 52,
+        "bp": "86/52",
+        "temp": 35.8
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-stabil"
+        }
+      ]
+    },
+    "3-stabil": {
+      "findings": {
+        "hr": 58,
+        "bp": "100/60",
+        "temp": 36.0
+      }
+    }
+  }
+}

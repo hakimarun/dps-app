@@ -1,0 +1,196 @@
+{
+  "id": "i009",
+  "version": 1,
+  "title": "Kopfanprall mit freiem Intervall",
+  "picture": "Junge, ca. 16 Jahre, steht und reibt sich den Kopf. Beule an der linken Schläfe. „Ich war kurz weg, aber jetzt geht's wieder. Nur Kopfweh.“",
+  "profile": {
+    "temperament": "verharmlosend",
+    "speech": "ganze Sätze, ab Phase 2 langsam, ab Phase 3 keine sinnvollen Antworten",
+    "anamnesis": {
+      "symptoms": "Mir brummt nur der Schädel.",
+      "allergies": "Nein.",
+      "medication": "Nein, nichts.",
+      "history": "Nein, ich bin gesund.",
+      "lastMeal": "Pausenbrot vor zwei Stunden.",
+      "event": "Ich bin mit dem Kopf gegen die Scheibe geknallt und war kurz weg.",
+      "risk": "Nein."
+    },
+    "pitfall": "Will zu seinen Freunden: „Ich muss nicht ins Krankenhaus.“ Kurze Bewusstlosigkeit plus Schläfenanprall: wiederholt nachsichten."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "SHT",
+      "Jugendlicher",
+      "Untertriage-Falle"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "check_pupils"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 16,
+    "spo2": 98,
+    "hr": 80,
+    "bp": "130/80",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 4,
+    "exam": {
+      "pupils": "isokor, prompt lichtreagibel",
+      "bodycheck": "Schwellung und Prellmarke an der linken Schläfe, sonst unverletzt"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "walking": false,
+        "hr": 72,
+        "bp": "145/85",
+        "gcs": 14,
+        "pain": 7,
+        "exam": {
+          "bodycheck": "Schwellung an der linken Schläfe; hat erbrochen, schläfrig"
+        }
+      },
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "walking": false,
+        "rr": 14,
+        "spo2": 93,
+        "hr": 58,
+        "bp": "170/95",
+        "gcs": 10,
+        "followsCommands": false,
+        "pain": 7,
+        "exam": {
+          "pupils": "links weiter als rechts, links träge",
+          "bodycheck": "Schwellung an der linken Schläfe; Erbrochenes; reagiert nur auf Schmerzreiz gezielt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "recovery_position",
+            "oxygen"
+          ],
+          "then": "4-gelagert"
+        },
+        {
+          "when": [
+            "airway_open",
+            "oxygen"
+          ],
+          "then": "4-gelagert"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "walking": false,
+        "rr": 10,
+        "spo2": 85,
+        "hr": 48,
+        "bp": "185/100",
+        "gcs": 6,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "links weit und lichtstarr",
+          "motor": "Strecksynergismen rechts auf Schmerzreiz"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        },
+        {
+          "when": [
+            "recovery_position",
+            "oxygen"
+          ],
+          "then": "4-gelagert"
+        }
+      ],
+      "else": "tot"
+    },
+    "4-gelagert": {
+      "findings": {
+        "walking": false,
+        "rr": 12,
+        "spo2": 94,
+        "hr": 52,
+        "bp": "175/95",
+        "gcs": 8,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "links weit und lichtstarr",
+          "motor": "Strecksynergismen rechts auf Schmerzreiz"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ]
+    },
+    "intubiert": {
+      "findings": {
+        "walking": false,
+        "rr": 14,
+        "spo2": 97,
+        "hr": 60,
+        "bp": "160/90",
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "links weit und lichtstarr"
+        }
+      }
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    }
+  }
+}

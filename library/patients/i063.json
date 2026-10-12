@@ -1,0 +1,18 @@
+{
+  "id": "i063", "version": 1, "title": "Niederspannungsunfall mit Strommarken und verzögerter Rhythmusstörung",
+  "picture": "Mann, ca. 35 Jahre, in Arbeitskleidung, geht selbstständig. An der rechten Hand und am linken Fuß je eine kleine graue, eingesunkene Hautstelle. „Hat nur kurz gezwickt, mir geht's gut. Ich will wieder an die Arbeit.“",
+  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, locker, ab Phase 2 „Herzstolpern“",
+    "anamnesis": { "symptoms": "Mir geht's gut, die Hand kribbelt ein bisschen.", "allergies": "Keine.", "medication": "Keine.", "history": "Ich bin gesund.", "lastMeal": "Frühstückspause vor einer Stunde.", "event": "Ich habe an einer Leitung gearbeitet, die noch Strom hatte. 400 Volt, glaube ich. Ich hab losgelassen, bewusstlos war ich nicht.", "risk": "Ich muss die Baustelle heute noch fertig machen." },
+    "pitfall": "will gehen und lehnt Transport ab; Helfer entlassen ihn ohne EKG" },
+  "meta": { "category": "Verbrennung", "tags": ["Strom", "Herz", "Untertriage-Falle"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["ecg"], "within": 30 }, { "actions": ["handover"], "within": 60 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 16, "spo2": 98, "hr": 88, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 2,
+    "exam": { "ecg": "Sinusrhythmus, einzelne VES", "burn": "Strommarken rechte Hohlhand und linke Fußsohle, je ca. 1 cm, grau-weiß, eingesunken, schmerzarm", "bodycheck": "Strommarken an rechter Hand und linkem Fuß, sonst unverletzt, Muskulatur weich" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "hr": 112, "bp": "125/80", "exam": { "ecg": "Vorhofflimmern, tachykard, gehäufte VES" } }, "rules": [{ "when": ["ecg", "iv_access"], "then": "3-ueberwacht" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 24, "spo2": 94, "hr": 180, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 3, "exam": { "ecg": "Kammertachykardie" } } },
+    "3-ueberwacht": { "findings": { "hr": 100, "bp": "130/80", "exam": { "ecg": "Vorhofflimmern, normofrequent, vereinzelte VES" } } }
+  }
+}

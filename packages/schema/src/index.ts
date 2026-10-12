@@ -101,6 +101,7 @@ export const Action = z.object({
 export const Scenario = z.object({
   id: z.string(),
   title: z.string(),
+  situation: z.string().optional(), // Lage, Kräfte und Lernziel für die Leitung
   patients: z.array(z.string()).min(1),
   units: z
     .array(

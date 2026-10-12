@@ -1,0 +1,11 @@
+{
+  "id": "i080", "version": 1, "title": "Ertrunkene Person mit sicheren Todeszeichen",
+  "picture": "Mann, ca. 50 Jahre, wird nach langer Suche aus dem Wasser geborgen. Keine Atmung, keine Bewegung. Haut blass und kalt, dunkelviolette Flecken an Nacken und Rücken, Kiefer und Arme steif.",
+  "profile": { "temperament": "keins", "speech": "spricht nicht", "pitfall": "Bei Kaltwasser ohne sichere Todeszeichen nicht für tot erklären; hier sind Totenflecken und Leichenstarre vorhanden." },
+  "meta": { "category": "Umwelt", "tags": ["Wasser", "Todeszeichen"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["body_check"], "within": 15 }], "harmful": [] },
+  "base": { "walking": false, "lethalInjury": true, "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "temp": 14,
+    "exam": { "bodycheck": "Totenflecken an Nacken, Rücken und Gesäß, nicht wegdrückbar; Leichenstarre in Kiefer, Armen und Beinen; Waschhaut an Händen und Füßen; keine Verletzungen", "pupils": "weit, lichtstarr", "ecg": "Asystolie (Nulllinie)" } },
+  "start": "1",
+  "phases": { "1": { "dead": true } }
+}

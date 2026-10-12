@@ -1,0 +1,200 @@
+{
+  "id": "i010",
+  "version": 1,
+  "title": "Lange Einklemmung unter Trümmern",
+  "picture": "Frau, ca. 60 Jahre, liegt auf dem Rücken, beide Beine unter einem Betonteil. Wach, Lippen trocken: „Ich hab so Durst. Wie lange dauert das noch?“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, nach der Befreiung ohne Vorbereitung verwirrt",
+    "anamnesis": {
+      "symptoms": "Die Beine spüre ich kaum noch, und ich habe furchtbaren Durst.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme Torasemid und Ramipril.",
+      "history": "Ich habe ein schwaches Herz und hohen Blutdruck.",
+      "lastMeal": "Gestern Abend, seitdem nichts mehr.",
+      "event": "Das Haus ist eingestürzt, ich liege hier seit heute Nacht.",
+      "risk": "Herzschwäche."
+    },
+    "pitfall": "„Holt mich doch einfach raus, mir geht's gut.“ Die Feuerwehr befreit sie am Ende von Phase 2 (ca. 30 min); die Gefahr beginnt mit der Befreiung."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Einklemmung",
+      "Crush",
+      "Schock"
+    ],
+    "difficulty": "experte"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "iv_access"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "fluids"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "ecg"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 20,
+    "spo2": 95,
+    "hr": 100,
+    "bp": "110/70",
+    "radialPulse": true,
+    "recap": 3,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 4,
+    "temp": 35.8,
+    "exam": {
+      "bodycheck": "Beide Beine ab Mitte Oberschenkel unter Betonteil eingeklemmt, nicht einsehbar; Oberkörper und Arme unverletzt; Schleimhäute trocken",
+      "ecg": "Sinustachykardie, T-Wellen leicht überhöht"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "2-vorbereitet"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "hr": 105,
+        "bp": "105/70"
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-befreit-vorbereitet"
+        }
+      ],
+      "else": "3-befreit-unvorbereitet"
+    },
+    "2-vorbereitet": {
+      "findings": {
+        "hr": 95,
+        "bp": "115/75"
+      },
+      "else": "3-befreit-vorbereitet"
+    },
+    "3-befreit-vorbereitet": {
+      "findings": {
+        "rr": 22,
+        "hr": 110,
+        "bp": "100/65",
+        "pain": 6,
+        "exam": {
+          "bodycheck": "befreit; beide Beine geschwollen, blau-livide verfärbt, kühl, kaum Gefühl",
+          "ecg": "Sinustachykardie, T-Wellen überhöht"
+        }
+      }
+    },
+    "3-befreit-unvorbereitet": {
+      "findings": {
+        "rr": 28,
+        "hr": 135,
+        "bp": "75/45",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 13,
+        "pain": 6,
+        "exam": {
+          "bodycheck": "befreit; beide Beine geschwollen, blau-livide verfärbt, kühl, kaum Gefühl",
+          "ecg": "VES, hohe spitze T-Wellen, breite QRS-Komplexe"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "4-stabilisiert"
+        }
+      ],
+      "else": "4-flimmern"
+    },
+    "4-stabilisiert": {
+      "findings": {
+        "rr": 24,
+        "hr": 120,
+        "bp": "90/55",
+        "recap": 3,
+        "gcs": 14,
+        "pain": 6,
+        "exam": {
+          "bodycheck": "befreit; beide Beine geschwollen, blau-livide verfärbt",
+          "ecg": "Sinustachykardie, hohe spitze T-Wellen"
+        }
+      }
+    },
+    "4-flimmern": {
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "ecg": "Kammerflimmern"
+        }
+      },
+      "rules": [
+        {
+          "when": [],
+          "then": "4-flimmern",
+          "active": [
+            "cpr"
+          ]
+        }
+      ],
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false,
+        "exam": {
+          "ecg": "Asystolie"
+        }
+      }
+    }
+  }
+}

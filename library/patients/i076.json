@@ -1,0 +1,31 @@
+{
+  "id": "i076", "version": 1, "title": "Milde akzidentelle Hypothermie nach Kaltwasserrettung",
+  "picture": "Mann, ca. 30 Jahre, liegt nach der Rettung aus kaltem Wasser in eine Decke gewickelt, Badekleidung tropfnass. Zittert stark, Lippen bläulich, wach. „Mir ist so kalt … kann ich aufstehen?“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "klappert mit den Zähnen, ab Phase 2 langsam und verwirrt",
+    "anamnesis": {
+      "symptoms": "Mir ist eiskalt, ich spüre meine Finger kaum.",
+      "allergies": "Nein.",
+      "medication": "Nein.",
+      "history": "Ich bin gesund.",
+      "lastMeal": "Heute Mittag.",
+      "event": "Ich wollte zur Boje rausschwimmen, dann bekam ich einen Krampf. Ich war bestimmt eine halbe Stunde im Wasser.",
+      "risk": "Zwei Bier vorher."
+    },
+    "pitfall": "Will aufstehen und zum Auto gehen. Bergungstod vermeiden: horizontal lagern, schonend bewegen, nicht aufstehen lassen, Arme und Beine nicht reiben."
+  },
+  "meta": { "category": "Umwelt", "tags": ["Hypothermie", "Wasser"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["warm"], "within": 15 }], "harmful": ["shock_position", "cool_large"] },
+  "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 96, "hr": 100, "bp": "135/85", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "temp": 34.0, "exam": { "ecg": "Sinustachykardie", "glucose": "90 mg/dl", "bodycheck": "Haut kalt und blass, nasse Badekleidung, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["warm"], "then": "2-gewaermt" }], "else": "2" },
+    "2": { "findings": { "rr": 14, "hr": 70, "bp": "115/70", "gcs": 13, "temp": 32.6, "exam": { "ecg": "Sinusrhythmus", "bodycheck": "Haut kalt und blass, zittert kaum noch, keine Verletzungen" } }, "rules": [{ "when": ["warm"], "then": "3-langsam" }], "else": "3" },
+    "3": { "findings": { "rr": 11, "hr": 54, "bp": "100/60", "gcs": 11, "followsCommands": false, "temp": 31.6, "exam": { "ecg": "Sinusbradykardie", "bodycheck": "Haut eiskalt, kein Zittern mehr, Muskeln steif, keine Verletzungen" } }, "rules": [{ "when": ["warm"], "then": "4-stabilisiert" }] },
+    "4-stabilisiert": { "findings": { "rr": 12, "hr": 56, "bp": "105/65", "gcs": 12, "followsCommands": false, "temp": 31.8, "exam": { "ecg": "Sinusbradykardie", "bodycheck": "Haut eiskalt, kein Zittern, keine Verletzungen" } } },
+    "3-langsam": { "findings": { "rr": 15, "hr": 72, "bp": "115/70", "gcs": 14, "temp": 33.0, "exam": { "ecg": "Sinusrhythmus" } } },
+    "2-gewaermt": { "findings": { "rr": 18, "hr": 95, "temp": 34.3 }, "else": "3-gewaermt" },
+    "3-gewaermt": { "findings": { "rr": 16, "hr": 88, "bp": "130/80", "temp": 34.8, "exam": { "ecg": "Sinusrhythmus" } } }
+  }
+}

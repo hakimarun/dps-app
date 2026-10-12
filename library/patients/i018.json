@@ -1,0 +1,15 @@
+{
+  "id": "i018", "version": 1, "title": "Sprunggelenksverletzung, nicht gehfähig",
+  "picture": "Frau, ca. 20 Jahre, sitzt auf dem Boden und hält ihren rechten Knöchel, der deutlich geschwollen ist. „Sobald ich den Fuß aufsetze, sticht es total, ich kann nicht laufen.“ Sonst wirkt sie unauffällig.",
+  "profile": { "temperament": "kooperativ", "speech": "ganze Sätze", "anamnesis": { "symptoms": "Mein rechter Knöchel tut weh und wird immer dicker.", "allergies": "Nein.", "medication": "Nur die Pille.", "history": "Nichts, ich bin gesund.", "lastMeal": "Vor einer Stunde ein Sandwich.", "event": "Ich bin beim Aussteigen aus dem Bus umgeknickt.", "risk": "Nein." }, "pitfall": "fragt, warum sie nicht grün sei, es gehe ihr doch gut – nicht gehfähig bleibt nach mSTaRT SK II" },
+  "meta": {"category": "Trauma", "tags": ["Extremität", "mSTaRT-Regel"], "difficulty": "einsteiger"},
+  "scoring": {"critical": [{"actions": ["splint"], "within": 45}], "harmful": []},
+  "base": { "walking": false, "breathing": true, "rr": 16, "spo2": 99, "hr": 88, "bp": "125/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "exam": { "bodycheck": "rechtes Sprunggelenk stark geschwollen, Bluterguss und Druckschmerz am Außenknöchel, keine Fehlstellung. Durchblutung, Motorik und Sensibilität am Fuß intakt. Sonst keine Verletzungen." } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["splint"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "pain": 7, "exam": { "bodycheck": "rechtes Sprunggelenk zunehmend geschwollen, Bluterguss am Außenknöchel, keine Fehlstellung. Durchblutung, Motorik und Sensibilität am Fuß intakt. Sonst keine Verletzungen." } }, "rules": [{ "when": ["splint"], "then": "2-versorgt" }] },
+    "2-versorgt": { "findings": { "pain": 4, "exam": { "bodycheck": "rechtes Sprunggelenk geschient und hochgelagert, Schwellung stabil. Durchblutung, Motorik und Sensibilität am Fuß intakt." } }, "rules": [{ "when": ["analgesia"], "then": "3-analgesie" }] },
+    "3-analgesie": { "findings": { "pain": 2, "exam": { "bodycheck": "rechtes Sprunggelenk geschient und hochgelagert, Schwellung stabil. Durchblutung, Motorik und Sensibilität am Fuß intakt." } } }
+  }
+}

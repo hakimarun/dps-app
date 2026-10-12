@@ -1,0 +1,21 @@
+{
+  "id": "i058", "version": 1, "title": "Heimbeatmeter COPD-Patient mit Geräteausfall bei Stromausfall",
+  "picture": "Mann, ca. 72 Jahre, liegt im Pflegebett und ist über eine Gesichtsmaske mit einem Beatmungsgerät verbunden. Das Gerät piept und zeigt eine Akku-Warnung. Atmet nur etwa 8-mal pro Minute, Lippen bläulich, sehr schläfrig. Flüstert: „Das Gerät … der Strom …“",
+  "profile": { "temperament": "keins", "speech": "einzelne geflüsterte Worte, ab Phase 2 spricht nicht",
+    "anamnesis": { "symptoms": "Luft … zu wenig.", "allergies": "Keine.", "medication": "Sprays … und die Maschine, nachts und mittags.", "history": "COPD … schon lange.", "event": "Strom weg … Akku piept." },
+    "pitfall": "Helfer schalten das Gerät aus oder nehmen die Maske ab, ohne die Beatmung mit dem Beutel zu übernehmen; ohne Gerät oder Beutel droht der Atemstillstand" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "Beatmung", "Stromausfall"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["bag_valve"], "within": 15 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 8, "spo2": 86, "hr": 108, "bp": "155/90", "radialPulse": true, "recap": 2, "gcs": 12, "followsCommands": true, "pain": 0,
+    "exam": { "auscultation": "beidseits sehr leises Atemgeräusch, verlängertes Ausatmen, leises Giemen", "percussion": "beidseits hypersonor", "pupils": "eng, isokor, träge", "bodycheck": "Fassthorax, Lippenzyanose, Trommelschlegelfinger, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beutel" }], "else": "2" },
+    "2": { "findings": { "rr": 6, "spo2": 76, "hr": 122, "bp": "165/95", "recap": 3, "gcs": 8, "followsCommands": false }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beutel" }], "else": "3" },
+    "3": { "minutes": 5, "findings": { "breathing": false, "rr": 0, "spo2": 60, "hr": 45, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Sinusbradykardie", "pupils": "mittelweit, träge" } }, "rules": [{ "active": ["bag_valve"], "then": "beutel-spaet" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "pupils": "weit, lichtstarr" } } },
+    "beutel": { "findings": { "rr": 12, "spo2": 92, "hr": 98, "bp": "150/85", "gcs": 12, "exam": { "auscultation": "beidseits belüftet, verlängertes Ausatmen, leises Giemen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beutel" }], "else": "2" },
+    "beutel-spaet": { "findings": { "rr": 12, "spo2": 86, "hr": 112, "bp": "130/80", "gcs": 6, "followsCommands": false, "exam": { "auscultation": "beidseits belüftet, verlängertes Ausatmen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "beutel" }], "else": "3" },
+    "intubiert": { "findings": { "rr": 12, "spo2": 94, "hr": 96, "bp": "135/80", "gcs": 3, "followsCommands": false, "exam": { "auscultation": "beidseits belüftet, verlängertes Ausatmen" } } }
+  }
+}

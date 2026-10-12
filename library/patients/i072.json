@@ -1,0 +1,28 @@
+{
+  "id": "i072", "version": 1, "title": "Reizstoffexposition (Pfefferspray) an Augen und Atemwegen",
+  "picture": "Frau, ca. 20 Jahre, steht am Rand der Menge, kneift die tränenden Augen zusammen, reibt sich das Gesicht und hustet. Gesicht gerötet. „Es brennt so, ich seh nichts mehr!“",
+  "profile": {
+    "temperament": "panisch",
+    "speech": "aufgeregt, schnell, ruft immer wieder nach ihrer Freundin",
+    "anamnesis": {
+      "symptoms": "Meine Augen brennen wie Feuer, und ich muss husten.",
+      "allergies": "Ich habe Heuschnupfen.",
+      "medication": "Keine.",
+      "history": "Ich bin gesund, kein Asthma.",
+      "lastMeal": "Vorhin eine Bratwurst.",
+      "event": "Auf einmal haben alle geschrien, und dann war da so ein Sprühnebel.",
+      "risk": "Ich trage Kontaktlinsen."
+    },
+    "pitfall": "Panisch und laut, will sich ständig die Augen reiben. Viele Betroffene, wenig Schwere: an der Sammelstelle betreuen statt aufwändig einzeln versorgen."
+  },
+  "meta": { "category": "Intoxikation", "tags": ["Reizstoff", "Auge"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["rinse"], "within": 15 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 24, "spo2": 98, "hr": 112, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": { "auscultation": "vesikulär beidseits, kein Giemen", "bodycheck": "Augen gerötet und tränend, Lidkrampf, Gesichtshaut gerötet, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["rinse"], "then": "2-gespuelt" }], "else": "2" },
+    "2": { "findings": { "rr": 22, "hr": 104, "pain": 5 }, "rules": [{ "when": ["rinse"], "then": "2-gespuelt" }], "else": "3" },
+    "3": { "findings": { "rr": 18, "hr": 92, "pain": 2, "exam": { "bodycheck": "Augen leicht gerötet, Gesichtshaut gerötet, keine Verletzungen" } } },
+    "2-gespuelt": { "findings": { "rr": 18, "hr": 92, "pain": 2, "exam": { "bodycheck": "Augen leicht gerötet, kein Lidkrampf mehr, keine Verletzungen" } } }
+  }
+}

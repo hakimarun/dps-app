@@ -1,0 +1,18 @@
+{
+  "id": "i049", "version": 1, "title": "Säugling in der Hitze (Dehydratation, beginnender Volumenmangelschock)",
+  "picture": "Junge, ca. 6 Monate, liegt schlapp im Arm seiner Mutter. Sie sagt in gebrochenem Deutsch: „Trinkt nicht. Windel trocken, seit Morgen.“ Haut heiß, weint ohne Tränen.",
+  "profile": {"temperament": "Sprachbarriere", "speech": "Mutter spricht Ukrainisch und wenige Wörter Deutsch; Säugling wimmert nur", "anamnesis": {"symptoms": "Mutter: „Er trinkt seit gestern kaum. Heute Nacht zweimal Durchfall.“", "allergies": "Mutter: „Nein.“", "medication": "Mutter: „Nein.“", "history": "Mutter: „Er war immer gesund.“", "lastMeal": "Mutter: „Gestern Abend ein bisschen Flasche, heute nichts.“", "event": "Mutter: „Hier drin ist es so heiß, den ganzen Tag.“", "risk": "Mutter: „Wir haben kein sauberes Wasser für die Flasche.“"}, "pitfall": "Die Mutter wirkt ruhig und versteht Fragen schlecht. Säuglinge dekompensieren schnell durch Flüssigkeitsmangel.", "sources": ["ERC-Leitlinien 2021 Paediatric Life Support (Kreislaufversagen, Volumengabe 10 ml/kg)", "S2k-Leitlinie Akute infektiöse Gastroenteritis im Säuglings-, Kindes- und Jugendalter (GPGE)"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "Hitze"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["cool_large"], "within": 15}, {"actions": ["handover"], "within": 30}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 30, "spo2": 97, "hr": 170, "bp": "75/45", "radialPulse": true, "recap": 3, "gcs": 13, "followsCommands": true, "temp": 38.6, "exam": {"bodycheck": "Haut warm und trocken, Fontanelle eingesunken, trockene Schleimhäute, stehende Hautfalten, keine Verletzungen; reagiert schwach auf Ansprache", "glucose": "70 mg/dl"}},
+  "start": "1",
+  "phases": {
+    "1": {"rules": [{"when": ["cool_large", "iv_access", "fluids"], "then": "2-versorgt"}, {"when": ["cool_large"], "then": "2-gekuehlt"}], "else": "2"},
+    "2-gekuehlt": {"findings": {"hr": 165, "temp": 37.9}, "rules": [{"when": ["iv_access", "fluids"], "then": "2-versorgt"}], "else": "2"},
+    "2": {"findings": {"rr": 40, "hr": 180, "recap": 4, "gcs": 11, "followsCommands": false, "temp": 39.0, "exam": {"bodycheck": "Haut heiß und trocken, Fontanelle tief eingesunken, teilnahmslos, reagiert kaum auf Berührung", "glucose": "62 mg/dl"}}, "rules": [{"when": ["iv_access", "fluids"], "then": "3-volumen"}], "else": "3"},
+    "3": {"findings": {"rr": 48, "spo2": 94, "hr": 190, "bp": "55/30", "radialPulse": false, "recap": 5, "gcs": 8, "followsCommands": false, "temp": 39.2, "exam": {"bodycheck": "Haut marmoriert, Hände und Füße kalt, Fontanelle tief eingesunken, reagiert nur auf Schmerz", "glucose": "55 mg/dl"}}, "rules": [{"when": ["iv_access", "fluids"], "then": "4-spaet"}]},
+    "2-versorgt": {"findings": {"hr": 150, "recap": 2, "gcs": 14, "temp": 37.8}},
+    "3-volumen": {"findings": {"rr": 34, "hr": 155, "recap": 3, "gcs": 13, "temp": 38.5}},
+    "4-spaet": {"findings": {"rr": 40, "hr": 170, "bp": "70/40", "recap": 3, "gcs": 11, "followsCommands": false, "temp": 38.8}}
+  }
+}

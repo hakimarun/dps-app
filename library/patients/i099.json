@@ -1,0 +1,15 @@
+{
+  "id": "i099", "version": 1, "title": "Geborgene Person aus Güllegrube",
+  "picture": "Mann, ca. 50 Jahre, liegt in verschmutzter Arbeitskleidung neben einer offenen Grube, aus der es nach Gülle und faulen Eiern riecht. Die Feuerwehr hat ihn unter Atemschutz herausgeholt. Keine Bewegung, keine Atmung, bläulich-violette Flecken am Rücken und Nacken. Ein Arbeiter ruft: „Mein Kollege ist ohne Maske hinterher, der ist noch unten!“",
+  "profile": {
+    "temperament": "keins",
+    "speech": "spricht nicht",
+    "anamnesis": { "event": "Keine Angaben möglich." },
+    "pitfall": "Faulgase in Gruben töten regelmäßig auch Helfer. Niemand betritt die Grube ohne umluftunabhängigen Atemschutz; beim Geborgenen sichere Todeszeichen prüfen statt reanimieren."
+  },
+  "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Eigenschutz", "Todeszeichen"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["body_check"], "within": 10}], "harmful": ["cpr"]},
+  "base": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 0, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "Totenflecken an Rücken, Nacken und Gesäß, nicht wegdrückbar; Leichenstarre im Kiefer; keine Verletzungen; Kleidung mit Gülle verschmutzt", "pupils": "weit, lichtstarr", "ecg": "Asystolie" } },
+  "start": "1",
+  "phases": { "1": { "dead": true } }
+}

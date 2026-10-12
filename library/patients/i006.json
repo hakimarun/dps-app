@@ -1,0 +1,261 @@
+{
+  "id": "i006",
+  "version": 1,
+  "title": "Rippenserienfraktur mit instabilem Thorax",
+  "picture": "Mann, ca. 50 Jahre, sitzt auf dem Fahrersitz und presst die Hand gegen die rechte Brustseite. Ein Teil der Brustwand sinkt beim Einatmen ein, statt sich zu heben. Atmet schnell und flach, spricht nur kurze Sätze: „Tut so weh … beim Atmen.“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "kurze Sätze, ab Phase 3 nur einzelne Wörter",
+    "anamnesis": {
+      "symptoms": "Rechts tut jeder Atemzug höllisch weh.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme Ramipril für den Blutdruck.",
+      "history": "Ich habe hohen Blutdruck.",
+      "lastMeal": "Gefrühstückt habe ich um sieben.",
+      "event": "Ich bin frontal auf den Lkw drauf, das Lenkrad hat mich voll erwischt.",
+      "risk": "Ich rauche seit 30 Jahren."
+    },
+    "pitfall": "Atmet aus Schmerz immer flacher und sagt: „Geht schon.“ Paradoxe Atmung erkennen; Analgesie ist hier auch Atemtherapie."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Thorax",
+      "Atmung"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "oxygen"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "pulse_oximetry"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "analgesia"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": [
+      "shock_position"
+    ]
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 32,
+    "spo2": 89,
+    "hr": 112,
+    "bp": "140/85",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 8,
+    "exam": {
+      "auscultation": "rechts abgeschwächt, feines Knistern",
+      "percussion": "beidseits sonor",
+      "bodycheck": "Prellmarke rechte Brustwand, Knistern mehrerer Rippen rechts, ein Brustwandsegment bewegt sich beim Einatmen nach innen; sonst nur Prellungen"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "shock_position"
+          ],
+          "then": "2-flach"
+        },
+        {
+          "when": [
+            "oxygen",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "2-sauerstoff"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 36,
+        "spo2": 84,
+        "hr": 125,
+        "bp": "135/80"
+      },
+      "rules": [
+        {
+          "when": [
+            "oxygen",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "2-sauerstoff"
+        }
+      ],
+      "else": "3"
+    },
+    "2-flach": {
+      "findings": {
+        "rr": 38,
+        "spo2": 84,
+        "hr": 125,
+        "pain": 9
+      },
+      "rules": [
+        {
+          "when": [
+            "upper_body_up",
+            "oxygen",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "upper_body_up",
+            "oxygen"
+          ],
+          "then": "2-sauerstoff"
+        }
+      ],
+      "else": "3"
+    },
+    "2-sauerstoff": {
+      "findings": {
+        "rr": 30,
+        "spo2": 92,
+        "hr": 115
+      },
+      "rules": [
+        {
+          "when": [
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ],
+      "else": "3-sauerstoff"
+    },
+    "3-sauerstoff": {
+      "findings": {
+        "rr": 34,
+        "spo2": 88,
+        "hr": 120,
+        "gcs": 14
+      },
+      "rules": [
+        {
+          "when": [
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "3": {
+      "findings": {
+        "rr": 38,
+        "spo2": 78,
+        "hr": 135,
+        "bp": "120/75",
+        "recap": 3,
+        "gcs": 12,
+        "followsCommands": false
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        },
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "3-sauerstoff"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "rr": 8,
+        "spo2": 68,
+        "hr": 140,
+        "bp": "100/60",
+        "recap": 4,
+        "gcs": 8,
+        "followsCommands": false,
+        "exam": {
+          "auscultation": "beidseits leise, rechts kaum hörbar"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ],
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "versorgt": {
+      "findings": {
+        "rr": 24,
+        "spo2": 94,
+        "hr": 100,
+        "pain": 4
+      }
+    },
+    "intubiert": {
+      "findings": {
+        "rr": 14,
+        "spo2": 92,
+        "hr": 110,
+        "bp": "110/70",
+        "gcs": 3,
+        "followsCommands": false,
+        "pain": 0
+      }
+    }
+  }
+}

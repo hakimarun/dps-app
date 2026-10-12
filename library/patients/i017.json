@@ -1,0 +1,18 @@
+{
+  "id": "i017", "version": 1, "title": "Gesichtsverletzung mit Blut im Mund",
+  "picture": "Mann, ca. 40 Jahre, sitzt vornübergebeugt auf dem Boden. Gesicht stark geschwollen und blutverschmiert, spuckt immer wieder Blut aus. Atmet gurgelnd, nickt auf Fragen und deutet an, dass er schlecht sprechen kann.",
+  "profile": { "temperament": "ängstlich", "speech": "nuschelt, kann den Mund kaum bewegen, spuckt zwischendurch Blut", "anamnesis": { "symptoms": "Mein Gesicht tut weh, und ich krieg das Blut nicht aus dem Mund.", "allergies": "Nein.", "medication": "Nein.", "history": "Nichts.", "lastMeal": "Frühstück, vor drei Stunden.", "event": "Ich bin mit dem Gesicht gegen den Vordersitz geknallt.", "risk": "Ich rauche ein bisschen." }, "pitfall": "wehrt sich, wenn man ihn hinlegen will: „Nicht hinlegen, da erstick ich!“ – er hält seinen Atemweg im Sitzen selbst frei" },
+  "meta": {"category": "Trauma", "tags": ["Atemweg", "Gesicht"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["upper_body_up"], "within": 15}, {"actions": ["airway_open"], "within": 15}], "harmful": ["shock_position", "vacuum_mattress", "wendl"]},
+  "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 94, "hr": 105, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": { "bodycheck": "Mittelgesicht stark geschwollen und instabil, Oberkiefer beweglich, Blut in Mund und Rachen, mehrere Zähne locker. Gurgelndes Atemgeräusch. Sonst keine Verletzungen.", "auscultation": "vesikulär beidseits, fortgeleitete Geräusche aus dem Rachen", "percussion": "sonor beidseits", "pupils": "isokor, prompte Lichtreaktion" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["shock_position"], "then": "2-verlegt" }, { "when": ["vacuum_mattress"], "then": "2-verlegt" }, { "when": ["wendl"], "then": "2-verlegt" }, { "when": ["airway_open"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "spo2": 93, "hr": 110, "exam": { "bodycheck": "Schwellung im Mittelgesicht nimmt zu, Blut läuft weiter in den Mund, spuckt häufiger. Gurgelndes Atemgeräusch. Sonst keine Verletzungen." } }, "rules": [{ "when": ["shock_position"], "then": "2-verlegt" }, { "when": ["vacuum_mattress"], "then": "2-verlegt" }, { "when": ["wendl"], "then": "2-verlegt" }, { "when": ["airway_open"], "then": "2-versorgt" }] },
+    "2-verlegt": { "minutes": 5, "findings": { "rr": 34, "spo2": 84, "hr": 130, "bp": "150/90", "gcs": 13, "stridor": true, "exam": { "bodycheck": "Blut und Schwellung verlegen den Rachen, hustet, würgt und ringt panisch nach Luft." } }, "rules": [{ "when": ["airway_open", "upper_body_up"], "then": "2-versorgt" }], "else": "3-hypoxie" },
+    "3-hypoxie": { "minutes": 10, "findings": { "rr": 8, "spo2": 70, "hr": 140, "bp": "160/95", "gcs": 7, "followsCommands": false, "stridor": true, "exam": { "bodycheck": "zyanotisch, kaum noch Atembewegungen, Blut im Rachen." } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "when": ["airway_open", "upper_body_up"], "then": "2-verlegt" }], "else": "tot" },
+    "2-versorgt": { "findings": { "rr": 20, "spo2": 96, "hr": 100, "exam": { "bodycheck": "sitzt vornübergebeugt, Blut wird abgesaugt oder ausgespuckt, Atemweg frei. Mittelgesicht geschwollen und instabil." } } },
+    "intubiert": { "findings": { "rr": 14, "spo2": 97, "hr": 100, "bp": "130/80", "gcs": 3, "followsCommands": false } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+  }
+}

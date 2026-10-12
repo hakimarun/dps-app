@@ -112,7 +112,9 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   const [random, setRandom] = useState<boolean | null>(null);
   const [late, setLate] = useState<Record<string, number>>({}); // A8: Patient taucht erst ab dieser Minute auf
   const [error, setError] = useState<string | null>(null);
+  const [find, setFind] = useState(""); // über 100 Szenarien: suchen statt scrollen
   const sc = lib?.scenarios.find((s) => s.id === scenario) ?? lib?.scenarios[0];
+  const shownScenarios = lib?.scenarios.filter((s) => s.id === sc?.id || `${s.title} ${s.situation ?? ""}`.toLowerCase().includes(find.trim().toLowerCase())) ?? [];
   const byId = new Map(lib?.patients.map((p) => [p.id, p]));
   const playable = (id: string) => !!byId.get(id) && !byId.get(id)!.errors.length;
   useEffect(() => setPicked(sc?.patients.filter(playable) ?? []), [sc?.id, lib]);
@@ -120,9 +122,9 @@ function NewExercise({ t, session, onCreated, onCancel }: { t: Theme; session: S
   return (
     <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingBottom: 20 }}>
       <Title t={t}>Neue Übung</Title>
-      <Text style={{ color: t.quiet }}>Szenario</Text>
+      <Field t={t} label={`Szenario suchen (${lib?.scenarios.length ?? 0})`} value={find} onChange={setFind} />
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-        {lib?.scenarios.map((s) => <Chip key={s.id} t={t} label={s.title} selected={sc?.id === s.id} onPress={() => setScenario(s.id)} />)}
+        {shownScenarios.map((s) => <Chip key={s.id} t={t} label={s.title} selected={sc?.id === s.id} onPress={() => setScenario(s.id)} />)}
       </View>
       <Text style={{ color: t.quiet }}>Patienten</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>

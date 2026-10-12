@@ -1,0 +1,19 @@
+{
+  "id": "i036", "version": 1, "title": "Bluterbrechen in der Notunterkunft",
+  "picture": "Mann, ca. 65 Jahre, sitzt blass auf einem Feldbett, vor ihm eine Schüssel mit dunklem, kaffeesatzartigem Erbrochenem. Wischt sich den Mund ab: „Das ist nichts, mir ist nur ein bisschen flau.“",
+  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, wiegelt ab", "anamnesis": { "symptoms": "Mir ist schwindelig, wenn ich aufstehe. Ich hab jetzt zweimal gebrochen, da war so dunkles Zeug drin.", "allergies": "Keine.", "medication": "Ich nehme Ibuprofen gegen den Rücken, mehrmals am Tag, und ASS fürs Herz.", "history": "Ich hatte mal ein Magengeschwür.", "lastMeal": "Heute Mittag Eintopf, aber nur ein paar Löffel.", "event": "Der Stuhl war seit gestern ganz schwarz.", "risk": "Ich trinke abends mein Bier, so drei, vier." }, "pitfall": "Spielt es herunter und will sich hinlegen. Bei erneutem Erbrechen in Rückenlage droht Aspiration." },
+  "meta": { "category": "Internistisch", "tags": ["Blutung", "Schock"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["iv_access"], "within": 15 }, { "actions": ["recovery_position", "upper_body_up"], "within": 30 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 96, "hr": 115, "bp": "105/70", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "pain": 3, "exam": { "abdomen": "weich, Druckschmerz im Oberbauch", "bodycheck": "keine Verletzungen, blasse Schleimhäute, Blutreste am Mund", "auscultation": "vesikulär beidseits" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access", "fluids"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 26, "spo2": 95, "hr": 130, "bp": "85/55", "recap": 4, "gcs": 14, "exam": { "bodycheck": "erneutes Erbrechen von frischem und dunklem Blut, blass, kaltschweißig" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-versorgt" }], "else": "3" },
+    "3": { "findings": { "rr": 30, "spo2": 93, "hr": 142, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 13, "exam": { "bodycheck": "blass-grau, kaltschweißig, Blut am Mund" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "4-knapp" }], "else": "4" },
+    "4": { "findings": { "rr": 34, "spo2": 88, "hr": 150, "bp": "55 palp.", "radialPulse": false, "recap": 6, "gcs": 9, "followsCommands": false }, "else": "tot" },
+    "2-versorgt": { "findings": { "hr": 108, "bp": "105/70" }, "else": "3-versorgt" },
+    "3-versorgt": { "findings": { "rr": 24, "hr": 115, "bp": "95/60", "recap": 3 } },
+    "4-knapp": { "findings": { "rr": 26, "spo2": 94, "hr": 128, "bp": "85/55", "recap": 4, "gcs": 14 } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "i077", "version": 1, "title": "Schwere akzidentelle Hypothermie (Stadium II)",
+  "picture": "Frau, ca. 80 Jahre, nach einer Nacht im Garten im Freien gefunden. Haut eiskalt und blass, kein Zittern. Reagiert verlangsamt, murmelt, befolgt keine Aufforderungen. Puls langsam und kaum tastbar.",
+  "profile": {
+    "temperament": "verwirrt",
+    "speech": "murmelt unverständlich, antwortet nicht auf Fragen",
+    "anamnesis": {
+      "history": "Ich vergesse manchmal Sachen, sagt meine Tochter.",
+      "medication": "Ich nehme was fürs Herz."
+    },
+    "pitfall": "Fehlendes Zittern ist ein schlechtes Zeichen. Schonend und horizontal bewegen, kein ruckartiges Umlagern, Beine nicht hochlagern."
+  },
+  "meta": { "category": "Umwelt", "tags": ["Hypothermie", "Senior"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["warm"], "within": 15 }, { "actions": ["vacuum_mattress"], "within": 30 }, { "actions": ["handover"], "within": 45 }], "harmful": ["shock_position"] },
+  "base": { "walking": false, "breathing": true, "rr": 10, "spo2": 90, "hr": 42, "bp": "95/60", "radialPulse": true, "recap": 4, "gcs": 10, "followsCommands": false, "temp": 29.5, "exam": { "ecg": "Sinusbradykardie", "pupils": "mittelweit, träge lichtreagibel", "glucose": "88 mg/dl", "auscultation": "leise, vesikulär beidseits", "bodycheck": "Haut eiskalt, Gelenke steif, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }, { "when": ["warm"], "then": "2-gewaermt" }], "else": "2" },
+    "2": { "findings": { "rr": 8, "spo2": 86, "hr": 36, "bp": "80/50", "radialPulse": false, "recap": 5, "gcs": 6, "temp": 28.6 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }, { "when": ["warm"], "then": "3-gewaermt" }], "else": "3" },
+    "3": { "findings": { "rr": 6, "spo2": 82, "hr": 30, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 4, "temp": 27.9, "exam": { "ecg": "Vorhofflimmern" } }, "else": "kammerflimmern" },
+    "kammerflimmern": { "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "active": ["cpr"], "then": "reanimation" }], "else": "tot" },
+    "reanimation": { "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "active": ["cpr"], "then": "reanimation" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
+    "2-gewaermt": { "findings": { "hr": 44, "gcs": 10, "temp": 29.6 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }], "else": "3-gewaermt" },
+    "3-gewaermt": { "findings": { "rr": 10, "hr": 42, "bp": "90/55", "gcs": 9, "temp": 29.4 }, "rules": [{ "when": ["shock_position"], "then": "kammerflimmern" }] }
+  }
+}

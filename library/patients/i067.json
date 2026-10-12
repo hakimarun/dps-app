@@ -1,0 +1,29 @@
+{
+  "id": "i067", "version": 1, "title": "Kohlenmonoxidvergiftung nach Generatorbetrieb",
+  "picture": "Frau, ca. 40 Jahre, ist selbst aus einem Keller gekommen, in dem ein Notstromaggregat lief. Geht, hält sich den Kopf, ist blass, würgt. „Mir dröhnt der Schädel und mir ist so schlecht.“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, ab Phase 2 langsam und durcheinander",
+    "anamnesis": {
+      "symptoms": "Mein Kopf tut weh, mir ist übel und ein bisschen schwindelig.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme keine Medikamente.",
+      "history": "Ich bin eigentlich gesund.",
+      "lastMeal": "Gefrühstückt habe ich vor ungefähr drei Stunden.",
+      "event": "Wir hatten Stromausfall, mein Mann hat das Aggregat im Keller angemacht. Wir waren alle unten und haben fast eine Stunde lang Sachen hochgetragen.",
+      "risk": "Ich rauche nicht."
+    },
+    "pitfall": "Sagt: „Das Gerät zeigt doch 99 Prozent, dann ist ja alles gut.“ Die Pulsoxymetrie zeigt bei CO-Vergiftung falsch hohe Werte."
+  },
+  "meta": { "category": "Intoxikation", "tags": ["CO", "Gefahrstoff", "Untertriage-Falle"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 99, "hr": 102, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 5, "exam": { "auscultation": "vesikulär beidseits, keine Nebengeräusche", "ecg": "Sinustachykardie", "pupils": "mittelweit, prompt lichtreagibel" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["oxygen"], "then": "2-sauerstoff" }], "else": "2" },
+    "2": { "findings": { "walking": false, "rr": 22, "hr": 112, "gcs": 14, "pain": 7 }, "rules": [{ "when": ["oxygen"], "then": "2-sauerstoff" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 24, "hr": 120, "bp": "115/70", "gcs": 10, "followsCommands": false, "pain": 7, "exam": { "ecg": "Sinustachykardie, ST-Senkung" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }] },
+    "3-sauerstoff": { "findings": { "walking": false, "rr": 20, "hr": 104, "bp": "125/80", "gcs": 13, "pain": 6 }, "else": "2-sauerstoff" },
+    "2-sauerstoff": { "findings": { "rr": 18, "hr": 92, "pain": 3 } }
+  }
+}

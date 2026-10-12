@@ -1,0 +1,17 @@
+{
+  "id": "i023", "version": 1, "title": "Kopfverletzter mit aggressivem Verhalten",
+  "picture": "Mann, ca. 35 Jahre, sitzt am Boden, Beule am Hinterkopf. Schreit, schlägt nach den Helfern und lehnt jede Hilfe ab: „Fasst mich nicht an! Mir fehlt nix!“ Riecht deutlich nach Alkohol.",
+  "profile": { "temperament": "aggressiv", "speech": "laut, beleidigend, lallt leicht; ab Phase 2 schläfrig und kaum zu wecken", "anamnesis": { "symptoms": "Kopfweh hab ich, na und? Mir ist schlecht.", "allergies": "Geht dich nix an.", "medication": "Nein.", "history": "Nix.", "lastMeal": "Weiß nicht mehr.", "event": "Keine Ahnung, ich weiß nicht, wie ich hierhergekommen bin.", "risk": "Ein paar Bier, na und?" }, "pitfall": "schlägt um sich und befolgt keine Aufforderungen; wird ab Phase 2 ruhiger, was nach Besserung aussieht, aber Eintrübung ist – erst Eigenschutz, dann Pupillen und Arzt" },
+  "meta": {"category": "Trauma", "tags": ["SHT", "Eigenschutz", "Alkohol"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["check_pupils"], "within": 15}, {"actions": ["handover"], "within": 30}], "harmful": []},
+  "base": { "walking": false, "breathing": true, "rr": 18, "spo2": 96, "hr": 95, "bp": "150/90", "radialPulse": true, "recap": 2, "gcs": 13, "followsCommands": false, "pain": 4, "exam": { "bodycheck": "Prellung mit Schwellung und kleiner Platzwunde am Hinterkopf, kein Blut aus Ohren oder Nase. Starker Alkoholgeruch. Sonst keine Verletzungen.", "pupils": "isokor, mittelweit, prompte Lichtreaktion", "glucose": "105 mg/dl" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "rr": 16, "hr": 80, "bp": "160/90", "gcs": 11 }, "else": "3" },
+    "3": { "findings": { "rr": 12, "spo2": 94, "hr": 58, "bp": "180/95", "gcs": 8, "exam": { "pupils": "rechts weit und lichtstarr, links eng mit Lichtreaktion" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
+    "4": { "minutes": 10, "findings": { "rr": 6, "spo2": 82, "hr": 48, "bp": "190/100", "gcs": 5, "exam": { "pupils": "beidseits weit und lichtstarr" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
+    "intubiert": { "findings": { "rr": 12, "spo2": 98, "hr": 65, "bp": "160/90", "gcs": 3, "exam": { "pupils": "rechts weit und lichtstarr, links eng mit Lichtreaktion" } } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+  }
+}

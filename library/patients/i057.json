@@ -1,0 +1,19 @@
+{
+  "id": "i057", "version": 1, "title": "Rippenprellung mit Schonatmung bei Seniorin",
+  "picture": "Frau, ca. 78 Jahre, sitzt auf einer Bank und hält sich die rechte Brustseite. Kann vor Schmerzen nicht aufstehen. Atmet flach und schnell, etwa 24/min. „Jeder Atemzug sticht, ich trau mich gar nicht richtig Luft zu holen.“",
+  "profile": { "temperament": "kooperativ", "speech": "kurze Sätze, muss beim Sprechen Pausen machen",
+    "anamnesis": { "symptoms": "Rechts an den Rippen sticht es bei jedem Atemzug.", "allergies": "Ich vertrage kein Novalgin.", "medication": "Ich nehme ein Blutdruckmittel und einen Inhalator für die Lunge.", "history": "Ich habe COPD, ich habe früher geraucht.", "lastMeal": "Heute Mittag habe ich gegessen.", "event": "Ich bin im Gedränge gestürzt und mit der Seite auf die Bordsteinkante gefallen." },
+    "pitfall": "will tapfer sein und atmet aus Angst vor Schmerz immer flacher" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "Thorax"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["analgesia"], "within": 30 }, { "actions": ["pulse_oximetry"], "within": 30 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 24, "spo2": 93, "hr": 98, "bp": "150/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 8,
+    "exam": { "auscultation": "beidseits vesikulär, rechts basal abgeschwächt bei flacher Atmung", "percussion": "beidseits sonor", "bodycheck": "Prellmarke rechte seitliche Thoraxwand, Druckschmerz über den Rippen 6–8 rechts, Thorax stabil, kein Knistern unter der Haut, sonst unverletzt" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["analgesia"], "then": "analgesie" }], "else": "2" },
+    "2": { "findings": { "rr": 28, "spo2": 89, "hr": 106, "exam": { "auscultation": "rechts basal deutlich abgeschwächt, sehr flache Atemzüge" } }, "rules": [{ "when": ["analgesia"], "then": "analgesie" }], "else": "3" },
+    "3": { "findings": { "rr": 32, "spo2": 85, "hr": 114, "bp": "160/95", "gcs": 14, "exam": { "auscultation": "rechts basal kaum Atemgeräusch, flache Atemzüge, feuchte Rasselgeräusche rechts basal" } }, "rules": [{ "when": ["analgesia"], "then": "analgesie-spaet" }] },
+    "analgesie": { "findings": { "rr": 18, "spo2": 95, "hr": 88, "pain": 3 } },
+    "analgesie-spaet": { "findings": { "rr": 22, "spo2": 92, "hr": 96, "pain": 4 } }
+  }
+}

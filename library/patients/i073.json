@@ -1,0 +1,29 @@
+{
+  "id": "i073", "version": 1, "title": "Lösemittelintoxikation mit kontaminierter Kleidung",
+  "picture": "Frau, ca. 45 Jahre, sitzt im Arbeitsoverall vor einer Werkhalle und hält sich den Kopf. Wirkt benommen, Hosenbeine durchnässt, der Overall riecht stark chemisch. Versucht aufzustehen, schwankt und setzt sich wieder. „Mir ist so schwindelig, da ist ein Fass ausgelaufen.“",
+  "profile": {
+    "temperament": "ängstlich",
+    "speech": "ganze Sätze, etwas verlangsamt",
+    "anamnesis": {
+      "symptoms": "Ich habe Kopfschmerzen, mir ist schwindelig, und es ist ein bisschen eng in der Brust.",
+      "allergies": "Nein.",
+      "medication": "Ich nehme L-Thyroxin.",
+      "history": "Schilddrüse, sonst nichts.",
+      "lastMeal": "Frühstückspause vor zwei Stunden.",
+      "event": "Ein Fass mit Verdünnung ist umgekippt, das ist mir über die Hose gelaufen. Ich habe noch versucht, es aufzuwischen.",
+      "risk": "Was genau drin war, weiß der Schichtleiter. Ich glaube, Toluol."
+    },
+    "pitfall": "Fragt ängstlich, ob das giftig ist. Den Gefahrstoff erfragen; die durchnässte Kleidung hält die Aufnahme aufrecht."
+  },
+  "meta": { "category": "Intoxikation", "tags": ["Gefahrstoff", "Industrie"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["rinse"], "within": 15 }, { "actions": ["oxygen"], "within": 30 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 94, "hr": 98, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 14, "followsCommands": true, "pain": 5, "exam": { "auscultation": "vereinzelt Giemen beidseits", "pupils": "mittelweit, prompt lichtreagibel", "ecg": "Sinusrhythmus", "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "spo2": 93, "hr": 106, "gcs": 13, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }], "else": "3" },
+    "3": { "findings": { "rr": 26, "spo2": 92, "hr": 112, "bp": "125/80", "gcs": 12, "pain": 6, "exam": { "bodycheck": "Hose und Overall mit Lösemittel getränkt, Haut an beiden Oberschenkeln gerötet und brennend, keine Verletzungen" } }, "rules": [{ "when": ["rinse", "oxygen"], "then": "2-dekon" }, { "when": ["rinse"], "then": "2-dekon-ohne-o2" }] },
+    "2-dekon-ohne-o2": { "findings": { "rr": 20, "hr": 92, "gcs": 14, "pain": 4, "exam": { "bodycheck": "entkleidet und abgespült, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } }, "rules": [{ "when": ["oxygen"], "then": "2-dekon" }] },
+    "2-dekon": { "findings": { "rr": 18, "spo2": 97, "hr": 88, "gcs": 15, "pain": 3, "exam": { "auscultation": "vesikulär beidseits", "bodycheck": "entkleidet und abgespült, Haut an den Oberschenkeln leicht gerötet, keine Verletzungen" } } }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "i060", "version": 1, "title": "Verbrühung 2. Grades am Unterarm, ca. 3 % KOF",
+  "picture": "Frau, ca. 25 Jahre, in Küchenkleidung, kommt zu Fuß. Der rechte Arm zwischen Ellenbogen und Handgelenk ist gerötet, mit Blasen, etwa so groß wie drei Handflächen. „Mir ist heißes Nudelwasser drübergelaufen, das brennt höllisch! Haben Sie Eis?“",
+  "profile": { "temperament": "kooperativ", "speech": "ganze Sätze, aufgeregt",
+    "anamnesis": { "symptoms": "Der Arm brennt wie Feuer.", "allergies": "Keine Allergien.", "medication": "Ich nehme die Pille, sonst nichts.", "history": "Ich bin gesund.", "lastMeal": "Vor einer Stunde ein Brötchen.", "event": "Der Nudeltopf ist mir beim Abgießen abgerutscht. Das ist vielleicht fünf Minuten her.", "risk": "Tetanus? Keine Ahnung, wann die letzte Impfung war." },
+    "pitfall": "verlangt Eis oder einen Kühlakku direkt auf die Haut" },
+  "meta": { "category": "Verbrennung", "tags": ["Verbrennung", "Arbeitsunfall"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["rinse"], "within": 15 }, { "actions": ["burn_dressing", "wound_dressing"], "within": 30 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 99, "hr": 96, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "temp": 36.8,
+    "exam": { "burn": "ca. 3 % KOF, 2. Grad (Rötung, Blasen), rechter Unterarm streckseitig, Hand frei", "airway": "frei, keine Rußspuren", "bodycheck": "nur rechter Unterarm betroffen, Durchblutung, Motorik und Sensibilität der Hand erhalten" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["rinse", "burn_dressing"], "then": "versorgt" }, { "when": ["rinse", "wound_dressing"], "then": "versorgt" }, { "when": ["rinse"], "then": "gekuehlt" }, { "when": ["burn_dressing"], "then": "abgedeckt" }, { "when": ["wound_dressing"], "then": "abgedeckt" }], "else": "2" },
+    "2": { "findings": { "hr": 100, "exam": { "burn": "ca. 3 % KOF, 2. Grad, Blasen größer, einzelne eröffnet und verschmutzt" } }, "rules": [{ "when": ["burn_dressing"], "then": "abgedeckt" }, { "when": ["wound_dressing"], "then": "abgedeckt" }] },
+    "gekuehlt": { "findings": { "hr": 88, "pain": 4 }, "rules": [{ "when": ["burn_dressing"], "then": "versorgt" }, { "when": ["wound_dressing"], "then": "versorgt" }] },
+    "abgedeckt": { "findings": { "hr": 90, "pain": 5 } },
+    "versorgt": { "findings": { "hr": 84, "pain": 3 } }
+  }
+}

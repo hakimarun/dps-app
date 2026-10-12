@@ -1,0 +1,18 @@
+{
+  "id": "i042", "version": 1, "title": "Postiktaler Zustand nach Krampfanfall, fremdsprachig",
+  "picture": "Mann, ca. 30 Jahre, liegt erschöpft auf dem Boden, Speichel mit etwas Blut am Mundwinkel, Hose eingenässt. Schaut verwirrt umher und spricht eine fremde Sprache, reagiert aber auf Gesten.",
+  "profile": {"temperament": "Sprachbarriere", "speech": "spricht nur Arabisch und wenige Wörter Englisch, langsam und verwaschen; versteht Gesten und zeigt mit den Fingern", "anamnesis": {"symptoms": "Ich bin so müde, meine Zunge tut weh.", "allergies": "Nein.", "medication": "Ich habe Tabletten gegen Krämpfe, Levetiracetam. Seit zwei Tagen habe ich keine mehr.", "history": "Ich habe Epilepsie, seit ich ein Kind bin.", "lastMeal": "Heute Morgen ein Brot.", "event": "Ich weiß nicht, was passiert ist. Ich bin auf dem Boden aufgewacht.", "risk": "Ich habe letzte Nacht kaum geschlafen."}, "pitfall": "Versteht kein Deutsch. Fordert man ihn mit Gesten auf (Hand drücken, Zunge zeigen), befolgt er es. Sprachbarriere ist kein fehlendes Befolgen von Aufforderungen. In Phase 3 krampft er erneut.", "sources": ["S2k-Leitlinie Erster epileptischer Anfall und Epilepsien im Erwachsenenalter (DGN 2023)", "ERC-Leitlinien 2021 Erste Hilfe"]},
+  "meta": {"category": "Neurologisch", "tags": ["Krampfanfall", "Sprachbarriere"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["blood_glucose"], "within": 15}, {"actions": ["recovery_position", "airway_hold", "wendl"], "within": 35}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 20, "spo2": 94, "hr": 105, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 13, "followsCommands": true, "pain": 3, "exam": {"glucose": "96 mg/dl", "pupils": "mittelweit, isokor, prompt", "bodycheck": "seitlicher Zungenbiss, eingenässt, Schürfwunde an der Stirn, sonst unverletzt"}},
+  "start": "1",
+  "phases": {
+    "1": {"else": "2"},
+    "2": {"findings": {"gcs": 14, "spo2": 95, "hr": 95}, "else": "3-anfall"},
+    "3-anfall": {"minutes": 5, "findings": {"rr": 10, "spo2": 86, "hr": 125, "bp": "160/95", "gcs": 7, "followsCommands": false, "exam": {"glucose": "96 mg/dl", "pupils": "weit, träge", "bodycheck": "hat erneut gekrampft, jetzt schlaff, schnarchende Atmung, Speichel und Blut im Mund"}}, "rules": [{"when": ["recovery_position"], "then": "4-erholt"}, {"active": ["airway_hold"], "then": "4-erholt"}, {"when": ["wendl"], "then": "4-erholt"}], "else": "4-aspiration"},
+    "4-erholt": {"findings": {"rr": 16, "spo2": 95, "hr": 100, "gcs": 11, "followsCommands": false}, "else": "5-klar"},
+    "5-klar": {"findings": {"rr": 16, "spo2": 96, "hr": 90, "gcs": 14}},
+    "4-aspiration": {"findings": {"rr": 28, "spo2": 84, "hr": 125, "gcs": 8, "followsCommands": false, "exam": {"glucose": "96 mg/dl", "pupils": "mittelweit, träge", "auscultation": "Rasselgeräusche rechts basal", "bodycheck": "Erbrochenes im Mund, brodelnde Atmung"}}, "rules": [{"when": ["recovery_position", "oxygen"], "then": "5-aspiration-versorgt"}, {"when": ["airway_open", "oxygen"], "then": "5-aspiration-versorgt"}]},
+    "5-aspiration-versorgt": {"findings": {"rr": 24, "spo2": 92, "hr": 110, "gcs": 10, "followsCommands": false, "exam": {"glucose": "96 mg/dl", "pupils": "mittelweit, prompt", "auscultation": "Rasselgeräusche rechts basal", "bodycheck": "Atemweg frei, Zungenbiss"}}}
+  }
+}

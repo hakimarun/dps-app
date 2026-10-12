@@ -1,0 +1,15 @@
+{
+  "id": "i019", "version": 1, "title": "Ausgerenkte Schulter",
+  "picture": "Mann, ca. 30 Jahre, geht gebückt und stützt den rechten Arm mit der linken Hand. Rechts oben wirkt die Kontur eckig, der Arm steht leicht ab. „Das ist wieder rausgesprungen, wie letztes Jahr beim Handball.“",
+  "profile": { "temperament": "kooperativ", "speech": "ganze Sätze, stöhnt bei Bewegung", "anamnesis": { "symptoms": "Meine rechte Schulter ist raus, das tut höllisch weh.", "allergies": "Nein.", "medication": "Nein.", "history": "Die Schulter ist mir letztes Jahr beim Handball schon mal rausgesprungen.", "lastMeal": "Heute Mittag.", "event": "Ich habe mich beim Bremsen an der Haltestange festgehalten, da hat es geknackt.", "risk": "Nein." }, "pitfall": "bittet: „Ziehen Sie einfach kräftig dran, beim letzten Mal ging das auch so.“ – Schonhaltung belassen, nicht einrenken, Durchblutung und Sensibilität dokumentieren" },
+  "meta": {"category": "Trauma", "tags": ["Extremität", "Gelenk"], "difficulty": "einsteiger"},
+  "scoring": {"critical": [{"actions": ["splint"], "within": 30}, {"actions": ["body_check"], "within": 30}], "harmful": []},
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 98, "hr": 100, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": { "bodycheck": "rechte Schulter: Konturverlust (eckig), Oberarmkopf vorne unten tastbar, Arm leicht abgespreizt und federnd fixiert. Puls am Handgelenk gut tastbar, Finger warm und beweglich, taubes Areal außen am Oberarm. Sonst keine Verletzungen." } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["splint"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "pain": 8 }, "rules": [{ "when": ["splint"], "then": "2-versorgt" }] },
+    "2-versorgt": { "findings": { "pain": 5 }, "rules": [{ "when": ["analgesia"], "then": "3-analgesie" }] },
+    "3-analgesie": { "findings": { "pain": 3 } }
+  }
+}

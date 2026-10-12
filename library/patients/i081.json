@@ -1,0 +1,19 @@
+{
+  "id": "i081", "version": 1, "title": "Akute Belastungsreaktion mit Stupor",
+  "picture": "Mann, ca. 40 Jahre, steht reglos an der Unfallstelle und starrt ins Leere. Antwortet kaum, höchstens mit einem Wort. Lässt sich an der Hand führen. Keine sichtbaren Verletzungen.",
+  "profile": { "temperament": "verwirrt", "speech": "einzelne Wörter, sehr leise, mit Zuwendung wieder ganze Sätze",
+    "anamnesis": { "symptoms": "… alles so weit weg.", "allergies": "Nein.", "medication": "Nein.", "history": "Nein … gesund.", "lastMeal": "Weiß nicht … Frühstück.", "event": "Da war der Knall … und dann … die Frau im Auto.", "risk": "Ich muss da wieder hin." },
+    "pitfall": "Wirkt wie bewusstseinsgestört. Ohne Body-Check wird eine Verletzung übersehen; ohne Betreuung läuft er zurück in den Gefahrenbereich an den Wracks." },
+  "meta": { "category": "Psychiatrie", "tags": ["Psyche", "Betreuung"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["body_check"], "within": 15 }, { "actions": ["calm"], "within": 30 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 98, "hr": 100, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 14, "followsCommands": true, "pain": 0,
+    "exam": { "bodycheck": "keine äußeren Verletzungen, keine Prellmarken, Kleidung unversehrt", "pupils": "mittelweit, seitengleich, prompt", "glucose": "105 mg/dl" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "2" },
+    "2": { "findings": { "hr": 110, "rr": 20, "bp": "155/95" }, "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "3" },
+    "3": { "findings": { "hr": 115, "rr": 22, "bp": "155/95", "pain": 3, "exam": { "bodycheck": "Schnittwunde an der rechten Hand durch Glassplitter am Wrack, blutet mäßig, sonst unverletzt" } }, "rules": [{ "when": ["calm"], "then": "3-betreut" }] },
+    "betreut": { "findings": { "hr": 84, "rr": 16, "bp": "130/80", "gcs": 15 } },
+    "3-betreut": { "findings": { "hr": 88, "rr": 16, "bp": "130/80", "gcs": 15, "pain": 3, "exam": { "bodycheck": "Schnittwunde an der rechten Hand durch Glassplitter am Wrack, blutet mäßig, sonst unverletzt" } } }
+  }
+}

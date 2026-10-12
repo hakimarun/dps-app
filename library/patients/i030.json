@@ -1,0 +1,16 @@
+{
+  "id": "i030", "version": 1, "title": "Verwirrter Diabetiker",
+  "picture": "Mann, ca. 55 Jahre, sitzt am Rand auf dem Boden, schweißnass, zittert. Lallt unverständlich, reagiert nicht auf Aufforderungen. Keine Verletzungen zu sehen. Aus der Jackentasche schaut ein Insulinpen.",
+  "profile": { "temperament": "verwirrt", "speech": "lallt, unzusammenhängende Wortfetzen; nach Glukosegabe ganze Sätze", "anamnesis": { "symptoms": "Mir war auf einmal so komisch, ganz zittrig.", "allergies": "Keine.", "medication": "Ich spritze Insulin, morgens das lange und zum Essen das schnelle.", "history": "Ich hab seit 20 Jahren Diabetes.", "lastMeal": "Ich hab heute früh gespritzt, aber im Bus nichts mehr gegessen.", "event": "Die Fahrt hat ewig gedauert, dann kam der Unfall." }, "pitfall": "Wirkt wie betrunken. Ohne Blutzuckermessung wird er liegen gelassen. Nach der Glukosegabe will er sofort weiter." },
+  "meta": { "category": "Internistisch", "tags": ["Stoffwechsel", "Bewusstsein"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["blood_glucose"], "within": 15 }, { "actions": ["glucose"], "within": 15 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 18, "spo2": 96, "hr": 112, "bp": "145/85", "radialPulse": true, "recap": 2, "gcs": 11, "followsCommands": false, "exam": { "glucose": "32 mg/dl", "pupils": "isokor, mittelweit, prompt", "bodycheck": "keine Verletzungen, kaltschweißig, Insulinpen in der Jackentasche" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access", "glucose"], "then": "versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 12, "spo2": 89, "hr": 125, "bp": "160/90", "gcs": 5, "exam": { "glucose": "24 mg/dl", "pupils": "weit, träge", "bodycheck": "generalisierter Krampfanfall, Zungenbiss" } }, "rules": [{ "when": ["iv_access", "glucose"], "then": "versorgt" }], "else": "3" },
+    "3": { "findings": { "rr": 10, "spo2": 86, "hr": 110, "bp": "150/85", "gcs": 3, "exam": { "glucose": "18 mg/dl", "pupils": "weit, träge" } }, "rules": [{ "when": ["iv_access", "glucose"], "then": "versorgt-spaet" }] },
+    "versorgt": { "findings": { "rr": 16, "spo2": 97, "hr": 92, "bp": "135/80", "gcs": 15, "followsCommands": true, "exam": { "glucose": "125 mg/dl" } } },
+    "versorgt-spaet": { "findings": { "rr": 16, "spo2": 94, "hr": 96, "bp": "140/80", "gcs": 13, "followsCommands": true, "exam": { "glucose": "110 mg/dl" } } }
+  }
+}

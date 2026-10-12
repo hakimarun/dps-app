@@ -1,0 +1,27 @@
+{
+  "id": "i074", "version": 1, "title": "Hitzschlag beim Konzert",
+  "picture": "Frau, ca. 20 Jahre, liegt im Sanitätszelt auf der Trage. Haut heiß, gerötet und trocken. Verwirrt, murmelt unverständlich, befolgt keine Aufforderungen.",
+  "profile": {
+    "temperament": "verwirrt",
+    "speech": "murmelt unverständlich, keine sinnvollen Antworten",
+    "anamnesis": {
+      "event": "Ich stand ganz vorne, stundenlang in der Sonne. Ich hab nichts getrunken, nur Bier.",
+      "medication": "Ich nehme nur die Pille."
+    },
+    "pitfall": "Helfer wollen erst transportieren. Bei dieser Körpertemperatur ist sofortiges Kühlen die wichtigste Maßnahme, nicht erst im Krankenhaus."
+  },
+  "meta": { "category": "Umwelt", "tags": ["Hitze", "Bewusstsein"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["cool_large"], "within": 15 }, { "actions": ["iv_access"], "within": 30 }], "harmful": ["warm"] },
+  "base": { "walking": false, "breathing": true, "rr": 28, "spo2": 95, "hr": 140, "bp": "100/60", "radialPulse": true, "recap": 3, "gcs": 10, "followsCommands": false, "temp": 41.0, "exam": { "glucose": "96 mg/dl", "ecg": "Sinustachykardie", "pupils": "mittelweit, träge lichtreagibel", "bodycheck": "Haut am ganzen Körper heiß und trocken, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "2" },
+    "2": { "findings": { "rr": 32, "spo2": 88, "hr": 155, "bp": "90/50", "gcs": 5, "temp": 41.6, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß und trocken" } }, "rules": [{ "when": ["cool_large"], "then": "3-spaet-gekuehlt" }], "else": "3" },
+    "3": { "findings": { "rr": 34, "spo2": 85, "hr": 160, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 4, "temp": 42.0, "exam": { "bodycheck": "schlaff, Haut heiß, marmoriert" } }, "rules": [{ "when": ["cool_large", "iv_access", "fluids"], "then": "3-spaet-gekuehlt" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
+    "3-spaet-gekuehlt": { "findings": { "rr": 26, "spo2": 93, "hr": 130, "bp": "95/55", "gcs": 8, "temp": 39.5 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-gekuehlt" }] },
+    "2-gekuehlt": { "findings": { "rr": 24, "hr": 120, "bp": "105/65", "gcs": 13, "temp": 39.0 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }], "else": "3-gekuehlt" },
+    "3-gekuehlt": { "findings": { "rr": 22, "hr": 115, "bp": "95/60", "gcs": 13, "temp": 38.4 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "stabil" }] },
+    "stabil": { "findings": { "rr": 20, "hr": 100, "bp": "115/70", "gcs": 14, "followsCommands": true, "temp": 38.2 } }
+  }
+}

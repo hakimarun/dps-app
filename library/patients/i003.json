@@ -1,0 +1,159 @@
+{
+  "id": "i003",
+  "version": 1,
+  "title": "Fingeramputation an Maschine",
+  "picture": "Mann, ca. 45 Jahre, in Arbeitskleidung, kommt zu Fuß. Die rechte Hand ist in ein Tuch gewickelt, das langsam durchblutet. An zwei Fingern fehlen die vorderen Glieder. Hält eine Plastiktüte mit den abgetrennten Teilen hoch: „Können Sie die wieder annähen?“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, gepresst vor Schmerz",
+    "anamnesis": {
+      "symptoms": "Die Hand pocht wie verrückt.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme nichts, nur ab und zu Ibuprofen für den Rücken.",
+      "history": "Nein, ich bin gesund. Tetanus war vor ein paar Jahren.",
+      "lastMeal": "Frühstückspause war vor einer Stunde.",
+      "event": "Ich bin mit der Hand in die Stanze gekommen.",
+      "risk": "Ich rauche."
+    },
+    "pitfall": "Spektakuläre Verletzung, aber SK III. Fragt immer wieder nach seinen Fingern; Amputat trocken und indirekt gekühlt mitgeben, Replantationszentrum anfahren."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Blutung",
+      "Amputation",
+      "Hand"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "pressure_dressing"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "analgesia"
+        ],
+        "within": 45
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 18,
+    "spo2": 98,
+    "hr": 100,
+    "bp": "145/90",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 8,
+    "exam": {
+      "bodycheck": "Rechte Hand: Zeige- und Mittelfinger im Mittelglied glatt abgetrennt, sickernde Blutung, Fingerstümpfe sonst sauber; Amputate in einer Plastiktüte; sonst unverletzt"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "pressure_dressing",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "hr": 105,
+        "bp": "140/85",
+        "exam": {
+          "bodycheck": "Rechte Hand: Zeige- und Mittelfinger im Mittelglied abgetrennt, Tuch durchgeblutet, sickernde Blutung hält an"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "pressure_dressing",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "hr": 110,
+        "bp": "135/85",
+        "exam": {
+          "bodycheck": "Rechte Hand: Zeige- und Mittelfinger im Mittelglied abgetrennt, Tuch durchgeblutet, sickernde Blutung hält an"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "pressure_dressing",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ]
+    },
+    "verbunden": {
+      "findings": {
+        "hr": 95,
+        "pain": 7,
+        "exam": {
+          "bodycheck": "Rechte Hand mit Druckverband versorgt, nicht durchgeblutet"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "versorgt": {
+      "findings": {
+        "hr": 85,
+        "bp": "135/85",
+        "pain": 3,
+        "exam": {
+          "bodycheck": "Rechte Hand mit Druckverband versorgt, nicht durchgeblutet"
+        }
+      }
+    }
+  }
+}

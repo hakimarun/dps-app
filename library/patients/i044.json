@@ -1,0 +1,17 @@
+{
+  "id": "i044", "version": 1, "title": "Ruhiger Säugling im Kindersitz (SHT mit epiduralem Hämatom)",
+  "picture": "Mädchen, ca. 9 Monate, sitzt angeschnallt in der Babyschale im Unfallauto. Schläft, lässt sich nur schwer wecken und schläft sofort wieder ein. Kleine Schwellung an der rechten Kopfseite.",
+  "profile": {"temperament": "keins", "speech": "spricht nicht (Säugling); wimmert kurz bei Berührung", "anamnesis": {"event": "Mutter (verletzt, auf Nachfrage): „Beim Aufprall ist ihr Kopf gegen die Tür geschlagen. Sie hat kurz geschrien und schläft seitdem.“", "history": "Mutter: „Sie ist gesund, alle Impfungen gemacht.“", "lastMeal": "Mutter: „Ich habe sie vor drei Stunden gestillt.“"}, "pitfall": "Wirkt friedlich und schläft. Wer Bewusstsein nicht altersgerecht prüft (Wecken, Fixieren, Reaktion auf Berührung), wertet das als normal. Ein ruhiger, schwer erweckbarer Säugling ist ein Alarmzeichen.", "sources": ["S2k-Leitlinie Das Schädel-Hirn-Trauma im Kindes- und Jugendalter (GNPI 2022)", "ERC-Leitlinien 2021 Paediatric Life Support"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "SHT", "Untertriage-Falle"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["check_pupils", "body_check"], "within": 15}, {"actions": ["handover"], "within": 30}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 30, "spo2": 97, "hr": 125, "bp": "85/50", "radialPulse": true, "recap": 2, "gcs": 13, "followsCommands": true, "exam": {"pupils": "mittelweit, isokor, prompt", "bodycheck": "weiche Schwellung über dem rechten Scheitelbein, Fontanelle im Niveau; öffnet die Augen nur auf kräftige Berührung, fixiert kurz, schläft sofort wieder ein; sonst unverletzt", "glucose": "95 mg/dl"}},
+  "start": "1",
+  "phases": {
+    "1": {"else": "2"},
+    "2": {"findings": {"hr": 115, "gcs": 12, "exam": {"pupils": "mittelweit, isokor, prompt", "bodycheck": "hat im Schwall erbrochen, Schwellung rechts größer, Fontanelle leicht gespannt; reagiert nur kurz auf Berührung", "glucose": "95 mg/dl"}}, "rules": [{"when": ["recovery_position"], "then": "3-seitenlage"}, {"active": ["airway_hold"], "then": "3-seitenlage"}], "else": "3"},
+    "3": {"findings": {"rr": 24, "spo2": 90, "hr": 90, "bp": "100/55", "gcs": 8, "followsCommands": false, "exam": {"pupils": "rechts weiter als links, träge", "bodycheck": "Fontanelle vorgewölbt und gespannt, Erbrochenes im Mund, reagiert nur auf Schmerz mit Beugen", "glucose": "95 mg/dl"}}, "else": "4"},
+    "3-seitenlage": {"findings": {"rr": 26, "spo2": 96, "hr": 95, "bp": "100/55", "gcs": 8, "followsCommands": false, "exam": {"pupils": "rechts weiter als links, träge", "bodycheck": "Fontanelle vorgewölbt und gespannt, Atemweg frei, reagiert nur auf Schmerz mit Beugen", "glucose": "95 mg/dl"}}, "else": "4"},
+    "4": {"findings": {"rr": 14, "spo2": 88, "hr": 75, "bp": "115/60", "gcs": 5, "followsCommands": false, "exam": {"pupils": "rechts weit und lichtstarr", "bodycheck": "Fontanelle prall vorgewölbt, Strecksynergismen auf Schmerzreiz, unregelmäßige Atmung", "glucose": "95 mg/dl"}}, "else": "tot"},
+    "tot": {"dead": true, "findings": {"breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false}}
+  }
+}

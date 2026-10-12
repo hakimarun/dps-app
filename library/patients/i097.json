@@ -1,0 +1,28 @@
+{
+  "id": "i097", "version": 1, "title": "Radioaktiv kontaminierte Person mit Fraktur",
+  "picture": "Mann, ca. 45 Jahre, in Arbeitskleidung, liegt am Boden und hält sich das rechte Bein. Rechter Unterschenkel in Fehlstellung. Wach und gefasst. Ein Mitarbeiter des Strahlenschutzes meldet: „Das Messgerät schlägt an seiner Kleidung an.“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, ruhig, beißt die Zähne zusammen",
+    "anamnesis": {
+      "symptoms": "Mein rechtes Bein tut höllisch weh, sonst geht's.",
+      "allergies": "Keine.",
+      "medication": "Ich nehme keine Medikamente.",
+      "history": "Ich bin gesund.",
+      "lastMeal": "Vor drei Stunden in der Kantine.",
+      "event": "Ich bin von der Leiter gefallen, als der Alarm losging. Da war vorher ein Behälter mit Strahlenquelle undicht.",
+      "risk": "Ich trage normalerweise ein Dosimeter, das liegt aber in meiner Jacke."
+    },
+    "pitfall": "Helfer zögern aus Angst vor der Strahlung. Mit Basisschutz (Handschuhe, Schutzkittel) kann die Verletzung sofort versorgt werden; Kleidung entfernen und den Patienten abdecken schließt die Kontamination ein."
+  },
+  "meta": {"category": "CBRN", "tags": ["Strahlung", "Fraktur", "Eigenschutz"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["splint"], "within": 30}, {"actions": ["warm", "wound_dressing"], "within": 30}], "harmful": []},
+  "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 98, "hr": 98, "bp": "135/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": { "bodycheck": "geschlossene Unterschenkelfraktur rechts mit Fehlstellung, Durchblutung, Motorik und Sensibilität am Fuß erhalten; sonst keine Verletzungen. Kleidung laut Messung kontaminiert, Gesicht und Hände nicht" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }], "else": "2" },
+    "2": { "findings": { "hr": 102, "bp": "130/85", "pain": 8 }, "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }], "else": "3" },
+    "3": { "findings": { "hr": 106, "bp": "130/80", "pain": 8, "exam": { "bodycheck": "geschlossene Unterschenkelfraktur rechts mit Fehlstellung, Fuß rechts kühl, Fußpuls schwach, Kribbeln in den Zehen; Kleidung laut Messung kontaminiert" } }, "rules": [{ "when": ["splint", "analgesia"], "then": "versorgt" }] },
+    "versorgt": { "findings": { "hr": 88, "bp": "130/80", "pain": 3 } }
+  }
+}

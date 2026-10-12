@@ -286,7 +286,13 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     return send(res, 200, { image: null });
   }
   if (route === "GET /api/actions") return send(res, 200, Object.values(lib.defs.actions).map((a) => ({ id: a.id, title: a.title, group: a.group })));
-  if (route === "GET /api/ideas") return send(res, 200, { cases: readIdeas("cases.json"), scenarios: readIdeas("scenarios.json"), generator: !!generatorAi });
+  // Ideen, die schon als Fall oder Szenario in der Bibliothek stehen, sind erledigt und erscheinen nicht mehr.
+  if (route === "GET /api/ideas")
+    return send(res, 200, {
+      cases: readIdeas("cases.json").filter((i: { id: string }) => !lib.defs.patients[i.id]),
+      scenarios: readIdeas("scenarios.json").filter((i: { id: string }) => !scenarios[i.id]),
+      generator: !!generatorAi,
+    });
   if (route === "POST /api/generate") {
     if (!generatorAi) throw new HttpError(503, "KI-Fallgenerator ist nicht eingerichtet (AI_GENERATOR, ANTHROPIC_API_KEY oder LOCAL_AI_URL)");
     const { brief, audience } = GenerateReq.parse(await body(req));

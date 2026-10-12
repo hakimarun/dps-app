@@ -1,0 +1,184 @@
+{
+  "id": "i011",
+  "version": 1,
+  "title": "Eingeklemmter Lkw-Fahrer",
+  "picture": "Mann, ca. 50 Jahre, sitzt im verformten Führerhaus, beide Unterschenkel im Fußraum festgeklemmt. Wach, zittert, die Zähne klappern: „Mir ist so kalt. Holt mich hier raus!“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, zittrig",
+    "anamnesis": {
+      "symptoms": "Mir ist eiskalt, und das rechte Bein tut höllisch weh.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme ASS 100 und was für den Blutdruck.",
+      "history": "Ich hatte vor fünf Jahren einen Stent am Herzen.",
+      "lastMeal": "Ich habe vor vier Stunden an der Raststätte gegessen.",
+      "event": "Ich bin in der Kurve ins Rutschen gekommen und gegen den Brückenpfeiler gefahren.",
+      "risk": "Ich rauche."
+    },
+    "pitfall": "Drängt auf sofortige Rettung. Technische Rettung und medizinische Versorgung parallel planen; der Patient bindet Personal."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Einklemmung",
+      "Hypothermie",
+      "Feuerwehr"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "warm"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "analgesia"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 20,
+    "spo2": 96,
+    "hr": 100,
+    "bp": "140/85",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 7,
+    "temp": 35.8,
+    "exam": {
+      "bodycheck": "Beide Unterschenkel im Fußraum eingeklemmt, rechter Unterschenkel fehlgestellt, keine starke Blutung sichtbar; Prellmarke vom Gurt an Schulter und Brust; zittert"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "warm"
+          ],
+          "then": "2-warm"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 22,
+        "hr": 108,
+        "pain": 8,
+        "temp": 35.0
+      },
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "warm"
+          ],
+          "then": "2-warm"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "rr": 22,
+        "hr": 112,
+        "bp": "130/80",
+        "pain": 9,
+        "temp": 34.3,
+        "gcs": 14
+      },
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "warm"
+          ],
+          "then": "2-warm"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "rr": 18,
+        "hr": 95,
+        "bp": "120/75",
+        "pain": 8,
+        "temp": 33.5,
+        "gcs": 13,
+        "exam": {
+          "bodycheck": "Beide Unterschenkel eingeklemmt, rechter fehlgestellt; Zittern hat aufgehört, Haut kalt, verlangsamt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "warm",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "warm"
+          ],
+          "then": "2-warm"
+        }
+      ]
+    },
+    "2-warm": {
+      "findings": {
+        "hr": 105,
+        "pain": 8
+      },
+      "rules": [
+        {
+          "when": [
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "versorgt": {
+      "findings": {
+        "rr": 18,
+        "hr": 90,
+        "bp": "135/80",
+        "pain": 4
+      }
+    }
+  }
+}

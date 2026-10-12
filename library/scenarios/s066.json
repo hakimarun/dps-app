@@ -1,0 +1,146 @@
+{
+  "id": "s066",
+  "title": "Hitzewelle mit Stromausfall im Pflegeheim",
+  "situation": "Mehrtägige Hitze und Stromausfall, viele Bewohner geschwächt. Kräfte laut Planung: 3 RTW, 1 NEF, SEG. Besonderheiten: Hitze, Stromausfall, Bettlägerige. Lernziel: Stille Verschlechterung bei Älteren erkennen. Die Idee sieht 21 Betroffene vor; enthalten sind 6 typische Fälle.",
+  "patients": [
+    "i055",
+    "i058",
+    "i054",
+    "i074",
+    "i033",
+    "i040"
+  ],
+  "units": [
+    {
+      "id": "rtw1",
+      "title": "RTW 1",
+      "arrivesAt": 0,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "rtw2",
+      "title": "RTW 2",
+      "arrivesAt": 1,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "rtw3",
+      "title": "RTW 3",
+      "arrivesAt": 2,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "nef1",
+      "title": "NEF 1",
+      "arrivesAt": 3,
+      "seats": 0,
+      "inventory": {
+        "needle": 2,
+        "ett": 2,
+        "analgesic": 4,
+        "iv_cannula": 2,
+        "infusion": 2,
+        "o2_mask": 1,
+        "bvm": 1,
+        "chest_seal": 1,
+        "hemostatic": 1,
+        "glucose": 2,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "ktw1",
+      "title": "KTW 1",
+      "arrivesAt": 4,
+      "seats": 2,
+      "inventory": {
+        "dressing": 4,
+        "o2_mask": 1,
+        "rescue_blanket": 4,
+        "cervical_collar": 1,
+        "bvm": 1,
+        "burn_dressing": 1
+      }
+    },
+    {
+      "id": "ktw2",
+      "title": "KTW 2",
+      "arrivesAt": 5,
+      "seats": 2,
+      "inventory": {
+        "dressing": 4,
+        "o2_mask": 1,
+        "rescue_blanket": 4,
+        "cervical_collar": 1,
+        "bvm": 1,
+        "burn_dressing": 1
+      }
+    }
+  ]
+}

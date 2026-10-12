@@ -1,0 +1,20 @@
+{
+  "id": "i024", "version": 1, "title": "Spritzende Blutung am Unterarm, gehfähig",
+  "picture": "Mann, ca. 25 Jahre, geht zur Sammelstelle und hält den linken Arm hoch. Kurz unterhalb des Ellenbogens spritzt hellrotes Blut pulsierend zwischen seinen Fingern hervor. „Das hört gar nicht auf!“",
+  "profile": { "temperament": "kooperativ", "speech": "ganze Sätze, ab Phase 2 fahrig", "anamnesis": { "symptoms": "Mein Arm blutet wie verrückt, sonst geht's.", "allergies": "Nein.", "medication": "Nein.", "history": "Nichts.", "lastMeal": "Vor zwei Stunden einen Döner.", "event": "Ich habe mich an einer kaputten Scheibe geschnitten, als ich rausgeklettert bin.", "risk": "Nein." }, "pitfall": "läuft herum und will zu seinen Freunden – weil er geht, wird er leicht als leicht verletzt einsortiert; spritzende Blutung heißt SK I" },
+  "meta": {"category": "Trauma", "tags": ["Blutung", "mSTaRT-Regel"], "difficulty": "einsteiger"},
+  "scoring": {"critical": [{"actions": ["pressure_dressing", "tourniquet"], "within": 15}], "harmful": []},
+  "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 98, "hr": 105, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "spurtingBleeding": true, "pain": 5, "exam": { "bodycheck": "ca. 5 cm lange Schnittwunde an der Beugeseite des linken Unterarms, pulsierend spritzende Blutung. Sonst keine Verletzungen." } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["pressure_dressing"], "then": "2-versorgt" }, { "when": ["tourniquet"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "hr": 120, "bp": "115/75", "recap": 3 }, "rules": [{ "when": ["pressure_dressing"], "then": "3-versorgt" }, { "when": ["tourniquet"], "then": "3-versorgt" }], "else": "3-schock" },
+    "3-schock": { "findings": { "walking": false, "rr": 28, "spo2": 95, "hr": 140, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14 }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }], "else": "4-kreislauf" },
+    "4-kreislauf": { "minutes": 10, "findings": { "walking": false, "rr": 34, "spo2": 90, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 9, "followsCommands": false }, "rules": [{ "when": ["pressure_dressing"], "then": "4-gestillt" }, { "when": ["tourniquet"], "then": "4-gestillt" }], "else": "tot" },
+    "4-gestillt": { "findings": { "walking": false, "spurtingBleeding": false, "rr": 26, "spo2": 95, "hr": 125, "bp": "85/55", "recap": 4, "gcs": 14 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "5-stabil" }] },
+    "5-stabil": { "findings": { "walking": false, "spurtingBleeding": false, "rr": 22, "hr": 110, "bp": "100/65", "recap": 3 } },
+    "2-versorgt": { "findings": { "spurtingBleeding": false, "hr": 100, "bp": "125/80", "pain": 4 } },
+    "3-versorgt": { "findings": { "spurtingBleeding": false, "rr": 22, "hr": 110, "bp": "115/75", "recap": 3, "pain": 4 } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "i045", "version": 1, "title": "Kind mit Fremdkörper in den Atemwegen (partielle Verlegung)",
+  "picture": "Junge, ca. 3 Jahre, sitzt auf dem Arm seines Vaters und hustet heftig. Bei jedem Einatmen ein ziehendes Geräusch, die Haut über dem Brustbein zieht sich ein. Lippen blass, atmet sehr schnell (ca. 44/min).",
+  "profile": {"temperament": "panisch", "speech": "kann zwischen den Hustenstößen kaum sprechen, weint; ab Phase 2 tonlos", "anamnesis": {"event": "Vater: „Er hatte eben noch Erdnüsse in der Hand, dann hat er plötzlich gehustet und gewürgt.“", "history": "Vater: „Er ist gesund, kein Asthma.“", "allergies": "Vater: „Keine Allergien bekannt.“", "medication": "Vater: „Nein.“"}, "pitfall": "Der Vater will ihm in den Mund greifen. Solange das Kind kräftig hustet: Husten unterstützen, nicht hinlegen, beim Vater lassen. Erst bei Erschöpfung Rückenschläge und Thoraxkompressionen. Erwachsenen-Grenzwerte gelten nicht, hier ist der Atemweg das Problem.", "sources": ["ERC-Leitlinien 2021 Paediatric Life Support: Fremdkörperverlegung der Atemwege", "S2k-Leitlinie Fremdkörperaspiration im Kindesalter (GPP)"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "Atemweg"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["oxygen"], "within": 15}, {"actions": ["airway_open"], "within": 30}, {"actions": ["handover"], "within": 30}], "harmful": ["recovery_position", "shock_position"]},
+  "base": {"walking": false, "breathing": true, "rr": 44, "spo2": 91, "hr": 150, "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "stridor": true, "exam": {"auscultation": "fortgeleiteter inspiratorischer Stridor, beidseits belüftet", "bodycheck": "kräftiger Husten, juguläre und sternale Einziehungen, keine Verletzungen"}},
+  "start": "1",
+  "phases": {
+    "1": {"rules": [{"when": ["oxygen"], "then": "2-o2"}], "else": "2"},
+    "2": {"findings": {"rr": 50, "spo2": 85, "hr": 165, "gcs": 14, "exam": {"auscultation": "Stridor, Atemgeräusch beidseits leise", "bodycheck": "Husten wird schwach und tonlos, Lippen bläulich, starke Einziehungen, wird müde"}}, "rules": [{"when": ["airway_open"], "then": "3-frei"}], "else": "3-verlegt"},
+    "2-o2": {"findings": {"rr": 50, "spo2": 90, "hr": 160, "gcs": 14, "exam": {"auscultation": "Stridor, Atemgeräusch beidseits leise", "bodycheck": "Husten wird schwach und tonlos, starke Einziehungen, wird müde"}}, "rules": [{"when": ["airway_open"], "then": "3-frei"}], "else": "3-verlegt"},
+    "3-verlegt": {"minutes": 5, "findings": {"breathing": false, "rr": 0, "spo2": 60, "hr": 70, "gcs": 4, "followsCommands": false, "stridor": false, "exam": {"auscultation": "kein Atemgeräusch", "bodycheck": "erschlafft, zyanotisch, frustrane Atembewegungen ohne Luftstrom"}}, "rules": [{"when": ["airway_open"], "then": "4-hypoxie"}, {"active": ["cpr"], "then": "4-hypoxie"}], "else": "tot"},
+    "3-frei": {"findings": {"rr": 30, "spo2": 96, "hr": 130, "stridor": false, "exam": {"auscultation": "beidseits frei belüftet", "bodycheck": "Erdnussstück ausgehustet, hustet noch etwas, weint"}}},
+    "4-hypoxie": {"findings": {"rr": 32, "spo2": 86, "hr": 150, "gcs": 9, "followsCommands": false, "stridor": false, "exam": {"auscultation": "beidseits belüftet, grobblasige Geräusche", "bodycheck": "Fremdkörper entfernt, atmet wieder, schläfrig"}}, "rules": [{"when": ["oxygen"], "then": "5-stabil"}]},
+    "5-stabil": {"findings": {"rr": 28, "spo2": 95, "hr": 135, "gcs": 12, "followsCommands": false, "stridor": false, "exam": {"auscultation": "beidseits belüftet", "bodycheck": "Fremdkörper entfernt, atmet ruhiger, weint schwach"}}},
+    "tot": {"dead": true, "findings": {"breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false}}
+  }
+}

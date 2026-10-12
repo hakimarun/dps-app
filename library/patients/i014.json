@@ -1,0 +1,19 @@
+{
+  "id": "i014", "version": 1, "title": "Spritzende Blutung in der Leiste",
+  "picture": "Frau, ca. 30 Jahre, liegt auf dem Rücken. Aus einer Wunde in der rechten Schenkelbeuge spritzt hellrotes Blut, ein Ersthelfer drückt mit der flachen Hand darauf. Große Blutlache, sehr blass. Schreit: „Ich verblute! Machen Sie doch was!“",
+  "profile": { "temperament": "panisch", "speech": "schreit in kurzen, abgehackten Sätzen, ab Phase 2 leiser und verwirrt", "anamnesis": { "symptoms": "Mir ist schwindelig und kalt, und das Bein tut höllisch weh.", "allergies": "Nein, keine Allergien.", "medication": "Nur die Pille.", "history": "Ich bin eigentlich gesund.", "lastMeal": "Heute Morgen ein Brötchen.", "event": "Beim Aufprall hat sich ein Metallteil vom Sitz in mein Bein gebohrt.", "risk": "Nein, ich rauche nicht." }, "pitfall": "fleht: „Binden Sie das Bein ab!“ – an der Schenkelbeuge hält kein Tourniquet; lässt den Ersthelfer nur widerwillig los" },
+  "meta": {"category": "Trauma", "tags": ["Blutung", "Schock"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["wound_packing"], "within": 15}, {"actions": ["pressure_dressing"], "within": 15}], "harmful": ["tourniquet"]},
+  "base": { "walking": false, "breathing": true, "rr": 26, "spo2": 95, "hr": 125, "bp": "105/70", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "spurtingBleeding": true, "pain": 8, "exam": { "bodycheck": "Rissquetschwunde ca. 4 cm in der rechten Schenkelbeuge direkt unter dem Leistenband, pulsierend spritzende Blutung, rumpfnah – kein Platz für ein Tourniquet. Sonst keine Verletzungen.", "pelvis": "stabil, kein Druckschmerz" } },
+  "start": "1",
+  "phases": {
+    "1": { "minutes": 8, "rules": [{ "when": ["wound_packing", "pressure_dressing"], "then": "2-versorgt" }, { "when": ["wound_packing"], "then": "2-tamponiert" }], "else": "2-schock" },
+    "2-tamponiert": { "minutes": 7, "findings": { "rr": 24, "hr": 120, "bp": "100/65", "spurtingBleeding": false }, "rules": [{ "when": ["pressure_dressing"], "then": "2-versorgt" }], "else": "2-schock" },
+    "2-versorgt": { "findings": { "rr": 22, "hr": 115, "bp": "105/70", "spurtingBleeding": false, "pain": 6 } },
+    "2-schock": { "minutes": 7, "findings": { "rr": 30, "spo2": 93, "hr": 140, "bp": "80/55", "recap": 4, "gcs": 14, "pain": 7 }, "rules": [{ "when": ["wound_packing", "pressure_dressing"], "then": "3-schock-gestillt" }], "else": "3-kreislaufversagen" },
+    "3-schock-gestillt": { "findings": { "rr": 28, "spo2": 94, "hr": 130, "bp": "85/55", "recap": 4, "gcs": 14, "spurtingBleeding": false, "pain": 7 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "4-stabilisiert" }] },
+    "4-stabilisiert": { "findings": { "rr": 24, "hr": 115, "bp": "95/60", "spurtingBleeding": false, "pain": 6 } },
+    "3-kreislaufversagen": { "minutes": 10, "findings": { "rr": 34, "spo2": 88, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 10, "followsCommands": false }, "rules": [{ "when": ["wound_packing", "pressure_dressing", "iv_access", "fluids"], "then": "3-schock-gestillt" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+  }
+}

@@ -71,7 +71,7 @@ apps/app/          App (Expo): Startseite, Helfer, Spielleitung, Beobachter, Fal
 apps/server/       Übungsserver: REST für die Spielleitung, WebSocket für Helfer und Live-Lage, SQLite (node:sqlite) in data/
 packages/schema/   Szenarioformat und Protokoll App <-> Server (zod)
 packages/engine/   Simulations-Engine: initial, validate, apply, tick, visible, targetSk, triage
-library/           Musterverläufe P01–P13, Maßnahmenkatalog, Szenario "Busunfall", ideas/ mit 100 Fall- und 100 Szenario-Ideen (CC BY 4.0)
+library/           113 Fälle (P01–P13, I001–I100), Maßnahmenkatalog, 101 Szenarien, ideas/ als Quelle, import/ zum Einlesen (CC BY 4.0)
 ```
 
 Ein Helfer-Handy schickt nur Absichten („Tourniquet an P01“); der Server prüft sie, protokolliert sie mit Übungszeit und berechnet
@@ -79,6 +79,14 @@ daraus den Zustand aller Patienten neu. Jedes Handy bekommt nur seine eigene Sic
 
 Die Engine ist deterministisch: `events.reduce(apply, initial(scenario, defs, settings, seed))` ergibt immer denselben Zustand.
 Der Server speichert nur angenommene Helfer-Aktionen und berechnet den Zustand daraus neu (`stateAt`). So landen offline gepufferte Aktionen an ihrer echten Zeit.
+
+## Fallbibliothek
+
+Fest eingebaut sind 113 Fälle und 101 Szenarien: die Musterfälle P01–P13 mit dem Szenario „Busunfall“ sowie die
+100 Fall-Ideen (I001–I100) und 100 Szenario-Ideen (S001–S100) aus `library/ideas/`, als spielbare Verläufe umgesetzt.
+Jeder Fall besteht die automatische Prüfung und startet in der Sichtungskategorie der Idee (ein Test hält das fest).
+Fachlich sind die umgesetzten Ideen ein Entwurf: offene Punkte je Fall stehen in [docs/fallpruefung.md](docs/fallpruefung.md).
+Szenarien enthalten die Fälle der Idee einmal; Kräfte, die keine Fahrzeuge sind (Feuerwehr, OrgL, RTH …), stehen in der Lagebeschreibung.
 
 ## Fertige Szenarien zum Importieren
 

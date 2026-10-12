@@ -1,0 +1,20 @@
+{
+  "id": "i055", "version": 1, "title": "Exsikkose bei Hochbetagter nach Evakuierung",
+  "picture": "Frau, ca. 88 Jahre, sitzt im Rollstuhl, ist schläfrig und muss mehrfach angesprochen werden. Zunge und Lippen sind trocken. Antwortet langsam: „Ich habe seit heute früh nichts getrunken. Ich bin so müde.“",
+  "profile": { "temperament": "verwirrt", "speech": "langsam, leise, ab Phase 2 durcheinander",
+    "anamnesis": { "symptoms": "Ich bin müde und mir ist schwindelig.", "allergies": "Nein, keine Allergien.", "medication": "Ich nehme eine Wassertablette und etwas fürs Herz.", "history": "Ich habe Herzschwäche und Zucker, aber nur mit Tabletten.", "lastMeal": "Getrunken habe ich seit dem Frühstück nichts mehr.", "event": "Wir mussten alle aus dem Heim raus, und dann haben wir lange gewartet." },
+    "pitfall": "beschwert sich nicht und wird still schwächer; wirkt einfach müde" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "Evakuierung"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["blood_glucose"], "within": 30 }, { "actions": ["measure_bp"], "within": 30 }, { "actions": ["fluids"], "within": 45 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 95, "hr": 104, "bp": "105/60", "radialPulse": true, "recap": 3, "gcs": 14, "followsCommands": true, "pain": 0, "temp": 37.4,
+    "exam": { "glucose": "165 mg/dl", "pupils": "mittelweit, isokor, prompt", "bodycheck": "keine Verletzungen, trockene Schleimhäute, stehende Hautfalten am Handrücken" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access", "fluids"], "then": "2-volumen" }], "else": "2" },
+    "2": { "findings": { "hr": 112, "bp": "95/55", "gcs": 13 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "3" },
+    "3": { "findings": { "rr": 22, "hr": 120, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 12 }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "4" },
+    "4": { "findings": { "rr": 24, "hr": 126, "bp": "70/40", "radialPulse": false, "recap": 5, "gcs": 10, "followsCommands": false }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }] },
+    "2-volumen": { "findings": { "hr": 96, "bp": "115/65", "recap": 2, "gcs": 15 } },
+    "3-volumen": { "findings": { "hr": 102, "bp": "105/60", "recap": 3, "gcs": 14 } }
+  }
+}

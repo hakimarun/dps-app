@@ -1,0 +1,20 @@
+{
+  "id": "i090", "version": 1, "title": "Eklampsie (36. SSW)",
+  "picture": "Frau, ca. 30 Jahre, hochschwanger, liegt auf dem Boden. Hat laut Umstehenden eben am ganzen Körper gezuckt. Reagiert nicht auf Ansprache, schnarchende Atmung, Speichel am Mund. Beine und Hände stark geschwollen.",
+  "profile": { "temperament": "keins", "speech": "spricht nicht, stöhnt auf Schmerzreiz",
+    "anamnesis": { "history": "(vom Partner) Sie ist in der 36. Woche, die Frauenärztin hat letzte Woche hohen Blutdruck gemessen.", "medication": "(vom Partner) Sie sollte Tabletten gegen den Blutdruck nehmen.", "event": "(vom Partner) Sie hatte seit gestern Kopfschmerzen und Sternchen vor den Augen, dann hat sie gekrampft." },
+    "pitfall": "Krampfanfall bei einer Schwangeren ist bis zum Beweis des Gegenteils eine Eklampsie. Blutdruck messen, Linksseitenlage, Schutz vor Verletzung; antikonvulsive Therapie nur durch den Arzt." },
+  "meta": { "category": "Gynäkologie/Geburt", "tags": ["Schwangerschaft", "Krampfanfall"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["recovery_position"], "within": 5 }, { "actions": ["measure_bp"], "within": 15 }], "harmful": ["shock_position"] },
+  "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 91, "hr": 112, "bp": "175/110", "radialPulse": true, "recap": 2, "gcs": 8, "followsCommands": false, "pain": 0,
+    "exam": { "pupils": "mittelweit, seitengleich, träge", "bodycheck": "ausgeprägte Ödeme an Beinen, Händen und Gesicht, seitlicher Zungenbiss, eingenässt, sonst unverletzt", "glucose": "96 mg/dl", "auscultation": "beidseits vesikulär, Schnarchen von oben" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["recovery_position", "oxygen"], "then": "2-geschuetzt" }], "else": "2-anfall" },
+    "2-anfall": { "findings": { "rr": 10, "spo2": 82, "hr": 135, "bp": "190/120", "gcs": 5, "exam": { "bodycheck": "erneuter Krampfanfall mit Zuckungen am ganzen Körper, Kopf am Boden aufgeschlagen, ausgeprägte Ödeme, Zungenbiss" } }, "rules": [{ "when": ["recovery_position", "oxygen"], "then": "3-geschuetzt" }, { "when": ["intubation"], "then": "beatmet" }], "else": "3-status" },
+    "3-status": { "findings": { "rr": 8, "spo2": 74, "hr": 145, "bp": "195/125", "gcs": 3, "exam": { "bodycheck": "krampft immer wieder, ohne zwischendurch zu erwachen, zyanotisch, ausgeprägte Ödeme, Zungenbiss", "pupils": "weit, träge" } }, "rules": [{ "when": ["intubation"], "then": "beatmet" }] },
+    "2-geschuetzt": { "findings": { "rr": 18, "spo2": 96, "hr": 105, "bp": "170/110", "gcs": 10 }, "rules": [{ "when": ["intubation"], "then": "beatmet" }], "else": "3-geschuetzt" },
+    "3-geschuetzt": { "findings": { "rr": 18, "spo2": 93, "hr": 115, "bp": "180/115", "gcs": 7, "exam": { "bodycheck": "zweiter kurzer Krampfanfall in Seitenlage, ohne neue Verletzungen; ausgeprägte Ödeme, Zungenbiss" } }, "rules": [{ "when": ["intubation"], "then": "beatmet" }] },
+    "beatmet": { "findings": { "rr": 12, "spo2": 98, "hr": 100, "bp": "150/95", "gcs": 3, "exam": { "bodycheck": "narkotisiert und beatmet, keine Krämpfe mehr; ausgeprägte Ödeme, Zungenbiss", "pupils": "eng, seitengleich" } } }
+  }
+}

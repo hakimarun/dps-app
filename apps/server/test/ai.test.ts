@@ -2,6 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
+import { readFileSync } from "node:fs";
 import { z } from "zod";
 import type { Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
@@ -234,4 +235,18 @@ test("Generator: Zielgruppe SanH streicht kritische Maßnahmen außerhalb des Ra
   const notsan = await generate(fake(g), "Stichverletzung", lib.defs.actions, lib.defs.patients.p01, undefined, "notsan");
   assert.equal((notsan.raw as typeof p).scoring.critical.length, 2); // NotSan darf invasive Maßnahmen
   assert.equal((notsan.raw as typeof p).meta.difficulty, "experte");
+});
+
+test("Bibliothek: jeder Fall besteht die Fallprüfung, jedes Szenario kennt seine Patienten und hat Fahrzeuge", () => {
+  const ideas = new Map((JSON.parse(readFileSync(new URL("../../../library/ideas/cases.json", import.meta.url), "utf8")) as { id: string; sk: string }[]).map((i) => [i.id, i.sk]));
+  for (const p of Object.values(lib.defs.patients)) {
+    const r = check(p, lib.defs.actions);
+    assert.deepEqual(r.errors, [], p.id);
+    const want = ideas.get(p.id);
+    if (want) assert.equal(r.sk, want === "IV" ? "I" : want, `${p.id}: Sichtung zu Beginn wie in der Idee`); // mSTaRT kennt kein IV
+  }
+  for (const s of Object.values(lib.scenarios)) {
+    for (const id of s.patients) assert.ok(lib.defs.patients[id], `${s.id}: Patient ${id} fehlt`);
+    assert.ok(s.units.some((u) => u.arrivesAt === 0), `${s.id}: ein Fahrzeug ist von Anfang an da`);
+  }
 });

@@ -1,0 +1,16 @@
+{
+  "id": "i043", "version": 1, "title": "Kind mit Unterarmfraktur",
+  "picture": "Junge, ca. 8 Jahre, läuft weinend auf die Helfer zu und hält seinen rechten Unterarm fest, der sichtbar verformt ist. Keine Eltern in Sicht. „Wo ist meine Mama?“",
+  "profile": {"temperament": "ängstlich", "speech": "weinerlich, kurze Sätze, beruhigt sich mit fester Bezugsperson", "anamnesis": {"symptoms": "Mein Arm tut so weh!", "allergies": "Weiß ich nicht.", "medication": "Nein.", "history": "Nein, ich bin nicht krank.", "lastMeal": "Ich hatte vorhin ein Butterbrot.", "event": "Ich bin hingefallen und auf den Arm gefallen.", "risk": "Ich heiße Leon, meine Mama sitzt noch irgendwo im Bus."}, "pitfall": "Läuft ohne feste Bezugsperson immer wieder los, um die Mutter zu suchen. Braucht neben Schiene und Schmerzmittel eine Bezugsperson und Registrierung.", "sources": ["S2k-Leitlinie Analgesie in der Notfallmedizin (DGAI 2023)", "AWMF-Leitlinie Unterarmschaftfrakturen im Kindesalter"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "Fraktur"], "difficulty": "einsteiger"},
+  "scoring": {"critical": [{"actions": ["splint"], "within": 30}, {"actions": ["analgesia"], "within": 30}, {"actions": ["calm"], "within": 30}], "harmful": []},
+  "base": {"walking": true, "breathing": true, "rr": 24, "spo2": 99, "hr": 115, "bp": "105/65", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 7, "exam": {"bodycheck": "rechter Unterarm in Schaftmitte verformt, geschwollen, Haut intakt; Finger warm, bewegt und spürt sie; sonst unverletzt"}},
+  "start": "1",
+  "phases": {
+    "1": {"rules": [{"when": ["splint", "analgesia"], "then": "versorgt"}, {"when": ["splint"], "then": "geschient"}, {"when": ["analgesia"], "then": "analgesie"}], "else": "2"},
+    "2": {"findings": {"rr": 26, "hr": 125, "pain": 8}, "rules": [{"when": ["splint", "analgesia"], "then": "versorgt"}, {"when": ["splint"], "then": "geschient"}, {"when": ["analgesia"], "then": "analgesie"}]},
+    "geschient": {"findings": {"rr": 22, "hr": 105, "pain": 4}, "rules": [{"when": ["analgesia"], "then": "versorgt"}]},
+    "analgesie": {"findings": {"rr": 20, "hr": 100, "pain": 3}, "rules": [{"when": ["splint"], "then": "versorgt"}]},
+    "versorgt": {"findings": {"rr": 20, "hr": 95, "pain": 2}}
+  }
+}

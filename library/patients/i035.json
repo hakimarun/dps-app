@@ -1,0 +1,17 @@
+{
+  "id": "i035", "version": 1, "title": "Typ-1-Diabetiker ohne Insulin seit Tagen",
+  "picture": "Mann, ca. 20 Jahre, sitzt zusammengesunken auf einem Feldbett, kann kaum die Augen offen halten. Atmet tief und schnell, Lippen rissig und trocken, der Atem riecht fruchtig wie Nagellackentferner. „Ich hab so Durst …“",
+  "profile": { "temperament": "verwirrt", "speech": "langsam, verliert den Faden, ab Phase 2 nur noch einzelne Worte", "anamnesis": { "symptoms": "Ich muss dauernd aufs Klo und hab so Durst. Mir ist schlecht, der Bauch tut weh.", "allergies": "Keine.", "medication": "Mein Insulin ist bei der Evakuierung in der Wohnung geblieben. Seit drei Tagen hab ich nichts gespritzt.", "history": "Ich hab Diabetes seit ich zwölf bin.", "lastMeal": "Gestern ein Brot, ich hab keinen Hunger.", "event": "Wir sind seit Samstag hier in der Turnhalle." }, "pitfall": "Die schnelle, tiefe Atmung sieht nach Panik aus; Helfer wollen ihn beruhigen oder eine Tüte vorhalten." },
+  "meta": { "category": "Internistisch", "tags": ["Stoffwechsel", "Atmung", "Abgrenzung"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["blood_glucose"], "within": 15 }, { "actions": ["iv_access"], "within": 30 }, { "actions": ["fluids"], "within": 30 }], "harmful": ["bag_rebreathing"] },
+  "base": { "walking": false, "breathing": true, "rr": 32, "spo2": 98, "hr": 122, "bp": "100/65", "radialPulse": true, "recap": 3, "gcs": 14, "followsCommands": true, "pain": 4, "exam": { "glucose": "520 mg/dl", "auscultation": "vesikulär beidseits, vertiefte Atemzüge", "abdomen": "weich, diffuser Druckschmerz, keine Abwehrspannung", "bodycheck": "keine Verletzungen, trockene Schleimhäute, stehende Hautfalten, Azetongeruch", "ecg": "Sinustachykardie, hohe spitze T-Wellen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["iv_access", "fluids"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 34, "hr": 132, "bp": "90/55", "gcs": 12, "exam": { "glucose": "580 mg/dl" } }, "rules": [{ "when": ["bag_rebreathing"], "then": "3" }, { "when": ["iv_access", "fluids"], "then": "2-versorgt" }], "else": "3" },
+    "3": { "findings": { "rr": 30, "spo2": 96, "hr": 142, "bp": "75/45", "radialPulse": false, "recap": 4, "gcs": 9, "followsCommands": false, "exam": { "glucose": "610 mg/dl" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "2" }], "else": "4" },
+    "4": { "findings": { "rr": 26, "spo2": 94, "hr": 148, "bp": "65/40", "radialPulse": false, "recap": 5, "gcs": 6, "followsCommands": false, "exam": { "glucose": "640 mg/dl", "ecg": "Sinustachykardie, VES" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3" }] },
+    "2-versorgt": { "findings": { "rr": 28, "hr": 110, "bp": "110/70", "recap": 2, "gcs": 14, "exam": { "glucose": "480 mg/dl" } }, "else": "3-versorgt" },
+    "3-versorgt": { "findings": { "rr": 26, "hr": 104, "bp": "115/70", "recap": 2, "gcs": 15, "exam": { "glucose": "430 mg/dl" } } }
+  }
+}

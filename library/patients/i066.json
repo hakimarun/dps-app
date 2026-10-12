@@ -1,0 +1,12 @@
+{
+  "id": "i066", "version": 1, "title": "Brandopfer mit sicheren Todeszeichen",
+  "picture": "Mann, ca. 50 Jahre, liegt im ausgebrannten Raum am Boden. Keine Atembewegungen, Körper großflächig verkohlt, Arme starr angewinkelt, Kiefer lässt sich nicht öffnen. Im Raum riecht es noch nach Brand, die Decke ist teilweise eingestürzt.",
+  "profile": { "temperament": "keins", "speech": "spricht nicht", "pitfall": "Helfer wollen in den Brandbereich, um den Verstorbenen zu versorgen. Rettungskräfte nicht ungeschützt in Gefahrenbereiche schicken; Bergung macht die Feuerwehr." },
+  "meta": { "category": "Verbrennung", "tags": ["Todeszeichen", "Eigenschutz"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["body_check"], "within": 30 }], "harmful": ["cpr"] },
+  "base": { "walking": false, "lethalInjury": true, "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "Keine Atmung, kein Karotispuls. Verkohlung großer Körperanteile, Totenstarre in Kiefer und großen Gelenken: sichere Todeszeichen.", "pupils": "weit, lichtstarr", "ecg": "Asystolie" } },
+  "start": "1",
+  "phases": {
+    "1": { "dead": true }
+  }
+}

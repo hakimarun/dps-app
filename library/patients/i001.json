@@ -1,0 +1,220 @@
+{
+  "id": "i001",
+  "version": 1,
+  "title": "Stichverletzung Brustkorb, gehfähig",
+  "picture": "Mann, ca. 25 Jahre, kommt selbst zur Sammelstelle gelaufen und hält sich die linke Brustseite. Kleines Loch im Pullover, darunter sickert Blut. Spricht in ganzen Sätzen: „Ist nur ein Kratzer, da hat mich einer mit dem Messer erwischt.“",
+  "profile": {
+    "temperament": "verharmlosend",
+    "speech": "ganze Sätze, ab Phase 2 kurze Sätze, ab Phase 3 nur einzelne Wörter",
+    "anamnesis": {
+      "symptoms": "Es sticht ein bisschen beim Atmen, sonst geht es.",
+      "allergies": "Nein, Allergien habe ich keine.",
+      "medication": "Nein, ich nehme keine Medikamente.",
+      "history": "Nein, ich bin gesund.",
+      "lastMeal": "Vor drei Stunden habe ich einen Döner gegessen.",
+      "event": "Im Gedränge hat mich einer mit einem Messer in die Seite gestochen.",
+      "risk": "Ich rauche, eine Schachtel am Tag."
+    },
+    "pitfall": "Winkt ab und will gehen: „Ich brauch nur ein Pflaster.“ Penetrierende Rumpfverletzung trotz Gehfähigkeit engmaschig nachsichten."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Thorax",
+      "Penetrierend",
+      "Untertriage-Falle"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "auscultate"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 22,
+    "spo2": 95,
+    "hr": 100,
+    "bp": "130/80",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 5,
+    "exam": {
+      "auscultation": "links leicht abgeschwächt",
+      "percussion": "beidseits sonor",
+      "bodycheck": "ca. 1,5 cm Stichwunde links seitlich am Brustkorb (vordere Achsellinie, 5. Zwischenrippenraum), sickernde Blutung, schlürfendes Geräusch beim Einatmen; sonst unverletzt"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "chest_seal",
+            "oxygen"
+          ],
+          "then": "2-versorgt"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "walking": false,
+        "rr": 28,
+        "spo2": 91,
+        "hr": 118,
+        "bp": "120/80",
+        "pain": 6,
+        "exam": {
+          "auscultation": "links deutlich abgeschwächt",
+          "percussion": "links hypersonor"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        },
+        {
+          "when": [
+            "chest_seal",
+            "oxygen"
+          ],
+          "then": "3-versorgt"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "walking": false,
+        "rr": 34,
+        "spo2": 84,
+        "hr": 135,
+        "bp": "95/60",
+        "recap": 3,
+        "pain": 7,
+        "exam": {
+          "auscultation": "links aufgehoben",
+          "percussion": "links hypersonor",
+          "bodycheck": "Stichwunde links seitlich am Brustkorb, Halsvenen gestaut, Radialispuls schwach"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "walking": false,
+        "rr": 40,
+        "spo2": 74,
+        "hr": 145,
+        "bp": "65 palp.",
+        "radialPulse": false,
+        "recap": 5,
+        "gcs": 9,
+        "followsCommands": false,
+        "exam": {
+          "auscultation": "links aufgehoben",
+          "percussion": "links hypersonor",
+          "bodycheck": "Stichwunde links seitlich am Brustkorb, Halsvenen gestaut, Zyanose"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "2-versorgt": {
+      "findings": {
+        "rr": 20,
+        "spo2": 97,
+        "hr": 96,
+        "pain": 4
+      }
+    },
+    "3-versorgt": {
+      "findings": {
+        "walking": false,
+        "rr": 24,
+        "spo2": 94,
+        "hr": 108,
+        "bp": "125/80",
+        "pain": 5,
+        "exam": {
+          "auscultation": "links abgeschwächt",
+          "percussion": "links leicht hypersonor"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ]
+    },
+    "3-entlastet": {
+      "findings": {
+        "walking": false,
+        "rr": 24,
+        "spo2": 93,
+        "hr": 110,
+        "bp": "110/70",
+        "recap": 2,
+        "gcs": 14,
+        "followsCommands": true,
+        "exam": {
+          "auscultation": "links abgeschwächt",
+          "percussion": "links leicht hypersonor"
+        }
+      }
+    }
+  }
+}

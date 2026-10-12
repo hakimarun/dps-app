@@ -1,0 +1,174 @@
+{
+  "id": "i071",
+  "version": 1,
+  "title": "Rauchgasintoxikation mit drohendem Inhalationstrauma",
+  "picture": "Mann, ca. 55 Jahre, ist selbst aus dem verqualmten Treppenhaus gekommen. Hustet immer wieder, Ruß an Nase und Mund, atmet schnell. „Da war überall Qualm, ich hab kaum Luft gekriegt.“",
+  "profile": {
+    "temperament": "kooperativ",
+    "speech": "ganze Sätze, ab Phase 2 heiser",
+    "anamnesis": {
+      "symptoms": "Ich muss ständig husten, und es kratzt im Hals.",
+      "allergies": "Nein.",
+      "medication": "Ich nehme Ramipril gegen den Blutdruck.",
+      "history": "Ich habe zu hohen Blutdruck.",
+      "lastMeal": "Abendbrot vor zwei Stunden.",
+      "event": "Ich bin durchs Treppenhaus runter, das war voller Rauch. Ich war bestimmt fünf Minuten da drin.",
+      "risk": "Ich rauche, eine Schachtel am Tag."
+    },
+    "pitfall": "Winkt ab: „Ist nur der Rauch.“ Ruß im Gesicht und zunehmende Heiserkeit können ein Inhalationstrauma ankündigen."
+  },
+  "meta": {
+    "category": "Intoxikation",
+    "tags": [
+      "Rauchgas",
+      "Atemweg"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "oxygen"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "inspect_burn",
+          "auscultate"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 45
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 24,
+    "spo2": 95,
+    "hr": 100,
+    "bp": "150/90",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 2,
+    "exam": {
+      "auscultation": "vereinzelt Giemen beidseits",
+      "airway": "Ruß in Nase und Mund, Nasenhaare angesengt, keine Schwellung, Stimme klar",
+      "burn": "keine Verbrennungen der Haut",
+      "bodycheck": "Ruß im Gesicht, keine Verletzungen",
+      "ecg": "Sinusrhythmus"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "2-sauerstoff"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 26,
+        "spo2": 94,
+        "hr": 108,
+        "pain": 4,
+        "exam": {
+          "airway": "Ruß in Nase und Mund, Rachen gerötet, Stimme heiser"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "3-sauerstoff"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "walking": false,
+        "rr": 30,
+        "spo2": 90,
+        "hr": 118,
+        "stridor": true,
+        "pain": 5,
+        "exam": {
+          "airway": "Rachen geschwollen, Stimme heiser, inspiratorischer Stridor",
+          "auscultation": "Giemen beidseits"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ]
+    },
+    "intubiert": {
+      "findings": {
+        "walking": false,
+        "rr": 14,
+        "spo2": 97,
+        "hr": 95,
+        "gcs": 3,
+        "followsCommands": false,
+        "stridor": false,
+        "pain": 0,
+        "exam": {
+          "airway": "intubiert, Ruß in Nase und Mund"
+        }
+      }
+    },
+    "2-sauerstoff": {
+      "findings": {
+        "rr": 20,
+        "spo2": 98,
+        "hr": 92,
+        "exam": {
+          "airway": "Ruß in Nase und Mund, Stimme leicht heiser"
+        }
+      },
+      "else": "3-sauerstoff"
+    },
+    "3-sauerstoff": {
+      "findings": {
+        "rr": 22,
+        "spo2": 96,
+        "hr": 100,
+        "stridor": true,
+        "pain": 3,
+        "exam": {
+          "airway": "Rachen geschwollen, Stimme deutlich heiser, leiser inspiratorischer Stridor – Schwellung nimmt trotz Sauerstoff zu"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ]
+    }
+  }
+}

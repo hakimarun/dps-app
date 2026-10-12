@@ -1,0 +1,18 @@
+{
+  "id": "i054", "version": 1, "title": "Vorbekannte Demenz ohne akute Verschlechterung",
+  "picture": "Frau, ca. 90 Jahre, läuft unruhig umher und ist äußerlich unverletzt. Antwortet nicht passend auf Fragen und folgt keinen Aufforderungen. Sagt immer wieder: „Ich muss nach Hause, die Kinder kommen gleich aus der Schule.“",
+  "profile": { "temperament": "verwirrt", "speech": "freundlich, redet an den Fragen vorbei, zeitlich und örtlich nicht orientiert",
+    "anamnesis": { "symptoms": "Mir fehlt nichts, ich muss nur nach Hause.", "allergies": "Das weiß ich nicht.", "medication": "Die Tabletten macht immer die Schwester.", "history": "Krank? Nein, ich bin doch nicht krank.", "lastMeal": "Gegessen? Das weiß ich nicht mehr.", "event": "Wo bin ich hier eigentlich?" },
+    "fremdanamnese": "Pflegekraft des Heims: „Frau B. hat seit Jahren eine fortgeschrittene Alzheimer-Demenz. Sie ist immer so, heute nicht anders als sonst. Sie nimmt Donepezil und ein Blutdruckmittel, Allergien sind keine bekannt.“",
+    "pitfall": "wirkt nach mSTaRT kritisch (befolgt keine Aufforderungen); erst Blutzucker und Fremdanamnese zeigen, dass der Zustand vorbekannt ist; läuft ohne Betreuung weg" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "Demenz", "Übertriage-Falle"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["blood_glucose"], "within": 30 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 16, "spo2": 96, "hr": 84, "bp": "145/80", "radialPulse": true, "recap": 2, "gcs": 13, "followsCommands": false, "pain": 0, "temp": 36.6,
+    "exam": { "glucose": "118 mg/dl", "pupils": "mittelweit, isokor, prompt", "bodycheck": "keine Verletzungen, keine Prellmarken am Kopf, bewegt alle Extremitäten seitengleich" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["calm"], "then": "betreut" }], "else": "2" },
+    "2": { "findings": { "hr": 96, "bp": "160/85", "exam": { "bodycheck": "keine Verletzungen, zunehmend unruhig, will den Platz verlassen" } }, "rules": [{ "when": ["calm"], "then": "betreut" }] },
+    "betreut": { "findings": { "hr": 78, "bp": "140/80" } }
+  }
+}

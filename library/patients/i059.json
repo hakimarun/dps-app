@@ -1,0 +1,17 @@
+{
+  "id": "i059", "version": 1, "title": "Infaustes Polytrauma bei Hochbetagter",
+  "picture": "Frau, ca. 92 Jahre, liegt unter Trümmern. Seltene, schnappende Atemzüge, am Handgelenk kein Puls tastbar, reagiert nicht auf Ansprache. Eine Angehörige ruft: „Sie hat eine Patientenverfügung! Sie wollte nie an Maschinen!“",
+  "profile": { "temperament": "keins", "speech": "spricht nicht",
+    "anamnesis": { "history": "(Angehörige) „Sie ist herzkrank und hat Nierenprobleme, seit Monaten bettlägerig.“", "medication": "(Angehörige) „Sie nimmt einen Blutverdünner und viele Herztabletten.“", "risk": "(Angehörige) „In der Patientenverfügung steht: keine Wiederbelebung, keine Beatmung.“" },
+    "pitfall": "Angehörige sind verzweifelt und fordern abwechselnd „Tun Sie doch etwas!“ und „Lassen Sie sie in Ruhe!“; die Entscheidung über SK IV trifft der Arzt, nicht das Alter allein" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "SK IV", "Ethik", "SK IV (abwartend)"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["calm", "analgesia", "warm"], "within": 10 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 6, "spo2": 70, "hr": 130, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 4, "followsCommands": false, "pain": 0,
+    "exam": { "pupils": "rechts weit, lichtstarr", "pelvis": "instabil", "auscultation": "links aufgehoben, rechts leise", "percussion": "links gedämpft", "bodycheck": "instabiler Brustkorb links, Kopfplatzwunde mit Schädelfehlstellung, offene Oberschenkelfraktur rechts, Becken instabil, Haut kalt und marmoriert" } },
+  "start": "1",
+  "phases": {
+    "1": { "minutes": 8, "else": "2" },
+    "2": { "minutes": 5, "findings": { "rr": 3, "spo2": 55, "hr": 40, "bp": "nicht messbar", "gcs": 3, "exam": { "ecg": "Sinusbradykardie, breite Kammerkomplexe" } }, "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)", "pupils": "beidseits weit, lichtstarr" } } }
+  }
+}

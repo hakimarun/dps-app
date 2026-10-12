@@ -1,0 +1,92 @@
+{
+  "id": "s077",
+  "title": "Lage nach Messerangriff",
+  "situation": "Lage nach Messerangriff in der Innenstadt, Polizei sichert ab, Verletzte an mehreren Stellen. Kräfte laut Planung: 2 RTW, 1 NEF in Bereitstellungsraum; Zugang nach Polizeifreigabe. Besonderheiten: Eigengefährdung, Polizeilage, Bereitstellungsraum. Lernziel: Eigenschutz, Bereitstellungsraum und schnelle Blutstillung. Die Idee sieht 9 Betroffene vor; enthalten sind 8 typische Fälle.",
+  "patients": [
+    "i001",
+    "i013",
+    "i015",
+    "i024",
+    "i014",
+    "i081",
+    "i025",
+    "p01"
+  ],
+  "units": [
+    {
+      "id": "rtw1",
+      "title": "RTW 1",
+      "arrivesAt": 0,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "rtw2",
+      "title": "RTW 2",
+      "arrivesAt": 1,
+      "seats": 1,
+      "inventory": {
+        "tourniquet": 2,
+        "dressing": 4,
+        "wendl": 1,
+        "o2_mask": 2,
+        "needle": 1,
+        "iv_cannula": 4,
+        "infusion": 4,
+        "analgesic": 2,
+        "pelvic_binder": 1,
+        "splint": 1,
+        "rescue_blanket": 4,
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1,
+        "pacer_pads": 1
+      }
+    },
+    {
+      "id": "nef1",
+      "title": "NEF 1",
+      "arrivesAt": 2,
+      "seats": 0,
+      "inventory": {
+        "needle": 2,
+        "ett": 2,
+        "analgesic": 4,
+        "iv_cannula": 2,
+        "infusion": 2,
+        "o2_mask": 1,
+        "bvm": 1,
+        "chest_seal": 1,
+        "hemostatic": 1,
+        "glucose": 2,
+        "pacer_pads": 1
+      }
+    }
+  ]
+}

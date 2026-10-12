@@ -1,0 +1,30 @@
+{
+  "id": "i068", "version": 1, "title": "Stark alkoholisierter Jugendlicher",
+  "picture": "Junge, ca. 16 Jahre, liegt auf dem Rücken im nassen Rasen. Reagiert nur auf Schmerzreiz mit Stöhnen. Erbrochenes an Mund und Pullover, riecht stark nach Alkohol, Atmung gurgelnd. Haut kühl.",
+  "profile": {
+    "temperament": "keins",
+    "speech": "spricht nicht, stöhnt auf Schmerzreiz",
+    "anamnesis": {
+      "event": "Wir haben Wodka aus der Flasche getrunken, ich weiß nicht mehr, wie viel.",
+      "lastMeal": "Seit Mittag habe ich nichts gegessen."
+    },
+    "pitfall": "Wirkt wie „nur betrunken“. Hinter dem Alkohol stecken ein niedriger Blutzucker und eine Beule am Hinterkopf."
+  },
+  "meta": { "category": "Intoxikation", "tags": ["Alkohol", "Atemweg", "Jugendlicher"], "difficulty": "einsteiger" },
+  "scoring": {
+    "critical": [{ "actions": ["recovery_position"], "within": 15 }, { "actions": ["blood_glucose"], "within": 30 }, { "actions": ["warm"], "within": 30 }, { "actions": ["body_check"], "within": 30 }],
+    "harmful": ["shock_position"]
+  },
+  "base": { "walking": false, "breathing": true, "rr": 14, "spo2": 93, "hr": 96, "bp": "110/65", "radialPulse": true, "recap": 2, "gcs": 8, "followsCommands": false, "temp": 35.8, "exam": { "auscultation": "vesikulär beidseits, gurgelnde Geräusche aus dem Rachen", "pupils": "mittelweit, beidseits gleich, träge lichtreagibel", "glucose": "58 mg/dl", "bodycheck": "Prellmarke mit kleiner Schwellung am Hinterkopf, sonst keine Verletzungen. Kleidung nass." } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["recovery_position"], "then": "2-seitenlage" }], "else": "2-aspiration" },
+    "2-aspiration": { "findings": { "rr": 26, "spo2": 86, "hr": 112, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "3" },
+    "3": { "findings": { "rr": 32, "spo2": 79, "hr": 128, "bp": "100/60", "recap": 3, "gcs": 6, "temp": 34.9, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
+    "3-aspiration-versorgt": { "findings": { "rr": 22, "spo2": 91, "hr": 104, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche" } } },
+    "2-seitenlage": { "findings": { "spo2": 95, "hr": 92, "temp": 35.5 }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }], "else": "3-seitenlage" },
+    "3-seitenlage": { "findings": { "spo2": 95, "hr": 88, "gcs": 7, "temp": 35.0, "exam": { "glucose": "48 mg/dl" } }, "rules": [{ "when": ["glucose", "warm"], "then": "stabil" }] },
+    "stabil": { "findings": { "spo2": 96, "hr": 86, "gcs": 10, "temp": 35.8, "exam": { "glucose": "112 mg/dl" } } }
+  }
+}

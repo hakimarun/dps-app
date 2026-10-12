@@ -1,0 +1,29 @@
+{
+  "id": "i075", "version": 1, "title": "Hitzeerschöpfung einer Einsatzkraft",
+  "picture": "Mann, ca. 35 Jahre, Feuerwehrmann, sitzt nach dem Atemschutzeinsatz in voller Schutzkleidung am Boden. Stark verschwitzt, Gesicht hochrot, kommt beim Aufstehen ins Schwanken. „Gebt mir fünf Minuten, dann geh ich wieder rein.“",
+  "profile": {
+    "temperament": "verharmlosend",
+    "speech": "ganze Sätze, wiegelt ab",
+    "anamnesis": {
+      "symptoms": "Mir ist ein bisschen schwindelig und ich hab leichte Kopfschmerzen. Nichts Wildes.",
+      "allergies": "Keine.",
+      "medication": "Keine.",
+      "history": "Ich bin fit, letzte G26 ohne Befund.",
+      "lastMeal": "Heute Mittag, seitdem kaum was getrunken.",
+      "event": "Wir waren 25 Minuten unter Atemschutz drin, da war es brutal heiß.",
+      "risk": "Ich hatte gestern Nachtschicht."
+    },
+    "pitfall": "Will sofort zurück in den Einsatz. Eigene Kräfte sind auch Patienten und werden mitgesichtet."
+  },
+  "meta": { "category": "Umwelt", "tags": ["Hitze", "Einsatzkraft"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["cool_large"], "within": 15 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 22, "spo2": 97, "hr": 125, "bp": "110/70", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 3, "temp": 38.4, "exam": { "ecg": "Sinustachykardie", "glucose": "92 mg/dl", "bodycheck": "Haut unter der Schutzkleidung heiß und schweißnass, keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["cool_large"], "then": "2-erholt" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "hr": 135, "bp": "100/65", "pain": 4, "temp": 39.0 }, "rules": [{ "when": ["cool_large"], "then": "2-erholt" }], "else": "3" },
+    "3": { "findings": { "rr": 26, "hr": 140, "bp": "95/60", "gcs": 14, "pain": 5, "temp": 39.6 }, "rules": [{ "when": ["cool_large"], "then": "2-erholt" }] },
+    "2-erholt": { "findings": { "rr": 18, "hr": 105, "bp": "115/75", "pain": 2, "temp": 37.8 }, "else": "3-erholt" },
+    "3-erholt": { "findings": { "walking": true, "rr": 16, "hr": 90, "bp": "120/80", "pain": 1, "temp": 37.3 } }
+  }
+}

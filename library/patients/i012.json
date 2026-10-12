@@ -1,0 +1,212 @@
+{
+  "id": "i012",
+  "version": 1,
+  "title": "Offene Unterschenkelfraktur",
+  "picture": "Mann, ca. 40 Jahre, in Radkleidung, liegt am Boden. Rechtes Schienbein verformt, ein Knochenende ragt aus der Wunde, mäßige Blutung. Stöhnt: „Schaut nicht hin … ist das Bein ab?“",
+  "profile": {
+    "temperament": "ängstlich",
+    "speech": "ganze Sätze, stöhnt",
+    "anamnesis": {
+      "symptoms": "Das Bein tut wahnsinnig weh.",
+      "allergies": "Ich bin allergisch gegen Penicillin.",
+      "medication": "Nein, keine Medikamente.",
+      "history": "Nein, ich bin gesund.",
+      "lastMeal": "Ich habe vor einer Stunde einen Riegel gegessen.",
+      "event": "Ein Auto hat mich vom Rad geholt, ich bin aufs Bein gefallen.",
+      "risk": "Nein."
+    },
+    "pitfall": "Fragt ständig, ob er das Bein verliert. Steril abdecken, nicht reponieren; Durchblutung, Motorik und Sensibilität vor und nach der Schienung prüfen."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Fraktur",
+      "Extremität"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "wound_dressing",
+          "pressure_dressing"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "analgesia"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "splint"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 22,
+    "spo2": 97,
+    "hr": 108,
+    "bp": "140/85",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 8,
+    "exam": {
+      "bodycheck": "Rechter Unterschenkel Mitte: Wunde mit herausragendem Knochenende, Fehlstellung, mäßig sickernde Blutung; Fußpulse tastbar, Fuß warm, Gefühl und Bewegung erhalten; sonst Schürfwunden"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "wound_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "wound_dressing"
+          ],
+          "then": "verbunden"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "hr": 115,
+        "bp": "130/80",
+        "exam": {
+          "bodycheck": "Rechter Unterschenkel: Wunde mit Knochenende, Blutung hält an; Fußpulse tastbar, Fuß warm"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "wound_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "wound_dressing"
+          ],
+          "then": "verbunden"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "hr": 120,
+        "bp": "120/75",
+        "recap": 3,
+        "exam": {
+          "bodycheck": "Rechter Unterschenkel: Wunde mit Knochenende, Blutung hält an, große Blutlache; Fußpulse schwach tastbar"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "wound_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing",
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "wound_dressing"
+          ],
+          "then": "verbunden"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ]
+    },
+    "verbunden": {
+      "findings": {
+        "hr": 105,
+        "exam": {
+          "bodycheck": "Rechter Unterschenkel steril abgedeckt, Blutung steht; Fußpulse tastbar, Fuß warm"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "splint",
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "versorgt": {
+      "findings": {
+        "rr": 18,
+        "hr": 90,
+        "bp": "135/80",
+        "pain": 3,
+        "exam": {
+          "bodycheck": "Rechter Unterschenkel steril abgedeckt und geschient; Fußpulse tastbar, Fuß warm, Gefühl und Bewegung erhalten"
+        }
+      }
+    }
+  }
+}

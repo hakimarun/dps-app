@@ -1,0 +1,139 @@
+{
+  "id": "i013",
+  "version": 1,
+  "title": "Penetrierende Bauchverletzung",
+  "picture": "Mann, ca. 20 Jahre, liegt gekrümmt auf der Seite, beide Hände auf den Bauch gepresst. Kleine Wunde links am Bauch, kaum Blut. Haut blass, kalt und schweißig. Antwortet langsam und wirr: „Wo bin ich … mir ist so kalt.“",
+  "profile": {
+    "temperament": "verwirrt",
+    "speech": "langsam und wirr, ab Phase 2 keine Antwort",
+    "anamnesis": {
+      "symptoms": "Mir ist kalt, und der Bauch tut weh.",
+      "allergies": "Weiß nicht.",
+      "medication": "Nein … glaube nicht.",
+      "history": "Nein.",
+      "lastMeal": "Weiß ich nicht mehr.",
+      "event": "Da war einer mit einem Messer …",
+      "risk": "Nein."
+    },
+    "pitfall": "Kann kaum Auskunft geben. Nicht stillbare innere Blutung braucht den OP: kurze Versorgungszeit vor Ort, Zugang ohne Transportverzögerung."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Bauch",
+      "Schock",
+      "Penetrierend"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "iv_access"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 28,
+    "spo2": 94,
+    "hr": 130,
+    "bp": "75/45",
+    "radialPulse": false,
+    "recap": 4,
+    "gcs": 13,
+    "followsCommands": true,
+    "pain": 7,
+    "temp": 35.9,
+    "exam": {
+      "abdomen": "ca. 2 cm Stichwunde linker Mittelbauch, kaum äußere Blutung; Bauch gespannt, Abwehrspannung",
+      "bodycheck": "Stichwunde linker Mittelbauch, Rücken ohne Wunde, sonst unverletzt; kaltschweißig"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "2-volumen"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 32,
+        "spo2": 90,
+        "hr": 145,
+        "bp": "60 palp.",
+        "recap": 5,
+        "gcs": 10,
+        "followsCommands": false,
+        "exam": {
+          "abdomen": "Stichwunde linker Mittelbauch; Bauch gespannt und vorgewölbt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-volumen"
+        }
+      ],
+      "else": "tot"
+    },
+    "2-volumen": {
+      "findings": {
+        "rr": 28,
+        "hr": 135,
+        "bp": "78/45"
+      },
+      "else": "3-volumen"
+    },
+    "3-volumen": {
+      "findings": {
+        "rr": 32,
+        "spo2": 90,
+        "hr": 145,
+        "bp": "60 palp.",
+        "recap": 5,
+        "gcs": 10,
+        "followsCommands": false,
+        "exam": {
+          "abdomen": "Stichwunde linker Mittelbauch; Bauch gespannt und vorgewölbt"
+        }
+      },
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    }
+  }
+}

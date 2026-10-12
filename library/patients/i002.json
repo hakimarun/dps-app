@@ -1,0 +1,199 @@
+{
+  "id": "i002",
+  "version": 1,
+  "title": "Motorradfahrer mit Thoraxtrauma",
+  "picture": "Mann, ca. 30 Jahre, liegt in Lederkombi mit Helm auf dem Rücken. Atmet schnell und flach, stöhnt bei jedem Atemzug und presst den rechten Arm an die Brust: „Ich krieg keine Luft!“",
+  "profile": {
+    "temperament": "ängstlich",
+    "speech": "kurze Sätze, ab Phase 2 nur einzelne Wörter",
+    "anamnesis": {
+      "symptoms": "Rechts in der Brust tut jeder Atemzug weh, und ich krieg keine Luft.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Nein, ich nehme nichts.",
+      "history": "Nein, ich bin gesund.",
+      "lastMeal": "Mittags habe ich ein Brötchen gegessen.",
+      "event": "Ich bin mit dem Motorrad seitlich gegen die Leitplanke gekracht.",
+      "risk": "Ich habe vorher nichts getrunken."
+    },
+    "pitfall": "Fragt ständig: „Muss ich sterben?“ Erhöhte Atemfrequenz allein reicht für SK I, nicht auf sichtbare Verletzungen warten."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Thorax",
+      "Atmung",
+      "Motorrad"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "oxygen"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "auscultate"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "needle_decompression"
+        ],
+        "within": 45
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 34,
+    "spo2": 88,
+    "hr": 115,
+    "bp": "135/85",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 7,
+    "exam": {
+      "auscultation": "rechts abgeschwächt",
+      "percussion": "rechts hypersonor",
+      "bodycheck": "Integralhelm auf; Prellmarke rechte Brustwand, Rippen rechts druckschmerzhaft mit Knistern; sonst keine sichtbaren Verletzungen",
+      "pupils": "isokor, prompt lichtreagibel"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "oxygen"
+          ],
+          "then": "2-sauerstoff"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 36,
+        "spo2": 82,
+        "hr": 128,
+        "bp": "120/80",
+        "recap": 3,
+        "gcs": 13,
+        "exam": {
+          "auscultation": "rechts aufgehoben",
+          "bodycheck": "Integralhelm auf; Prellmarke rechte Brustwand, Rippen rechts mit Knistern; Halsvenen gestaut; unruhig, verwirrt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "rr": 40,
+        "spo2": 74,
+        "hr": 142,
+        "bp": "80/50",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 9,
+        "followsCommands": false,
+        "exam": {
+          "auscultation": "rechts aufgehoben",
+          "bodycheck": "Integralhelm auf; Halsvenen gestaut, Zyanose"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "2-sauerstoff": {
+      "findings": {
+        "rr": 28,
+        "spo2": 93,
+        "hr": 110
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "3-spannung"
+    },
+    "3-spannung": {
+      "findings": {
+        "rr": 32,
+        "spo2": 87,
+        "hr": 125,
+        "bp": "110/70",
+        "gcs": 14,
+        "exam": {
+          "auscultation": "rechts aufgehoben",
+          "bodycheck": "Integralhelm auf; Prellmarke rechte Brustwand; Halsvenen gestaut"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "needle_decompression"
+          ],
+          "then": "3-entlastet"
+        }
+      ],
+      "else": "3"
+    },
+    "3-entlastet": {
+      "findings": {
+        "rr": 24,
+        "spo2": 94,
+        "hr": 105,
+        "bp": "125/80",
+        "recap": 2,
+        "gcs": 14,
+        "followsCommands": true,
+        "exam": {
+          "auscultation": "rechts abgeschwächt",
+          "percussion": "rechts leicht hypersonor"
+        }
+      }
+    }
+  }
+}

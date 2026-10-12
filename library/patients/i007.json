@@ -1,0 +1,188 @@
+{
+  "id": "i007",
+  "version": 1,
+  "title": "Lenkradanprall mit Oberbauchschmerz",
+  "picture": "Frau, ca. 40 Jahre, sitzt neben ihrem Auto auf dem Boden und hält sich den rechten Oberbauch. Streifenförmige Prellmarke über Schulter und Bauch. Sehr blass. „Geht schon, ich hab mich nur gestoßen.“",
+  "profile": {
+    "temperament": "verharmlosend",
+    "speech": "ganze Sätze, ab Phase 3 langsam und verwirrt",
+    "anamnesis": {
+      "symptoms": "Rechts oben im Bauch drückt es, und mir ist ein bisschen schwindelig.",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Ich nehme L-Thyroxin für die Schilddrüse.",
+      "history": "Schilddrüse, sonst nichts.",
+      "lastMeal": "Ich habe vor zwei Stunden gegessen.",
+      "event": "Ich bin auf den Wagen vor mir aufgefahren und mit dem Bauch gegen das Lenkrad geprallt.",
+      "risk": "Nein."
+    },
+    "pitfall": "„Kümmern Sie sich um die anderen, ich muss nur kurz sitzen.“ Prellmarke und Tachykardie ernst nehmen."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Bauch",
+      "Schock",
+      "Untertriage-Falle"
+    ],
+    "difficulty": "fortgeschritten"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "examine_abdomen"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "iv_access"
+        ],
+        "within": 30
+      },
+      {
+        "actions": [
+          "handover"
+        ],
+        "within": 45
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 22,
+    "spo2": 96,
+    "hr": 112,
+    "bp": "110/75",
+    "radialPulse": true,
+    "recap": 3,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 6,
+    "exam": {
+      "abdomen": "Prellmarke rechter Oberbauch, Druckschmerz und Abwehrspannung rechts oben",
+      "bodycheck": "Gurtmarke über linker Schulter, Brust und Oberbauch; sonst keine Verletzungen; blass"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "2-volumen"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "rr": 26,
+        "hr": 128,
+        "bp": "95/65",
+        "pain": 7,
+        "exam": {
+          "abdomen": "Bauch zunehmend gespannt, Abwehrspannung rechts oben"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-volumen"
+        }
+      ],
+      "else": "3"
+    },
+    "3": {
+      "findings": {
+        "rr": 30,
+        "hr": 140,
+        "bp": "75/50",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 13,
+        "pain": 7,
+        "exam": {
+          "abdomen": "Bauch gespannt und vorgewölbt, Abwehrspannung"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "4-volumen"
+        }
+      ],
+      "else": "4"
+    },
+    "4": {
+      "findings": {
+        "rr": 34,
+        "hr": 150,
+        "bp": "60 palp.",
+        "radialPulse": false,
+        "recap": 5,
+        "gcs": 9,
+        "followsCommands": false,
+        "exam": {
+          "abdomen": "Bauch gespannt und vorgewölbt"
+        }
+      },
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "2-volumen": {
+      "findings": {
+        "rr": 24,
+        "hr": 118,
+        "bp": "100/65"
+      },
+      "else": "3-volumen"
+    },
+    "3-volumen": {
+      "findings": {
+        "rr": 26,
+        "hr": 125,
+        "bp": "90/60",
+        "exam": {
+          "abdomen": "Bauch zunehmend gespannt, Abwehrspannung rechts oben"
+        }
+      },
+      "else": "4-volumen"
+    },
+    "4-volumen": {
+      "findings": {
+        "rr": 28,
+        "hr": 135,
+        "bp": "82/55",
+        "recap": 4,
+        "gcs": 14,
+        "exam": {
+          "abdomen": "Bauch gespannt und vorgewölbt, Abwehrspannung"
+        }
+      }
+    }
+  }
+}

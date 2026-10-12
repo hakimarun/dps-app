@@ -1,0 +1,34 @@
+{
+  "id": "i092", "version": 1, "title": "Atemnot nach Chlorgasaustritt",
+  "picture": "Mann, ca. 30 Jahre, in Badehose, sitzt vornübergebeugt am Beckenrand. Hustet stark, atmet schnell und angestrengt, reibt sich die geröteten, tränenden Augen. Es riecht stechend nach Schwimmbad. Ruft: „Ich krieg keine Luft, das brennt so!“",
+  "profile": {
+    "temperament": "panisch",
+    "speech": "kurze, abgehackte Sätze zwischen Hustenanfällen",
+    "anamnesis": {
+      "symptoms": "Mein Hals und meine Brust brennen, ich krieg kaum Luft, und die Augen tun weh.",
+      "allergies": "Nein, Allergien habe ich keine.",
+      "medication": "Ich nehme keine Medikamente.",
+      "history": "Ich bin eigentlich gesund.",
+      "lastMeal": "Vor zwei Stunden habe ich Pommes am Kiosk gegessen.",
+      "event": "Da kam plötzlich so eine Wolke aus dem Technikraum, das hat furchtbar nach Chlor gestunken.",
+      "risk": "Ich rauche, so eine Schachtel am Tag."
+    },
+    "pitfall": "Will aufspringen und zu Fuß zu seinen Kindern zurück in die Halle laufen. Er muss aus dem Gefahrenbereich gebracht und darf nicht belastet werden; Helfer gehen nur mit Schutzausrüstung hinein."
+  },
+  "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Atmung"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["oxygen"], "within": 15}, {"actions": ["upper_body_up"], "within": 15}], "harmful": ["shock_position"]},
+  "base": { "walking": false, "breathing": true, "rr": 32, "spo2": 91, "hr": 118, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "exam": { "auscultation": "Giemen beidseits, verlängertes Ausatmen", "percussion": "sonor beidseits", "pupils": "isokor, prompt lichtreagibel; beide Augen stark gerötet und tränend" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["oxygen", "upper_body_up"], "then": "2-versorgt" }], "else": "2" },
+    "2": { "findings": { "rr": 34, "spo2": 85, "hr": 128, "bp": "150/95" }, "rules": [{ "when": ["oxygen", "upper_body_up"], "then": "3-gebessert" }], "else": "3" },
+    "3": { "findings": { "rr": 38, "spo2": 78, "hr": 138, "bp": "155/95", "recap": 3, "gcs": 14, "exam": { "auscultation": "feuchte Rasselgeräusche über beiden Lungen, dazu Giemen; schaumiger Auswurf", "percussion": "sonor beidseits", "pupils": "isokor, prompt lichtreagibel; beide Augen stark gerötet und tränend" } }, "rules": [{ "when": ["oxygen", "upper_body_up"], "then": "4-gebessert" }], "else": "4" },
+    "4": { "findings": { "rr": 8, "spo2": 65, "hr": 140, "bp": "90/60", "recap": 4, "gcs": 8, "followsCommands": false, "exam": { "auscultation": "massive feuchte Rasselgeräusche beidseits, kaum Belüftung", "percussion": "sonor beidseits", "pupils": "isokor, träge lichtreagibel" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "tot" },
+    "intubiert": { "findings": { "rr": 14, "spo2": 88, "hr": 120, "bp": "110/70", "recap": 3, "gcs": 3, "followsCommands": false, "exam": { "auscultation": "feuchte Rasselgeräusche beidseits, unter Beatmung belüftet", "percussion": "sonor beidseits", "pupils": "isokor, eng unter Narkose" } } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
+    "2-versorgt": { "findings": { "rr": 26, "spo2": 94, "hr": 105, "bp": "140/85", "pain": 4 }, "else": "3-versorgt" },
+    "3-versorgt": { "findings": { "rr": 22, "spo2": 95, "hr": 98, "bp": "135/85", "pain": 3, "exam": { "auscultation": "leises Giemen beidseits", "percussion": "sonor beidseits", "pupils": "isokor, prompt lichtreagibel; Augen gerötet" } } },
+    "3-gebessert": { "findings": { "rr": 28, "spo2": 91, "hr": 112, "bp": "145/90" } },
+    "4-gebessert": { "findings": { "rr": 30, "spo2": 88, "hr": 120, "bp": "150/90", "recap": 3, "exam": { "auscultation": "feuchte Rasselgeräusche basal beidseits, Giemen", "percussion": "sonor beidseits", "pupils": "isokor, prompt lichtreagibel; beide Augen stark gerötet" } } }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "i047", "version": 1, "title": "Kind mit Oberschenkelfraktur und beginnendem Volumenmangel",
+  "picture": "Junge, ca. 10 Jahre, liegt am Boden und schreit vor Schmerz. Der rechte Oberschenkel ist verformt und wirkt kürzer als der linke. Blass, schwitzt.",
+  "profile": {"temperament": "panisch", "speech": "schreit, kurze Sätze: „Nicht anfassen!“", "anamnesis": {"symptoms": "Mein Bein! Das tut so weh!", "allergies": "Nein.", "medication": "Nein.", "history": "Ich hab nichts.", "lastMeal": "Vor einer Stunde ein Brötchen.", "event": "Ich bin runtergefallen, von ganz oben.", "risk": "Ich heiße Ben und bin zehn."}, "pitfall": "Lässt niemanden ans Bein. Kinder kompensieren lange: Herzfrequenz, Hautfarbe und Rekapillarisierung beachten, der Blutdruck fällt erst spät.", "sources": ["S3-Leitlinie Polytrauma/Schwerverletzten-Behandlung (2022)", "S2k-Leitlinie Analgesie in der Notfallmedizin (DGAI 2023)", "ERC-Leitlinien 2021 Paediatric Life Support"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "Fraktur"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["analgesia"], "within": 15}, {"actions": ["splint", "vacuum_mattress"], "within": 30}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 26, "spo2": 97, "hr": 130, "bp": "105/65", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 9, "exam": {"bodycheck": "rechter Oberschenkel verformt, verkürzt und außenrotiert, stark geschwollen, Haut intakt; Fußpulse tastbar", "pelvis": "stabil, kein Druckschmerz"}},
+  "start": "1",
+  "phases": {
+    "1": {"rules": [{"when": ["analgesia", "splint"], "then": "2-versorgt"}, {"when": ["analgesia", "vacuum_mattress"], "then": "2-versorgt"}], "else": "2"},
+    "2": {"findings": {"rr": 30, "spo2": 96, "hr": 145, "bp": "100/60", "recap": 3, "exam": {"bodycheck": "Oberschenkel rechts deutlich dicker, Haut blass und kühl, Fußpulse schwach tastbar", "pelvis": "stabil, kein Druckschmerz"}}, "rules": [{"when": ["analgesia", "splint", "iv_access", "fluids"], "then": "3-volumen"}, {"when": ["analgesia", "vacuum_mattress", "iv_access", "fluids"], "then": "3-volumen"}, {"when": ["analgesia", "splint"], "then": "3-versorgt"}, {"when": ["analgesia", "vacuum_mattress"], "then": "3-versorgt"}], "else": "3"},
+    "3": {"findings": {"rr": 30, "spo2": 95, "hr": 160, "bp": "85/50", "recap": 4, "gcs": 14, "pain": 9, "exam": {"bodycheck": "sehr blass, kaltschweißig, Oberschenkel prall geschwollen", "pelvis": "stabil, kein Druckschmerz"}}, "rules": [{"when": ["iv_access", "fluids"], "then": "3-volumen"}], "else": "4"},
+    "4": {"findings": {"rr": 36, "spo2": 94, "hr": 170, "bp": "65/40", "radialPulse": false, "recap": 5, "gcs": 11, "followsCommands": false, "pain": 8}},
+    "2-versorgt": {"findings": {"rr": 22, "hr": 115, "pain": 3}, "rules": [{"when": ["iv_access", "fluids"], "then": "3-volumen"}], "else": "3-versorgt"},
+    "3-versorgt": {"findings": {"rr": 24, "hr": 125, "bp": "100/60", "recap": 3, "pain": 3}, "rules": [{"when": ["iv_access", "fluids"], "then": "3-volumen"}]},
+    "3-volumen": {"findings": {"rr": 22, "hr": 115, "bp": "105/65", "recap": 2, "pain": 3}}
+  }
+}

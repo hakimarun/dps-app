@@ -1,0 +1,126 @@
+{
+  "id": "i008",
+  "version": 1,
+  "title": "Stark blutende Kopfplatzwunde",
+  "picture": "Mann, ca. 30 Jahre, läuft mit blutverschmiertem Gesicht umher und ruft laut um Hilfe. Wunde an der Stirn, Blut tropft vom Kinn. Spricht klar und orientiert: „Ich verblute! Helft mir doch!“",
+  "profile": {
+    "temperament": "panisch",
+    "speech": "laut, schnell, aber klar",
+    "anamnesis": {
+      "symptoms": "Mein Kopf blutet so, ich verblute!",
+      "allergies": "Nein, keine Allergien.",
+      "medication": "Nein, keine Medikamente.",
+      "history": "Nein, ich bin gesund.",
+      "lastMeal": "Vor einer Stunde ein Brötchen.",
+      "event": "Ich bin mit der Stirn gegen die Haltestange geknallt. Weg war ich nicht.",
+      "risk": "Nein."
+    },
+    "pitfall": "Viel Blut und Geschrei verleiten zur Übertriage; Kriterien prüfen, nicht den Eindruck."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Blutung",
+      "Kopf",
+      "Übertriage-Falle"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "pressure_dressing"
+        ],
+        "within": 15
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": true,
+    "breathing": true,
+    "rr": 20,
+    "spo2": 98,
+    "hr": 105,
+    "bp": "150/90",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 4,
+    "exam": {
+      "bodycheck": "ca. 4 cm Platzwunde an der Stirn, stark blutend, Schädelknochen tastbar stabil; sonst unverletzt",
+      "pupils": "isokor, prompt lichtreagibel"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "pressure_dressing",
+            "calm"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ],
+      "else": "2"
+    },
+    "2": {
+      "findings": {
+        "hr": 108,
+        "bp": "145/90"
+      },
+      "rules": [
+        {
+          "when": [
+            "pressure_dressing",
+            "calm"
+          ],
+          "then": "versorgt"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "verbunden"
+        }
+      ]
+    },
+    "verbunden": {
+      "findings": {
+        "hr": 98,
+        "exam": {
+          "bodycheck": "Platzwunde an der Stirn mit Druckverband versorgt, Blutung steht"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "calm"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "versorgt": {
+      "findings": {
+        "rr": 16,
+        "hr": 85,
+        "bp": "135/85",
+        "pain": 3,
+        "exam": {
+          "bodycheck": "Platzwunde an der Stirn mit Druckverband versorgt, Blutung steht"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "i078", "version": 1, "title": "Blitzunfall mit Lichtenberg-Figur",
+  "picture": "Mann, ca. 40 Jahre, Wanderer, geht selbstständig. Am Rücken eine farnartig verzweigte Rötung, Kleidung angesengt. Hält sich die Ohren, wirkt benommen. „Ich hör nur noch Rauschen. Es hat so laut geknallt …“",
+  "profile": {
+    "temperament": "verwirrt",
+    "speech": "spricht laut, versteht schlecht, wiederholt Fragen",
+    "anamnesis": {
+      "symptoms": "Mir rauschen die Ohren, und der Rücken brennt ein bisschen. Mein Herz stolpert manchmal.",
+      "allergies": "Keine.",
+      "medication": "Keine.",
+      "history": "Ich bin gesund.",
+      "lastMeal": "Ein Brot auf dem Gipfel, vor einer Stunde.",
+      "event": "Wir haben uns unter einen Baum gestellt, dann hat es geknallt. Ich lag auf einmal am Boden.",
+      "risk": "Ich weiß nicht, ob ich kurz weg war."
+    },
+    "pitfall": "Fühlt sich gut genug zum Weitergehen. Gehfähige Blitzopfer trotzdem überwachen; bei Opfern ohne Lebenszeichen gilt oft umgekehrte Sichtung."
+  },
+  "meta": { "category": "Umwelt", "tags": ["Blitz", "Herz"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["ecg"], "within": 30 }, { "actions": ["handover"], "within": 45 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 97, "hr": 96, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 14, "followsCommands": true, "pain": 3, "exam": { "ecg": "Sinusrhythmus", "burn": "farnartige Rötung am Rücken ohne Blasen (keine echte Verbrennung), kleine punktförmige Verbrennung an der rechten Fußsohle", "bodycheck": "farnartige Rötung am Rücken, punktförmige Verbrennung an der rechten Fußsohle, Hörminderung beidseits, keine weiteren Verletzungen", "pupils": "mittelweit, prompt lichtreagibel" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "hr": 104, "exam": { "ecg": "VES" } }, "else": "3" },
+    "3": { "findings": { "hr": 90, "gcs": 15, "pain": 2 } }
+  }
+}

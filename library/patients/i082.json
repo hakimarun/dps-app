@@ -1,0 +1,18 @@
+{
+  "id": "i082", "version": 1, "title": "Aggressiver Angehöriger",
+  "picture": "Mann, ca. 45 Jahre, unverletzt, schreit die Helfer an: \"Jetzt kümmern Sie sich endlich um meine Frau!\" Stellt sich vor die Trage und lässt niemanden vorbei. Rotes Gesicht, ballt die Fäuste.",
+  "profile": { "temperament": "aggressiv", "speech": "laut, fällt ins Wort; nach ruhiger Ansprache leiser und kooperativ",
+    "anamnesis": { "symptoms": "Mir fehlt nichts! Es geht um meine Frau!", "allergies": "Nein.", "medication": "Was für den Blutdruck, Ramipril.", "history": "Hoher Blutdruck, sonst nichts.", "lastMeal": "Keine Ahnung, heute Mittag.", "event": "Wir sind auf den Bus aufgefahren, meine Frau blutet am Kopf und keiner macht was!", "risk": "Wenn hier keiner was macht, mache ich das selbst." },
+    "pitfall": "Wird lauter, je konfrontativer man ihn anspricht. Bindet Kräfte und kann Helfer schubsen. Eigenschutz geht vor, bei Bedarf Polizei über die Führung." },
+  "meta": { "category": "Psychiatrie", "tags": ["Eigenschutz", "Deeskalation"], "difficulty": "einsteiger" },
+  "scoring": { "critical": [{ "actions": ["calm"], "within": 10 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 22, "spo2": 98, "hr": 115, "bp": "170/100", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0,
+    "exam": { "bodycheck": "unverletzt, rotes Gesicht, schwitzt" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["calm"], "then": "ruhig" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "hr": 125, "bp": "180/105" }, "rules": [{ "when": ["calm"], "then": "ruhig" }], "else": "3" },
+    "3": { "findings": { "rr": 26, "hr": 130, "bp": "185/110" }, "rules": [{ "when": ["calm"], "then": "ruhig" }] },
+    "ruhig": { "findings": { "rr": 18, "hr": 95, "bp": "150/90" } }
+  }
+}

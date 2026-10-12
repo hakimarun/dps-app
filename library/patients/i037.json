@@ -1,0 +1,19 @@
+{
+  "id": "i037", "version": 1, "title": "Anhaltender Krampfanfall",
+  "picture": "Frau, ca. 25 Jahre, liegt auf dem Boden, Arme und Beine zucken rhythmisch, Augen verdreht. Reagiert nicht auf Ansprache, schaumiger Speichel vor dem Mund, Lippen bläulich. Eine Begleiterin ruft: „Das geht schon über fünf Minuten so!“",
+  "profile": { "temperament": "keins", "speech": "spricht nicht; nach Ende des Anfalls nur langsam, verwaschen", "anamnesis": { "medication": "Ich nehme Levetiracetam, aber die Tabletten hab ich heute im Trubel vergessen.", "history": "Ich habe Epilepsie seit der Jugend.", "event": "Ich hab die letzte Nacht kaum geschlafen." }, "pitfall": "Helfer wollen die Zuckungen festhalten oder etwas zwischen die Zähne schieben. Ohne Medikament hört der Anfall nicht auf." },
+  "meta": { "category": "Neurologisch", "tags": ["Krampfanfall", "Atemweg"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["oxygen"], "within": 15 }, { "actions": ["blood_glucose"], "within": 15 }, { "actions": ["iv_access"], "within": 15 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 12, "spo2": 85, "hr": 135, "bp": "165/95", "radialPulse": true, "recap": 2, "gcs": 4, "followsCommands": false, "exam": { "glucose": "92 mg/dl", "pupils": "beidseits weit, träge", "bodycheck": "generalisierte tonisch-klonische Krämpfe, Zungenbiss, Einnässen, Schürfwunde an der Stirn", "auscultation": "beidseits Atemgeräusch, grobe Rasselgeräusche durch Speichel" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access"], "then": "postiktal" }], "else": "2" },
+    "2": { "findings": { "rr": 8, "spo2": 78, "hr": 145, "bp": "175/100", "exam": { "auscultation": "rechts basal feuchte Rasselgeräusche (Aspiration)" } }, "rules": [{ "when": ["iv_access"], "then": "postiktal" }], "else": "3" },
+    "3": { "findings": { "rr": 8, "spo2": 70, "hr": 150, "bp": "160/90", "gcs": 3, "exam": { "auscultation": "rechts feuchte Rasselgeräusche (Aspiration)", "pupils": "beidseits weit, kaum Reaktion" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "when": ["iv_access"], "then": "postiktal" }], "else": "tot" },
+    "postiktal": { "findings": { "rr": 16, "spo2": 90, "hr": 110, "bp": "140/85", "gcs": 8, "exam": { "pupils": "mittelweit, prompt", "bodycheck": "Krämpfe durchbrochen, tiefer Schlaf, Zungenbiss, Schürfwunde an der Stirn" } }, "rules": [{ "when": ["oxygen"], "then": "erholt" }], "else": "erholt-hypoxisch" },
+    "erholt": { "findings": { "rr": 16, "spo2": 97, "hr": 95, "bp": "135/80", "gcs": 13, "followsCommands": true, "exam": { "pupils": "mittelweit, prompt", "bodycheck": "nicht mehr krampfend, schläfrig, Zungenbiss, Schürfwunde an der Stirn" } } },
+    "erholt-hypoxisch": { "findings": { "rr": 18, "spo2": 91, "hr": 105, "bp": "135/80", "gcs": 12, "followsCommands": true, "exam": { "pupils": "mittelweit, prompt", "bodycheck": "nicht mehr krampfend, schläfrig, Zungenbiss, Schürfwunde an der Stirn" } } },
+    "intubiert": { "findings": { "rr": 12, "spo2": 93, "hr": 110, "bp": "120/75", "gcs": 3, "exam": { "bodycheck": "narkotisiert, keine Krämpfe mehr" } } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie" } } }
+  }
+}

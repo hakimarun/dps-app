@@ -1,0 +1,269 @@
+{
+  "id": "i005",
+  "version": 1,
+  "title": "Pfählungsverletzung Oberschenkel",
+  "picture": "Frau, ca. 35 Jahre, sitzt am Boden. Ein Metallstab steckt im linken Bein oberhalb des Knies, kaum Blut. Sie greift immer wieder nach dem Stab: „Zieht das raus, zieht das sofort raus!“",
+  "profile": {
+    "temperament": "panisch",
+    "speech": "schnell, laut, wiederholt sich",
+    "anamnesis": {
+      "symptoms": "Das Bein brennt wie Feuer, das Ding muss raus!",
+      "allergies": "Ich vertrage kein Pflaster, davon kriege ich Ausschlag.",
+      "medication": "Ich nehme die Pille.",
+      "history": "Nein, sonst bin ich gesund.",
+      "lastMeal": "Ich habe vor einer Stunde einen Kaffee getrunken und ein Croissant gegessen.",
+      "event": "Ich bin vom Gerüst gefallen und in die Eisenstangen gestürzt.",
+      "risk": "Nein."
+    },
+    "pitfall": "Versucht den Stab selbst herauszuziehen, wenn niemand sie beruhigt oder der Stab nicht fixiert ist. Pfählende Fremdkörper werden belassen und fixiert."
+  },
+  "meta": {
+    "category": "Trauma",
+    "tags": [
+      "Fremdkörper",
+      "Blutung"
+    ],
+    "difficulty": "einsteiger"
+  },
+  "scoring": {
+    "critical": [
+      {
+        "actions": [
+          "wound_dressing",
+          "pressure_dressing"
+        ],
+        "within": 15
+      },
+      {
+        "actions": [
+          "analgesia"
+        ],
+        "within": 30
+      }
+    ],
+    "harmful": []
+  },
+  "base": {
+    "walking": false,
+    "breathing": true,
+    "rr": 24,
+    "spo2": 98,
+    "hr": 105,
+    "bp": "135/85",
+    "radialPulse": true,
+    "recap": 2,
+    "gcs": 15,
+    "followsCommands": true,
+    "pain": 7,
+    "exam": {
+      "bodycheck": "Metallstab, ca. 1 cm dick, steckt im linken Oberschenkel innen in der Mitte; kaum Blutung an der Eintrittsstelle; Fußpulse tastbar, Fuß warm"
+    }
+  },
+  "start": "1",
+  "phases": {
+    "1": {
+      "rules": [
+        {
+          "when": [
+            "wound_dressing"
+          ],
+          "then": "2-fixiert"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "2-fixiert"
+        },
+        {
+          "when": [
+            "calm"
+          ],
+          "then": "2-beruhigt"
+        }
+      ],
+      "else": "2-herausgezogen"
+    },
+    "2-beruhigt": {
+      "findings": {
+        "rr": 20,
+        "hr": 100
+      },
+      "rules": [
+        {
+          "when": [
+            "wound_dressing"
+          ],
+          "then": "2-fixiert"
+        },
+        {
+          "when": [
+            "pressure_dressing"
+          ],
+          "then": "2-fixiert"
+        }
+      ],
+      "else": "2-herausgezogen"
+    },
+    "2-fixiert": {
+      "findings": {
+        "rr": 20,
+        "hr": 100,
+        "pain": 6,
+        "exam": {
+          "bodycheck": "Metallstab im linken Oberschenkel umpolstert und fixiert, keine Blutung; Fußpulse tastbar, Fuß warm"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "analgesia"
+          ],
+          "then": "versorgt"
+        }
+      ]
+    },
+    "versorgt": {
+      "findings": {
+        "rr": 18,
+        "hr": 90,
+        "pain": 3,
+        "exam": {
+          "bodycheck": "Metallstab im linken Oberschenkel umpolstert und fixiert, keine Blutung; Fußpulse tastbar, Fuß warm"
+        }
+      }
+    },
+    "2-herausgezogen": {
+      "findings": {
+        "spurtingBleeding": true,
+        "rr": 28,
+        "hr": 130,
+        "bp": "100/70",
+        "recap": 3,
+        "pain": 9,
+        "exam": {
+          "bodycheck": "Stab herausgezogen, spritzende Blutung aus der Wunde innen am linken Oberschenkel"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "tourniquet"
+          ],
+          "then": "3-abgebunden"
+        },
+        {
+          "when": [
+            "wound_packing"
+          ],
+          "then": "3-abgebunden"
+        }
+      ],
+      "else": "3-schock"
+    },
+    "3-schock": {
+      "findings": {
+        "spurtingBleeding": true,
+        "rr": 34,
+        "spo2": 93,
+        "hr": 145,
+        "bp": "65 palp.",
+        "radialPulse": false,
+        "recap": 5,
+        "gcs": 10,
+        "followsCommands": false,
+        "exam": {
+          "bodycheck": "spritzende Blutung innen am linken Oberschenkel, große Blutlache"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "tourniquet"
+          ],
+          "then": "4-gestillt"
+        },
+        {
+          "when": [
+            "wound_packing"
+          ],
+          "then": "4-gestillt"
+        }
+      ],
+      "else": "tot"
+    },
+    "tot": {
+      "dead": true,
+      "findings": {
+        "breathing": false,
+        "rr": 0,
+        "spo2": 0,
+        "hr": 0,
+        "bp": "0",
+        "radialPulse": false,
+        "gcs": 3,
+        "followsCommands": false
+      }
+    },
+    "4-gestillt": {
+      "findings": {
+        "spurtingBleeding": false,
+        "rr": 32,
+        "spo2": 93,
+        "hr": 140,
+        "bp": "75/45",
+        "radialPulse": false,
+        "recap": 4,
+        "gcs": 12,
+        "followsCommands": true,
+        "exam": {
+          "bodycheck": "Blutung am linken Oberschenkel gestillt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "3-abgebunden"
+        }
+      ]
+    },
+    "3-abgebunden": {
+      "findings": {
+        "spurtingBleeding": false,
+        "rr": 26,
+        "hr": 120,
+        "bp": "95/60",
+        "recap": 3,
+        "pain": 8,
+        "exam": {
+          "bodycheck": "Blutung am linken Oberschenkel gestillt"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "iv_access",
+            "fluids"
+          ],
+          "then": "4-volumen"
+        }
+      ]
+    },
+    "4-volumen": {
+      "findings": {
+        "spurtingBleeding": false,
+        "rr": 22,
+        "hr": 110,
+        "bp": "105/70",
+        "recap": 2,
+        "pain": 8,
+        "exam": {
+          "bodycheck": "Blutung am linken Oberschenkel gestillt"
+        }
+      }
+    }
+  }
+}

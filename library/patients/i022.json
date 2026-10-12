@@ -1,0 +1,15 @@
+{
+  "id": "i022", "version": 1, "title": "Explosionsopfer mit Hörverlust",
+  "picture": "Frau, ca. 40 Jahre, irrt an der Sammelstelle umher und fasst sich immer wieder an die Ohren. Spricht sehr laut, antwortet auf Fragen oft unpassend und schaut den Helfern auf den Mund. Keine äußeren Verletzungen sichtbar, Kleidung staubig.",
+  "profile": { "temperament": "verwirrt", "speech": "spricht sehr laut und versteht gesprochene Fragen kaum; schriftliche Fragen und Gesten versteht sie sofort und antwortet passend", "anamnesis": { "symptoms": "Ich höre nur ein Pfeifen, und meine Brust fühlt sich eng an.", "allergies": "Nein.", "medication": "Ich nehme Schilddrüsentabletten.", "history": "Sonst nichts.", "lastMeal": "Vor einer Stunde einen Kaffee und ein Croissant.", "event": "Es gab einen riesigen Knall, dann lag ich auf dem Boden.", "risk": "Nein." }, "pitfall": "wirkt verwirrt, weil sie die Fragen nicht hört – wer nur laut ruft, hält sie für desorientiert und lässt sie stehen; Hörverlust nach Explosion heißt Lunge überwachen" },
+  "meta": {"category": "Trauma", "tags": ["Explosion", "Thorax", "Untertriage-Falle"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["pulse_oximetry"], "within": 30}, {"actions": ["auscultate"], "within": 30}, {"actions": ["oxygen"], "within": 40}], "harmful": []},
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 96, "hr": 100, "bp": "130/80", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 3, "exam": { "bodycheck": "keine äußeren Verletzungen, Blut in beiden Gehörgängen, Kleidung staubig.", "auscultation": "vesikulär beidseits", "percussion": "sonor beidseits", "pupils": "isokor, prompte Lichtreaktion" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "rr": 26, "spo2": 92, "hr": 110, "exam": { "bodycheck": "keine äußeren Verletzungen, Blut in beiden Gehörgängen, hustet, etwas blutig tingierter Auswurf.", "auscultation": "beidseits feinblasige Rasselgeräusche" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 34, "spo2": 85, "hr": 125, "bp": "125/80", "exam": { "bodycheck": "keine äußeren Verletzungen, Blut in beiden Gehörgängen, starker Husten mit blutigem Auswurf, sitzt erschöpft.", "auscultation": "beidseits ausgeprägte Rasselgeräusche" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }] },
+    "3-sauerstoff": { "findings": { "walking": false, "rr": 26, "spo2": 93, "hr": 110, "exam": { "bodycheck": "keine äußeren Verletzungen, Blut in beiden Gehörgängen, hustet, etwas blutig tingierter Auswurf.", "auscultation": "beidseits feinblasige Rasselgeräusche" } } }
+  }
+}

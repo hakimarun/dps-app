@@ -1,0 +1,17 @@
+{
+  "id": "i048", "version": 1, "title": "Kleinkind nach Sturz mit Erbrechen (SHT mit Hirndruck)",
+  "picture": "Mädchen, ca. 4 Jahre, liegt schläfrig im Arm der Mutter. Hat zweimal erbrochen, reagiert kaum auf Ansprache. Beule an der rechten Kopfseite.",
+  "profile": {"temperament": "keins", "speech": "spricht nicht, wimmert auf Berührung", "anamnesis": {"event": "Mutter: „Sie ist vom Sitz gefallen und mit dem Kopf aufgeschlagen. Erst hat sie geweint, dann wurde sie immer müder.“", "history": "Mutter: „Sie ist gesund.“", "medication": "Mutter: „Keine.“", "allergies": "Mutter: „Keine.“", "lastMeal": "Mutter: „Vor zwei Stunden ein Brötchen, das hat sie wieder erbrochen.“"}, "pitfall": "Die Mutter sagt: „Sie ist nur müde.“ Folgt keinen Aufforderungen, also auch beim Kind SK I. Pupillen bei jeder Reevaluation kontrollieren.", "sources": ["S2k-Leitlinie Das Schädel-Hirn-Trauma im Kindes- und Jugendalter (GNPI 2022)", "mSTaRT (Neidel/Heller 2021)"]},
+  "meta": {"category": "Pädiatrie", "tags": ["Kind", "SHT"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["check_pupils"], "within": 15}, {"actions": ["handover"], "within": 30}], "harmful": []},
+  "base": {"walking": false, "breathing": true, "rr": 22, "spo2": 96, "hr": 95, "bp": "105/60", "radialPulse": true, "recap": 2, "gcs": 11, "followsCommands": false, "exam": {"pupils": "mittelweit, isokor, etwas träge", "bodycheck": "Schwellung rechts über dem Scheitel, öffnet die Augen nur auf Ansprache, sonst unverletzt", "glucose": "102 mg/dl"}},
+  "start": "1",
+  "phases": {
+    "1": {"else": "2"},
+    "2": {"findings": {"rr": 20, "hr": 85, "bp": "110/60", "gcs": 9, "exam": {"pupils": "mittelweit, isokor, träge", "bodycheck": "Schwellung rechts größer, erbricht erneut, öffnet die Augen nur auf Schmerz", "glucose": "102 mg/dl"}}, "rules": [{"when": ["recovery_position"], "then": "3-seitenlage"}, {"active": ["airway_hold"], "then": "3-seitenlage"}], "else": "3"},
+    "3": {"findings": {"rr": 14, "spo2": 90, "hr": 70, "bp": "125/70", "gcs": 7, "exam": {"pupils": "rechts weiter als links, träge", "bodycheck": "Erbrochenes im Mund, schnarchende Atmung, Beugesynergismen auf Schmerzreiz", "glucose": "102 mg/dl"}}, "else": "4"},
+    "3-seitenlage": {"findings": {"rr": 16, "spo2": 95, "hr": 72, "bp": "125/70", "gcs": 7, "exam": {"pupils": "rechts weiter als links, träge", "bodycheck": "Atemweg frei, Beugesynergismen auf Schmerzreiz", "glucose": "102 mg/dl"}}, "else": "4"},
+    "4": {"findings": {"rr": 8, "spo2": 86, "hr": 55, "bp": "140/75", "gcs": 4, "exam": {"pupils": "rechts weit und lichtstarr", "bodycheck": "Strecksynergismen auf Schmerzreiz, unregelmäßige Atmung", "glucose": "102 mg/dl"}}, "else": "tot"},
+    "tot": {"dead": true, "findings": {"breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false}}
+  }
+}

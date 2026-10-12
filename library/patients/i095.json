@@ -1,0 +1,30 @@
+{
+  "id": "i095", "version": 1, "title": "Vergiftung mit Pflanzenschutzmittel",
+  "picture": "Mann, ca. 50 Jahre, liegt in feuchter Arbeitskleidung am Feldrand neben einem Rückenspritzgerät, chemischer Geruch. Starker Speichelfluss, sehr enge Pupillen, Muskelzucken in Gesicht und Armen, schwitzt stark. Atmet schnell und rasselnd. Reagiert verlangsamt, murmelt: „Mir ist so schlecht … ich seh ganz dunkel.“",
+  "profile": {
+    "temperament": "verwirrt",
+    "speech": "langsam, verwaschen, verliert den Faden; ab Phase 2 keine Antwort",
+    "anamnesis": {
+      "symptoms": "Mir ist schlecht, ich hab Bauchkrämpfe und seh alles dunkel.",
+      "allergies": "Weiß nicht … nein.",
+      "medication": "Keine Tabletten.",
+      "history": "Ich war nie krank.",
+      "lastMeal": "Mittags … weiß nicht mehr.",
+      "event": "Ich hab gespritzt, das Ding war undicht, alles lief mir den Rücken runter.",
+      "risk": "Keine Handschuhe … war zu warm."
+    },
+    "pitfall": "Kleidung ist mit dem Spritzmittel getränkt. Helfer ohne Schutzhandschuhe vergiften sich selbst; erst Eigenschutz und Entkleiden, dann Behandlung. Die typischen Zeichen müssen erkannt und ein Notarzt für das Antidot nachgefordert werden."
+  },
+  "meta": {"category": "CBRN", "tags": ["Gefahrstoff", "Atmung", "Eigenschutz"], "difficulty": "experte"},
+  "scoring": {"critical": [{"actions": ["rinse"], "within": 15}, {"actions": ["oxygen"], "within": 15}, {"actions": ["airway_open"], "within": 10}], "harmful": []},
+  "base": { "walking": false, "breathing": true, "rr": 34, "spo2": 87, "hr": 48, "bp": "95/60", "radialPulse": true, "recap": 3, "gcs": 13, "followsCommands": true, "pain": 4, "exam": { "pupils": "stecknadelkopfgroß, beidseits kaum lichtreagibel", "auscultation": "grobblasige Rasselgeräusche und Giemen beidseits", "percussion": "sonor beidseits", "ecg": "Sinusbradykardie", "bodycheck": "Kleidung am Rücken mit Spritzmittel durchnässt, Muskelzucken am ganzen Körper, starkes Schwitzen, eingenässt; keine Verletzungen" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["rinse", "airway_open", "oxygen"], "then": "2-überbrückt" }], "else": "2" },
+    "2-überbrückt": { "findings": { "rr": 30, "spo2": 90, "hr": 50, "gcs": 12 }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "2" },
+    "2": { "findings": { "rr": 8, "spo2": 72, "hr": 38, "bp": "80/50", "recap": 4, "gcs": 7, "followsCommands": false, "exam": { "pupils": "stecknadelkopfgroß, lichtstarr", "auscultation": "massive feuchte Rasselgeräusche, kaum Atemgeräusch", "percussion": "sonor beidseits", "ecg": "Sinusbradykardie", "bodycheck": "Kleidung am Rücken mit Spritzmittel durchnässt, Muskelzucken, Speichel läuft aus dem Mund" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "2-beutel" }], "else": "tot" },
+    "2-beutel": { "findings": { "rr": 12, "spo2": 82, "hr": 45, "bp": "85/50", "recap": 4, "gcs": 7, "followsCommands": false, "exam": { "pupils": "stecknadelkopfgroß, lichtstarr", "auscultation": "feuchte Rasselgeräusche beidseits, Beatmung schwer wegen Sekret", "percussion": "sonor beidseits", "ecg": "Sinusbradykardie", "bodycheck": "Muskelzucken, viel Sekret in Mund und Rachen" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }, { "active": ["bag_valve"], "then": "2-beutel" }], "else": "tot" },
+    "intubiert": { "findings": { "rr": 14, "spo2": 91, "hr": 72, "bp": "100/60", "recap": 3, "gcs": 3, "followsCommands": false, "exam": { "pupils": "eng, lichtträge", "auscultation": "feuchte Rasselgeräusche beidseits, nach Absaugen besser", "percussion": "sonor beidseits", "ecg": "Sinusrhythmus", "bodycheck": "entkleidet, Muskelzucken nachlassend" } } },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "i056", "version": 1, "title": "Milzruptur mit maskiertem Schock unter Betablocker",
+  "picture": "Mann, ca. 75 Jahre, sitzt nach dem Auffahrunfall am Straßenrand und hält sich den linken Oberbauch. Blass, Puls ruhig um 72/min. „Halb so wild, mir ist nur ein bisschen flau. Kümmern Sie sich um die anderen.“",
+  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, ab Phase 3 matt und einsilbig",
+    "anamnesis": { "symptoms": "Der Bauch drückt links oben, und mir ist etwas schwindelig.", "allergies": "Nein, keine Allergien.", "medication": "Ich nehme Bisoprolol, einen Betablocker, und eine Wassertablette.", "history": "Ich habe hohen Blutdruck, sonst bin ich gesund.", "lastMeal": "Zu Mittag habe ich gegessen, vor drei Stunden.", "event": "Mir ist einer hinten drauf gefahren, der Gurt hat ordentlich gedrückt." },
+    "pitfall": "normaler Puls trotz Blutung; nennt den Betablocker nur auf direkte Frage nach Medikamenten" },
+  "meta": { "category": "Geriatrie", "tags": ["Senior", "Schock", "Untertriage-Falle"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["measure_bp"], "within": 15 }, { "actions": ["examine_abdomen"], "within": 15 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 20, "spo2": 95, "hr": 72, "bp": "105/70", "radialPulse": true, "recap": 3, "gcs": 15, "followsCommands": true, "pain": 5,
+    "exam": { "abdomen": "Gurtmarke quer über dem Oberbauch, Druckschmerz und Abwehrspannung linker Oberbauch", "ecg": "Sinusrhythmus 72/min", "bodycheck": "Gurtmarke über linker Schulter und Oberbauch, sonst unverletzt, Haut blass und kühl" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access", "fluids"], "then": "2-volumen" }], "else": "2" },
+    "2": { "findings": { "rr": 24, "hr": 76, "bp": "85/60", "recap": 4, "pain": 6, "exam": { "ecg": "Sinusrhythmus 76/min" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "3" },
+    "3": { "findings": { "rr": 28, "spo2": 92, "hr": 80, "bp": "70/45", "radialPulse": false, "recap": 5, "gcs": 13, "pain": 6, "exam": { "ecg": "Sinusrhythmus 80/min" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen-spaet" }], "else": "4" },
+    "4": { "findings": { "rr": 30, "spo2": 88, "hr": 84, "bp": "50 palp.", "radialPulse": false, "recap": 6, "gcs": 9, "followsCommands": false, "exam": { "ecg": "Sinusrhythmus 84/min" } }, "else": "tot" },
+    "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)" } } },
+    "2-volumen": { "findings": { "rr": 22, "hr": 74, "bp": "100/65", "recap": 3, "exam": { "ecg": "Sinusrhythmus 74/min" } }, "else": "3-volumen" },
+    "3-volumen": { "findings": { "rr": 22, "hr": 76, "bp": "90/60", "recap": 3, "pain": 6, "exam": { "ecg": "Sinusrhythmus 76/min" } }, "else": "3" },
+    "3-volumen-spaet": { "findings": { "rr": 26, "spo2": 93, "hr": 80, "bp": "80/55", "recap": 4, "gcs": 14, "pain": 6, "exam": { "ecg": "Sinusrhythmus 80/min" } }, "else": "4" }
+  }
+}

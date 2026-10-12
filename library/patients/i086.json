@@ -1,0 +1,19 @@
+{
+  "id": "i086", "version": 1, "title": "Vorzeitige Plazentalösung nach Auffahrunfall (34. SSW)",
+  "picture": "Frau, ca. 30 Jahre, in der 34. Schwangerschaftswoche, geht selbstständig zur Sammelstelle. Hält sich den Bauch, leichte Schmerzen, keine Blutung zu sehen. Sagt: \"Das ist bestimmt nur vom Gurt.\"",
+  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, ab Phase 2 stöhnt sie bei Schmerzspitzen, ab Phase 3 matt",
+    "anamnesis": { "symptoms": "Der Bauch zieht ein bisschen, das wird schon wieder.", "allergies": "Nein, keine Allergien.", "medication": "Nur Eisentabletten und Folsäure.", "history": "Das ist mein zweites Kind, bisher war alles normal.", "lastMeal": "Vor zwei Stunden ein Brot.", "event": "Wir sind auf den Bus aufgefahren, der Gurt hat mir in den Bauch gedrückt.", "risk": "Ich will nicht ins Krankenhaus, mein Großer wartet zu Hause." },
+    "pitfall": "Geht und wirkt leicht verletzt. Eine Schwangere nach Unfall muss immer in die Geburtshilfe, weil sich die Plazenta verzögert lösen kann." },
+  "meta": { "category": "Gynäkologie/Geburt", "tags": ["Schwangerschaft", "Bauch", "Untertriage-Falle"], "difficulty": "fortgeschritten" },
+  "scoring": { "critical": [{ "actions": ["recovery_position"], "within": 30 }, { "actions": ["handover"], "within": 30 }], "harmful": [] },
+  "base": { "walking": true, "breathing": true, "rr": 18, "spo2": 98, "hr": 95, "bp": "115/70", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 3,
+    "exam": { "abdomen": "Gurtmarke quer über dem Unterbauch, Gebärmutter weich, leichter Druckschmerz", "bodycheck": "Gurtmarke über Schulter und Unterbauch, keine vaginale Blutung, sonst unverletzt" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "walking": false, "rr": 22, "hr": 110, "bp": "110/70", "pain": 7, "exam": { "abdomen": "Gebärmutter bretthart, dauerhaft druckschmerzhaft, Gurtmarke", "bodycheck": "Gurtmarke über Schulter und Unterbauch, geringe dunkle vaginale Blutung" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 26, "hr": 130, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 8, "exam": { "abdomen": "Gebärmutter bretthart, Bauchumfang zunehmend", "bodycheck": "Gurtmarke über Schulter und Unterbauch, dunkle vaginale Blutung, blass, kaltschweißig" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "4" },
+    "4": { "findings": { "walking": false, "rr": 30, "hr": 145, "bp": "65/40", "radialPulse": false, "recap": 5, "gcs": 11, "followsCommands": false, "pain": 8, "exam": { "abdomen": "Gebärmutter bretthart, Bauchumfang zunehmend", "bodycheck": "Gurtmarke über Schulter und Unterbauch, dunkle vaginale Blutung, blass, kaltschweißig" } } },
+    "3-volumen": { "findings": { "walking": false, "rr": 22, "hr": 115, "bp": "95/60", "recap": 3, "pain": 7, "exam": { "abdomen": "Gebärmutter bretthart, dauerhaft druckschmerzhaft", "bodycheck": "Gurtmarke über Schulter und Unterbauch, dunkle vaginale Blutung, blass" } } }
+  }
+}

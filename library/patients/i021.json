@@ -1,0 +1,15 @@
+{
+  "id": "i021", "version": 1, "title": "Thoraxprellung mit verzögerter Atemnot",
+  "picture": "Mann, ca. 50 Jahre, läuft an der Sammelstelle umher und hält sich die linke Brustseite. Atmet flach und sagt: „Tut nur weh beim Luftholen, sonst passt alles. Kann ich gehen?“",
+  "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, ab Phase 2 kurzatmig in Halbsätzen", "anamnesis": { "symptoms": "Links an den Rippen tut es weh, wenn ich tief einatme.", "allergies": "Nein.", "medication": "Nein.", "history": "Nichts Besonderes.", "lastMeal": "Vor zwei Stunden ein Brötchen.", "event": "Ich war Beifahrer. Der Gurt hat mich richtig in die Brust gedrückt.", "risk": "Ich rauche." }, "pitfall": "will beim Fahrer bleiben und wehrt Nachsichtung ab: „Mir geht's gut, kümmert euch um die anderen.“ – gehfähige Thoraxtraumen regelmäßig nachsichten" },
+  "meta": {"category": "Trauma", "tags": ["Thorax", "Untertriage-Falle"], "difficulty": "fortgeschritten"},
+  "scoring": {"critical": [{"actions": ["auscultate"], "within": 30}, {"actions": ["oxygen"], "within": 40}], "harmful": []},
+  "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 96, "hr": 95, "bp": "140/85", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 5, "exam": { "bodycheck": "Gurtmarke über der Brust nach links unten, Druckschmerz und Knistern über den unteren Rippen links. Sonst keine Verletzungen.", "auscultation": "beidseits belüftet, links schmerzbedingt flach", "percussion": "sonor beidseits", "abdomen": "weich, kein Druckschmerz" } },
+  "start": "1",
+  "phases": {
+    "1": { "else": "2" },
+    "2": { "findings": { "rr": 28, "spo2": 92, "hr": 110, "pain": 6, "exam": { "auscultation": "links deutlich abgeschwächt", "percussion": "links hypersonor" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 34, "spo2": 87, "hr": 125, "bp": "130/80", "pain": 6, "exam": { "auscultation": "links kaum Atemgeräusch", "percussion": "links hypersonor" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }] },
+    "3-sauerstoff": { "findings": { "walking": false, "rr": 26, "spo2": 95, "hr": 105, "pain": 6, "exam": { "auscultation": "links deutlich abgeschwächt", "percussion": "links hypersonor" } } }
+  }
+}

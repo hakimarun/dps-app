@@ -1,0 +1,20 @@
+{
+  "id": "i089", "version": 1, "title": "Rupturierte Eileiterschwangerschaft mit hämorrhagischem Schock",
+  "picture": "Frau, ca. 25 Jahre, liegt gekrümmt auf der Seite und hält sich den rechten Unterbauch. Sehr blass, kaltschweißig. Sagt: \"Es tut so weh, und meine Periode ist auch schon zwei Wochen überfällig.\"",
+  "profile": { "temperament": "ängstlich", "speech": "ganze Sätze, gepresst; ab Phase 2 nur noch einzelne Wörter",
+    "anamnesis": { "symptoms": "Ich habe seit heute Morgen Schmerzen rechts unten, jetzt ist es ganz schlimm. Auch in der Schulter.", "allergies": "Nein.", "medication": "Ich hab die Pille vor ein paar Monaten abgesetzt.", "history": "Ich hatte mal eine Eileiterentzündung.", "lastMeal": "Heute Morgen einen Kaffee.", "event": "Ich bin beim Aussteigen nur gestolpert, die Bauchschmerzen hatte ich aber schon vorher.", "risk": "Kann ich schwanger sein?" },
+    "pitfall": "Die Bauchschmerzen kommen nicht vom Unfall. Ohne schnellen Transport in eine Klinik mit gynäkologischem OP verblutet sie innerlich." },
+  "meta": { "category": "Gynäkologie/Geburt", "tags": ["Schwangerschaft", "Schock", "Abgrenzung"], "difficulty": "experte" },
+  "scoring": { "critical": [{ "actions": ["iv_access"], "within": 15 }, { "actions": ["handover"], "within": 30 }], "harmful": [] },
+  "base": { "walking": false, "breathing": true, "rr": 26, "spo2": 95, "hr": 130, "bp": "75/50", "radialPulse": false, "recap": 4, "gcs": 15, "followsCommands": true, "pain": 8,
+    "exam": { "abdomen": "Abwehrspannung und starker Druckschmerz im rechten Unterbauch, Bauch leicht gebläht", "bodycheck": "keine äußeren Verletzungen, Schürfung am Knie, blass, kaltschweißig", "pelvis": "stabil, kein Druckschmerz" } },
+  "start": "1",
+  "phases": {
+    "1": { "rules": [{ "when": ["iv_access", "fluids"], "then": "2-volumen" }], "else": "2" },
+    "2": { "findings": { "rr": 30, "spo2": 93, "hr": 145, "bp": "60 palp.", "recap": 5, "gcs": 12, "followsCommands": false, "exam": { "abdomen": "Bauch gespannt und gebläht, Abwehrspannung im ganzen Unterbauch" } }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-spaet" }], "else": "3-tot" },
+    "3-tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "pain": 0 } },
+    "2-volumen": { "findings": { "rr": 24, "hr": 120, "bp": "85/55", "radialPulse": true, "recap": 3 }, "else": "3-volumen" },
+    "3-volumen": { "findings": { "rr": 26, "hr": 130, "bp": "75/50", "radialPulse": false, "recap": 4, "gcs": 14, "exam": { "abdomen": "Bauch gespannt und gebläht, Abwehrspannung im ganzen Unterbauch" } } },
+    "3-spaet": { "findings": { "rr": 30, "spo2": 93, "hr": 140, "bp": "70/40", "recap": 5, "gcs": 13, "followsCommands": true, "exam": { "abdomen": "Bauch gespannt und gebläht, Abwehrspannung im ganzen Unterbauch" } } }
+  }
+}

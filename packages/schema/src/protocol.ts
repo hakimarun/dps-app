@@ -67,7 +67,7 @@ export const ScenarioSaveReq = z.object({
   patients: z.array(z.string().max(64)).min(1).max(100),
 });
 export const ScenarioGenReq = z.object({ brief: z.string().trim().min(10).max(4000), patients: z.number().int().min(1).max(15) });
-export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release"]) }); // release: Berichte für Helfer freigeben
+export const ControlReq = z.object({ type: z.enum(["start", "pause", "resume", "end", "release", "speed"]), factor: z.union([z.literal(1), z.literal(2), z.literal(4)]).optional() }); // release: Berichte freigeben; speed: Tempo (D5)
 // A6: Szenario als Datei zum Austausch zwischen Organisationen: Lage, Fahrzeuge und alle Fallverläufe, ohne Konto- oder Personendaten.
 export const ScenarioBundle = z.object({
   format: z.literal("dps-szenario"),
@@ -208,7 +208,7 @@ export type ServerMsg =
       ai: boolean; // freie Fragen an Patienten möglich (sonst nur Themenliste)
     }
   // Übungsuhr: t Minuten zum Zeitpunkt serverNow; läuft nur bei status "running" weiter.
-  | { type: "clock"; status: Status; t: number; serverNow: number }
+  | { type: "clock"; status: Status; t: number; serverNow: number; speed?: number } // speed: Übungsminuten je echter Minute (D5)
   | { type: "ack"; id: string; error: string | null; participant?: string }
   | { type: "view"; view: View }
   | { type: "leitung"; view: LeitungView }

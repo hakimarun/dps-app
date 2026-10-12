@@ -278,3 +278,23 @@ test("KI-Feedback: Fakten ohne Namen, Vorschlag über die KI, gespeicherter Text
   assert.equal(evaluate(ex, 21 * MIN).helpers[0].feedback, "Tourniquet nach 2 min, stark.");
   assert.ok(!leitungView(ex, 21 * MIN).events.some((e) => /Feedback/.test(e.text)));
 });
+
+test("Tempo der Übungszeit: 2× lässt Übungsminuten doppelt so schnell laufen, Pause bleibt Pause, überlebt einen Neustart", () => {
+  const db = openDb(":memory:");
+  const ex = saveExercise(db, { ...header, code: "SPEED1" }, lib.defs);
+  control(ex, "start", 0);
+  assert.equal(control(ex, "speed", 10 * MIN, 2), null);
+  assert.equal(minutes(ex, 15 * MIN), 10 + 10); // 10 min normal, 5 min doppelt
+  assert.equal(status(ex), "running"); // Tempo ändert den Status nicht
+  control(ex, "pause", 15 * MIN);
+  assert.equal(minutes(ex, 30 * MIN), 20);
+  control(ex, "resume", 30 * MIN);
+  assert.equal(minutes(ex, 31 * MIN), 22); // weiter mit 2×
+  control(ex, "speed", 31 * MIN, 1);
+  assert.equal(minutes(ex, 33 * MIN), 24);
+  assert.equal(stateAt(ex, 20).patients.p01.phase, "2-schock"); // Phasen laufen in Übungsminuten
+  const again = loadExercises(db, lib.defs).find((x) => x.code === "SPEED1")!;
+  assert.equal(minutes(again, 33 * MIN), 24);
+  control(ex, "end", 34 * MIN);
+  assert.equal(control(ex, "speed", 35 * MIN, 4), "in diesem Zustand (ended) nicht möglich");
+});

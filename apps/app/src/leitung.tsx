@@ -265,7 +265,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
           <Text style={{ color: "#FFFFFF", fontSize: 30, fontWeight: "900" }} accessibilityRole="header">Lage {code}</Text>
           <View style={{ backgroundColor: "#FFFFFF", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6 }}>
-            <Text style={{ color: STAGE, fontWeight: "900" }}>{clock(exerciseMinutes(w.clock, w.offset, now) * 60000)} · {STATUS[st]}</Text>
+            <Text style={{ color: STAGE, fontWeight: "900" }}>{clock(exerciseMinutes(w.clock, w.offset, now) * 60000)} · {STATUS[st]}{(w.clock?.speed ?? 1) !== 1 ? ` · ${w.clock!.speed}×` : ""}</Text>
           </View>
         </View>
         <Text style={{ color: "#FFFFFF", opacity: 0.85 }}>{v?.title ?? "verbinde …"}{v?.observer ? ` · Beobachter-Code ${v.observer}` : ""}</Text>
@@ -323,6 +323,15 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
         {!v?.events.length && <Text style={{ color: t.quiet }}>noch nichts passiert</Text>}
       </View>
       <View style={{ gap: 10, marginTop: 8 }}>
+        {live && (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <Text style={{ color: t.quiet, fontWeight: "700" }}>Tempo</Text>
+            {([1, 2, 4] as const).map((f) => (
+              <Chip key={f} t={t} label={`${f}×`} selected={(w.clock?.speed ?? 1) === f}
+                onPress={() => api(session, `/api/exercises/${code}/control`, { type: "speed", factor: f }).catch((e: Error) => setError(e.message))} />
+            ))}
+          </View>
+        )}
         {st === "running" && <Button t={t} strong label="Pausieren" onPress={() => ctl("pause")} />}
         {st === "paused" && <Button t={t} strong label="Fortsetzen" onPress={() => ctl("resume")} />}
         <Button t={t} label="QR-Zettel drucken" onPress={() => Linking.openURL(`${httpBase(session.server)}/print/${code}`)} />

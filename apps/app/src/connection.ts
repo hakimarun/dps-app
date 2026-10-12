@@ -100,7 +100,7 @@ export function useConnection() {
 // Übungsminuten jetzt: Stand der letzten Uhr-Nachricht, weitergezählt nur während die Übung läuft.
 export function exerciseMinutes(clock: Clock | null, offset: number, now: number): number {
   if (!clock) return 0;
-  return clock.t + (clock.status === "running" ? (now + offset - clock.serverNow) / 60000 : 0);
+  return clock.t + (clock.status === "running" ? ((now + offset - clock.serverNow) / 60000) * (clock.speed ?? 1) : 0);
 }
 
 export async function lastConnection(): Promise<{ server: string; code: string } | null> {

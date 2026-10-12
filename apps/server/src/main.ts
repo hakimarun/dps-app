@@ -16,7 +16,7 @@ import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
@@ -457,7 +457,8 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   if ((m = route.match(/^POST \/api\/exercises\/([A-Z0-9]{6})\/control$/))) {
     const ex = exercises.get(m[1]);
     if (!ex || ex.owner !== user.id) throw new HttpError(404, "unbekannte Übung");
-    const error = control(ex, ControlReq.parse(await body(req)).type, Date.now());
+    const r = ControlReq.parse(await body(req));
+    const error = control(ex, r.type, Date.now(), r.factor);
     if (error) throw new HttpError(409, error);
     broadcast(ex, true);
     return send(res, 200, { status: status(ex) });
@@ -481,7 +482,7 @@ const http = createServer((req, res) => {
 type Client = { ex: Exercise | null; trupp: Trupp | null; participant: string | null; watch: boolean; last: string };
 const clients = new Map<WebSocket, Client>();
 const out = (ws: WebSocket, m: ServerMsg) => ws.send(JSON.stringify(m));
-const clock = (ex: Exercise, now = Date.now()): ServerMsg => ({ type: "clock", status: status(ex), t: minutes(ex, now), serverNow: now });
+const clock = (ex: Exercise, now = Date.now()): ServerMsg => ({ type: "clock", status: status(ex), t: minutes(ex, now), serverNow: now, speed: speedOf(ex) });
 
 function onMessage(ws: WebSocket, raw: string) {
   const c = clients.get(ws)!;

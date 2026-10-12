@@ -30,6 +30,9 @@ export function openDb(path: string): Db {
   // Entwürfe aus Meilenstein 6 stammen alle von der KI; eigene Fälle aus dem Editor sind "eigen".
   const draftCols = db.prepare("pragma table_info(drafts)").all() as { name: string }[];
   if (!draftCols.some((c) => c.name === "origin")) db.exec("alter table drafts add column origin text not null default 'ki'");
+  // Tempo der Übungszeit (D5) kam später dazu: Faktor nur bei Steuerbefehl "speed".
+  const ctlCols = db.prepare("pragma table_info(controls)").all() as { name: string }[];
+  if (!ctlCols.some((c) => c.name === "factor")) db.exec("alter table controls add column factor real");
   return db;
 }
 
@@ -87,8 +90,8 @@ export function setApproval(db: Db, userId: string, item: string, version: numbe
 function persist(db: Db, ex: Exercise): Exercise {
   const ins = db.prepare("insert into records (code, id, t, event, name, trupp) values (?, ?, ?, ?, ?, ?)");
   ex.onRecord = (r) => ins.run(ex.code, r.id, r.t, JSON.stringify(r.event), r.name ?? null, r.trupp ?? null);
-  const ctl = db.prepare("insert into controls values (?, ?, ?)");
-  ex.onControl = (c) => ctl.run(ex.code, c.at, c.type);
+  const ctl = db.prepare("insert into controls (code, at, type, factor) values (?, ?, ?, ?)");
+  ex.onControl = (c) => ctl.run(ex.code, c.at, c.type, c.factor ?? null);
   return ex;
 }
 
@@ -101,7 +104,8 @@ export function loadExercises(db: Db, defs: Defs): Exercise[] {
   const heads = db.prepare("select header from exercises").all() as { header: string }[];
   return heads.map(({ header }) => {
     const ex = createExercise(JSON.parse(header) as Header, defs);
-    for (const c of db.prepare("select at, type from controls where code = ? order by rowid").all(ex.code) as Exercise["controls"]) ex.controls.push(c);
+    for (const c of db.prepare("select at, type, factor from controls where code = ? order by rowid").all(ex.code) as (Exercise["controls"][number] & { factor: number | null })[])
+      ex.controls.push(c.factor === null ? { at: c.at, type: c.type } : c);
     const recs = db.prepare("select id, t, event, name, trupp from records where code = ? order by seq").all(ex.code) as
       { id: string; t: number; event: string; name: string | null; trupp: string | null }[];
     for (const r of recs) addRecord(ex, { id: r.id, t: r.t, event: JSON.parse(r.event), name: r.name ?? undefined, trupp: r.trupp ?? undefined });

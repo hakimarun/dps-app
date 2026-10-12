@@ -334,3 +334,22 @@ export function csv(ex: Exercise, now: number): string {
   ];
   return "﻿" + rows.map((r) => r.map(cell).join(";")).join("\r\n") + "\r\n";
 }
+
+// Fall des Tages (Solo): reihum ein Musterfall je Kalendertag (UTC), damit alle am selben Tag denselben Fall üben.
+// Tot aufgefundene Patienten taugen nicht für ein Einzeltraining.
+export function caseOfDay(lib: Library, now: number): string {
+  const ids = Object.values(lib.defs.patients).filter((p) => /^p\d+$/.test(p.id) && !p.phases[p.start].dead).map((p) => p.id).sort();
+  return ids[Math.floor(now / 86_400_000) % ids.length];
+}
+// Ein Patient, alle Fahrzeuge des Busunfalls sofort vor Ort, kurze Phasen für 5–10 Minuten.
+export function soloHeader(lib: Library, code: string, now: number, seed: number): Header {
+  const patient = caseOfDay(lib, now);
+  const units = lib.scenarios.busunfall.units.map((u) => ({ ...u, arrivesAt: 0 }));
+  return {
+    code, owner: SOLO, created: now, seed, trupps: [],
+    scenario: { id: "solo", title: `Fall des Tages: ${lib.defs.patients[patient].title}`, patients: [patient], units },
+    settings: { algorithm: "mstart", phaseMinutes: 3, random: false, vitals: "live" },
+  };
+}
+export const SOLO = "solo";
+export const SOLO_MINUTES = 10; // Mindestdauer für die Auswertung

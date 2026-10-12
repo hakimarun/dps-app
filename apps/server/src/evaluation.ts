@@ -3,7 +3,7 @@
 import type { Sk } from "@dps/schema";
 import type { Evaluation, HelperReport, Role, Team } from "@dps/schema/protocol";
 import { phaseDef, targetSk, type Event } from "@dps/engine";
-import { minutes, released, roleOf, stateAt, truppOf, type Exercise, type Rec } from "./exercise.ts";
+import { minutes, released, roleOf, stateAt, truppOf, type Exercise, type Rec, SOLO, SOLO_MINUTES } from "./exercise.ts";
 
 const POINTS = { criticalTimely: 15, criticalLate: 5, triageCorrect: 10, triageCorrection: 8, overOne: 3, under: -10, harmful: -10, calm: 5, deadPatient: -5, handoverComplete: 5 };
 const RANK: Record<Sk, number> = { EX: 0, IV: 1, III: 2, II: 3, I: 4 };
@@ -15,7 +15,8 @@ type Acc = { report: HelperReport; good: [number, string][]; improve: [number, s
 const cache = new WeakMap<Exercise, { key: string; ev: Evaluation }>();
 
 export function evaluate(ex: Exercise, now: number): Evaluation {
-  const t = minutes(ex, now);
+  // Fall des Tages: Wer früher abschließt, lässt den Patienten allein; er läuft bis zur Mindestdauer weiter (keine Sterne fürs Aufhören).
+  const t = ex.owner === SOLO ? Math.max(minutes(ex, now), SOLO_MINUTES) : minutes(ex, now);
   const key = `${ex.records.length}/${ex.controls.length}/${Math.floor(t)}`;
   const hit = cache.get(ex);
   if (hit?.key === key) return hit.ev;

@@ -2,8 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { ClientMsg, type Intent } from "@dps/schema/protocol";
 import { defaultSettings } from "@dps/engine";
-import { control, createExercise, csv, replay, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
+import { caseOfDay, control, createExercise, csv, replay, soloHeader, leitungView, loadLibrary, minutes, stateAt, status, submit, truppOf, viewFor } from "../src/exercise.ts";
 import { deleteExercisesBefore, loadExercises, myApprovals, openDb, requestLogin, saveExercise, setApproval, userByToken, verifyLogin } from "../src/db.ts";
+import { evaluate } from "../src/evaluation.ts";
 
 const lib = loadLibrary(new URL("../../../library/", import.meta.url));
 const MIN = 60000;
@@ -183,4 +184,31 @@ test("Replay: je Minute die Lage, Phasenwechsel sichtbar; CSV mit entschärften 
   assert.ok(lines[0].startsWith("﻿Minute;Ereignis"));
   assert.ok(lines.some((l) => l.startsWith("0:00;join;;\"'=HYPERLINK(\"\"x\"\")\";")), lines.join("\n"));
   assert.ok(lines.some((l) => l.startsWith("1:00;scan;P01;")));
+});
+
+test("Fall des Tages: gleicher Tag gleicher Fall, nächster Tag anderer, nie tot aufgefunden", () => {
+  const day = 86_400_000;
+  const a = caseOfDay(lib, 20_000 * day + 5), b = caseOfDay(lib, 20_000 * day + day - 1), c = caseOfDay(lib, 20_001 * day);
+  assert.equal(a, b);
+  assert.notEqual(a, c);
+  for (let d = 0; d < 30; d++) {
+    const p = lib.defs.patients[caseOfDay(lib, d * day)];
+    assert.ok(!p.phases[p.start].dead, p.id);
+  }
+  const ex = createExercise(soloHeader(lib, "SOLO01", 0, 1), lib.defs);
+  control(ex, "start", 0);
+  const p = submit(ex, null, msg({ type: "join", name: "Ich", unit: "rtw1" }, 0), 0).participant!;
+  assert.equal(submit(ex, p, msg({ type: "scan", patient: ex.scenario.patients[0] }, 0), 0).error, null);
+  assert.equal(stateAt(ex, 0).units.nef1.arrivesAt, 0); // NEF-Material sofort verfügbar
+});
+
+test("Fall des Tages: früh abschließen zählt den Verlauf bis Minute 10 (unversorgte Blutung stirbt)", () => {
+  const day = 86_400_000;
+  const d = Array.from({ length: 40 }, (_, i) => i).find((i) => caseOfDay(lib, i * day) === "p01")!;
+  const ex = createExercise(soloHeader(lib, "SOLO02", d * day, 1), lib.defs);
+  control(ex, "start", d * day);
+  control(ex, "end", d * day + 12_000);
+  const ev = evaluate(ex, d * day + 12_000);
+  assert.equal(ev.patients[0].outcome, "verstorben");
+  assert.equal(ev.team.stars, 0);
 });

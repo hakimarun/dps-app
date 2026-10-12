@@ -16,7 +16,7 @@ import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { allowedActions, control, csv, leitungView, loadLibrary, minutes, released, replay, roleOf, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, control, createExercise, csv, leitungView, loadLibrary, minutes, released, replay, roleOf, soloHeader, stateAt, status, submit, submitAsk, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
@@ -71,6 +71,10 @@ const resolve = (code: string) => {
   const ex = exercises.get(c);
   return ex ? { ex, trupp: null } : truppCodes.get(c) ?? null;
 };
+const SOLO_MAX = 300; // ponytail: feste Obergrenze gegen Fluten des offenen Endpunkts; bei Bedarf Rate-Limit je IP
+// Solo-Fälle sind ohne Anmeldung offen: KI höchstens SOLO_AI_QUESTIONS Fragen je Fall, danach antwortet der Patient aus seinem Profil.
+const SOLO_AI_QUESTIONS = 20;
+const aiFor = (ex: Exercise) => (ex.owner === SOLO && ex.records.filter((r) => r.event.type === "ask").length >= SOLO_AI_QUESTIONS ? null : dialogAi);
 const ROLE_LABEL: Record<Role, string> = { sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp" };
 // KI-Entwurf eines Patienten: speichern; besteht er die Prüfung, ist er spielbar (nach Freigabe).
 async function draftPatient(brief: string, owner: string): Promise<Draft> {
@@ -176,6 +180,26 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const r = verifyLogin(db, email, code, Date.now());
     if (!r) throw new HttpError(401, "Code falsch oder abgelaufen");
     return send(res, 200, { token: r.token });
+  }
+
+  // Fall des Tages (Solo): ohne Anmeldung, nur im Speicher. Alte Fälle nach 2 h weg, höchstens SOLO_MAX gleichzeitig.
+  if (route === "POST /api/solo") {
+    const now = Date.now();
+    const solo = [...exercises.values()].filter((ex) => ex.owner === SOLO);
+    for (const ex of solo) if (now - ex.created > 2 * 60 * 60_000) exercises.delete(ex.code);
+    if (solo.filter((ex) => exercises.has(ex.code)).length >= SOLO_MAX) throw new HttpError(503, "Gerade üben sehr viele, bitte später erneut versuchen");
+    const ex = createExercise(soloHeader(lib, newCode((c) => exercises.has(c) || truppCodes.has(c)), now, randomInt(1, 2 ** 31)), lib.defs);
+    control(ex, "start", now);
+    exercises.set(ex.code, ex);
+    return send(res, 201, { code: ex.code, patient: ex.scenario.patients[0] });
+  }
+  if ((m = route.match(/^POST \/api\/solo\/([A-Z0-9]{6})\/end$/))) {
+    const ex = exercises.get(m[1]);
+    if (!ex || ex.owner !== SOLO) throw new HttpError(404, "unbekannte Übung");
+    if (status(ex) !== "ended") control(ex, "end", Date.now());
+    if (!released(ex)) control(ex, "release", Date.now()); // Bericht sofort, es gibt keine Leitung
+    broadcast(ex, true);
+    return send(res, 200, { ok: true });
   }
 
   const user = userByToken(db, req.headers.authorization?.replace(/^Bearer /, "") ?? "");
@@ -398,7 +422,7 @@ function onMessage(ws: WebSocket, raw: string) {
     if (m.intent.type === "ask") {
       // Antwort der KI kann dauern: asynchron, ohne andere Nachrichten aufzuhalten.
       const ex = c.ex;
-      void submitAsk(ex, c.participant, m, Date.now(), dialogAi).then((r) => (out(ws, { type: "ack", id: m.id, error: r.error }), broadcast(ex)));
+      void submitAsk(ex, c.participant, m, Date.now(), aiFor(ex)).then((r) => (out(ws, { type: "ack", id: m.id, error: r.error }), broadcast(ex)));
       return;
     }
     const r = submit(c.ex, c.participant, m, Date.now(), c.trupp);

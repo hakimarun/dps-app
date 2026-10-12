@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
+import { Solo, type SoloGame } from "./src/solo";
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, PinLink, PinScreen, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
@@ -39,7 +40,7 @@ const STATUS: Record<Status, string> = { ready: "noch nicht gestartet", running:
 
 export default function App() {
   const t = useColorScheme() === "dark" ? dark : light;
-  const [role, setRole] = useState<"helfer" | "leitung" | null>(null);
+  const [role, setRole] = useState<"helfer" | "leitung" | "solo" | null>(null);
   useEffect(() => {
     AsyncStorage.getItem("dps:role").then((r) => (r === "helfer" || r === "leitung") && setRole(r));
   }, []);
@@ -47,13 +48,16 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: 48 }}>
       <StatusBar style="auto" />
-      {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "leitung" ? <Leitung t={t} onExit={() => choose(null)} /> : (
+      {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "solo" ? (
+        <Solo onExit={() => choose(null)} play={(game) => <Helfer t={t} onExit={() => choose(null)} solo={game} />} />
+      ) : role === "leitung" ? <Leitung t={t} onExit={() => choose(null)} /> : (
         <Stage color={FUN.red} style={{ marginTop: -48 }}>
           <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 24, paddingTop: 96, gap: 18, justifyContent: "center" }}>
             <FlyIn><Breathe><Logo t={{ ...t, marke: FUN.deep }} size={80} /></Breathe></FlyIn>
             <FlyIn delay={150}><Text style={{ color: "#FFFFFF", fontSize: 34, fontWeight: "900" }}>Dynamische Patientensimulation</Text></FlyIn>
             <FlyIn delay={250}><Text style={{ color: "#FFFFFF", fontSize: 17, opacity: 0.9 }}>Übungen für Großschadenslagen im Rettungsdienst</Text></FlyIn>
             <FlyIn delay={400}><FunButton big label="Ich übe (Helfer)" onPress={() => choose("helfer")} /></FlyIn>
+            <FlyIn delay={450}><FunButton label="Fall des Tages (allein üben)" color={FUN.green} text="#FFFFFF" onPress={() => choose("solo")} /></FlyIn>
             <FlyIn delay={500}><FunButton label="Ich leite (Praxisanleiter)" color={FUN.purple} text="#FFFFFF" onPress={() => choose("leitung")} /></FlyIn>
             {/* N13 */}
             <Text style={{ color: "#FFFFFF", opacity: 0.85, fontSize: 13, textAlign: "center", marginTop: 8 }}>
@@ -66,8 +70,17 @@ export default function App() {
   );
 }
 
-function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
+function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: SoloGame }) {
   const { conn, connect, send } = useConnection();
+  // Fall des Tages: ohne Code-Eingabe; Beitritt und Scan geschehen automatisch, die Übergabe schließt den Fall ab.
+  const auto = useRef({ join: false, scan: false, end: false });
+  useEffect(() => void (solo && connect(DEFAULT_SERVER, solo.code)), []);
+  useEffect(() => {
+    if (!solo || conn.status !== "online") return;
+    if (!conn.participant && !auto.current.join) (auto.current.join = true), send({ type: "join", name: "Ich", unit: "rtw1" });
+    if (conn.participant && conn.view && !conn.view.patient && !auto.current.scan) (auto.current.scan = true), send({ type: "scan", patient: solo.patient });
+    if (conn.view?.patient?.left && conn.clock?.status === "running" && !auto.current.end) (auto.current.end = true), solo.onEnd();
+  }, [conn.status, conn.participant, conn.view]);
   const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover" | "ask">(null);
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
@@ -97,7 +110,8 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
   const w = conn.welcome;
   const min = exerciseMinutes(conn.clock, conn.offset, now);
   let body: ReactNode;
-  if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
+  if (!w && solo) body = <Text style={{ color: t.quiet, padding: 20 }}>{conn.error ?? "verbinde …"}</Text>;
+  else if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
   else if (conn.participant && conn.clock?.status === "ended") body = <Result t={t} result={conn.view?.result ?? null} />;
   else if (conn.participant && conn.clock?.status === "ready") body = <Waiting t={t} name={conn.view?.me?.name ?? ""} trupp={conn.view?.me?.trupp ?? null} title={w.title} />;
   else if (!conn.participant)
@@ -122,8 +136,14 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
           </Text>
         </View>
       )}
+      {solo && w && conn.clock?.status === "running" && (
+        <View style={{ paddingHorizontal: 20, paddingBottom: 8 }}>
+          <Button t={t} label="Fall abschließen" note={min < 10 ? "ohne dich läuft der Patient bis Minute 10 weiter" : undefined} onPress={() => ((auto.current.end = true), solo.onEnd())} />
+        </View>
+      )}
       {conn.error && w && <Text style={{ color: t.red, paddingHorizontal: 20, paddingBottom: 8 }}>{conn.error}</Text>}
       {body}
+      {solo && conn.clock?.status === "ended" && <View style={{ padding: 20 }}><Button t={t} strong label="Fertig" onPress={solo.onDone} /></View>}
       {go && <Go onDone={() => setGo(false)} />}
       {sheet === "actions" && conn.view && w && (
         <Sheet t={t} title="Maßnahme" onClose={() => setSheet(null)}>

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, type ReactNode } from "react";
 import { Animated, Easing, Pressable, Text, View } from "react-native";
 import { useReducedMotion } from "./ui";
+import { ecgStrip, rhythmOf } from "./ekg";
 
 export type DeviceKind = "ecg" | "bp" | "spo2" | "glucose" | "temp";
 export const DEVICE_OF: Record<string, DeviceKind> = { ecg: "ecg", measure_bp: "bp", pulse_oximetry: "spo2", blood_glucose: "glucose", measure_temp: "temp" };
@@ -27,35 +28,8 @@ function Trace({ points, color }: { points: [number, number][]; color: string })
   );
 }
 
-// Ein Herzschlag in Sekunden ab Beginn: P-Welle, QRS-Komplex (etwa 80 ms), T-Welle. 100 px = 1 s (25 mm/s).
-const PX_PER_S = W / 3;
-function beat(sec: number, p: boolean) {
-  const bump = (c: number, w: number, a: number) => a * Math.exp(-(((sec - c) / w) ** 2));
-  return (p ? bump(0.09, 0.025, 0.12) : 0) + bump(0.17, 0.008, -0.12) + bump(0.195, 0.01, 1) + bump(0.22, 0.01, -0.28) + bump(0.4, 0.05, 0.26);
-}
-
-// Kurve über genau einen Bildschirm, damit sie nahtlos endlos laufen kann.
-function ecgPoints(hr: number, rhythm: string): [number, number][] {
-  const flat = hr === 0 || /asystolie/i.test(rhythm);
-  const af = /flimmern/i.test(rhythm);
-  const beats = flat ? 1 : Math.max(1, Math.round((3 * hr) / 60));
-  // Vorhofflimmern: unregelmäßige Abstände (fest, damit die Schleife passt)
-  const widths = Array.from({ length: beats }, (_, i) => (af ? [0.7, 1.35, 0.9, 1.15, 0.8, 1.25, 1.0, 0.85][i % 8] : 1));
-  const sum = widths.reduce((a, b) => a + b, 0);
-  const pts: [number, number][] = [];
-  let x0 = 0;
-  for (const w of widths) {
-    const bw = (W * w) / sum;
-    for (let x = 0; x < bw; x += 1) {
-      const fib = af ? 0.035 * Math.sin((x0 + x) * 0.9) : 0;
-      const y = flat ? 0.01 * Math.sin((x0 + x) / 9) : beat(x / PX_PER_S, !af) + fib;
-      pts.push([x0 + x, H * 0.7 - y * H * 0.6]);
-    }
-    x0 += bw;
-  }
-  pts.push([W, pts[0][1]]);
-  return pts;
-}
+const PX_PER_S = W / 3; // 25 mm/s: ein Bildschirm zeigt 3 s
+const STRIP_S = 6; // Länge des Streifens, der sich wiederholt (reicht für AV-Block-Muster)
 
 function plethPoints(hr: number): [number, number][] {
   const beats = Math.max(1, Math.round((3 * (hr || 60)) / 60));
@@ -67,21 +41,21 @@ function plethPoints(hr: number): [number, number][] {
   });
 }
 
-// Läuft von rechts nach links wie auf dem Monitor (25 mm/s ≈ ein Bildschirm in 3 s).
-function Sweep({ points, color }: { points: [number, number][]; color: string }) {
+// Läuft von rechts nach links wie auf dem Monitor; der Streifen wiederholt sich nahtlos.
+function Sweep({ points, color, width = W, ms = 3000 }: { points: [number, number][]; color: string; width?: number; ms?: number }) {
   const reduced = useReducedMotion();
   const v = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     if (reduced) return;
-    const loop = Animated.loop(Animated.timing(v, { toValue: 1, duration: 3000, easing: Easing.linear, useNativeDriver: true }));
+    const loop = Animated.loop(Animated.timing(v, { toValue: 1, duration: ms, easing: Easing.linear, useNativeDriver: true }));
     loop.start();
     return () => loop.stop();
-  }, [reduced]);
+  }, [reduced, ms]);
   return (
     <View style={{ width: W, height: H, overflow: "hidden" }}>
-      <Animated.View style={{ width: W * 2, height: H, flexDirection: "row", transform: [{ translateX: v.interpolate({ inputRange: [0, 1], outputRange: [0, -W] }) }] }}>
-        <View style={{ width: W, height: H }}><Trace points={points} color={color} /></View>
-        <View style={{ width: W, height: H }}><Trace points={points} color={color} /></View>
+      <Animated.View style={{ width: width * 2, height: H, flexDirection: "row", transform: [{ translateX: v.interpolate({ inputRange: [0, 1], outputRange: [0, -width] }) }] }}>
+        <View style={{ width, height: H }}><Trace points={points} color={color} /></View>
+        <View style={{ width, height: H }}><Trace points={points} color={color} /></View>
       </Animated.View>
     </View>
   );
@@ -122,12 +96,12 @@ const de = (n: number) => String(n).replace(".", ",");
 export function Device({ kind, f }: { kind: DeviceKind; f: F }) {
   const hr = f.hr ?? 0;
   const rhythm = f.exam?.ecg ?? "";
-  const ecg = useMemo(() => ecgPoints(hr, rhythm), [hr, rhythm]);
+  const ecg = useMemo(() => ecgStrip(rhythmOf(rhythm), hr, STRIP_S, PX_PER_S, H), [hr, rhythm]);
   const pleth = useMemo(() => plethPoints(hr), [hr]);
   if (kind === "ecg")
     return (
       <Monitor label="EKG · ABL. II · 25 mm/s">
-        <Sweep points={ecg} color={GREEN} />
+        <Sweep points={ecg} color={GREEN} width={STRIP_S * PX_PER_S} ms={STRIP_S * 1000} />
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
           <Text style={{ color: GREEN, fontSize: 15, fontWeight: "700", flexShrink: 1 }}>{rhythm}</Text>
           <Text style={{ color: GREEN, fontSize: 48, fontWeight: "800" }}>{hr || "--"}<Text style={{ fontSize: 14 }}> HF</Text></Text>

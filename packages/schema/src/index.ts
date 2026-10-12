@@ -95,6 +95,7 @@ export const Action = z.object({
   reveals: z.array(z.string()).default([]), // Befunde, die erst diese Maßnahme zeigt, z. B. "bp", "exam.pelvis"
   failChance: z.number().min(0).max(1).default(0), // nur mit Zufallselementen
   group: z.string().default("Sonstiges"), // Abschnitt in der Maßnahmenliste der App
+  helpers: z.number().int().min(1).max(2).default(1), // 2: startet erst, wenn ein zweiter Helfer mithilft (C7)
 });
 
 export const Scenario = z.object({

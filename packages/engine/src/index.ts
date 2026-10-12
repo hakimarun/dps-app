@@ -13,6 +13,8 @@ export type Event =
   | { t: number; type: "scan"; participant: string; patient: string }
   | { t: number; type: "start"; participant: string; patient: string; action: string }
   | { t: number; type: "end"; participant: string }
+  // Zweiter Helfer steigt in eine wartende Zwei-Helfer-Maßnahme am Patienten ein (C7); dann startet sie für beide.
+  | { t: number; type: "assist"; participant: string; patient: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
   | { t: number; type: "admit"; participant: string; patient: string; place: Place }
   // Gespräch mit dem Patienten; ändert den Zustand nicht, wird für die Auswertung protokolliert.
@@ -27,7 +29,7 @@ export type Event =
   // Feedbacktext der Leitung für einen Helfer (G10); der jeweils letzte gilt. Ändert den Zustand nicht.
   | { t: number; type: "feedback"; helper: string; text: string };
 
-type Running = { action: string; patient: string; until: number | null; ok: boolean };
+type Running = { action: string; patient: string; until: number | null; ok: boolean; waiting?: boolean }; // waiting: wartet auf den zweiten Helfer (C7)
 export type PatientState = {
   phase: string;
   phaseStart: number;
@@ -80,6 +82,12 @@ export function validate(s: State, e: Event): string | null {
   if (e.type === "scan") return null;
   if (h.patient !== e.patient) return "erst Patient scannen";
   if (e.type === "triage" || e.type === "admit" || e.type === "ask") return null;
+  if (e.type === "assist") {
+    const w = Object.values(s.participants).find((x) => x.busy?.waiting && x.busy.patient === e.patient);
+    if (!w) return "keine Maßnahme wartet auf Hilfe";
+    for (const [item, n] of Object.entries(s.defs.actions[w.busy!.action].material)) if ((s.units[w.unit].inventory[item] ?? 0) < n) return `kein ${item} mehr`;
+    return null;
+  }
   if (e.type === "handover") {
     const v = s.units[e.vehicle];
     if (!v) return "unbekanntes Fahrzeug";
@@ -109,17 +117,32 @@ export function apply(s: State, e: Event): State {
     case "start": {
       const a = s.defs.actions[e.action];
       const h = s.participants[e.participant];
+      if (a.helpers > 1) {
+        h.busy = { action: e.action, patient: e.patient, until: null, ok: true, waiting: true }; // Material erst beim echten Start
+        break;
+      }
       const inv = s.units[h.unit].inventory;
       for (const [item, n] of Object.entries(a.material)) inv[item] -= n;
       const ok = !(s.settings.random && a.failChance > 0 && draw(s) < a.failChance);
       h.busy = { action: e.action, patient: e.patient, until: a.minutes === null ? null : e.t + a.minutes, ok };
       break;
     }
+    case "assist": {
+      const w = Object.values(s.participants).find((x) => x.busy?.waiting && x.busy.patient === e.patient)!;
+      const a = s.defs.actions[w.busy!.action];
+      const inv = s.units[w.unit].inventory;
+      for (const [item, n] of Object.entries(a.material)) inv[item] -= n;
+      const ok = !(s.settings.random && a.failChance > 0 && draw(s) < a.failChance);
+      const busy = { action: a.id, patient: e.patient, until: a.minutes === null ? null : e.t + a.minutes, ok };
+      w.busy = { ...busy };
+      s.participants[e.participant].busy = { ...busy };
+      break;
+    }
     case "end": {
       const h = s.participants[e.participant];
       const b = h.busy!;
       const done = s.patients[b.patient].done;
-      if (b.ok && !done.includes(b.action)) done.push(b.action);
+      if (b.ok && !b.waiting && !done.includes(b.action)) done.push(b.action); // abgebrochenes Warten zählt nicht
       h.busy = null;
       break;
     }
@@ -176,7 +199,7 @@ export function tick(s: State, now: number): Event[] {
 function nextPhase(s: State, id: string): string {
   const ps = s.patients[id];
   const ph = phaseDef(s, id);
-  const running = Object.values(s.participants).flatMap((h) => (h.busy?.patient === id ? [h.busy.action] : []));
+  const running = Object.values(s.participants).flatMap((h) => (h.busy?.patient === id && !h.busy.waiting ? [h.busy.action] : []));
   const rule = ph.rules.find((r) => r.when.every((a) => ps.done.includes(a)) && r.active.every((a) => running.includes(a)));
   // Keine Regel und kein "else": Phase bleibt, die Regeln werden nach der nächsten Phasendauer erneut geprüft.
   return rule?.then ?? ph.else ?? ps.phase;

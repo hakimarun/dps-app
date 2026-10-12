@@ -20,6 +20,7 @@ export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("scan"), patient: z.string() }),
   z.object({ type: z.literal("start"), patient: z.string(), action: z.string() }),
   z.object({ type: z.literal("end") }),
+  z.object({ type: z.literal("assist"), patient: z.string() }), // bei einer wartenden Zwei-Helfer-Maßnahme mithelfen (C7)
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
   z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),
   // Patient befragen: freie Frage (KI) oder Thema aus der Auswahlliste (ohne KI).
@@ -156,13 +157,14 @@ export type Evaluation = {
 
 export type View = {
   result?: { team: Team; me: HelperReport } | null; // erst nach Freigabe durch die Leitung
-  me: { id: string; name: string; unit: string; role: Role; trupp: string | null; busy: { action: string; until: number | null } | null } | null;
+  me: { id: string; name: string; unit: string; role: Role; trupp: string | null; busy: { action: string; until: number | null; waiting?: boolean } | null } | null;
   patient: {
     id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean;
     vitalsText: Record<string, string> | null; // Befundtext statt Zahlen (Vitalwerte-Modus "text"); dann fehlen die Zahlen in findings
     live?: boolean; // Vitalwerte gleiten und schwanken (Modus "live"): kein Aufblitzen bei jeder Änderung
     image?: string | null; // Patientenbild (Pfad auf dem Server), falls eines erzeugt wurde
     dialog: { q: string; a: string }[]; // eigene Fragen an diesen Patienten
+    waiting?: string | null; // Zwei-Helfer-Maßnahme eines anderen Helfers wartet hier auf Hilfe (C7)
   } | null;
   inventory: Record<string, number>;
   unitArrived: boolean;
@@ -195,7 +197,7 @@ export type LeitungView = {
   observer: string | null; // Beobachter-Code (E7)
 };
 
-export type ActionInfo = { id: string; title: string; minutes: number | null; material: Record<string, number>; group: string };
+export type ActionInfo = { id: string; title: string; minutes: number | null; material: Record<string, number>; group: string; helpers?: number };
 
 export type ServerMsg =
   | {

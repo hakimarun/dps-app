@@ -212,3 +212,24 @@ test("Gleitende Vitalwerte: nach dem Phasenwechsel vom alten zum neuen Wert, dan
   assert.equal(liveFindings(dead, "p01").hr, 0); // tot bleibt Nulllinie
   assert.equal(visible(run([], 16.5).s, "p01").hr, 135); // ohne "live" stufenweise wie bisher
 });
+
+test("Zwei-Helfer-Maßnahme: wartet auf den zweiten Helfer, startet dann für beide; Abbrechen zählt nicht", () => {
+  const assist = (t: number, patient: string, participant: string): Event => ({ t, type: "assist", participant, patient });
+  // Vakuummatratze (5 min, 2 Helfer): Material erst beim echten Start
+  const { s } = run([scan(1, "p04"), act(2, "p04", "vacuum_mattress"), scan(3, "p04", "h2")], 3.5);
+  assert.equal(s.participants.h1.busy?.waiting, true);
+  assert.equal(s.units.rtw1.inventory.vacuum_mattress, 1);
+  assert.equal(validate(s, assist(4, "p04", "h2")), null);
+  apply(s, assist(4, "p04", "h2"));
+  assert.equal(s.units.rtw1.inventory.vacuum_mattress, 0);
+  assert.equal(s.participants.h1.busy?.until, 9);
+  assert.equal(s.participants.h2.busy?.until, 9);
+  tick(s, 9);
+  assert.ok(s.patients.p04.done.includes("vacuum_mattress"));
+  assert.equal(s.participants.h1.busy, null);
+  assert.equal(s.participants.h2.busy, null);
+  // ohne zweiten Helfer: Warten abbrechen, nichts erledigt
+  const alone = run([scan(1, "p04"), act(2, "p04", "vacuum_mattress"), end(6)], 20).s;
+  assert.ok(!alone.patients.p04.done.includes("vacuum_mattress"));
+  assert.equal(validate(alone, assist(21, "p04", "h1")), "keine Maßnahme wartet auf Hilfe");
+});

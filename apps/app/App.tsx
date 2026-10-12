@@ -135,7 +135,7 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
   else if (sheet === "scan" || !conn.view?.patient)
     body = <Scan t={t} code={conn.code} current={conn.view?.patient?.id}
       onScan={(patient) => (send({ type: "scan", patient }), setSheet(null))} onBack={() => setSheet(null)} />;
-  else body = <PatientScreen t={t} conn={conn} min={min} onSheet={setSheet} onEnd={() => send({ type: "end" })} />;
+  else body = <PatientScreen t={t} conn={conn} min={min} onSheet={setSheet} onEnd={() => send({ type: "end" })} onAssist={(patient) => send({ type: "assist", patient })} />;
 
   return (
     <View style={{ flex: 1 }}>
@@ -178,7 +178,7 @@ function Helfer({ t, onExit, solo }: { t: Theme; onExit: () => void; solo?: Solo
           {w.actions.flatMap((a, i) => {
             const missing = Object.entries(a.material).filter(([item, n]) => (conn.view!.inventory[item] ?? 0) < n);
             const disabled = !conn.view!.unitArrived || missing.length > 0;
-            const note = !conn.view!.unitArrived ? "Einheit noch nicht da" : missing.length ? `kein ${MATERIAL[missing[0][0]] ?? missing[0][0]}` : a.minutes === null ? "dauerhaft" : a.minutes < 1 ? `${a.minutes * 60} s` : `${a.minutes} min`;
+            const note = !conn.view!.unitArrived ? "Einheit noch nicht da" : missing.length ? `kein ${MATERIAL[missing[0][0]] ?? missing[0][0]}` : `${a.minutes === null ? "dauerhaft" : a.minutes < 1 ? `${a.minutes * 60} s` : `${a.minutes} min`}${(a.helpers ?? 1) > 1 ? " · 2 Helfer" : ""}`;
             // Katalog ist nach Gruppen sortiert: Überschrift, wenn eine neue Gruppe beginnt.
             const head = a.group !== w.actions[i - 1]?.group ? [<Text key={`g-${a.group}`} accessibilityRole="header" style={{ color: t.quiet, fontWeight: "600", marginTop: i ? 8 : 0 }}>{a.group}</Text>] : [];
             return [
@@ -311,8 +311,9 @@ function Scan({ t, code, current, onScan, onBack }: { t: Theme; code: string; cu
   );
 }
 
-function PatientScreen({ t, conn, min, onSheet, onEnd }: {
+function PatientScreen({ t, conn, min, onSheet, onEnd, onAssist }: {
   t: Theme; conn: ReturnType<typeof useConnection>["conn"]; min: number; onSheet: (s: "actions" | "triage" | "scan" | "admit" | "handover" | "ask") => void; onEnd: () => void;
+  onAssist: (patient: string) => void;
 }) {
   const v = conn.view!;
   const p = v.patient!;
@@ -322,16 +323,16 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
   const exam = Object.entries((f.exam as Record<string, string>) ?? {});
   // J3: Häkchen, wenn die eigene Maßnahme fertig ist (Vibration kommt aus Helfer).
   // Messung fertig: Wert im passenden Gerät zeigen (EKG-Monitor, Blutdruck, Blutzucker …).
-  const lastBusy = useRef<{ id: string; title: string } | null>(null);
+  const lastBusy = useRef<{ id: string; title: string; waiting: boolean } | null>(null);
   const [finished, setFinished] = useState<string | null>(null);
   const [device, setDevice] = useState<DeviceKind | null>(null);
   useEffect(() => {
-    if (lastBusy.current && !busy) {
+    if (lastBusy.current && !busy && !lastBusy.current.waiting) {
       setFinished(lastBusy.current.title);
       if (DEVICE_OF[lastBusy.current.id]) setDevice(DEVICE_OF[lastBusy.current.id]);
     }
-    lastBusy.current = busy ? { id: busy.action, title: String(busyTitle) } : null;
-  }, [busy?.action]);
+    lastBusy.current = busy ? { id: busy.action, title: String(busyTitle), waiting: !!busy.waiting } : null;
+  }, [busy?.action, busy?.waiting]);
   const hasDevice = (k: DeviceKind) => !p.vitalsText && (k === "ecg" ? !!(f.exam as Record<string, string> | undefined)?.ecg : k === "temp" ? f.temp !== undefined : k === "glucose" ? !!(f.exam as Record<string, string> | undefined)?.glucose : f[k] !== undefined);
   useEffect(() => {
     if (!finished) return;
@@ -401,7 +402,17 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
             <Text style={{ color: t.text, fontWeight: "600" }} accessibilityLiveRegion="polite">✓ {finished} fertig</Text>
           </Pop>
         )}
-        {busy && (
+        {busy?.waiting && (
+          <View style={{ backgroundColor: t.tint, borderRadius: 10, padding: 12, gap: 8 }} accessibilityLiveRegion="polite">
+            <Text style={{ color: t.text, fontWeight: "600" }}>Wartet auf einen zweiten Helfer: {busyTitle}</Text>
+            <Text style={{ color: t.quiet }}>Ein Helfer am selben Patienten tippt auf „Mithelfen“, dann startet ihr gemeinsam.</Text>
+            <Button t={t} label="Abbrechen" onPress={onEnd} />
+          </View>
+        )}
+        {!busy && p.waiting && !p.left && (
+          <Button t={t} strong label={`Mithelfen: ${conn.welcome!.actions.find((a) => a.id === p.waiting)?.title ?? p.waiting}`} note="ein anderer Helfer wartet auf dich" onPress={() => onAssist(p.id)} />
+        )}
+        {busy && !busy.waiting && (
           <View style={{ backgroundColor: t.tint, borderRadius: 10, padding: 12, gap: 8 }}>
             <Text style={{ color: t.text, fontWeight: "600" }}>
               {busyTitle} {busy.until === null ? "läuft dauerhaft" : `· noch ${clock((busy.until - min) * 60000)}`}

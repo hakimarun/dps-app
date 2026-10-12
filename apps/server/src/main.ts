@@ -500,7 +500,7 @@ function onMessage(ws: WebSocket, raw: string) {
       out(ws, {
         type: "welcome", title: ex.scenario.title, participant: c.participant,
         units: ex.scenario.units.map((u) => ({ id: u.id, title: u.title })),
-        actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material, group: a.group })),
+        actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material, group: a.group, helpers: a.helpers })),
         trupp: trupp && { name: trupp.name, role: trupp.role, unit: ex.scenario.units.find((u) => u.id === trupp.unit)?.title ?? trupp.unit },
         ai: !!dialogAi,
       });

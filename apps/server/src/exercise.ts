@@ -204,10 +204,11 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
   const p = me.patient;
   const ps = p ? s.patients[p] : null;
   return {
-    me: { id, name: ex.names.get(id) ?? "", unit: me.unit, role: roleOf(ex, id), trupp: truppOf(ex, id)?.name ?? null, busy: me.busy && { action: me.busy.action, until: me.busy.until } },
+    me: { id, name: ex.names.get(id) ?? "", unit: me.unit, role: roleOf(ex, id), trupp: truppOf(ex, id)?.name ?? null, busy: me.busy && { action: me.busy.action, until: me.busy.until, waiting: !!me.busy.waiting } },
     patient: p && ps
       ? {
           id: p, picture: ex.defs.patients[p].picture, ...findingsFor(ex, s, p), triage: ps.triage, done: ps.done, place: PLACE[ps.place], left: ps.left,
+          waiting: Object.entries(s.participants).find(([hid, h]) => hid !== id && h.busy?.waiting && h.busy.patient === p)?.[1].busy?.action ?? null,
           dialog: ex.records.flatMap((r) => (r.event.type === "ask" && r.event.participant === id && r.event.patient === p ? [{ q: r.event.question, a: r.event.answer }] : [])).slice(-10),
         }
       : null,
@@ -262,7 +263,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
     lastActive.set(r.event.participant, Math.max(lastActive.get(r.event.participant) ?? 0, end));
   }
   const helpers = Object.entries(s.participants).map(([id, h]) => ({
-    id, name: name(id), unit: unit(h.unit), trupp: truppOf(ex, id)?.name ?? null, role: roleOf(ex, id), patient: h.patient, busy: h.busy ? action(h.busy.action) : null,
+    id, name: name(id), unit: unit(h.unit), trupp: truppOf(ex, id)?.name ?? null, role: roleOf(ex, id), patient: h.patient, busy: h.busy ? `${action(h.busy.action)}${h.busy.waiting ? " (wartet auf zweiten Helfer)" : ""}` : null,
     idle: h.busy ? null : Math.max(0, t - (lastActive.get(id) ?? 0)),
   }));
   const trupps = ex.trupps!.map((tr) => ({ ...tr, unit: unit(tr.unit), members: [...ex.truppOf].filter(([, c]) => c === tr.code).map(([pid]) => name(pid)) }));
@@ -285,6 +286,7 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "scan": return `${name(e.participant)} scannt ${P(e.patient)}`;
       case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
       case "end": return `${name(e.participant)}: Maßnahme beendet`;
+      case "assist": return `${name(e.participant)} hilft an ${P(e.patient)} mit`;
       case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
       case "ask": return `${name(e.participant)} fragt ${P(e.patient)}: „${e.question}“`;
       case "admit": return `${name(e.participant)} nimmt ${P(e.patient)} auf: ${PLACE[e.place]}`;

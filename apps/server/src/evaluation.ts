@@ -60,7 +60,8 @@ function compute(ex: Exercise, T: number): Evaluation {
   const starts = ofType("start");
   const triages = ofType("triage");
   const handovers = ofType("handover");
-  for (const r of [...ofType("scan"), ...starts, ...triages, ...ofType("admit"), ...ofType("ask"), ...handovers]) acc.get(r.event.participant)?.patients.add(r.event.patient);
+  const assists = ofType("assist");
+  for (const r of [...ofType("scan"), ...starts, ...assists, ...triages, ...ofType("admit"), ...ofType("ask"), ...handovers]) acc.get(r.event.participant)?.patients.add(r.event.patient);
 
   // Kritische Maßnahmen je Patient: rechtzeitig, zu spät oder verpasst.
   const critical = { timely: 0, late: 0, missed: 0 };
@@ -74,7 +75,11 @@ function compute(ex: Exercise, T: number): Evaluation {
           .filter((r) => r.event.patient === id && c.actions.includes(r.event.action))
           // erledigt: abgeschlossen (steht in done) oder dauerhafte Maßnahme, die ab Start wirkt
           .filter((r) => A[r.event.action].minutes === null || end.patients[id].done.includes(r.event.action))
-          .map((r) => ({ who: r.event.participant, action: r.event.action, at: r.t + (A[r.event.action].minutes ?? 0) })),
+          // Zwei-Helfer-Maßnahmen (C7) beginnen erst, wenn jemand mithilft
+          .flatMap((r) => {
+            const from = A[r.event.action].helpers > 1 ? assists.find((x) => x.event.patient === id && x.t >= r.t)?.t : r.t;
+            return from === undefined ? [] : [{ who: r.event.participant, action: r.event.action, at: from + (A[r.event.action].minutes ?? 0) }];
+          }),
         ...(c.actions.includes("handover") ? handovers.filter((r) => r.event.patient === id).map((r) => ({ who: r.event.participant, action: "handover", at: r.t })) : []),
       ]
         .filter((x) => x.at <= T)
@@ -138,6 +143,8 @@ function compute(ex: Exercise, T: number): Evaluation {
       skill(who, "ressourcen", !["III", "EX"].includes(targetSk(s, id)));
     }
   }
+
+  for (const r of assists) { const a = acc.get(r.event.participant); if (a) a.report.actions++; } // Mithelfen zählt als Maßnahme
 
   // Anamnese (G5): +1 je neuem SAMPLER-Thema pro Patient, höchstens 7; ab 5 Themen "Gute Frage".
   const asked = new Map<string, Set<string>>();

@@ -294,3 +294,15 @@ test("Tempo der Übungszeit: 2× lässt Übungsminuten doppelt so schnell laufen
   control(ex, "end", 34 * MIN);
   assert.equal(control(ex, "speed", 35 * MIN, 4), "in diesem Zustand (ended) nicht möglich");
 });
+
+test("Funkrufnamen: je Fahrzeugklasse eigene Kennzahl, kein Rufname doppelt, auch wenn der Zufall sich wiederholt", async () => {
+  const { callsign, withCallsigns } = await import("../src/exercise.ts");
+  const named = withCallsigns(lib.scenarios.busunfall.units);
+  assert.deepEqual(named.map((u) => u.title.replace(/ \d+\//, " W/").replace(/\/\d$/, "/n")), ["RTW W/83/n", "NEF W/82/n", "RTW W/83/n", "KTW W/85/n"]);
+  assert.equal(new Set(named.map((u) => u.title)).size, named.length);
+  const rolls = [70, 1, 70, 1, 70, 1, 41, 2]; // Zufall liefert zweimal dasselbe
+  const used = new Set<string>();
+  const rnd = () => rolls.shift()!;
+  assert.equal(callsign("RTW", used, rnd), "70/83/1");
+  assert.equal(callsign("RTW", used, rnd), "41/83/2"); // 70/83/1 übersprungen
+});

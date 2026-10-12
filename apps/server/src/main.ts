@@ -14,7 +14,7 @@ import { Patient, type Scenario } from "@dps/schema";
 import { triage, type Settings } from "@dps/engine";
 import { fromEnv } from "./ai.ts";
 import { buildUnits, check, generate, generateFrame } from "./generator.ts";
-import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
+import { SOLO, allowedActions, control, createExercise, csv, inject, leitungView, observerView, loadLibrary, minutes, released, replay, roleOf, soloHeader, withCallsigns, speedOf, stateAt, status, submit, submitAsk, timeline, viewFor, type Exercise } from "./exercise.ts";
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, newDevice, openDb, saveDraft, saveExercise, saveScenario, setApproval, userByToken, type Draft } from "./db.ts";
 import { printPage, reportPage } from "./print.ts";
@@ -404,6 +404,8 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
         code: newCode(taken), name: `EE ${e + 1} ${ROLE_LABEL[role]}`, role,
         unit: (role === "sicherung" ? seated[e % seated.length] : sc.units[(e * EE_ROLES.length + k) % sc.units.length]).id,
       }));
+    // Eine Führung (OrgL, LNA, UA-Leiter teilen sich den Code), sobald mit Einsatzeinheiten geübt wird.
+    if (r.einheiten > 0) trupps.push({ code: newCode(taken), name: ROLE_LABEL.fuehrung, role: "fuehrung", unit: sc.units[0].id });
     for (const role of ["sichtung", "behandlung", "transport"] as const) {
       const units = role === "transport" ? seated : sc.units;
       for (let i = 0; i < r.trupps[role]; i++)
@@ -412,7 +414,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     const code = newCode(taken);
     const observer = newCode((c) => taken(c) || c === code);
     const ex = saveExercise(db, {
-      code, owner: user.id, scenario: { ...sc, patients: r.patients },
+      code, owner: user.id, scenario: { ...sc, patients: r.patients, units: withCallsigns(sc.units) },
       settings: { algorithm: r.algorithm, ...LEVELS[r.level], ...(r.phaseMinutes ? { phaseMinutes: r.phaseMinutes } : {}), ...(r.random !== undefined ? { random: r.random } : {}), vitals: r.vitals }, seed: randomInt(1, 2 ** 31), created: Date.now(), trupps, observer,
     }, lib.defs);
     exercises.set(code, ex);

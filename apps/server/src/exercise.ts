@@ -2,11 +2,12 @@
 // Der Zustand wird daraus mit der Engine neu berechnet; so lassen sich verspätete (offline gepufferte)
 // Aktionen an ihrer echten Zeit einsortieren. Keine Ein- und Ausgabe hier, das Speichern machen onRecord/onControl.
 import { readFileSync, readdirSync } from "node:fs";
+import { randomInt } from "node:crypto";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
 import { TOPIC_LABEL, type ClientMsg, type LeitungView, type ObserverView, type Role, type Status, type Trupp, type View, roleRule } from "@dps/schema/protocol";
 import type { Ai } from "./ai.ts";
 import { askPatient } from "./dialog.ts";
-import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State } from "@dps/engine";
+import { apply, describe, initial, phaseDef, targetSk, tick, validate, visible, type Defs, type Event, type Settings, type State, REINFORCEMENT } from "@dps/engine";
 
 export type Library = { defs: Defs; scenarios: Record<string, Scenario> };
 
@@ -52,6 +53,10 @@ export const truppOf = (ex: Exercise, participant: string) => ex.trupps!.find((t
 export const roleOf = (ex: Exercise, participant: string): Role => truppOf(ex, participant)?.role ?? "behandlung";
 
 // Sichtungstrupps: nur Sichtung und lebensrettende Sofortmaßnahmen (Blutstillung, Atemweg freimachen).
+// Führung in der Übung (B3)? Dann gibt sie die Transportreihenfolge frei.
+export const hasLead = (ex: Exercise) => ex.trupps!.some((tr) => tr.role === "fuehrung");
+const kindOf = (unitId: string) => unitId.split("-")[1] as keyof typeof REINFORCEMENT;
+const mmss = (t: number) => { const sec = Math.round(t * 60); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; };
 export const allowedActions = (ex: Exercise, role: Role) => Object.values(ex.defs.actions).filter((a) => !roleRule(role, "treat", { action: a.id }));
 
 export const PLACE: Record<string, string> = { fundort: "Fundort", ablage: "Patientenablage", bhp: "Behandlungsplatz", abtransport: "abtransportiert" };
@@ -145,11 +150,20 @@ export function submit(
       : i.type === "triage" ? roleRule(role, "triage", { triaged: !!stateAt(ex, nowT).patients[i.patient]?.triage })
       : i.type === "admit" ? roleRule(role, "admit")
       : i.type === "handover" ? roleRule(role, "handover")
+      : i.type === "request" || i.type === "clear" ? roleRule(role, "lead")
       : null;
     if (rule) return { error: rule };
+    // Mit Führung in der Übung entscheidet sie die Transportreihenfolge: nur freigegebene Patienten abgeben.
+    if (i.type === "handover" && hasLead(ex) && !stateAt(ex, nowT).patients[i.patient]?.cleared) return { error: "Die Führung hat diesen Patienten noch nicht zum Transport freigegeben" };
     const atT = minutes(ex, msg.at);
     const t = msg.at <= now && atT >= nowT - BUFFER_MINUTES ? atT : nowT;
-    event = { ...i, t, participant };
+    if (i.type === "request") {
+      // Fahrzeug-ID fortlaufend je Typ, Titel mit neuem Funkrufnamen, z. B. "RTW 41/83/2 (nachgefordert)"
+      const n = ex.records.filter((r) => r.event.type === "request" && r.event.kind === i.kind).length + 1;
+      const label = REINFORCEMENT[i.kind].label;
+      const sign = callsign(label, usedCallsigns(Object.values(stateAt(ex, nowT).units).map((u) => u.title)));
+      event = { t, type: "request", participant, kind: i.kind, unit: `nach-${i.kind}-${n}`, title: `${label} ${sign} (nachgefordert)` };
+    } else event = { ...i, t, participant };
   }
   const error = validate(stateAt(ex, event.t), event);
   if (error) return { error };
@@ -216,9 +230,15 @@ export function viewFor(ex: Exercise, s: State, id: string): View {
       : null,
     inventory: unit.inventory,
     unitArrived: s.t >= unit.arrivesAt,
-    vehicles: ex.scenario.units.filter((u) => u.seats > 0).map((u) => ({ id: u.id, title: u.title, seats: s.units[u.id].seats, arrived: s.t >= u.arrivesAt })),
+    vehicles: Object.entries(s.units).filter(([uid]) => (ex.scenario.units.find((u) => u.id === uid)?.seats ?? REINFORCEMENT[kindOf(uid)]?.seats ?? 0) > 0)
+      .map(([uid, u]) => ({ id: uid, title: u.title, seats: u.seats, arrived: s.t >= u.arrivesAt })),
     messages,
-    stock: ex.scenario.units.filter((u) => u.id !== me.unit && s.t >= s.units[u.id].arrivesAt).map((u) => ({ id: u.id, title: u.title, inventory: s.units[u.id].inventory })),
+    stock: Object.entries(s.units).filter(([uid, u]) => uid !== me.unit && s.t >= u.arrivesAt).map(([uid, u]) => ({ id: uid, title: u.title, inventory: u.inventory })),
+    lage: roleOf(ex, id) === "fuehrung" ? {
+      patients: Object.entries(s.patients).map(([pid, ps]) => ({ id: pid, triage: ps.triage, place: PLACE[ps.place], cleared: ps.cleared, left: ps.left })),
+      vehicles: Object.entries(s.units).filter(([uid]) => uid.startsWith("nach-")).map(([, u]) => ({ title: u.title, arrivesAt: u.arrivesAt, arrived: s.t >= u.arrivesAt, seats: u.seats })),
+      clearance: hasLead(ex),
+    } : null,
   };
 }
 
@@ -232,7 +252,7 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
   const s = stateAt(ex, t, generated);
   const name = (id: string) => ex.names.get(id) ?? "?";
   const action = (id: string) => ex.defs.actions[id]?.title ?? id;
-  const unit = (id: string) => ex.scenario.units.find((u) => u.id === id)?.title ?? id;
+  const unit = (id: string) => s.units[id]?.title ?? id;
   const counts: LeitungView["counts"] = { I: 0, II: 0, III: 0, IV: 0, EX: 0, offen: 0 };
   const start = initial(ex.scenario, ex.defs, ex.settings, ex.seed); // für den Trend: Soll-SK zu Beginn
   const patients = Object.entries(s.patients).map(([id, ps]) => {
@@ -278,10 +298,10 @@ export function leitungView(ex: Exercise, now: number): LeitungView {
 // Gemeinsame Grundlage für Live-Lage, Replay (F4) und CSV-Export (F6).
 export type TimelineEvent = { t: number; type: Event["type"]; text: string; patient: string | null; who: string | null; trupp: string | null };
 export function timeline(ex: Exercise, t: number, generated?: Event[]): TimelineEvent[] {
-  if (!generated) stateAt(ex, t, (generated = []));
+  const units = (generated ? stateAt(ex, t) : stateAt(ex, t, (generated = []))).units;
   const name = (id: string) => ex.names.get(id) ?? "?";
   const action = (id: string) => ex.defs.actions[id]?.title ?? id;
-  const unit = (id: string) => ex.scenario.units.find((u) => u.id === id)?.title ?? id;
+  const unit = (id: string) => units[id]?.title ?? id;
   const P = (p: string) => p.toUpperCase();
   const text = (e: Event): string => {
     switch (e.type) {
@@ -290,6 +310,8 @@ export function timeline(ex: Exercise, t: number, generated?: Event[]): Timeline
       case "start": return `${name(e.participant)}: ${action(e.action)} an ${P(e.patient)}`;
       case "end": return `${name(e.participant)}: Maßnahme beendet`;
       case "assist": return `${name(e.participant)} hilft an ${P(e.patient)} mit`;
+      case "request": return `${name(e.participant)} fordert ${REINFORCEMENT[e.kind].label} bei der Leitstelle an (Eintreffen ${mmss(e.t + REINFORCEMENT[e.kind].minutes)})`;
+      case "clear": return `${name(e.participant)} gibt ${P(e.patient)} zum Transport frei`;
       case "fetch": return `${name(e.participant)} holt ${e.item} von ${unit(e.from)}`;
       case "triage": return `${name(e.participant)} sichtet ${P(e.patient)}: ${e.sk}`;
       case "ask": return `${name(e.participant)} fragt ${P(e.patient)}: „${e.question}“`;
@@ -363,7 +385,7 @@ export function caseOfDay(lib: Library, now: number): string {
 // Ein Patient, alle Fahrzeuge des Busunfalls sofort vor Ort, kurze Phasen für 5–10 Minuten.
 export function soloHeader(lib: Library, code: string, now: number, seed: number): Header {
   const patient = caseOfDay(lib, now);
-  const units = lib.scenarios.busunfall.units.map((u) => ({ ...u, arrivesAt: 0 }));
+  const units = withCallsigns(lib.scenarios.busunfall.units.map((u) => ({ ...u, arrivesAt: 0 })));
   return {
     code, owner: SOLO, created: now, seed, trupps: [],
     scenario: { id: "solo", title: `Fall des Tages: ${lib.defs.patients[patient].title}`, patients: [patient], units },
@@ -403,3 +425,23 @@ export function observerView(ex: Exercise, now: number): ObserverView {
     notes: timeline(ex, t).filter((e) => e.type === "note").reverse().map((e) => ({ t: e.t, text: e.text })),
   };
 }
+
+// Funkrufnamen der Simulationsfahrzeuge: Wache/Kennzahl der Fahrzeugklasse/laufende Nummer, z. B. "70/83/1".
+// Kein Rufname kommt in einer Übung zweimal vor, auch nicht bei wiederholter Nachforderung.
+// Kennzahlen nach verbreitetem BOS-Schema; anpassen, wenn die eigene Leitstelle andere nutzt.
+export const CLASS_CODE: Record<string, number> = { ELW: 11, NAW: 81, NEF: 82, RTW: 83, KTW: 85 };
+export const vehicleClass = (title: string) => title.match(/^(ELW|NAW|NEF|RTW|KTW)\b/i)?.[1].toUpperCase() ?? null;
+export function callsign(cls: string, used: Set<string>, rnd: (min: number, max: number) => number = randomInt): string {
+  for (;;) {
+    const c = `${rnd(10, 100)}/${CLASS_CODE[cls] ?? 99}/${rnd(1, 4)}`;
+    if (!used.has(c)) return (used.add(c), c);
+  }
+}
+// Szenario-Fahrzeuge beim Anlegen einer Übung benennen: "RTW 1" → "RTW 70/83/1".
+export function withCallsigns<U extends { title: string }>(units: U[], used = new Set<string>()): U[] {
+  return units.map((u) => {
+    const cls = vehicleClass(u.title);
+    return cls ? { ...u, title: `${cls} ${callsign(cls, used)}` } : u;
+  });
+}
+export const usedCallsigns = (titles: string[]) => new Set(titles.flatMap((t) => t.match(/\d+\/\d+\/\d+/g) ?? []));

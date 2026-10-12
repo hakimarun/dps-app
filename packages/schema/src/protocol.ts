@@ -5,24 +5,26 @@ import { Algorithm, Place, Sk, type Findings } from "./index.ts";
 // Trupp-Funktionen. Einsatzeinheit (EE) im MANV (B3): Sicherungstrupp nimmt Patienten auf und gibt sie ab, der Arzt sichtet
 // bei der Aufnahme, Zelt- und Techniktrupp versorgen. Die älteren Funktionen Sichtung/Behandlung/Transport bleiben für
 // gespeicherte Übungen erhalten.
-export const Role = z.enum(["sichtung", "behandlung", "transport", "arzt", "sicherung", "zelt", "technik"]);
+export const Role = z.enum(["sichtung", "behandlung", "transport", "arzt", "sicherung", "zelt", "technik", "fuehrung"]);
 export type Role = z.infer<typeof Role>;
 export type Trupp = { code: string; name: string; role: Role; unit: string };
 export const EE_ROLES = ["sicherung", "arzt", "zelt", "technik"] as const;
 export const ROLE_LABEL: Record<Role, string> = {
   sichtung: "Sichtungstrupp", behandlung: "Behandlungstrupp", transport: "Transporttrupp",
-  arzt: "Arzt", sicherung: "Sicherungstrupp", zelt: "Zelttrupp", technik: "Techniktrupp",
+  arzt: "Arzt", sicherung: "Sicherungstrupp", zelt: "Zelttrupp", technik: "Techniktrupp", fuehrung: "Führung (OrgL, LNA, UA-Leiter)",
 };
 export const ROLE_TASK: Record<Role, string> = {
   sichtung: "nur Sichtung und lebensrettende Sofortmaßnahmen", behandlung: "Behandlung", transport: "Transport und Übergabe",
   arzt: "Sichtung bei der Aufnahme und ärztliche Versorgung", sicherung: "Patientenaufnahme und -abgabe, lebensrettende Sofortmaßnahmen",
   zelt: "Versorgung und Nachsichtung", technik: "Versorgung und Nachsichtung",
+  fuehrung: "Verstärkung bei der Leitstelle anfordern, Transportreihenfolge freigeben, alle Maßnahmen",
 };
 // Lebensrettende Sofortmaßnahmen: dürfen alle, auch Trupps ohne Versorgungsauftrag.
 export const SOFORT_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open", "recovery_position"];
 // Wer darf was? null = erlaubt, sonst der Grund für die Ablehnung. triaged: Patient ist schon gesichtet (Nachsichtung).
-export function roleRule(role: Role, what: "triage" | "admit" | "handover" | "treat", ctx: { triaged?: boolean; action?: string } = {}): string | null {
-  const ee = (EE_ROLES as readonly string[]).includes(role);
+export function roleRule(role: Role, what: "triage" | "admit" | "handover" | "treat" | "lead", ctx: { triaged?: boolean; action?: string } = {}): string | null {
+  if (what === "lead") return role === "fuehrung" ? null : "Verstärkung und Transportfreigabe macht die Führung";
+  const ee = (EE_ROLES as readonly string[]).includes(role) || role === "fuehrung";
   if (what === "treat") return (role === "sichtung" || role === "sicherung") && !SOFORT_ACTIONS.includes(ctx.action ?? "") ? `${ROLE_LABEL[role]}: nur lebensrettende Sofortmaßnahmen, versorgt wird von anderen Trupps` : null;
   if (what === "triage") return role === "sicherung" ? "Sichten macht der Arzt" : (role === "zelt" || role === "technik") && !ctx.triaged ? "Die Erstsichtung macht der Arzt, nachsichten dürft ihr" : null;
   if (what === "admit") return ee && role !== "sicherung" ? "Die Aufnahme macht der Sicherungstrupp" : null;
@@ -44,6 +46,8 @@ export const Intent = z.discriminatedUnion("type", [
   z.object({ type: z.literal("end") }),
   z.object({ type: z.literal("assist"), patient: z.string() }), // bei einer wartenden Zwei-Helfer-Maßnahme mithelfen (C7)
   z.object({ type: z.literal("fetch"), from: z.string().max(64), item: z.string().max(64) }), // Material von einem anderen Fahrzeug holen (C10)
+  z.object({ type: z.literal("request"), kind: z.enum(["rtw", "nef", "ktw"]) }), // Führung: Verstärkung nachfordern (B3)
+  z.object({ type: z.literal("clear"), patient: z.string() }), // Führung: Patient zum Transport freigeben (B3)
   z.object({ type: z.literal("triage"), patient: z.string(), sk: Sk }),
   z.object({ type: z.literal("admit"), patient: z.string(), place: Place }),
   // Patient befragen: freie Frage (KI) oder Thema aus der Auswahlliste (ohne KI).
@@ -193,6 +197,8 @@ export type View = {
   vehicles: { id: string; title: string; seats: number; arrived: boolean }[];
   messages: { t: number; text: string }[]; // Nachrichten der Leitung, neueste zuletzt
   stock: { id: string; title: string; inventory: Record<string, number> }[]; // andere Fahrzeuge vor Ort, zum Material holen (C10)
+  // nur für die Führung (B3): Lage ohne Soll-Werte und angeforderte Fahrzeuge
+  lage?: { patients: { id: string; triage: Sk | null; place: string; cleared: boolean; left: boolean }[]; vehicles: { title: string; arrivesAt: number; arrived: boolean; seats: number }[]; clearance: boolean } | null;
 };
 
 export type LeitungView = {

@@ -129,7 +129,7 @@ function Helfer({ t, server, code, onExit, solo }: { t: Theme; server: string; c
     if (conn.participant && conn.view && !conn.view.patient && !auto.current.scan) (auto.current.scan = true), send({ type: "scan", patient: solo.patient });
     if (conn.view?.patient?.left && conn.clock?.status === "running" && !auto.current.end) (auto.current.end = true), solo.onEnd();
   }, [conn.status, conn.participant, conn.view]);
-  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover" | "ask">(null);
+  const [sheet, setSheet] = useState<null | "actions" | "triage" | "scan" | "admit" | "handover" | "ask" | "lage">(null);
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
     const i = setInterval(() => setNow(Date.now()), 1000);
@@ -200,6 +200,14 @@ function Helfer({ t, server, code, onExit, solo }: { t: Theme; server: string; c
             {conn.queued > 0 && conn.participant ? ` · puffert ${conn.queued}` : ""}
           </Text>
         </View>
+      )}
+      {conn.view?.lage && conn.clock?.status !== "ended" && (
+        <View style={{ paddingHorizontal: 20, paddingBottom: 8 }}>
+          <Button t={t} strong label="Lage & Verstärkung" note="Führung: Fahrzeuge anfordern, Transporte freigeben" onPress={() => setSheet("lage")} />
+        </View>
+      )}
+      {sheet === "lage" && conn.view?.lage && (
+        <LageSheet t={t} lage={conn.view.lage} min={min} onRequest={(kind) => send({ type: "request", kind })} onClear={(patient) => send({ type: "clear", patient })} onClose={() => setSheet(null)} />
       )}
       {solo && w && conn.clock?.status === "running" && (
         <View style={{ paddingHorizontal: 20, paddingBottom: 8 }}>
@@ -699,5 +707,41 @@ function Go({ onDone }: { onDone: () => void }) {
         </View>
       </Stage>
     </View>
+  );
+}
+
+// B3: Führung (OrgL, LNA, UA-Leiter): Verstärkung bei der Leitstelle anfordern und entscheiden, wer zuerst abtransportiert wird.
+function LageSheet({ t, lage, min, onRequest, onClear, onClose }: {
+  t: Theme; lage: NonNullable<ViewData["lage"]>; min: number; onRequest: (kind: "rtw" | "nef" | "ktw") => void; onClear: (patient: string) => void; onClose: () => void;
+}) {
+  const waiting = lage.patients.filter((p) => !p.left);
+  return (
+    <Sheet t={t} title="Lage & Verstärkung" onClose={onClose}>
+      <Text style={{ color: t.text, fontWeight: "900", fontSize: 18 }}>Verstärkung bei der Leitstelle anfordern</Text>
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        {([["rtw", "RTW", "10 min"], ["nef", "NEF", "8 min"], ["ktw", "KTW", "15 min"]] as const).map(([kind, label, eta]) => (
+          <View key={kind} style={{ flex: 1 }}><Button t={t} label={label} note={`in ${eta}`} onPress={() => onRequest(kind)} /></View>
+        ))}
+      </View>
+      {lage.vehicles.map((v, i) => (
+        <Text key={i} style={{ color: v.arrived ? t.text : t.quiet }}>
+          {v.title} · {v.arrived ? `vor Ort${v.seats ? ` · ${v.seats} Platz frei` : ""}` : `kommt in ${clock(Math.max(0, v.arrivesAt - min) * 60000)}`}
+        </Text>
+      ))}
+      <Text style={{ color: t.text, fontWeight: "900", fontSize: 18, marginTop: 8 }}>Transportreihenfolge</Text>
+      <Text style={{ color: t.quiet }}>Freigegebene Patienten darf der Sicherungstrupp an ein Fahrzeug abgeben. Gib die dringendsten zuerst frei.</Text>
+      {waiting.map((p) => (
+        <View key={p.id} style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+          <View style={{ width: 10, alignSelf: "stretch", borderRadius: 5, backgroundColor: p.triage ? skColor(t, p.triage) : t.line }} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: t.text, fontWeight: "800" }}>{p.id.toUpperCase()} · {p.triage ? `SK ${p.triage}` : "nicht gesichtet"}</Text>
+            <Text style={{ color: t.quiet }}>{p.place}</Text>
+          </View>
+          {p.cleared ? <Text style={{ color: t.green, fontWeight: "800" }}>✓ freigegeben</Text>
+            : <View style={{ width: 130 }}><Button t={t} strong label="Freigeben" onPress={() => onClear(p.id)} /></View>}
+        </View>
+      ))}
+      {lage.patients.some((p) => p.left) && <Text style={{ color: t.quiet }}>Abtransportiert: {lage.patients.filter((p) => p.left).map((p) => p.id.toUpperCase()).join(", ")}</Text>}
+    </Sheet>
   );
 }

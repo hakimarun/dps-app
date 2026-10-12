@@ -170,7 +170,7 @@ function compute(ex: Exercise, T: number): Evaluation {
       ...(done.includes("pulse_oximetry") ? [] : ["SpO₂"]),
       ...P[id].scoring.critical.filter((c) => !c.actions.includes("handover") && !c.actions.some((a) => done.includes(a))).map((c) => c.actions.map(title).join(" oder ")),
     ];
-    handoverInfo.set(id, { t: r.t, vehicle: ex.scenario.units.find((u) => u.id === vehicle)?.title ?? vehicle, destination, missing });
+    handoverInfo.set(id, { t: r.t, vehicle: s.units[vehicle]?.title ?? vehicle, destination, missing });
     skill(who, "kommunikation", !missing.length);
     if (!missing.length) add(who, POINTS.handoverComplete, `Übergabe von ${id.toUpperCase()} vollständig`);
     else add(who, 0, undefined, [2, `Übergabe ${id.toUpperCase()} ohne: ${missing.join(", ")}`]);

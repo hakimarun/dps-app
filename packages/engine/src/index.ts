@@ -7,6 +7,13 @@ import type { Action, Algorithm, Findings, Patient, Phase, Place, Scenario, Sk }
 export type Settings = { algorithm: Algorithm; phaseMinutes: number; random: boolean; vitals?: "numbers" | "live" | "text" };
 export const defaultSettings: Settings = { algorithm: "mstart", phaseMinutes: 15, random: false };
 
+// Nachforderung über die Leitstelle (B3): Anfahrzeit, Transportplätze und Ausstattung je Fahrzeugtyp.
+export const REINFORCEMENT = {
+  rtw: { label: "RTW", minutes: 10, seats: 1, inventory: { tourniquet: 2, dressing: 4, wendl: 1, o2_mask: 2, needle: 1, iv_cannula: 4, infusion: 4, analgesic: 2, pelvic_binder: 1, splint: 1, rescue_blanket: 4, cervical_collar: 2, vacuum_mattress: 1, bvm: 1, chest_seal: 2, hemostatic: 2, burn_dressing: 2, glucose: 1, pacer_pads: 1 } },
+  nef: { label: "NEF", minutes: 8, seats: 0, inventory: { needle: 2, ett: 2, analgesic: 4, iv_cannula: 2, infusion: 2, o2_mask: 1, bvm: 1, chest_seal: 1, hemostatic: 1, glucose: 2, pacer_pads: 1 } },
+  ktw: { label: "KTW", minutes: 15, seats: 1, inventory: { dressing: 4, rescue_blanket: 4, o2_mask: 1, cervical_collar: 1 } },
+} as const satisfies Record<string, { label: string; minutes: number; seats: number; inventory: Record<string, number> }>;
+
 // Zeit t in Minuten seit Übungsstart.
 export type Event =
   | { t: number; type: "join"; participant: string; unit: string }
@@ -17,6 +24,9 @@ export type Event =
   | { t: number; type: "assist"; participant: string; patient: string }
   // Material von einem anderen Fahrzeug vor Ort in die eigene Einheit holen (C10), je ein Stück.
   | { t: number; type: "fetch"; participant: string; from: string; item: string }
+  // Führung (B3): Verstärkung bei der Leitstelle nachfordern (trifft nach der Anfahrzeit ein) und Patienten zum Transport freigeben.
+  | { t: number; type: "request"; participant: string; kind: keyof typeof REINFORCEMENT; unit: string; title: string }
+  | { t: number; type: "clear"; participant: string; patient: string }
   | { t: number; type: "triage"; participant: string; patient: string; sk: Sk }
   | { t: number; type: "admit"; participant: string; patient: string; place: Place }
   // Gespräch mit dem Patienten; ändert den Zustand nicht, wird für die Auswertung protokolliert.
@@ -40,6 +50,7 @@ export type PatientState = {
   triage: Sk | null;
   place: Place | "fundort" | "abtransport";
   left: boolean; // abtransportiert: läuft nicht weiter
+  cleared: boolean; // von der Führung zum Transport freigegeben (B3)
 };
 export type ParticipantState = { unit: string; patient: string | null; busy: Running | null };
 export type Defs = { patients: Record<string, Patient>; actions: Record<string, Action> };
@@ -50,7 +61,7 @@ export type State = {
   defs: Defs;
   patients: Record<string, PatientState>;
   participants: Record<string, ParticipantState>;
-  units: Record<string, { arrivesAt: number; seats: number; inventory: Record<string, number> }>;
+  units: Record<string, { title: string; arrivesAt: number; seats: number; inventory: Record<string, number> }>;
 };
 
 export function initial(scenario: Scenario, defs: Defs, settings: Settings = defaultSettings, seed = 1): State {
@@ -58,10 +69,10 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
   for (const id of scenario.patients) {
     const p = defs.patients[id];
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
-    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false };
+    patients[id] = { phase: p.start, phaseStart: 0, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false };
   }
   const units: State["units"] = {};
-  for (const u of scenario.units) units[u.id] = { arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
+  for (const u of scenario.units) units[u.id] = { title: u.title, arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
   return { t: 0, settings, rng: seed >>> 0, defs, patients, participants: {}, units };
 }
 
@@ -77,6 +88,9 @@ export function validate(s: State, e: Event): string | null {
   const h = s.participants[e.participant];
   if (!h) return "nicht beigetreten";
   if (e.type === "end") return h.busy?.until === null ? null : "keine dauerhafte Maßnahme aktiv";
+  // Führungsaufgaben gehen auch während einer Maßnahme und ohne gescannten Patienten.
+  if (e.type === "request") return REINFORCEMENT[e.kind] ? (s.units[e.unit] ? "Fahrzeug gibt es schon" : null) : "unbekannter Fahrzeugtyp";
+  if (e.type === "clear") return !s.patients[e.patient] ? "unbekannter Patient" : s.patients[e.patient].left ? "Patient ist bereits abtransportiert" : null;
   if (h.busy && !(e.type === "ask" && h.patient === e.patient)) return "Helfer ist beschäftigt"; // reden geht auch während einer Maßnahme
   if (e.type === "fetch") {
     const from = s.units[e.from];
@@ -167,6 +181,14 @@ export function apply(s: State, e: Event): State {
       s.units[e.vehicle].seats--;
       break;
     }
+    case "request": {
+      const r = REINFORCEMENT[e.kind];
+      s.units[e.unit] = { title: e.title, arrivesAt: e.t + r.minutes, seats: r.seats, inventory: { ...r.inventory } };
+      break;
+    }
+    case "clear":
+      s.patients[e.patient].cleared = true;
+      break;
     case "fetch": {
       const own = s.units[s.participants[e.participant].unit].inventory;
       s.units[e.from].inventory[e.item]--;

@@ -148,7 +148,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   }
   if ((m = route.match(/^GET \/print\/([A-Z0-9]{6})$/))) {
     const ex = exercises.get(m[1]);
-    return ex ? send(res, 200, await printPage(ex, imageUrl), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
+    return ex ? send(res, 200, await printPage(ex), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
   }
   if ((m = route.match(/^GET \/images\/([a-z0-9-]{1,64})\.png$/))) {
     if (!existsSync(imageFile(m[1]))) return send(res, 404, "kein Bild", "text/plain");

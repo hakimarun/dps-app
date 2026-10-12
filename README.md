@@ -97,7 +97,7 @@ Profilfakten; für den Pilot lieber Claude nutzen oder die Antworten stichproben
 Ganze Szenarien: In der Bibliothek unter „Szenarien“ entwirft die KI aus einer Idee Lage, Einsatzmittel und 1–15 Patienten; die Patienten
 entstehen danach einzeln im Hintergrund (lokal etwa eine Minute je Patient). „Patient dazugenerieren“ ergänzt jedes Szenario, auch den Busunfall.
 Patientenbilder (optional, nur macOS mit Apple Silicon): Aus dem Bildtext eines Falls zeichnet FLUX.2 Klein 4B (Apache 2.0) lokal ein
-Bild im Stil einer Lehrbuch-Illustration, etwa 40–60 s je Bild, bis zu 9 GB Arbeitsspeicher. Es erscheint auf dem Patientenzettel und in der App.
+Bild im Stil einer Lehrbuch-Illustration, etwa 40–60 s je Bild, bis zu 9 GB Arbeitsspeicher. Es erscheint nur in der App (Fallansicht und Helfer-Ansicht), nicht auf den Druckzetteln.
 Haltung und Umgebung gelingen gut, Verletzungsdetails oft nicht: Bilder vor der Freigabe ansehen, maßgeblich bleibt der Text.
 
 ```bash

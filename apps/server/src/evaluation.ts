@@ -1,13 +1,17 @@
 // Auswertung einer Übung aus dem Protokoll: Team-Sterne, Kennzahlen, Punkte, Abzeichen, Bericht je Helfer.
 // Punktewerte nach der Punktetabelle im Systementwurf (Startwerte, im Pilot kalibrieren).
 import type { Sk } from "@dps/schema";
-import type { Evaluation, HelperReport, Role, Team } from "@dps/schema/protocol";
+import { AXES, type Axis, type Evaluation, type HelperReport, type Role, type Skills, type Team } from "@dps/schema/protocol";
 import { phaseDef, targetSk, type Event } from "@dps/engine";
 import { minutes, released, roleOf, stateAt, truppOf, type Exercise, type Rec, SOLO, SOLO_MINUTES } from "./exercise.ts";
 
 const POINTS = { criticalTimely: 15, criticalLate: 5, triageCorrect: 10, triageCorrection: 8, overOne: 3, under: -10, harmful: -10, calm: 5, deadPatient: -5, handoverComplete: 5 };
 const RANK: Record<Sk, number> = { EX: 0, IV: 1, III: 2, II: 3, I: 4 };
 const SCARCE = ["tourniquet", "pelvic_binder", "needle", "wendl", "ett"];
+// Kritische Maßnahme → Achse des Kompetenzprofils, über die Gruppe im Maßnahmenkatalog.
+const axisOf = (actions: string[], A: Exercise["defs"]["actions"]): Axis | null =>
+  actions.some((a) => a === "recovery_position" || A[a]?.group === "Atemweg und Atmung") ? "atemweg"
+    : actions.some((a) => a === "pelvic_binder" || A[a]?.group === "Blutung und Kreislauf") ? "blutung" : null;
 const fmt = (min: number) => `${Math.floor(min)}:${String(Math.round((min % 1) * 60)).padStart(2, "0")}`;
 
 type Acc = { report: HelperReport; good: [number, string][]; improve: [number, string][]; patients: Set<string>; badges: Set<string>; scarce: { used: boolean; wasted: boolean } };
@@ -35,9 +39,14 @@ function compute(ex: Exercise, T: number): Evaluation {
   const acc = new Map<string, Acc>();
   for (const [id, h] of Object.entries(end.participants))
     acc.set(id, {
-      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [] },
+      report: { id, name: ex.names.get(id) ?? "?", unit: ex.scenario.units.find((u) => u.id === h.unit)?.title ?? h.unit, points: 0, badges: [], patients: 0, actions: 0, triages: 0, busyShare: 0, good: [], improve: [],
+        skills: Object.fromEntries(AXES.map((x) => [x, { ok: 0, total: 0 }])) as Skills },
       good: [], improve: [], patients: new Set(), badges: new Set(), scarce: { used: false, wasted: false },
     });
+  const skill = (who: string, axis: Axis, ok: boolean) => {
+    const s = acc.get(who)?.report.skills[axis];
+    if (s) (s.total++, ok && s.ok++);
+  };
   const add = (who: string, pts: number, good?: string, improve?: [number, string]) => {
     const a = acc.get(who);
     if (!a) return;
@@ -70,6 +79,8 @@ function compute(ex: Exercise, T: number): Evaluation {
       ]
         .filter((x) => x.at <= T)
         .sort((a, b) => a.at - b.at)[0];
+      const axis = axisOf(c.actions, A);
+      if (axis && (done || deadline <= T)) for (const [who, a] of acc) if (a.patients.has(id)) skill(who, axis, !!done && done.at <= deadline);
       if (done && done.at <= deadline) {
         critical.timely++;
         add(done.who, POINTS.criticalTimely, `${names} an ${id.toUpperCase()} rechtzeitig (${fmt(done.at)} min)`);
@@ -98,6 +109,7 @@ function compute(ex: Exercise, T: number): Evaluation {
     const result = sk === target ? "korrekt" : RANK[sk] > RANK[target] ? "übertriage" : "untertriage";
     if (!firstTriage.has(id)) firstTriage.set(id, { t: r.t, result });
     triageByRole[roleOf(ex, who)][result === "korrekt" ? "correct" : result === "übertriage" ? "over" : "under"]++;
+    skill(who, "sichtung", result === "korrekt");
     if (result === "korrekt" && prev && RANK[prev] < RANK[target]) {
       add(who, POINTS.triageCorrection, `${id.toUpperCase()} nachgesichtet und Untertriage korrigiert`);
       acc.get(who)?.badges.add("Scharfblick");
@@ -123,6 +135,7 @@ function compute(ex: Exercise, T: number): Evaluation {
     if (Object.keys(A[action].material).some((m) => SCARCE.includes(m))) {
       a.scarce.used = true;
       if (["III", "EX"].includes(targetSk(s, id))) a.scarce.wasted = true;
+      skill(who, "ressourcen", !["III", "EX"].includes(targetSk(s, id)));
     }
   }
 
@@ -135,6 +148,7 @@ function compute(ex: Exercise, T: number): Evaluation {
     asked.set(key, set);
     if (set.size >= 5) acc.get(r.event.participant)?.badges.add("Gute Frage");
   }
+  for (const [key, set] of asked) skill(key.split("/")[0], "kommunikation", set.size >= 3); // Anamnese mit mindestens 3 SAMPLER-Themen
 
   // Übergabe: Vollständigkeit und Transportreihenfolge.
   const handoverInfo = new Map<string, { t: number; vehicle: string; destination: string; missing: string[] }>();
@@ -150,6 +164,7 @@ function compute(ex: Exercise, T: number): Evaluation {
       ...P[id].scoring.critical.filter((c) => !c.actions.includes("handover") && !c.actions.some((a) => done.includes(a))).map((c) => c.actions.map(title).join(" oder ")),
     ];
     handoverInfo.set(id, { t: r.t, vehicle: ex.scenario.units.find((u) => u.id === vehicle)?.title ?? vehicle, destination, missing });
+    skill(who, "kommunikation", !missing.length);
     if (!missing.length) add(who, POINTS.handoverComplete, `Übergabe von ${id.toUpperCase()} vollständig`);
     else add(who, 0, undefined, [2, `Übergabe ${id.toUpperCase()} ohne: ${missing.join(", ")}`]);
     // Transportreihenfolge: kein dringenderer Patient mit Kontakt darf noch warten.
@@ -159,6 +174,7 @@ function compute(ex: Exercise, T: number): Evaluation {
       const contacted = recs.some((x) => x.t <= r.t && "patient" in x.event && x.event.patient === q);
       return q !== id && contacted && !qs.left && !phaseDef(s, q).dead && RANK[targetSk(s, q)] > RANK[tgt];
     });
+    skill(who, "ressourcen", !waiting);
     if (waiting) add(who, 0, undefined, [2, `${id.toUpperCase()} (Soll ${tgt}) vor ${waiting.toUpperCase()} (Soll ${targetSk(s, waiting)}) abtransportiert`]);
   }
 

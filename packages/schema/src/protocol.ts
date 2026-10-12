@@ -74,6 +74,11 @@ export type ClientMsg = z.infer<typeof ClientMsg>;
 export type Level = z.infer<typeof Level>;
 export type Status = "ready" | "running" | "paused" | "ended";
 
+// Kompetenzprofil (5 Achsen): je Achse, wie oft etwas richtig lief (ok) von allem Bewertbaren (total).
+export const AXES = ["sichtung", "blutung", "atemweg", "kommunikation", "ressourcen"] as const;
+export type Axis = (typeof AXES)[number];
+export type Skills = Record<Axis, { ok: number; total: number }>;
+
 export type HelperReport = {
   id: string;
   name: string;
@@ -86,6 +91,7 @@ export type HelperReport = {
   busyShare: number; // Anteil der Zeit in Maßnahmen, 0..1
   good: string[]; // höchstens 3
   improve: string[]; // höchstens 3, wichtigste zuerst
+  skills: Skills;
 };
 
 export type Team = { stars: 0 | 1 | 2 | 3; survived: number; eligible: number };

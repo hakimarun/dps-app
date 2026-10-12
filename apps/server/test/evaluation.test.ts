@@ -124,3 +124,25 @@ test("Übergabe: vollständig, unvollständig und Transportreihenfolge", () => {
   assert.equal(bo.points, 15 + 15 + 10 + 5); // Beckengurt, Übergabe rechtzeitig, Sichtung, Übergabe vollständig
   assert.equal(ev.patients.find((p) => p.id === "p04")!.handover?.vehicle, "RTW 2");
 });
+
+test("Kompetenzprofil: Achsen zählen Richtiges von Bewertbarem", () => {
+  const { ex, join, act } = exercise(["p01", "p04"]);
+  const anna = join("Anna");
+  const ben = join("Ben");
+  act(anna, 1, { type: "scan", patient: "p01" });
+  act(anna, 2, { type: "start", patient: "p01", action: "tourniquet" });
+  act(anna, 3, { type: "triage", patient: "p01", sk: "I" });
+  act(ben, 1, { type: "scan", patient: "p04" });
+  act(ben, 2, { type: "triage", patient: "p04", sk: "III" }); // Untertriage
+  act(ben, 5, { type: "triage", patient: "p04", sk: "II" });
+  control(ex, "end", 61 * MIN);
+  const ev = evaluate(ex, 61 * MIN);
+  const a = ev.helpers.find((h) => h.name === "Anna")!.skills;
+  const b = ev.helpers.find((h) => h.name === "Ben")!.skills;
+  assert.deepEqual(a.sichtung, { ok: 1, total: 1 });
+  assert.deepEqual(a.blutung, { ok: 1, total: 1 }); // Tourniquet rechtzeitig
+  assert.deepEqual(a.ressourcen, { ok: 1, total: 1 }); // knappes Material bei SK I
+  assert.deepEqual(a.kommunikation, { ok: 0, total: 0 }); // nichts zu bewerten
+  assert.deepEqual(b.sichtung, { ok: 1, total: 2 });
+  assert.deepEqual(b.blutung, { ok: 0, total: 1 }); // Beckengurt an P04 fehlte
+});

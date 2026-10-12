@@ -1,8 +1,8 @@
 {
-  "id": "p10", "version": 1, "title": "Offensichtlich tödliche Verletzung",
+  "id": "p10", "version": 2, "title": "Offensichtlich tödliche Verletzung",
   "picture": "Person unter dem umgekippten Bus mit Verletzungen, die mit dem Leben nicht vereinbar sind. Keine Atmung, keine Lebenszeichen.",
   "meta": {"category": "Trauma", "tags": ["Tod"], "difficulty": "einsteiger"},
-  "scoring": {"critical": [], "harmful": []},
+  "scoring": {"critical": [], "harmful": ["cpr"]},
   "base": { "walking": false, "lethalInjury": true, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false },
   "start": "1",
   "phases": { "1": { "dead": true } }

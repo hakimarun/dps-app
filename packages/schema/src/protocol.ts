@@ -132,7 +132,7 @@ export type LeitungView = {
   events: { t: number; text: string }[]; // neueste zuerst
 };
 
-export type ActionInfo = { id: string; title: string; minutes: number | null; material: Record<string, number> };
+export type ActionInfo = { id: string; title: string; minutes: number | null; material: Record<string, number>; group: string };
 
 export type ServerMsg =
   | {

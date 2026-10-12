@@ -1,10 +1,11 @@
 // Gemeinsame Bausteine: Farben (nur als Bedeutung), Knöpfe, Felder, Titel, Overlay.
-import type { ReactNode } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { AccessibilityInfo, Animated, Easing, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Sk } from "@dps/schema";
 
-export const light = { bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828", gold: "#B8860B" };
-export const dark = { bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350", gold: "#FFD54F" };
+// marke: warmes Rot (J1), nur in Lobby, Bibliothek und Auswertung – im Einsatz ist Rot der Sichtung vorbehalten.
+export const light = { bg: "#FFFFFF", text: "#111111", quiet: "#666666", line: "#E0E0E0", tint: "#F2F2F2", green: "#2E7D32", red: "#C62828", gold: "#B8860B", marke: "#C8202F" };
+export const dark = { bg: "#0B0B0B", text: "#F2F2F2", quiet: "#A0A0A0", line: "#2A2A2A", tint: "#1A1A1A", green: "#66BB6A", red: "#EF5350", gold: "#FFD54F", marke: "#E5484D" };
 export type Theme = typeof light;
 
 export const SK: Record<Sk, { label: string; light: string | null; dark: string | null }> = {
@@ -83,6 +84,73 @@ export function Badge({ t, label }: { t: Theme; label: string }) {
   return (
     <View style={{ borderWidth: 2, borderColor: t.gold, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 }}>
       <Text style={{ color: t.text, fontWeight: "600" }}>{label}</Text>
+    </View>
+  );
+}
+
+// J5: Systemeinstellung „Bewegung reduzieren“; alle Animationen fragen sie ab.
+export function useReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    AccessibilityInfo.isReduceMotionEnabled().then(setReduced, () => {});
+    const sub = AccessibilityInfo.addEventListener("reduceMotionChanged", setReduced);
+    return () => sub.remove();
+  }, []);
+  return reduced;
+}
+
+// Springt beim Erscheinen ein (Beitritt, Abzeichen, Stern). Ohne Bewegung: sofort sichtbar.
+// quick: höchstens 250 ms ohne Nachschwingen, für den Einsatzmodus (J6).
+export function Pop({ delay = 0, quick = false, children }: { delay?: number; quick?: boolean; children: ReactNode }) {
+  const reduced = useReducedMotion();
+  const v = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (reduced) return v.setValue(1);
+    const go = quick
+      ? Animated.timing(v, { toValue: 1, duration: 250, easing: Easing.out(Easing.back(1.5)), useNativeDriver: true })
+      : Animated.spring(v, { toValue: 1, friction: 5, tension: 140, useNativeDriver: true });
+    Animated.sequence([Animated.delay(delay), go]).start();
+  }, [reduced]);
+  return <Animated.View style={{ opacity: v.interpolate({ inputRange: [0, 0.3, 1], outputRange: [0, 1, 1] }), transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.4, 1] }) }] }}>{children}</Animated.View>;
+}
+
+// Zahl zählt hoch (Punkte in der Auswertung).
+export function useCountUp(target: number, ms = 1200, delay = 0) {
+  const reduced = useReducedMotion();
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (reduced) return setN(target);
+    let raf = 0;
+    const start = Date.now() + delay;
+    const step = () => {
+      const p = Math.min(1, Math.max(0, (Date.now() - start) / ms));
+      setN(Math.round(target * (1 - (1 - p) ** 3)));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [target, reduced]);
+  return n;
+}
+
+// Kurzes Aufleuchten bei geändertem Wert, höchstens 300 ms (J3/J6: Einsatzmodus bleibt ruhig).
+export function Flash({ t, value, children }: { t: Theme; value: unknown; children: ReactNode }) {
+  const reduced = useReducedMotion();
+  const v = useRef(new Animated.Value(0)).current;
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) return void (first.current = false);
+    v.setValue(1);
+    Animated.timing(v, { toValue: 0, duration: reduced ? 0 : 300, easing: Easing.out(Easing.quad), useNativeDriver: false }).start();
+  }, [JSON.stringify(value)]);
+  return <Animated.View style={{ borderRadius: 10, backgroundColor: v.interpolate({ inputRange: [0, 1], outputRange: ["transparent", t.tint] }) }}>{children}</Animated.View>;
+}
+
+// Eigenes Logo (J1): Wortmarke auf Markenrot, bewusst ohne Kreuz.
+export function Logo({ t, size = 56 }: { t: Theme; size?: number }) {
+  return (
+    <View accessibilityLabel="dPS" style={{ width: size * 1.6, height: size, borderRadius: size / 4, backgroundColor: t.marke, alignItems: "center", justifyContent: "center" }}>
+      <Text style={{ color: "#FFFFFF", fontSize: size * 0.45, fontWeight: "800", letterSpacing: 1 }}>dPS</Text>
     </View>
   );
 }

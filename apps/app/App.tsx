@@ -7,7 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Status, Topic, View as ViewData } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "./src/connection";
-import { Badge, Button, Chip, Field, SK, Sheet, Stars, Title, clock, dark, light, skColor, type Theme } from "./src/ui";
+import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
+import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, STAGE, Stage, Tile } from "./src/fun";
 import { Leitung } from "./src/leitung";
 
 const VITALS: [string, string, string?][] = [["AF", "rr"], ["HF", "hr"], ["RR", "bp"], ["SpO₂", "spo2", " %"], ["GCS", "gcs"], ["Rekap", "recap", " s"]];
@@ -18,6 +19,8 @@ const EXAM: Record<string, string> = {
 const MATERIAL: Record<string, string> = {
   tourniquet: "Tourniquet", dressing: "Verband", wendl: "Wendl-Tubus", o2_mask: "O₂-Maske", needle: "Punktionsnadel", ett: "Tubus",
   iv_cannula: "Venenkanüle", infusion: "Infusion", analgesic: "Analgetikum", pelvic_binder: "Beckengurt", splint: "Schiene", rescue_blanket: "Rettungsdecke",
+  cervical_collar: "HWS-Stütze", vacuum_mattress: "Vakuummatratze", bvm: "Beatmungsbeutel", chest_seal: "Chest Seal", hemostatic: "Hämostyptikum",
+  burn_dressing: "Brandwundenverband", glucose: "Glukose",
 };
 const SILENT = "(keine Reaktion)"; // so antwortet der Server, wenn der Patient nicht sprechen kann
 // Vorschläge nach SAMPLER als ganze Sätze; das Thema geht mit, damit es auch ohne KI eine Antwort gibt.
@@ -47,12 +50,15 @@ export default function App() {
     <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: 48 }}>
       <StatusBar style="auto" />
       {role === "helfer" ? <Helfer t={t} onExit={() => choose(null)} /> : role === "leitung" ? <Leitung t={t} onExit={() => choose(null)} /> : (
-        <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
-          <Title t={t}>dPS</Title>
-          <Text style={{ color: t.quiet }}>Dynamische Patientensimulation</Text>
-          <Button t={t} strong label="Ich übe (Helfer)" onPress={() => choose("helfer")} />
-          <Button t={t} label="Ich leite (Praxisanleiter)" onPress={() => choose("leitung")} />
-        </ScrollView>
+        <Stage color={FUN.red} style={{ marginTop: -48 }}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 24, paddingTop: 96, gap: 18, justifyContent: "center" }}>
+            <FlyIn><Breathe><Logo t={{ ...t, marke: FUN.deep }} size={80} /></Breathe></FlyIn>
+            <FlyIn delay={150}><Text style={{ color: "#FFFFFF", fontSize: 34, fontWeight: "900" }}>Dynamische Patientensimulation</Text></FlyIn>
+            <FlyIn delay={250}><Text style={{ color: "#FFFFFF", fontSize: 17, opacity: 0.9 }}>Übungen für Großschadenslagen im Rettungsdienst</Text></FlyIn>
+            <FlyIn delay={400}><FunButton big label="Ich übe (Helfer)" onPress={() => choose("helfer")} /></FlyIn>
+            <FlyIn delay={500}><FunButton label="Ich leite (Praxisanleiter)" color={FUN.purple} text="#FFFFFF" onPress={() => choose("leitung")} /></FlyIn>
+          </ScrollView>
+        </Stage>
       )}
     </View>
   );
@@ -78,11 +84,20 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
     prev.current = { busy, patient: v?.patient?.id ?? "", findings };
   }, [conn.view]);
 
+  // Übergang Lobby → Einsatz: einmal "Los geht's!".
+  const lastStatus = useRef(conn.clock?.status);
+  const [go, setGo] = useState(false);
+  useEffect(() => {
+    if (lastStatus.current === "ready" && conn.clock?.status === "running" && conn.participant) setGo(true);
+    lastStatus.current = conn.clock?.status;
+  }, [conn.clock?.status]);
+
   const w = conn.welcome;
   const min = exerciseMinutes(conn.clock, conn.offset, now);
   let body: ReactNode;
   if (!w) body = <Connect t={t} status={conn.status} error={conn.error} onConnect={connect} onExit={onExit} />;
   else if (conn.participant && conn.clock?.status === "ended") body = <Result t={t} result={conn.view?.result ?? null} />;
+  else if (conn.participant && conn.clock?.status === "ready") body = <Waiting t={t} name={conn.view?.me?.name ?? ""} trupp={conn.view?.me?.trupp ?? null} title={w.title} />;
   else if (!conn.participant)
     body = <Join t={t} units={w.units} trupp={w.trupp} online={conn.status === "online"} onJoin={(name, unit) => send({ type: "join", name, ...(unit ? { unit } : {}) })} />;
   else if (sheet === "scan" || !conn.view?.patient)
@@ -107,16 +122,20 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
       )}
       {conn.error && w && <Text style={{ color: t.red, paddingHorizontal: 20, paddingBottom: 8 }}>{conn.error}</Text>}
       {body}
+      {go && <Go onDone={() => setGo(false)} />}
       {sheet === "actions" && conn.view && w && (
         <Sheet t={t} title="Maßnahme" onClose={() => setSheet(null)}>
-          {w.actions.map((a) => {
+          {w.actions.flatMap((a, i) => {
             const missing = Object.entries(a.material).filter(([item, n]) => (conn.view!.inventory[item] ?? 0) < n);
             const disabled = !conn.view!.unitArrived || missing.length > 0;
             const note = !conn.view!.unitArrived ? "Einheit noch nicht da" : missing.length ? `kein ${MATERIAL[missing[0][0]] ?? missing[0][0]}` : a.minutes === null ? "dauerhaft" : a.minutes < 1 ? `${a.minutes * 60} s` : `${a.minutes} min`;
-            return (
+            // Katalog ist nach Gruppen sortiert: Überschrift, wenn eine neue Gruppe beginnt.
+            const head = a.group !== w.actions[i - 1]?.group ? [<Text key={`g-${a.group}`} style={{ color: t.quiet, fontWeight: "600", marginTop: i ? 8 : 0 }}>{a.group}</Text>] : [];
+            return [
+              ...head,
               <Button key={a.id} t={t} label={a.title} note={note} disabled={disabled}
-                onPress={() => (send({ type: "start", patient: conn.view!.patient!.id, action: a.id }), setSheet(null))} />
-            );
+                onPress={() => (send({ type: "start", patient: conn.view!.patient!.id, action: a.id }), setSheet(null))} />,
+            ];
           })}
         </Sheet>
       )}
@@ -151,12 +170,27 @@ function Helfer({ t, onExit }: { t: Theme; onExit: () => void }) {
 function Connect({ t, status, error, onConnect, onExit }: { t: Theme; status: string; error: string | null; onConnect: (server: string, code: string) => void; onExit: () => void }) {
   const [server, setServer] = useState(DEFAULT_SERVER);
   const [code, setCode] = useState("");
+  const [scanning, setScanning] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
   useEffect(() => {
     lastConnection().then((l) => l && (setServer(l.server), setCode(l.code)));
   }, []);
+  // QR-Code aus der Lobby: "dps:<CODE>"
+  const scanned = (raw: string) => {
+    const m = raw.trim().match(/^dps:([A-Z0-9]{6})$/i);
+    if (!m || !scanning) return;
+    setScanning(false);
+    setCode(m[1].toUpperCase());
+    onConnect(server.trim(), m[1].toUpperCase());
+  };
   return (
     <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
       <Title t={t}>Übung beitreten</Title>
+      {scanning && permission?.granted ? (
+        <CameraView style={{ height: 320, borderRadius: 16, overflow: "hidden" }} barcodeScannerSettings={{ barcodeTypes: ["qr"] }} onBarcodeScanned={(r) => scanned(r.data)} />
+      ) : (
+        <Button t={t} strong color={t.marke} label="QR-Code aus der Lobby scannen" onPress={() => (permission?.granted ? setScanning(true) : requestPermission().then((p) => p.granted && setScanning(true)))} />
+      )}
       <Field t={t} label="Server" value={server} onChange={setServer} />
       <Field t={t} label="Übungscode" value={code} onChange={(v) => setCode(v.toUpperCase())} />
       {error && <Text style={{ color: t.red }}>{error}</Text>}
@@ -228,15 +262,29 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
   const busy = v.me?.busy;
   const busyTitle = busy && (conn.welcome!.actions.find((a) => a.id === busy.action)?.title ?? busy.action);
   const exam = Object.entries((f.exam as Record<string, string>) ?? {});
+  // J3: Häkchen, wenn die eigene Maßnahme fertig ist (Vibration kommt aus Helfer).
+  const lastBusy = useRef<string | null>(null);
+  const [finished, setFinished] = useState<string | null>(null);
+  useEffect(() => {
+    if (lastBusy.current && !busyTitle) setFinished(lastBusy.current);
+    lastBusy.current = busyTitle || null;
+  }, [busyTitle]);
+  useEffect(() => {
+    if (!finished) return;
+    const i = setTimeout(() => setFinished(null), 2500);
+    return () => clearTimeout(i);
+  }, [finished]);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingBottom: 12 }}>
         <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
           <Title t={t}>{p.id.toUpperCase()}</Title>
           {p.triage && (
-            <View style={{ borderWidth: 2, borderColor: skColor(t, p.triage), borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 }}>
-              <Text style={{ color: t.text, fontWeight: "600" }}>SK {p.triage}</Text>
-            </View>
+            <Pop key={`${p.id}-${p.triage}`} quick>
+              <View style={{ borderWidth: 2, borderColor: skColor(t, p.triage), backgroundColor: `${skColor(t, p.triage)}2E`, borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4 }}>
+                <Text style={{ color: t.text, fontWeight: "600" }}>SK {p.triage}</Text>
+              </View>
+            </Pop>
           )}
         </View>
         <Text style={{ color: t.text, fontSize: 17, lineHeight: 24 }}>{p.picture}</Text>
@@ -244,11 +292,15 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         {p.left && <Text style={{ color: t.text, fontWeight: "600" }}>Abtransportiert. Scanne den nächsten Patienten.</Text>}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
           {VITALS.map(([label, k, unit]) => (
-            <View key={k} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10, padding: 10 }}>
-              <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
-              <Text style={{ color: f[k] === undefined ? t.quiet : t.text, fontSize: 22, fontWeight: "600" }}>
-                {f[k] === undefined ? "–" : `${f[k]}${unit ?? ""}`}
-              </Text>
+            <View key={`${p.id}-${k}`} style={{ width: "31%", borderWidth: 1, borderColor: t.line, borderRadius: 10 }}>
+              <Flash t={t} value={f[k]}>
+                <View style={{ padding: 10 }}>
+                  <Text style={{ color: t.quiet, fontSize: 12 }}>{label}</Text>
+                  <Text style={{ color: f[k] === undefined ? t.quiet : t.text, fontSize: 22, fontWeight: "600" }}>
+                    {f[k] === undefined ? "–" : `${f[k]}${unit ?? ""}`}
+                  </Text>
+                </View>
+              </Flash>
             </View>
           ))}
         </View>
@@ -261,6 +313,11 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
         ))}
       </ScrollView>
       <View style={{ padding: 20, gap: 10, borderTopWidth: 1, borderColor: t.line }}>
+        {finished && !busy && (
+          <Pop key={finished} quick>
+            <Text style={{ color: t.text, fontWeight: "600" }} accessibilityLiveRegion="polite">✓ {finished} fertig</Text>
+          </Pop>
+        )}
         {busy && (
           <View style={{ backgroundColor: t.tint, borderRadius: 10, padding: 12, gap: 8 }}>
             <Text style={{ color: t.text, fontWeight: "600" }}>
@@ -289,6 +346,7 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
 const n = (k: number, one: string, many: string) => `${k} ${k === 1 ? one : many}`;
 
 function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"]> | null }) {
+  const points = useCountUp(result?.me.points ?? 0, 1200, 1800);
   if (!result)
     return (
       <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
@@ -298,24 +356,37 @@ function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"
     );
   const { team, me } = result;
   const list = (items: string[]) => items.map((x, i) => <Text key={i} style={{ color: t.text }}>• {x}</Text>);
+  // J4: Sterne erscheinen nacheinander, Punkte zählen hoch, Abzeichen springen auf, „Nächstes Mal“ zuletzt.
+  const after = 1800 + 1200;
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, gap: 14 }}>
-      <Title t={t}>Übung beendet</Title>
-      <View style={{ borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 14, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-        <View>
-          <Text style={{ color: t.quiet }}>Team-Ergebnis</Text>
-          <Stars t={t} stars={team.stars} />
-        </View>
-        <View style={{ alignItems: "flex-end" }}>
-          <Text style={{ color: t.text, fontWeight: "600", fontSize: 17 }}>{team.survived} von {team.eligible}</Text>
-          <Text style={{ color: t.quiet }}>Patienten überlebt</Text>
-        </View>
+    <View style={{ flex: 1 }}>
+    <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 0, gap: 14 }}>
+      <View style={{ borderRadius: 24, overflow: "hidden", height: 300 }}>
+        <Stage color={STAGE}>
+          <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 8, padding: 16 }}>
+            <FlyIn from={-60}><Text style={{ color: "#FFFFFF", fontSize: 26, fontWeight: "900" }}>Übung beendet</Text></FlyIn>
+            <View style={{ flexDirection: "row", gap: 6 }} accessibilityLabel={`${team.stars} von 3 Sternen`}>
+              {[0, 1, 2].map((i) => (
+                <FlyIn key={i} delay={300 + i * 450} from={-120} spin={i % 2 ? 160 : -160}>
+                  <Text style={{ color: i < team.stars ? "#FFD54F" : "rgba(255,255,255,0.3)", fontSize: 52 }}>★</Text>
+                </FlyIn>
+              ))}
+            </View>
+            <Text style={{ color: "#FFFFFF", fontWeight: "700" }}>{team.survived} von {team.eligible} Patienten überlebt</Text>
+            <FlyIn delay={1600}>
+              <View style={{ backgroundColor: "#FFFFFF", borderRadius: 16, paddingHorizontal: 22, paddingVertical: 8, alignItems: "center" }}>
+                <Text style={{ color: FUN.purple, fontSize: 34, fontWeight: "900" }} accessibilityLabel={`${me.points} Punkte`}>{points >= 0 ? "+" : ""}{points}</Text>
+                <Text style={{ color: "#333", fontWeight: "700" }}>Punkte · nur für dich</Text>
+              </View>
+            </FlyIn>
+          </View>
+        </Stage>
       </View>
-      <View>
-        <Text style={{ color: t.text, fontSize: 28, fontWeight: "600" }}>{me.points >= 0 ? "+" : ""}{me.points} Punkte</Text>
-        <Text style={{ color: t.quiet }}>nur für dich sichtbar</Text>
-      </View>
-      {me.badges.length > 0 && <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>{me.badges.map((b) => <Badge key={b} t={t} label={b} />)}</View>}
+      {me.badges.length > 0 && (
+        <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
+          {me.badges.map((b, i) => <FlyIn key={b} delay={after + i * 350} spin={i % 2 ? 30 : -30} from={40}><Tile i={i} label={`🏅 ${b}`} /></FlyIn>)}
+        </View>
+      )}
       {me.good.length > 0 && (
         <View style={{ gap: 4 }}>
           <Text style={{ color: t.text, fontWeight: "600" }}>Gut gelaufen</Text>
@@ -323,15 +394,19 @@ function Result({ t, result }: { t: Theme; result: NonNullable<ViewData["result"
         </View>
       )}
       {me.improve.length > 0 && (
-        <View style={{ gap: 4, backgroundColor: t.tint, borderRadius: 12, padding: 14 }}>
-          <Text style={{ color: t.text, fontWeight: "600" }}>Nächstes Mal</Text>
-          {list(me.improve)}
-        </View>
+        <Pop delay={after + me.badges.length * 350 + 300}>
+          <View style={{ gap: 4, backgroundColor: t.tint, borderRadius: 12, padding: 14 }}>
+            <Text style={{ color: t.text, fontWeight: "600" }}>Nächstes Mal</Text>
+            {list(me.improve)}
+          </View>
+        </Pop>
       )}
       <Text style={{ color: t.quiet }}>
         {n(me.patients, "Patient", "Patienten")} · {n(me.actions, "Maßnahme", "Maßnahmen")} · {n(me.triages, "Sichtung", "Sichtungen")} · {Math.round(me.busyShare * 100)} % der Zeit in Maßnahmen
       </Text>
     </ScrollView>
+    {team.stars >= 2 && <Confetti delay={1700} />}
+    </View>
   );
 }
 
@@ -434,6 +509,39 @@ function Typing({ t }: { t: Theme }) {
         <Animated.View key={i} style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: t.quiet,
           opacity: a.interpolate({ inputRange: [i, i + 0.5, i + 1, 3], outputRange: [0.3, 1, 0.3, 0.3], extrapolate: "clamp" }) }} />
       ))}
+    </View>
+  );
+}
+
+// J2 auf dem Handy: nach dem Beitritt bis zum Start.
+function Waiting({ name, trupp, title }: { t: Theme; name: string; trupp: string | null; title: string }) {
+  return (
+    <Stage color={STAGE} style={{ margin: 12, marginTop: 0, borderRadius: 24 }}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 24, gap: 18 }}>
+        <FlyIn><Text style={{ color: "#FFFFFF", fontSize: 32, fontWeight: "900", textAlign: "center" }}>Du bist dabei!</Text></FlyIn>
+        <FlyIn delay={250} spin={-20}><Breathe amount={0.06}><Tile i={1} label={name} big /></Breathe></FlyIn>
+        {trupp && <FlyIn delay={400}><Text style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "800" }}>{trupp}</Text></FlyIn>}
+        <Text style={{ color: "#FFFFFF", textAlign: "center", opacity: 0.9 }}>{title}</Text>
+        <Dots />
+        <Text style={{ color: "#FFFFFF", textAlign: "center", opacity: 0.85 }}>Gleich geht's los – warte auf den Start durch die Übungsleitung.</Text>
+      </View>
+    </Stage>
+  );
+}
+
+// Beim Start einmal "Los geht's!", danach der ruhige Einsatzmodus (J6).
+function Go({ onDone }: { onDone: () => void }) {
+  useEffect(() => {
+    const i = setTimeout(onDone, 1400);
+    return () => clearTimeout(i);
+  }, []);
+  return (
+    <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
+      <Stage color={FUN.green}>
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} accessibilityLiveRegion="assertive">
+          <FlyIn spin={-15}><Text style={{ color: "#FFFFFF", fontSize: 64, fontWeight: "900" }}>Los geht's!</Text></FlyIn>
+        </View>
+      </Stage>
     </View>
   );
 }

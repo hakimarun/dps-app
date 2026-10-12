@@ -8,6 +8,7 @@ import { randomInt } from "node:crypto";
 import { parseArgs } from "node:util";
 import { WebSocketServer, type WebSocket } from "ws";
 import nodemailer from "nodemailer";
+import QRCode from "qrcode";
 import { z } from "zod";
 import { ApproveReq, ClientMsg, ControlReq, CreateExerciseReq, GenerateReq, LoginReq, ScenarioGenReq, VerifyReq, type Level, type Role, type ServerMsg, type Trupp } from "@dps/schema/protocol";
 import { Patient, type Scenario } from "@dps/schema";
@@ -117,6 +118,13 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   if ((m = route.match(/^GET \/print\/([A-Z0-9]{6})$/))) {
     const ex = exercises.get(m[1]);
     return ex ? send(res, 200, await printPage(ex), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
+  }
+  // Lobby (J2): QR-Code zum Beitreten, als PNG, damit ihn die App auf allen Plattformen anzeigen kann.
+  if ((m = route.match(/^GET \/qr\/([A-Z0-9]{6})\.png$/))) {
+    if (!resolve(m[1])) return send(res, 404, "unbekannte Übung", "text/plain");
+    const png = await QRCode.toBuffer(`dps:${m[1]}`, { width: 600, margin: 1, errorCorrectionLevel: "M" });
+    res.writeHead(200, { "content-type": "image/png", "cache-control": "max-age=3600" });
+    return res.end(png);
   }
   if (route === "POST /api/login") {
     const { email } = LoginReq.parse(await body(req));
@@ -281,7 +289,7 @@ function onMessage(ws: WebSocket, raw: string) {
       out(ws, {
         type: "welcome", title: ex.scenario.title, participant: c.participant,
         units: ex.scenario.units.map((u) => ({ id: u.id, title: u.title })),
-        actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material })),
+        actions: allowedActions(ex, role).map((a) => ({ id: a.id, title: a.title, minutes: a.minutes, material: a.material, group: a.group })),
         trupp: trupp && { name: trupp.name, role: trupp.role, unit: ex.scenario.units.find((u) => u.id === trupp.unit)?.title ?? trupp.unit },
         ai: !!dialogAi,
       });

@@ -49,7 +49,7 @@ export const truppOf = (ex: Exercise, participant: string) => ex.trupps!.find((t
 export const roleOf = (ex: Exercise, participant: string): Role => truppOf(ex, participant)?.role ?? "behandlung";
 
 // Sichtungstrupps: nur Sichtung und lebensrettende Sofortmaßnahmen (Blutstillung, Atemweg freimachen).
-const SICHTUNG_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open"];
+const SICHTUNG_ACTIONS = ["tourniquet", "pressure_dressing", "airway_open", "recovery_position"];
 export const allowedActions = (ex: Exercise, role: Role) =>
   Object.values(ex.defs.actions).filter((a) => role !== "sichtung" || SICHTUNG_ACTIONS.includes(a.id));
 

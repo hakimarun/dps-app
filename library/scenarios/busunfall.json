@@ -30,7 +30,14 @@
         "pelvic_binder": 1,
         "splint": 1,
         "rescue_blanket": 4,
-        "ett": 0
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1
       },
       "seats": 1
     },
@@ -44,7 +51,11 @@
         "analgesic": 4,
         "iv_cannula": 2,
         "infusion": 2,
-        "o2_mask": 1
+        "o2_mask": 1,
+        "bvm": 1,
+        "chest_seal": 1,
+        "hemostatic": 1,
+        "glucose": 2
       },
       "seats": 0
     },
@@ -65,7 +76,14 @@
         "pelvic_binder": 1,
         "splint": 1,
         "rescue_blanket": 4,
-        "ett": 0
+        "ett": 0,
+        "cervical_collar": 2,
+        "vacuum_mattress": 1,
+        "bvm": 1,
+        "chest_seal": 2,
+        "hemostatic": 2,
+        "burn_dressing": 2,
+        "glucose": 1
       }
     },
     {
@@ -76,7 +94,10 @@
       "inventory": {
         "dressing": 4,
         "o2_mask": 1,
-        "rescue_blanket": 4
+        "rescue_blanket": 4,
+        "cervical_collar": 1,
+        "bvm": 1,
+        "burn_dressing": 1
       }
     }
   ]

@@ -1,12 +1,13 @@
 // Praxisanleiter (Meilenstein 3): Anmeldung per E-Mail-Code, Bibliothek mit eigener Freigabe,
 // Übung anlegen, QR-Zettel, Start/Pause/Ende und Live-Lage.
-import { useEffect, useState } from "react";
-import { Linking, Pressable, ScrollView, Text, View } from "react-native";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { Animated, Easing, Image, Linking, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { Sk } from "@dps/schema";
 import type { Evaluation, Level, LeitungView, ServerMsg, Status } from "@dps/schema/protocol";
 import { DEFAULT_SERVER, exerciseMinutes } from "./connection";
-import { Badge, Button, Chip, Field, Stars, Title, clock, skColor, type Theme } from "./ui";
+import { Badge, Button, Chip, Field, Logo, Stars, Title, clock, skColor, useCountUp, useReducedMotion, type Theme } from "./ui";
+import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, Rise, STAGE, Stage, TILE, Tile, Wiggle } from "./fun";
 import { api, httpBase, useLibrary, type Session } from "./api";
 import { LibraryScreen } from "./library";
 
@@ -184,7 +185,14 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   }, []);
   const v = w.view;
   const st = w.clock?.status ?? v?.status ?? "ready";
+  const [counting, setCounting] = useState(false);
+  const [show, setShow] = useState<Evaluation | null>(null);
   const ctl = (type: "start" | "pause" | "resume" | "end") => api(session, `/api/exercises/${code}/control`, { type }).catch((e: Error) => setError(e.message));
+  // J2: Vor dem Start die Lobby (auch für den Beamer), Start mit Countdown 3-2-1.
+  if (show) return <Show t={t} ev={show} onClose={() => setShow(null)} />;
+  if (counting) return <Countdown t={t} onDone={() => (setCounting(false), ctl("start"))} />;
+  if (st === "ready")
+    return <Lobby t={t} session={session} code={code} view={v} error={w.error ?? error} onStart={() => setCounting(true)} onBack={onBack} onEnd={() => ctl("end")} />;
   const skCell = (k: Sk | "offen") => (
     <View key={k} style={{ flex: 1, borderWidth: 2, borderColor: k === "offen" ? t.line : skColor(t, k), borderRadius: 8, padding: 6, alignItems: "center" }}>
       <Text style={{ color: t.text, fontWeight: "600" }}>{k} {v?.counts[k] ?? 0}</Text>
@@ -199,7 +207,7 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
       </View>
       <Text style={{ color: t.quiet }}>{v?.title ?? "verbinde …"}</Text>
       {(w.error || error) && <Text style={{ color: t.red }}>{w.error ?? error}</Text>}
-      {st === "ended" && <EvaluationPanel t={t} session={session} code={code} />}
+      {st === "ended" && <EvaluationPanel t={t} session={session} code={code} onShow={setShow} />}
       <View style={{ flexDirection: "row", gap: 6 }}>{(["I", "II", "III", "EX", "offen"] as const).map(skCell)}</View>
       {v?.patients.map((p) => (
         <View key={p.id} style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
@@ -225,7 +233,6 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
       <Text style={{ color: t.text, fontWeight: "600", marginTop: 8 }}>Ereignisse</Text>
       {v?.events.slice(0, 15).map((e, i) => <Text key={i} style={{ color: t.quiet }}>{clock(e.t * 60000)} {e.text}</Text>)}
       <View style={{ gap: 10, marginTop: 8 }}>
-        {st === "ready" && <Button t={t} strong label="Übung starten" onPress={() => ctl("start")} />}
         {st === "running" && <Button t={t} strong label="Pausieren" onPress={() => ctl("pause")} />}
         {st === "paused" && <Button t={t} strong label="Fortsetzen" onPress={() => ctl("resume")} />}
         <Button t={t} label="QR-Zettel drucken" onPress={() => Linking.openURL(`${httpBase(session.server)}/print/${code}`)} />
@@ -235,9 +242,171 @@ function ExerciseScreen({ t, session, code, onBack }: { t: Theme; session: Sessi
   );
 }
 
+const WHITE = "#FFFFFF";
+
+// J2: Lobby wie bei Kahoot – bewegter Hintergrund, großer Code und QR-Code, Beitritte als bunte Kacheln.
+function Lobby({ t, session, code, view, error, onStart, onBack, onEnd }: {
+  t: Theme; session: Session; code: string; view: LeitungView | null; error: string | null; onStart: () => void; onBack: () => void; onEnd: () => void;
+}) {
+  const helpers = view?.helpers ?? [];
+  const groups = [
+    ...(view?.trupps ?? []).map((tr) => ({ key: tr.code, title: tr.name, code: tr.code, names: tr.members })),
+    { key: "ohne", title: view?.trupps.length ? "Ohne Trupp" : "Beigetreten", code: null, names: helpers.filter((h) => !h.trupp).map((h) => h.name) },
+  ].filter((g) => g.code || g.names.length);
+  let n = 0; // fortlaufende Farbe über alle Kacheln
+  return (
+    <Stage color={STAGE}>
+      <ScrollView contentContainerStyle={{ padding: 20, gap: 18, alignItems: "center" }}>
+        <Text style={{ color: WHITE, fontWeight: "700", alignSelf: "flex-start" }} accessibilityRole="button" onPress={onBack}>‹ Übungen</Text>
+        <FlyIn><Logo t={t} size={44} /></FlyIn>
+        <Text style={{ color: WHITE, fontSize: 18, fontWeight: "700", textAlign: "center" }}>{view?.title ?? "verbinde …"}</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 18, alignItems: "center", justifyContent: "center" }}>
+          <Breathe>
+            <View style={{ backgroundColor: WHITE, borderRadius: 18, paddingHorizontal: 22, paddingVertical: 12, alignItems: "center" }}>
+              <Text style={{ color: "#333", fontWeight: "700" }}>Übungscode</Text>
+              <Text accessibilityLabel={`Übungscode ${code.split("").join(" ")}`} style={{ color: "#111", fontSize: 64, fontWeight: "900", letterSpacing: 6 }}>{code}</Text>
+            </View>
+          </Breathe>
+          <View style={{ backgroundColor: WHITE, borderRadius: 18, padding: 10 }}>
+            <Image source={{ uri: `${httpBase(session.server)}/qr/${code}.png` }} style={{ width: 180, height: 180 }} accessibilityLabel="QR-Code zum Beitreten" />
+          </View>
+        </View>
+        <Text style={{ color: WHITE, opacity: 0.9 }}>dPS-App öffnen → „Ich übe“ → Code eingeben oder QR-Code scannen</Text>
+        {error && <Text style={{ color: WHITE, fontWeight: "700" }}>{error}</Text>}
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
+          <Wiggle trigger={helpers.length}>
+            <View style={{ backgroundColor: "rgba(0,0,0,0.3)", borderRadius: 40, minWidth: 64, height: 64, alignItems: "center", justifyContent: "center", paddingHorizontal: 12 }}>
+              <Text style={{ color: WHITE, fontSize: 32, fontWeight: "900" }}>{helpers.length}</Text>
+            </View>
+          </Wiggle>
+          <Text style={{ color: WHITE, fontSize: 22, fontWeight: "800" }}>{helpers.length === 0 ? "Warte auf Helfer" : "Helfer dabei"}</Text>
+          {helpers.length === 0 && <Dots />}
+        </View>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 14, justifyContent: "center", alignSelf: "stretch" }}>
+          {groups.map((g) => (
+            <View key={g.key} style={{ minWidth: 240, flexGrow: 1, maxWidth: 460, backgroundColor: "rgba(0,0,0,0.22)", borderRadius: 18, padding: 14, gap: 10 }}>
+              <Text style={{ color: WHITE, fontWeight: "900", fontSize: 16 }}>{g.title}{g.code ? `  ·  ${g.code}` : ""}</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+                {g.names.map((name, i) => {
+                  const k = n++;
+                  return <FlyIn key={`${name}-${i}`} spin={k % 2 ? 25 : -25} from={60}><Tile i={k} label={name} /></FlyIn>;
+                })}
+                {g.names.length === 0 && <Text style={{ color: WHITE, opacity: 0.7 }}>noch niemand</Text>}
+              </View>
+            </View>
+          ))}
+        </View>
+        <View style={{ alignSelf: "stretch", gap: 14, maxWidth: 480, width: "100%", marginTop: 6 }}>
+          <FunButton big label="Übung starten" text={FUN.purple} onPress={onStart} />
+          <Text style={{ color: WHITE, textAlign: "center", textDecorationLine: "underline", fontWeight: "700" }} accessibilityRole="link"
+            onPress={() => Linking.openURL(`${httpBase(session.server)}/print/${code}`)}>QR-Zettel drucken</Text>
+          <Text style={{ color: WHITE, textAlign: "center", opacity: 0.75 }} accessibilityRole="button" onPress={onEnd}>Übung abbrechen</Text>
+        </View>
+      </ScrollView>
+    </Stage>
+  );
+}
+
+// Countdown 3-2-1-Los: jede Zahl in eigener Farbe, zoomt mit Drehung herein, ein Ring platzt nach außen.
+function Countdown({ onDone }: { t: Theme; onDone: () => void }) {
+  const [n, setN] = useState(3);
+  useEffect(() => {
+    const i = setTimeout(() => (n > 0 ? setN(n - 1) : onDone()), n > 0 ? 1000 : 700);
+    return () => clearTimeout(i);
+  }, [n]);
+  const color = [FUN.green, FUN.gold, FUN.blue, FUN.red][n];
+  return (
+    <Stage color={color}>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} accessibilityLiveRegion="assertive">
+        <Burst key={`b${n}`} />
+        <Zoom key={n}><Text style={{ color: WHITE, fontSize: n ? 200 : 120, fontWeight: "900" }}>{n || "Los!"}</Text></Zoom>
+      </View>
+    </Stage>
+  );
+}
+
+// Zahl kommt groß und gedreht herein und rastet ein.
+function Zoom({ children }: { children: ReactNode }) {
+  const reduced = useReducedMotion();
+  const v = useRef(new Animated.Value(reduced ? 1 : 0)).current;
+  useEffect(() => void (!reduced && Animated.spring(v, { toValue: 1, friction: 4, tension: 120, useNativeDriver: true }).start()), []);
+  return (
+    <Animated.View style={{ transform: [
+      { scale: v.interpolate({ inputRange: [0, 1], outputRange: [3, 1] }) },
+      { rotate: v.interpolate({ inputRange: [0, 1], outputRange: ["-30deg", "0deg"] }) },
+    ], opacity: v.interpolate({ inputRange: [0, 0.3, 1], outputRange: [0, 1, 1] }) }}>{children}</Animated.View>
+  );
+}
+
+// Ring, der sich ausdehnt und verblasst.
+function Burst() {
+  const reduced = useReducedMotion();
+  const v = useRef(new Animated.Value(0)).current;
+  useEffect(() => void (!reduced && Animated.timing(v, { toValue: 1, duration: 900, easing: Easing.out(Easing.quad), useNativeDriver: true }).start()), []);
+  if (reduced) return null;
+  return (
+    <Animated.View pointerEvents="none" style={{ position: "absolute", width: 260, height: 260, borderRadius: 130, borderWidth: 14, borderColor: WHITE,
+      opacity: v.interpolate({ inputRange: [0, 1], outputRange: [0.8, 0] }), transform: [{ scale: v.interpolate({ inputRange: [0, 1], outputRange: [0.4, 2.4] }) }] }} />
+  );
+}
+
+// J4: Auswertung als Show für den Beamer: Zahl zählt hoch, Sterne fliegen ein, Podium wächst, Konfetti.
+// Einzelne Helfer bleiben privat.
+function Show({ ev, onClose }: { t: Theme; ev: Evaluation; onClose: () => void }) {
+  const survived = useCountUp(ev.team.survived, 1400, 600);
+  const podium = [...ev.trupps].sort((a, b) => b.points - a.points).slice(0, 3);
+  const starAt = (i: number) => 2200 + i * 650;
+  const podiumAt = (place: number) => starAt(3) + 400 + (3 - place) * 1000; // Platz 3 zuerst
+  const order = [1, 0, 2].filter((i) => podium[i]); // Mitte = Platz 1
+  const end = podium.length ? podiumAt(1) + 600 : starAt(3);
+  return (
+    <Stage color={STAGE}>
+      <ScrollView contentContainerStyle={{ padding: 24, gap: 22, alignItems: "center" }}>
+        <FlyIn from={-80}><Text style={{ color: WHITE, fontSize: 36, fontWeight: "900" }}>Auswertung</Text></FlyIn>
+        <FlyIn delay={300}>
+          <View style={{ backgroundColor: WHITE, borderRadius: 18, paddingHorizontal: 24, paddingVertical: 12, alignItems: "center" }}>
+            <Text style={{ color: FUN.purple, fontSize: 56, fontWeight: "900" }}>{survived} / {ev.team.eligible}</Text>
+            <Text style={{ color: "#333", fontWeight: "700" }}>Patienten überlebt</Text>
+          </View>
+        </FlyIn>
+        <View style={{ flexDirection: "row", gap: 14 }} accessibilityLabel={`${ev.team.stars} von 3 Sternen`}>
+          {[0, 1, 2].map((i) => (
+            <FlyIn key={i} delay={starAt(i)} from={-200} spin={i % 2 ? 180 : -180}>
+              <Text style={{ fontSize: 84, color: i < ev.team.stars ? "#FFD54F" : "rgba(255,255,255,0.25)" }}>★</Text>
+            </FlyIn>
+          ))}
+        </View>
+        {podium.length > 0 && (
+          <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 14 }}>
+            {order.map((i) => (
+              <View key={podium[i].code} style={{ alignItems: "center", width: 150, gap: 8 }}>
+                <FlyIn delay={podiumAt(i + 1) + 500} from={-40}>
+                  {i === 0 ? <Breathe amount={0.08} ms={900}><Text style={{ fontSize: 34 }}>👑</Text></Breathe> : <Text style={{ fontSize: 34, opacity: 0 }}>·</Text>}
+                  <Text style={{ color: WHITE, fontWeight: "900", textAlign: "center", fontSize: 16 }}>{podium[i].name}</Text>
+                  <Text style={{ color: WHITE, textAlign: "center" }}>{podium[i].points} Punkte</Text>
+                </FlyIn>
+                <Rise height={[180, 130, 90][i]} delay={podiumAt(i + 1)} color={TILE[[2, 1, 0][i]]}>
+                  <Text style={{ color: WHITE, fontSize: 44, fontWeight: "900" }}>{i + 1}</Text>
+                </Rise>
+              </View>
+            ))}
+          </View>
+        )}
+        <FlyIn delay={end + 400}>
+          <Text style={{ color: WHITE, textAlign: "center", fontWeight: "700" }}>
+            Kritische Maßnahmen: {ev.critical.timely} rechtzeitig · Erste Sichtung: {ev.triage.correct} korrekt, {ev.triage.under} Untertriage
+          </Text>
+        </FlyIn>
+        <FlyIn delay={end + 800}><FunButton label="Schließen" text={FUN.purple} onPress={onClose} /></FlyIn>
+      </ScrollView>
+      {ev.team.stars >= 1 && <Confetti delay={end} count={90} />}
+    </Stage>
+  );
+}
+
 const OUTCOME_RED = new Set(["verstorben"]);
 
-function EvaluationPanel({ t, session, code }: { t: Theme; session: Session; code: string }) {
+function EvaluationPanel({ t, session, code, onShow }: { t: Theme; session: Session; code: string; onShow: (ev: Evaluation) => void }) {
   const [ev, setEv] = useState<Evaluation | null>(null);
   const [error, setError] = useState<string | null>(null);
   const load = () => void api<Evaluation>(session, `/api/exercises/${code}/evaluation`).then(setEv, (e: Error) => setError(e.message));
@@ -246,6 +415,7 @@ function EvaluationPanel({ t, session, code }: { t: Theme; session: Session; cod
   const m = (x: number | null) => (x === null ? "–" : clock(x * 60000));
   return (
     <View style={{ gap: 10, borderWidth: 1, borderColor: t.line, borderRadius: 12, padding: 14 }}>
+      <FunButton label="Auswertung zeigen (Beamer)" color={FUN.purple} text="#FFFFFF" onPress={() => onShow(ev)} />
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
         <Text style={{ color: t.text, fontWeight: "700", fontSize: 20 }}>Auswertung</Text>
         <Stars t={t} stars={ev.team.stars} />

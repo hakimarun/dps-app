@@ -94,6 +94,7 @@ export const Action = z.object({
   material: z.record(z.string(), z.number().int().positive()).default({}),
   reveals: z.array(z.string()).default([]), // Befunde, die erst diese Maßnahme zeigt, z. B. "bp", "exam.pelvis"
   failChance: z.number().min(0).max(1).default(0), // nur mit Zufallselementen
+  group: z.string().default("Sonstiges"), // Abschnitt in der Maßnahmenliste der App
 });
 
 export const Scenario = z.object({

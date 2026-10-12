@@ -2,7 +2,7 @@
 
 Digitale dynamische Patientensimulation für MANV-Übungen im Rettungsdienst: Helfer scannen QR-Patienten mit dem eigenen Handy, Patienten verändern sich je nach Behandlung, Praxisanleiter sehen die Lage live und bekommen eine Auswertung.
 
-Stand: Meilenstein 6 – dazu KI: Patienten im Chat befragen (Temperament, ganze Sätze, genervt bei Wiederholungen), KI-Fallgenerator mit automatischer Prüfung, übersichtliche Bibliothek mit 100 Fall- und 100 Szenario-Ideen.
+Stand: Meilenstein 7 – interaktives Design (Lobby mit QR-Code und Countdown, Auswertungs-Show, Markenrot, „Bewegung reduzieren“) und 41 Maßnahmen in Gruppen. Seit Meilenstein 6 KI: Patienten im Chat befragen (Temperament, ganze Sätze, genervt bei Wiederholungen), KI-Fallgenerator mit automatischer Prüfung, übersichtliche Bibliothek mit 100 Fall- und 100 Szenario-Ideen.
 
 ## Aufbau
 

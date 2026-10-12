@@ -94,6 +94,8 @@ const paths: [string, Event[], number, Record<string, string>][] = [
   ["P05 Atemweg dauerhaft gehalten", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold")], 45, { p05: "3" }],
   ["P05 Halten beendet: erneute Verlegung", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), end(40)], 54, { p05: "1-wieder" }],
   ["P05 Wendl-Tubus", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "wendl")], 60, { p05: "3" }],
+  ["P05 stabile Seitenlage hält den Atemweg frei", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "recovery_position")], 60, { p05: "3" }],
+  ["P03 Seitenlage und Sauerstoff statt Esmarch", [scan(0, "p03"), act(1, "p03", "recovery_position"), act(3, "p03", "oxygen")], 15, { p03: "2-versorgt" }],
   ["P06 O2, Wärme, Zugang, Intubation", [scan(0, "p06"), act(0.5, "p06", "oxygen"), act(2, "p06", "warm"), act(3, "p06", "iv_access"), scan(16, "p06", "h2"), act(16, "p06", "intubation", "h2")], 60, { p06: "intubiert" }],
   ["P06 großflächig gekühlt", [scan(0, "p06"), act(1, "p06", "cool_large")], 15, { p06: "2-unterkuehlt" }],
   ["P07 Schiene und Analgesie", [scan(0, "p07"), act(1, "p07", "splint"), act(6, "p07", "analgesia")], 60, { p07: "versorgt" }],

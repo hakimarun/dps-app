@@ -1,9 +1,9 @@
 // Bibliothek für Praxisanleiter: spielbare Fälle (Muster und KI-Entwürfe), 100 Fallideen, 100 Szenarien.
 // Übersicht durch Suche, Filter (Status, Kategorie, Sichtungskategorie) und Gruppen je Kategorie.
 import { useEffect, useState, type ReactNode } from "react";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import type { Findings, Patient, Sk } from "@dps/schema";
-import { api, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
+import { api, httpBase, useLibrary, type LibPatient, type LibScenario, type Session } from "./api";
 import { Button, Chip, Field, Sheet, Title, skColor, type Theme } from "./ui";
 import { CaseEditor, ScenarioEditor } from "./editor";
 
@@ -138,7 +138,7 @@ function Cases({ t, session, lib, generator }: { t: Theme; session: Session; lib
         ))}
       </ScrollView>
       {detail && !editing && (
-        <CaseDetail t={t} session={session} item={detail} onClose={() => setDetail(null)} onEdit={setEditing}
+        <CaseDetail t={t} session={session} item={detail} imageGen={!!lib.lib?.imageGen} onImage={lib.load} onClose={() => setDetail(null)} onEdit={setEditing}
           onToggle={() => api(session, "/api/library/approve", { item: detail.id, approved: !detail.approved }).then(() => (lib.load(), setDetail(null)))} />
       )}
       {editing && (
@@ -179,16 +179,36 @@ function ReportView({ t, report }: { t: Theme; report: Report }) {
   );
 }
 
-function CaseDetail({ t, session, item, onToggle, onClose, onEdit }: {
-  t: Theme; session: Session; item: LibPatient; onToggle: () => void; onClose: () => void; onEdit: (p: Patient) => void;
+function CaseDetail({ t, session, item, imageGen, onImage, onToggle, onClose, onEdit }: {
+  t: Theme; session: Session; item: LibPatient; imageGen: boolean; onImage: () => void; onToggle: () => void; onClose: () => void; onEdit: (p: Patient) => void;
 }) {
+  const [image, setImage] = useState(item.image);
+  const [painting, setPainting] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const paint = (remove = false) => {
+    setPainting(!remove);
+    setImageError(null);
+    api<{ image: string | null }>(session, `/api/images/${item.id}${remove ? "/remove" : ""}`, {}).then(
+      (r) => (setImage(r.image), setPainting(false), onImage()),
+      (e: Error) => (setImageError(e.message), setPainting(false)),
+    );
+  };
   const [data, setData] = useState<{ patient: Patient; actions: Record<string, string>; report: Report | null } | null>(null);
   useEffect(() => void api<typeof data>(session, `/api/library/${item.id}`).then(setData), [item.id]);
   const a = (id: string) => data?.actions[id] ?? (id === "handover" ? "Übergabe" : id);
   const sources = (data?.patient.profile?.sources as string[] | undefined) ?? [];
   return (
     <Sheet t={t} title={`${item.id.toUpperCase()} ${item.title}`} onClose={onClose}>
+      {image && <Image source={{ uri: httpBase(session.server) + image }} accessibilityLabel="Bild des Patienten" style={{ width: "100%", aspectRatio: 1, maxHeight: 320, borderRadius: 14 }} />}
       <Text style={{ color: t.text }}>{item.picture}</Text>
+      {(imageGen || image) && (
+        <View style={{ gap: 6 }}>
+          {imageGen && <Button t={t} label={painting ? "Bild wird erzeugt … (ca. 1 min)" : image ? "Neues Bild erzeugen" : "Bild erzeugen"} disabled={painting} onPress={() => paint()} />}
+          {image && !painting && <Button t={t} label="Bild entfernen" onPress={() => paint(true)} />}
+          <Text style={{ color: t.quiet, fontSize: 12 }}>Das Bild entsteht lokal aus dem Bildtext. Vor der Freigabe prüfen: Verletzungen stellt das Modell oft ungenau dar, maßgeblich bleibt der Text.</Text>
+          {imageError && <Text style={{ color: t.red }}>{imageError}</Text>}
+        </View>
+      )}
       {data?.report && <ReportView t={t} report={data.report} />}
       {data?.patient.base && (
         <>

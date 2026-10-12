@@ -14,7 +14,8 @@
         "AI_DIALOG": "local",
         "AI_GENERATOR": "local",
         "LOCAL_AI_URL": "http://localhost:11434",
-        "LOCAL_AI_MODEL": "dps-gemma3"
+        "LOCAL_AI_MODEL": "dps-gemma3",
+        "IMAGE_GEN": "mflux"
       }
     },
     {

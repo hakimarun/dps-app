@@ -7,13 +7,14 @@ export type LibPatient = {
   id: string; version: number; title: string; picture: string; approved: boolean; approvals: number; uses: number;
   meta: { category: string; tags: string[]; difficulty: string }; sk: Sk | null; origin: "muster" | "ki" | "eigen"; errors: string[];
   editable: boolean; // eigener Entwurf: Bearbeiten erzeugt eine neue Version, sonst eine Kopie
+  image: string | null; // Pfad zum Patientenbild auf dem Server
 };
 export type LibScenario = {
   id: string; title: string; patients: string[]; situation: string | null; origin: "muster" | "ki" | "eigen"; editable: boolean;
   units: { kind: string; title: string; arrivesAt: number; seats: number }[];
   job: { total: number; done: number; failed: number; error: string | null } | null; // KI erzeugt gerade Patienten
 };
-export type Library = { patients: LibPatient[]; scenarios: LibScenario[] };
+export type Library = { patients: LibPatient[]; scenarios: LibScenario[]; imageGen: boolean };
 
 export const httpBase = (server: string) => server.trim().replace(/^ws/, "http").replace(/\/$/, "");
 

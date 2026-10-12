@@ -2,7 +2,7 @@
 //   node apps/server/src/main.ts --port 3000 --data data
 // E-Mail: SMTP_URL (z. B. smtps://user:pass@host) und MAIL_FROM setzen; ohne SMTP_URL steht der Anmeldecode im Log.
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { existsSync, mkdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { extname, join, resolve as resolvePath, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { randomInt } from "node:crypto";
@@ -20,6 +20,7 @@ import { allowedActions, control, leitungView, loadLibrary, minutes, released, r
 import { evaluate } from "./evaluation.ts";
 import { approvalCounts, attachPatient, attachedPatients, deleteExercisesBefore, detachPatients, loadDrafts, loadExercises, loadScenarios, myApprovals, newCode, openDb, requestLogin, saveDraft, saveExercise, saveScenario, setApproval, userByToken, verifyLogin, type Draft } from "./db.ts";
 import { printPage } from "./print.ts";
+import { imageGenFromEnv } from "./images.ts";
 
 const { values: opt } = parseArgs({ options: { port: { type: "string", default: "3000" }, data: { type: "string", default: "data" }, web: { type: "string" } } });
 const webDir = resolvePath(opt.web ?? fileURLToPath(new URL("../../app/dist/", import.meta.url)));
@@ -51,6 +52,13 @@ setInterval(() => {
 }, 24 * 60 * 60_000).unref();
 const dialogAi = fromEnv("dialog");
 const generatorAi = fromEnv("generator");
+// Patientenbilder (optional, IMAGE_GEN=mflux): ein Bild je Fall in <data>/images, immer nur eines gleichzeitig (~9 GB Speicher).
+const imageGen = imageGenFromEnv();
+const imagesDir = join(opt.data, "images");
+mkdirSync(imagesDir, { recursive: true });
+const imageFile = (id: string) => join(imagesDir, `${id}.png`);
+const imageUrl = (id: string) => (existsSync(imageFile(id)) ? `/images/${id}.png?v=${Math.round(statSync(imageFile(id)).mtimeMs)}` : null);
+let painting: string | null = null;
 const readIdeas = (f: string) => (existsSync(new URL(f, ideasDir)) ? JSON.parse(readFileSync(new URL(f, ideasDir), "utf8")) : []);
 const ideasDir = new URL("../../../library/ideas/", import.meta.url);
 const startSk = (p: Patient) => (p.phases[p.start].dead ? "EX" : triage({ ...p.base, ...p.phases[p.start].findings, exam: {} }, "mstart"));
@@ -131,7 +139,7 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   let m: RegExpMatchArray | null;
 
   // Web-App (npm run build:web): Helfer öffnen nur die Adresse des Servers, ohne Installation.
-  if (req.method === "GET" && !/^\/(api|print|qr)\//.test(url.pathname)) {
+  if (req.method === "GET" && !/^\/(api|print|qr|images)\//.test(url.pathname)) {
     if (!existsSync(webDir)) return url.pathname === "/" ? send(res, 200, "dps-server ok\n", "text/plain") : send(res, 404, "nicht gefunden", "text/plain");
     const file = resolvePath(webDir, `.${decodeURIComponent(url.pathname)}`);
     const path = file.startsWith(webDir + sep) && existsSync(file) && statSync(file).isFile() ? file : join(webDir, "index.html"); // Einstieg für alle anderen Pfade
@@ -140,7 +148,12 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
   }
   if ((m = route.match(/^GET \/print\/([A-Z0-9]{6})$/))) {
     const ex = exercises.get(m[1]);
-    return ex ? send(res, 200, await printPage(ex), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
+    return ex ? send(res, 200, await printPage(ex, imageUrl), "text/html") : send(res, 404, "unbekannte Übung", "text/plain");
+  }
+  if ((m = route.match(/^GET \/images\/([a-z0-9-]{1,64})\.png$/))) {
+    if (!existsSync(imageFile(m[1]))) return send(res, 404, "kein Bild", "text/plain");
+    res.writeHead(200, { "content-type": "image/png", "cache-control": "max-age=86400" }); // URL trägt die Version
+    return res.end(readFileSync(imageFile(m[1])));
   }
   // Lobby (J2): QR-Code zum Beitreten, als PNG, damit ihn die App auf allen Plattformen anzeigen kann.
   if ((m = route.match(/^GET \/qr\/([A-Z0-9]{6})\.png$/))) {
@@ -181,14 +194,16 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
           approvals: counts.get(p.id) ?? 0,
           uses: all.filter((ex) => ex.scenario.patients.includes(p.id)).length,
           meta: p.meta, sk: startSk(p), origin: drafts.get(p.id)?.origin ?? "muster", errors: [] as string[], editable: drafts.get(p.id)?.owner === user.id,
+          image: imageUrl(p.id),
         })),
         // KI-Entwürfe mit Fehlern: sichtbar mit Prüfbericht, aber nicht freigebbar
         ...[...drafts.values()].filter((d) => !d.report.ok).map((d) => ({
           id: d.id, version: 1, title: (d.patient as { title?: string }).title ?? d.id, picture: d.brief, approved: false, approvals: 0, uses: 0,
           meta: { category: d.origin === "eigen" ? "Eigener Entwurf" : "KI-Entwurf", tags: [], difficulty: "fortgeschritten" }, sk: null, origin: d.origin ?? "ki", errors: d.report.errors,
-          editable: d.owner === user.id,
+          editable: d.owner === user.id, image: null,
         })),
       ],
+      imageGen: !!imageGen,
       scenarios: Object.values(scenarios).map((s) => ({
         id: s.id, title: s.title, patients: s.patients, situation: s.situation ?? null, job: jobs.get(s.id) ?? null,
         origin: s.id.startsWith("ki-") ? "ki" : s.id.startsWith("eigen-") ? "eigen" : "muster", editable: s.owner === user.id,
@@ -201,6 +216,26 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
     if (!p) throw new HttpError(404, "unbekannter Fall");
     const d = drafts.get(m[1]);
     return send(res, 200, { patient: p, actions: Object.fromEntries(Object.values(lib.defs.actions).map((a) => [a.id, a.title])), report: d?.report ?? null, brief: d?.brief ?? null });
+  }
+  // Patientenbild erzeugen (dauert lokal 40–60 s) oder entfernen; maßgeblich bleibt der Bildtext.
+  if ((m = route.match(/^POST \/api\/images\/([a-z0-9-]{1,64})$/))) {
+    if (!imageGen) throw new HttpError(503, "Bilderzeugung ist nicht eingerichtet (IMAGE_GEN=mflux)");
+    const p = lib.defs.patients[m[1]] ?? (drafts.get(m[1])?.patient as { picture?: string } | undefined);
+    if (!p?.picture) throw new HttpError(404, "unbekannter Fall");
+    if (painting) throw new HttpError(409, `Es wird gerade ein Bild für ${painting.toUpperCase()} erzeugt`);
+    painting = m[1];
+    try {
+      await imageGen.generate(p.picture, imageFile(m[1]));
+    } catch (e) {
+      throw new HttpError(502, `Bildfehler: ${e instanceof Error ? e.message.split("\n")[0] : e}`);
+    } finally {
+      painting = null;
+    }
+    return send(res, 201, { image: imageUrl(m[1]) });
+  }
+  if ((m = route.match(/^POST \/api\/images\/([a-z0-9-]{1,64})\/remove$/))) {
+    rmSync(imageFile(m[1]), { force: true });
+    return send(res, 200, { image: null });
   }
   if (route === "GET /api/actions") return send(res, 200, Object.values(lib.defs.actions).map((a) => ({ id: a.id, title: a.title, group: a.group })));
   if (route === "GET /api/ideas") return send(res, 200, { cases: readIdeas("cases.json"), scenarios: readIdeas("scenarios.json"), generator: !!generatorAi });
@@ -390,7 +425,9 @@ function broadcast(ex: Exercise, withClock = false) {
     if (withClock) out(ws, clock(ex, now));
     if (!c.watch && !c.participant) continue;
     const me = ev?.helpers.find((h) => h.id === c.participant);
-    const view = c.watch ? null : { ...viewFor(ex, s, c.participant!), result: ev && me ? { team: ev.team, me } : null };
+    const own = c.watch ? null : viewFor(ex, s, c.participant!);
+    if (own?.patient) own.patient.image = imageUrl(own.patient.id);
+    const view = own && { ...own, result: ev && me ? { team: ev.team, me } : null };
     const json = JSON.stringify(c.watch ? { type: "leitung", view: leitungView(ex, now) } : { type: "view", view: view! });
     if (json !== c.last) (c.last = json), ws.send(json);
   }

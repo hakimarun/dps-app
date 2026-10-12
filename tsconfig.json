@@ -16,6 +16,7 @@
     "apps/server",
     "apps/app/src/ekg.ts",
     "apps/app/src/caseform.ts",
+    "apps/app/src/scan.ts",
     "apps/app/test"
   ]
 }

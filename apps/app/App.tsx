@@ -1,6 +1,6 @@
 // dPS-App: Rollenwahl, Helfer-Ablauf (Meilenstein 2) und Praxisanleiter (Meilenstein 3, src/leitung.tsx).
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { Animated, Easing, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, Vibration, View, useColorScheme } from "react-native";
+import { Animated, Easing, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, Vibration, View, useColorScheme } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -10,6 +10,8 @@ import { DEFAULT_SERVER, exerciseMinutes, lastConnection, useConnection } from "
 import { Badge, Button, Chip, Field, Flash, Logo, Pop, SK, Sheet, Title, clock, dark, light, skColor, useCountUp, type Theme } from "./src/ui";
 import { Breathe, Confetti, Dots, FUN, FlyIn, FunButton, STAGE, Stage, Tile } from "./src/fun";
 import { DEVICE_OF, DeviceSheet, type DeviceKind } from "./src/devices";
+import { httpBase } from "./src/api";
+import { parseScan } from "./src/scan";
 import { Leitung } from "./src/leitung";
 
 const VITALS: [string, string, string?][] = [["AF", "rr"], ["HF", "hr"], ["RR", "bp"], ["SpO₂", "spo2", " %"], ["GCS", "gcs"], ["Rekap", "recap", " s"]];
@@ -34,13 +36,6 @@ const QUICK: Record<Topic, string> = {
 };
 const STATUS: Record<Status, string> = { ready: "noch nicht gestartet", running: "", paused: "pausiert", ended: "beendet" };
 
-// QR-Inhalt "dps:<CODE>:p01" (nur für diese Übung) oder Nummer "1" / "P01".
-export function parseScan(raw: string, code: string): { id: string } | { error: string } {
-  const m = raw.trim().toLowerCase().match(/^(?:dps:(?:([a-z0-9]{6}):)?)?p?(\d{1,3})$/);
-  if (!m) return { error: "kein Patienten-Code" };
-  if (m[1] && m[1].toUpperCase() !== code.toUpperCase()) return { error: "QR-Code gehört zu einer anderen Übung" };
-  return { id: `p${m[2].padStart(2, "0")}` };
-}
 
 export default function App() {
   const t = useColorScheme() === "dark" ? dark : light;
@@ -258,7 +253,7 @@ function Scan({ t, code, current, onScan, onBack }: { t: Theme; code: string; cu
         <Button t={t} label="Kamera erlauben" onPress={requestPermission} />
       )}
       {error && <Text style={{ color: t.red }}>{error}</Text>}
-      <Field t={t} label="Oder Patientennummer eingeben, z. B. 1" value={manual} onChange={(v) => (setManual(v), setError(null))} />
+      <Field t={t} label="Oder Nummer bzw. Kennung vom Zettel eingeben, z. B. 1" value={manual} onChange={(v) => (setManual(v), setError(null))} />
       <Button t={t} strong label="Öffnen" disabled={!manual.trim()} onPress={() => handle(manual)} />
       {current && <Button t={t} label={`Zurück zu ${current.toUpperCase()}`} onPress={onBack} />}
     </ScrollView>
@@ -305,6 +300,10 @@ function PatientScreen({ t, conn, min, onSheet, onEnd }: {
             </Pop>
           )}
         </View>
+        {p.image && conn.server ? (
+          <Image source={{ uri: httpBase(conn.server) + p.image }} accessibilityLabel="Bild des Patienten" resizeMode="cover"
+            style={{ width: "100%", aspectRatio: 1, maxHeight: 260, borderRadius: 14, backgroundColor: t.tint }} />
+        ) : null}
         <Text style={{ color: t.text, fontSize: 17, lineHeight: 24 }}>{p.picture}</Text>
         <Text style={{ color: t.quiet }}>Ort: {p.place}</Text>
         {p.left && <Text style={{ color: t.text, fontWeight: "600" }}>Abtransportiert. Scanne den nächsten Patienten.</Text>}

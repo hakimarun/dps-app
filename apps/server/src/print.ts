@@ -5,15 +5,15 @@ import type { Exercise } from "./exercise.ts";
 const ROLE = { sichtung: "nur Sichtung und lebensrettende Sofortmaßnahmen", behandlung: "Behandlung", transport: "Transport und Übergabe" };
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
-export async function printPage(ex: Exercise): Promise<string> {
+export async function printPage(ex: Exercise, imageUrl: (id: string) => string | null = () => null): Promise<string> {
   const qr = (text: string) => QRCode.toString(text, { type: "svg", margin: 1, errorCorrectionLevel: "M" });
   const cards = await Promise.all(
     ex.scenario.patients.map(async (id) => `
       <section class="card">
         <h1>${id.toUpperCase()}</h1>
-        <div class="qr">${await qr(`dps:${ex.code}:${id}`)}</div>
+        <div class="top"><div class="qr">${await qr(`dps:${ex.code}:${id}`)}</div>${imageUrl(id) ? `<img class="bild" src="${imageUrl(id)}" alt="">` : ""}</div>
         <p>${esc(ex.defs.patients[id].picture)}</p>
-        <footer>Übungspatient · Übung ${ex.code} · nur in dieser Übung gültig · Nummer ohne Kamera: ${Number(id.slice(1))}</footer>
+        <footer>Übungspatient · Übung ${ex.code} · nur in dieser Übung gültig · ohne Kamera eintippen: ${/^p\d+$/.test(id) ? Number(id.slice(1)) : id.toUpperCase()}</footer>
       </section>`),
   );
   return `<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
@@ -25,6 +25,9 @@ export async function printPage(ex: Exercise): Promise<string> {
   .card { box-sizing: border-box; height: 148.5mm; padding: 12mm 18mm; border-bottom: 1px dashed #999; display: flex; flex-direction: column; align-items: center; break-inside: avoid; }
   h1 { margin: 0 0 4mm; font-size: 32pt; }
   .qr svg { width: 75mm; height: 75mm; }
+  .top { display: flex; gap: 8mm; align-items: center; }
+  .top:has(.bild) .qr svg, .bild { width: 58mm; height: 58mm; }
+  .bild { object-fit: cover; border-radius: 4mm; }
   p { margin: 6mm 0 0; font-size: 13pt; text-align: center; max-width: 150mm; }
   footer { margin-top: auto; font-size: 9pt; color: #555; }
   .join h1 { font-size: 24pt; } .join .code { font-size: 48pt; font-weight: 700; letter-spacing: 4pt; margin: 10mm 0; }

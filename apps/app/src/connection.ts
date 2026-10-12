@@ -20,6 +20,7 @@ export type Conn = {
   offset: number; // Serverzeit minus Gerätezeit in ms
   clock: Clock | null;
   code: string; // Übungscode
+  server: string; // ws(s)://…, für Bilder und Druckseite als http(s)
 };
 
 // Vom dPS-Server ausgelieferte Web-App (Produktionsbuild): derselbe Host. Sonst Umgebung oder lokal.
@@ -29,7 +30,7 @@ const key = (code: string) => `dps:${code.toUpperCase()}`;
 const newId = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 
 export function useConnection() {
-  const [c, setC] = useState<Conn>({ status: "idle", welcome: null, participant: null, view: null, queued: 0, error: null, offset: 0, clock: null, code: "" });
+  const [c, setC] = useState<Conn>({ status: "idle", welcome: null, participant: null, view: null, queued: 0, error: null, offset: 0, clock: null, code: "", server: "" });
   const r = useRef({ ws: null as WebSocket | null, server: "", code: "", participant: null as string | null, queue: [] as Pending[], offset: 0, retry: 0 as ReturnType<typeof setTimeout> | 0 });
 
   const save = () => AsyncStorage.setItem(key(r.current.code), JSON.stringify({ participant: r.current.participant, queue: r.current.queue }));
@@ -78,7 +79,7 @@ export function useConnection() {
       const stored = JSON.parse((await AsyncStorage.getItem(key(code))) ?? "{}");
       Object.assign(r.current, { server, code: code.toUpperCase(), participant: stored.participant ?? null, queue: stored.queue ?? [] });
       await AsyncStorage.setItem("dps:last", JSON.stringify({ server, code }));
-      setC({ status: "connecting", welcome: null, participant: null, view: null, queued: r.current.queue.length, error: null, offset: 0, clock: null, code: r.current.code });
+      setC({ status: "connecting", welcome: null, participant: null, view: null, queued: r.current.queue.length, error: null, offset: 0, clock: null, code: r.current.code, server });
       open();
     },
     [open],

@@ -117,6 +117,7 @@ export type View = {
   patient: {
     id: string; picture: string; findings: Partial<Findings>; triage: Sk | null; done: string[]; place: string; left: boolean;
     vitalsText: Record<string, string> | null; // Befundtext statt Zahlen (Vitalwerte-Modus "text"); dann fehlen die Zahlen in findings
+    image?: string | null; // Patientenbild (Pfad auf dem Server), falls eines erzeugt wurde
     dialog: { q: string; a: string }[]; // eigene Fragen an diesen Patienten
   } | null;
   inventory: Record<string, number>;

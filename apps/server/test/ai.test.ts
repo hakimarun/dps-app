@@ -276,4 +276,5 @@ test("Befundschlüssel: Untersuchungen unter festen Schlüsseln, Temperatur als 
   assert.deepEqual(tidyExam({ exam: { Lunge: "Giemen", chest: "Prellmarke", thorax: "stabil", Haut: "blass", Zustand: "braucht Notarzt", temperature: "35,6 °C (Ohr)" } }), {
     exam: { auscultation: "Giemen", bodycheck: "Prellmarke; stabil", Haut: "blass" }, temp: 35.6,
   });
+  assert.deepEqual(tidyExam({ exam: { "Schwere Blutung am Unterschenkel. Pupillen reagieren auf Licht.": "normal", "Versuch der Analgesie": "", "Auskultation Lunge": "Rasseln" } }), { exam: { auscultation: "Rasseln" } });
 });

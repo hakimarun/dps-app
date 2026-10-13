@@ -45,9 +45,11 @@ const EXAM_ALIAS: Record<string, string> = {
   pupil: "pupils", pupillen: "pupils", becken: "pelvis", bauch: "abdomen", ekg: "ecg", monitor: "ecg", blutzucker: "glucose", bz: "glucose", co: "spco",
   body: "bodycheck", body_check: "bodycheck", injuries: "bodycheck", chest: "bodycheck", thorax: "bodycheck", spine: "bodycheck", leg: "bodycheck",
   wrist: "bodycheck", shoulder: "bodycheck", "unterschenkel rechts": "bodycheck", "dms rechter fuß": "bodycheck",
+  "auskultation lunge": "auscultation", "auskultation herz": "auscultation", rumpf: "bodycheck", unterschenkel: "bodycheck",
+  "visuelle inspektion": "bodycheck", verbrennung: "burn", verbrennungen: "burn",
 };
 // Messnotizen, die schon ein Messwert abbildet, und Hinweise, die die Lösung verraten
-const EXAM_DROP = new Set(["pulse_oximetry", "pulse_oximetry_note", "spo2_note", "spo2_hinweis", "zustand", "transport"]);
+const EXAM_DROP = new Set(["pulse_oximetry", "pulse_oximetry_note", "spo2_note", "spo2_hinweis", "zustand", "transport", "herzerkrankung"]);
 const TEMP = new Set(["temp", "temperature", "temperatur"]);
 const EXAM_KEYS = new Set(["auscultation", "percussion", "pupils", "pelvis", "abdomen", "burn", "airway", "bodycheck", "glucose", "ecg", "spco", "befast", "death", "motor"]);
 export function tidyExam<F extends { exam?: Record<string, string>; temp?: number }>(f: F): F {
@@ -56,7 +58,7 @@ export function tidyExam<F extends { exam?: Record<string, string>; temp?: numbe
   let temp = f.temp;
   for (const [key, value] of Object.entries(f.exam)) {
     const k = key.trim().toLowerCase();
-    if (EXAM_DROP.has(k)) continue;
+    if (EXAM_DROP.has(k) || !value.trim() || k.length > 40) continue; // ganze Sätze als Schlüssel oder leere Notizen: Ausgabefehler kleiner Modelle
     if (TEMP.has(k)) { temp ??= Number(value.replace(",", ".").match(/\d+(\.\d+)?/)?.[0]) || undefined; continue; } // wird erst mit "Temperatur messen" sichtbar
     const to = EXAM_ALIAS[k] ?? (EXAM_KEYS.has(k) ? k : key);
     exam[to] = exam[to] ? `${exam[to]}; ${value}` : value;

@@ -95,6 +95,9 @@ export const Action = z.object({
   minutes: z.number().positive().nullable(), // null = dauerhaft, bis der Helfer sie beendet
   material: z.record(z.string(), z.number().int().positive()).default({}),
   reveals: z.array(z.string()).default([]), // Befunde, die erst diese Maßnahme zeigt, z. B. "bp", "exam.pelvis"
+  // D3: wirkt sofort auf Befunde (Tourniquet stoppt die Blutung): beim Abschluss, dauerhafte Maßnahmen solange sie laufen.
+  // Nicht, wenn der Fall die Maßnahme als schädlich führt (z. B. Tourniquet bei Leistenblutung).
+  effect: z.object(findingFields).omit({ exam: true }).partial().optional(),
   failChance: z.number().min(0).max(1).default(0), // nur mit Zufallselementen
   group: z.string().default("Sonstiges"), // Abschnitt in der Maßnahmenliste der App
   helpers: z.number().int().min(1).max(2).default(1), // 2: startet erst, wenn ein zweiter Helfer mithilft (C7)

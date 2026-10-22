@@ -60,6 +60,7 @@ export type PatientState = {
   mood: string | null; // Temperament, von der Leitung live geändert (G11); null = wie im Fall
   appears: number; // ab dieser Minute auffindbar (A8, später entdeckte Patienten)
   pace: number; // Faktor auf die Phasendauer: mit Zufall 0,8–1,2 je Patient (A8, Verlaufsvarianten)
+  effects: Partial<Findings>; // D3: Sofortwirkung abgeschlossener Maßnahmen, bis eine Phase den Befund ausdrücklich neu setzt
 };
 export type ParticipantState = { unit: string; patient: string | null; busy: Running | null };
 export type Defs = { patients: Record<string, Patient>; actions: Record<string, Action> };
@@ -80,7 +81,7 @@ export function initial(scenario: Scenario, defs: Defs, settings: Settings = def
     if (!p) throw new Error(`Patient ${id} fehlt in der Bibliothek`);
     const appears = settings.late?.[id] ?? 0;
     const pace = settings.random ? 0.8 + 0.4 * unit(`${seed}:${id}`) : 1;
-    patients[id] = { phase: p.start, phaseStart: appears, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false, mood: null, appears, pace };
+    patients[id] = { phase: p.start, phaseStart: appears, from: null, done: [], triage: null, place: "fundort", left: false, cleared: false, mood: null, appears, pace, effects: {} };
   }
   const units: State["units"] = {};
   for (const u of scenario.units) units[u.id] = { title: u.title, arrivesAt: u.arrivesAt, seats: u.seats, inventory: { ...u.inventory } };
@@ -182,6 +183,7 @@ export function apply(s: State, e: Event): State {
       const b = h.busy!;
       const done = s.patients[b.patient].done;
       if (b.ok && !b.waiting && !done.includes(b.action)) done.push(b.action); // abgebrochenes Warten zählt nicht
+      if (b.ok && !b.waiting && b.until !== null) Object.assign(s.patients[b.patient].effects, effectOf(s, b.patient, b.action));
       h.busy = null;
       break;
     }
@@ -223,11 +225,14 @@ export function apply(s: State, e: Event): State {
     case "feedback":
       break;
     case "set":
-    case "phase":
-      s.patients[e.patient].from = s.patients[e.patient].phase;
-      s.patients[e.patient].phase = e.to;
-      s.patients[e.patient].phaseStart = e.t;
+    case "phase": {
+      const ps = s.patients[e.patient];
+      ps.from = ps.phase;
+      ps.phase = e.to;
+      ps.phaseStart = e.t;
+      for (const k of Object.keys(s.defs.patients[e.patient].phases[e.to].findings)) delete ps.effects[k as keyof Findings]; // z. B. Nachblutung
       break;
+    }
   }
   return s;
 }
@@ -271,11 +276,16 @@ export function phaseDef(s: State, id: string): Phase {
   return s.defs.patients[id].phases[s.patients[id].phase];
 }
 
-export function findings(s: State, id: string, phase = s.patients[id].phase): Findings {
+// effects=false: Befunde der Phase ohne Sofortwirkung, für die Soll-Sichtung (mSTaRT: nach Blutstillung bleibt rot rot).
+export function findings(s: State, id: string, phase = s.patients[id].phase, effects = true): Findings {
   const p = s.defs.patients[id];
   const f = p.phases[phase].findings;
-  return { ...p.base, ...f, exam: { ...p.base.exam, ...f.exam } };
+  if (!effects || phase !== s.patients[id].phase) return { ...p.base, ...f, exam: { ...p.base.exam, ...f.exam } };
+  // D3: Sofortwirkung abgeschlossener Maßnahmen und laufender dauerhafter Maßnahmen (manuelle Kompression)
+  const running = Object.values(s.participants).flatMap((h) => (h.busy?.patient === id && !h.busy.waiting && h.busy.until === null ? [effectOf(s, id, h.busy.action)] : []));
+  return Object.assign({ ...p.base, ...f, ...s.patients[id].effects }, ...running, { exam: { ...p.base.exam, ...f.exam } });
 }
+const effectOf = (s: State, id: string, action: string) => (s.defs.patients[id].scoring.harmful.includes(action) ? {} : (s.defs.actions[action]?.effect ?? {}));
 
 // Vitalwerte im Modus "live": nach einem Phasenwechsel GLIDE_MIN Minuten linear vom alten zum neuen Wert,
 // dazu kleine Schwankungen je Minute. Deterministisch (Hash aus Patient, Wert und Minute), damit Replay und Tests stabil bleiben.
@@ -333,7 +343,7 @@ export function visible(s: State, id: string): Partial<Findings> {
 // Soll-Sichtungskategorie des aktuellen Zustands für den gewählten Algorithmus.
 export function targetSk(s: State, id: string): Sk {
   const ph = phaseDef(s, id);
-  return ph.dead ? "EX" : triage(findings(s, id), s.settings.algorithm);
+  return ph.dead ? "EX" : triage(findings(s, id, s.patients[id].phase, false), s.settings.algorithm);
 }
 
 // Kinder: Atemgrenzen nach JumpSTART (Romig 2002), unter 15 oder über 45/min; Erwachsene unter 10 oder über 30/min.

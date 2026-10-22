@@ -3,7 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { Action, Patient, Scenario, type Sk } from "@dps/schema";
-import { apply, defaultSettings, describe, ecgOf, initial, liveFindings, targetSk, tick, triage, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
+import { apply, defaultSettings, describe, findings, ecgOf, initial, liveFindings, targetSk, tick, triage, validate, visible, type Event, type Settings, type State } from "../src/index.ts";
 
 const lib = new URL("../../../library/", import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, lib), "utf8"));
@@ -274,4 +274,25 @@ test("Sichtung Kinder: kindgerechte Atemgrenzen (JumpSTART), sonst wie mSTaRT", 
   assert.equal(triage({ ...f, child: true }, "mstart"), "II"); // Kind: 40/min ist noch in Ordnung
   assert.equal(triage({ ...f, child: true, rr: 50 }, "mstart"), "I");
   assert.equal(triage({ ...f, child: true, rr: 12 }, "mstart"), "I");
+});
+
+test("D3: Tourniquet stoppt die Blutung sofort, nicht erst am Phasenende; schädlich im Fall heißt wirkungslos", () => {
+  const { s } = run([scan(0, "p01"), act(0.5, "p01", "tourniquet")], 3);
+  assert.equal(phaseOf(s, "p01"), "1"); // Phase läuft noch
+  assert.equal(visible(s, "p01").spurtingBleeding, false);
+  assert.equal(targetSk(s, "p01"), "I"); // mSTaRT: nach Blutstillung einer lebensbedrohlichen Blutung bleibt rot
+  const before = run([scan(0, "p01")], 3).s;
+  assert.equal(visible(before, "p01").spurtingBleeding, true);
+  // i014: Leistenblutung, Tourniquet ist schädlich und stoppt nichts
+  const junction = initial({ ...scenario, patients: ["i014"] }, defs, defaultSettings, 1);
+  for (const e of [join(0, "h1", "rtw1"), scan(0, "i014"), act(0.5, "i014", "tourniquet")]) (tick(junction, e.t), apply(junction, e));
+  tick(junction, 3);
+  assert.equal(findings(junction, "i014").spurtingBleeding, defs.patients.i014.base.spurtingBleeding);
+});
+
+test("D3: manuelle Kompression wirkt nur, solange sie läuft", () => {
+  const { s } = run([scan(0, "p01"), act(0.5, "p01", "manual_compression")], 2);
+  assert.equal(findings(s, "p01").spurtingBleeding, false);
+  apply(s, end(3));
+  assert.equal(findings(s, "p01").spurtingBleeding, true);
 });

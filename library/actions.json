@@ -53,7 +53,7 @@
   { "id": "bronchodilator", "title": "Bronchodilatator inhalieren", "minutes": 5, "group": "Medikamente" },
   { "id": "anticonvulsant", "title": "Benzodiazepin gegen Krampfanfall", "minutes": 2, "group": "Medikamente" },
   { "id": "naloxone", "title": "Naloxon (Notarzt)", "minutes": 2, "group": "Medikamente" },
-  { "id": "atropine", "title": "Atropin als Antidot (Notarzt)", "minutes": 2, "group": "Medikamente" },
+  { "id": "atropine", "title": "Atropin (Notarzt, Bradykardie oder Antidot)", "minutes": 2, "group": "Medikamente" },
   { "id": "sedation", "title": "Sedierung (Notarzt)", "minutes": 3, "group": "Medikamente" },
   { "id": "catecholamines", "title": "Katecholamine (Notarzt)", "minutes": 3, "group": "Medikamente" },
   { "id": "antiarrhythmic", "title": "Antiarrhythmikum (Notarzt)", "minutes": 3, "group": "Medikamente" },
@@ -69,5 +69,7 @@
   { "id": "palliative", "title": "Palliativ begleiten", "minutes": null, "group": "Betreuung" },
   { "id": "nitrate", "title": "Nitrat und Diuretikum (Notarzt)", "minutes": 2, "group": "Medikamente" },
   { "id": "antihypertensive", "title": "Blutdrucksenkung (Notarzt)", "minutes": 2, "group": "Medikamente" },
-  { "id": "shade_drink", "title": "Schatten, Kleidung öffnen, trinken lassen", "minutes": 3, "group": "Betreuung" }
+  { "id": "shade_drink", "title": "Schatten, Kleidung öffnen, trinken lassen", "minutes": 3, "group": "Betreuung" },
+  { "id": "heparin", "title": "Heparin (Notarzt)", "minutes": 2, "group": "Medikamente" },
+  { "id": "magnesium", "title": "Magnesium i.v. (Notarzt)", "minutes": 3, "group": "Medikamente" }
 ]

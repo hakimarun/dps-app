@@ -1,5 +1,5 @@
 {
-  "id": "p06", "version": 1, "title": "Verbrennung mit Inhalationstrauma",
+  "id": "p06", "version": 2, "title": "Verbrennung mit Inhalationstrauma",
   "picture": "Mann, ca. 30 Jahre, kommt aus dem brennenden Motorraum und läuft selbst zur Sammelstelle. Gesicht und Arme verbrannt, Gesicht rußgeschwärzt, Nasenhaare versengt. Heiser, zittert.",
   "profile": { "temperament": "kooperativ, will helfen", "speech": "heiser, ab Phase 3 nur flüsternd", "anamnesis": { "history": "Ich rauche, sonst habe ich nichts.", "medication": "Nein, ich nehme keine Medikamente.", "event": "Ich war zwei, drei Minuten im Rauch, bevor ich rauskam." }, "pitfall": "will zurück zum Bus und spielt die Atemprobleme herunter" },
   "meta": {"category": "Verbrennung", "tags": ["Atemweg", "Untertriage-Falle"], "difficulty": "experte"},
@@ -11,8 +11,8 @@
     "2": { "findings": { "rr": 28, "spo2": 93, "stridor": true, "exam": { "airway": "zunehmend heiser, leiser inspiratorischer Stridor" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3" },
     "3": { "findings": { "walking": false, "rr": 34, "spo2": 88, "stridor": true, "exam": { "airway": "deutlicher Stridor, unruhig" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
     "4": { "findings": { "walking": false, "rr": 36, "spo2": 80, "stridor": true, "exam": { "airway": "drohende vollständige Verlegung, Intubation sehr schwierig" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }] },
-    "2-versorgt": { "findings": { "rr": 22, "spo2": 98, "pain": 5, "stridor": true, "exam": { "airway": "heiser, leiser Stridor" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3-versorgt" },
-    "3-versorgt": { "findings": { "rr": 26, "spo2": 93, "pain": 5, "stridor": true }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
+    "2-versorgt": { "findings": { "rr": 22, "spo2": 98, "stridor": true, "exam": { "airway": "heiser, leiser Stridor" } }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "3-versorgt" },
+    "3-versorgt": { "findings": { "rr": 26, "spo2": 93, "stridor": true }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
     "2-unterkuehlt": { "findings": { "walking": false, "rr": 34, "spo2": 88, "stridor": true, "temp": 35.5 }, "rules": [{ "when": ["intubation"], "then": "intubiert" }], "else": "4" },
     "intubiert": { "findings": { "walking": false, "rr": 14, "spo2": 97, "stridor": false, "gcs": 3, "followsCommands": false } }
   }

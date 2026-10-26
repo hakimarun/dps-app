@@ -1,5 +1,5 @@
 {
-  "id": "i067", "version": 1, "title": "Kohlenmonoxidvergiftung nach Generatorbetrieb",
+  "id": "i067", "version": 2, "title": "Kohlenmonoxidvergiftung nach Generatorbetrieb",
   "picture": "Frau, ca. 40 Jahre, ist selbst aus einem Keller gekommen, in dem ein Notstromaggregat lief. Geht, hält sich den Kopf, ist blass, würgt. „Mir dröhnt der Schädel und mir ist so schlecht.“",
   "profile": {
     "temperament": "kooperativ",
@@ -21,11 +21,11 @@
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["oxygen"], "then": "2-sauerstoff" }], "else": "2" },
-    "2": { "findings": { "walking": false, "rr": 22, "hr": 108, "gcs": 14, "pain": 6, "exam": { "spco": "SpCO 24 %" } }, "rules": [{ "when": ["oxygen"], "then": "2-sauerstoff" }], "else": "3" },
-    "3": { "findings": { "walking": false, "rr": 22, "hr": 112, "gcs": 14, "pain": 6, "exam": { "ecg": "Sinustachykardie, ST-Senkung in V4–V6", "spco": "SpCO 22 %" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }] },
-    "3-sauerstoff": { "findings": { "walking": false, "rr": 20, "hr": 100, "gcs": 14, "pain": 5, "exam": { "ecg": "Sinustachykardie, ST-Senkung in V4–V6 rückläufig", "spco": "SpCO 15 % unter Sauerstoff" } }, "else": "4-sauerstoff" },
-    "4-sauerstoff": { "findings": { "walking": false, "rr": 18, "hr": 94, "gcs": 15, "pain": 4, "exam": { "spco": "SpCO 10 % unter Sauerstoff" } } },
-    "2-sauerstoff": { "findings": { "rr": 18, "hr": 94, "pain": 4, "exam": { "spco": "SpCO 17 % unter Sauerstoff" } }, "else": "3-sauerstoff-frueh" },
-    "3-sauerstoff-frueh": { "findings": { "rr": 16, "hr": 88, "pain": 3, "exam": { "spco": "SpCO 10 % unter Sauerstoff" } } }
+    "2": { "findings": { "walking": false, "rr": 22, "hr": 108, "gcs": 14, "pain": 6, "exam": { "spco": "SpCO 25 %" } }, "rules": [{ "when": ["oxygen"], "then": "2-sauerstoff" }], "else": "3" },
+    "3": { "findings": { "walking": false, "rr": 22, "hr": 112, "gcs": 14, "pain": 6, "exam": { "ecg": "Sinustachykardie, ST-Senkung in V4–V6", "spco": "SpCO 24 %" } }, "rules": [{ "when": ["oxygen"], "then": "3-sauerstoff" }] },
+    "3-sauerstoff": { "findings": { "walking": false, "rr": 20, "hr": 100, "gcs": 14, "pain": 5, "exam": { "ecg": "Sinustachykardie, ST-Senkung in V4–V6 rückläufig", "spco": "SpCO 21 % unter Sauerstoff" } }, "else": "4-sauerstoff" },
+    "4-sauerstoff": { "findings": { "walking": false, "rr": 18, "hr": 94, "gcs": 15, "pain": 4, "exam": { "spco": "SpCO 17 % unter Sauerstoff" } } },
+    "2-sauerstoff": { "findings": { "rr": 18, "hr": 94, "pain": 4, "exam": { "spco": "SpCO 22 % unter Sauerstoff" } }, "else": "3-sauerstoff-frueh" },
+    "3-sauerstoff-frueh": { "findings": { "rr": 16, "hr": 88, "pain": 3, "exam": { "spco": "SpCO 18 % unter Sauerstoff" } } }
   }
 }

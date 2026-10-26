@@ -1,5 +1,5 @@
 {
-  "id": "i063", "version": 1, "title": "Niederspannungsunfall mit Strommarken und verzögerter Rhythmusstörung",
+  "id": "i063", "version": 2, "title": "Niederspannungsunfall mit Strommarken und verzögerter Rhythmusstörung",
   "picture": "Mann, ca. 35 Jahre, in Arbeitskleidung, geht selbstständig. An der rechten Hand und am linken Fuß je eine kleine graue, eingesunkene Hautstelle. „Hat nur kurz gezwickt, mir geht's gut. Ich will wieder an die Arbeit.“",
   "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze, locker, ab Phase 2 „Herzstolpern“",
     "anamnesis": { "symptoms": "Mir geht's gut, die Hand kribbelt ein bisschen.", "allergies": "Keine.", "medication": "Keine.", "history": "Ich bin gesund.", "lastMeal": "Frühstückspause vor einer Stunde.", "event": "Ich habe an einer Leitung gearbeitet, die noch Strom hatte. 400 Volt, glaube ich. Ich hab losgelassen, bewusstlos war ich nicht.", "risk": "Ich muss die Baustelle heute noch fertig machen." },
@@ -15,7 +15,7 @@
     "3": { "minutes": 10, "findings": { "walking": false, "rr": 24, "spo2": 94, "hr": 180, "bp": "80/50", "radialPulse": false, "recap": 4, "gcs": 14, "pain": 3, "exam": { "ecg": "Kammertachykardie mit Puls, instabil (RR 80/50)" } }, "rules": [{ "when": ["defibrillation"], "then": "3-kardiovertiert" }], "else": "4-kf" },
     "4-kf": { "minutes": 10, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "recap": 6, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "ecg": "Kammerflimmern" } }, "rules": [{ "when": ["defibrillation"], "active": ["cpr"], "then": "rosc" }], "else": "tot" },
     "tot": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "ecg": "Asystolie (Nulllinie)" } } },
-    "3-ueberwacht": { "findings": { "hr": 100, "bp": "130/80", "exam": { "ecg": "Vorhofflimmern, normofrequent, vereinzelte VES" } } },
+    "3-ueberwacht": { "minutes": 5, "else": "3", "findings": { "hr": 100, "bp": "130/80", "exam": { "ecg": "Vorhofflimmern, normofrequent, vereinzelte VES" } } },
     "3-kardiovertiert": { "findings": { "walking": false, "rr": 18, "spo2": 97, "hr": 100, "bp": "125/80", "radialPulse": true, "recap": 2, "pain": 3, "exam": { "ecg": "Sinusrhythmus nach Kardioversion, vereinzelte VES" } } },
     "rosc": { "findings": { "walking": false, "breathing": true, "rr": 14, "spo2": 94, "hr": 110, "bp": "100/60", "radialPulse": true, "recap": 3, "gcs": 9, "followsCommands": false, "pain": 0, "exam": { "ecg": "Sinustachykardie nach Defibrillation" } } }
   }

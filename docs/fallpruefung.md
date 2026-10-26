@@ -58,3 +58,71 @@ entspricht der Idee (ein Test hält das fest). Trotzdem gilt: vor dem Einsatz vo
 ## Fälle i092–i100 (CBRN)
 - i092 Lungenödem wie in der Idee, Tod erst nach 75 min, Bronchodilatator gegen Giemen; i093 Spättyp zeitgerafft ohne Tod; i094 Entkleiden kritisch, sonst tiefere Verätzung; i095 Atropin + Entkleiden + O₂ stabilisieren, ohne Dekontamination Rückfall; i096 Entkleiden statt Spülen; i097 Entkleiden und Wärmeerhalt kritisch, Durchblutungsstörung ohne Schiene bestätigt (S3); i098 Tütenrückatmung schädlich, Entkleiden kritisch; i099 Liegezeit und Totenzeichen stimmig, H₂S-Hinweis; i100 Entkleiden statt Spülen, großflächiges Kühlen schädlich, SK IV begründet (ABSI ~13)
 - weiter nicht abbildbar: Isolieren und Registrieren (i098), ärztliche Sichtung (i100)
+
+---
+
+# Dritte Prüfung: unabhängige fachliche Durchsicht aller 142 Fälle (26. Oktober 2026)
+
+Neun Prüfer, die die Fälle nicht geschrieben haben, haben alle Bibliotheksfälle (p01–p13, i001–i100) und die 29 Fälle der
+Import-Szenarien nach derselben Liste geprüft: Bild und Befunde stimmig, keine Diagnose im Bild, Sichtung zu Beginn,
+Zeitverlauf, Wirkung der Maßnahmen, kritische und schädliche Maßnahmen nach Leitlinie, Anamnese und Befundtexte.
+Eindeutige Fehler wurden korrigiert, Grenzfälle nach Leitlinie entschieden. Neu im Katalog: Heparin (statt ASS bei
+Lungenembolie), Magnesium (Eklampsie), Atropin auch bei Bradykardie. Die Warnung „Bild nennt die Diagnose“ übersieht
+jetzt sichtbare Körperstellen (rechts, Unterarm, offene Wunde …), die vorher Fehlalarme auslösten.
+
+## Offene fachliche Fragen
+
+- **Sichtung bei Atemstillstand:** Die App wertet „keine Atmung“ als Rot-Kriterium (SK I). Nach mSTaRT ist „keine Atmung nach
+  Freimachen der Atemwege“ EX. Eine Änderung würde die Soll-Sichtung aller Fälle mit Atem- oder Kreislaufstillstand verschieben.
+- **i014:** In Phase 3 (RR 60 palp.) rettet nur die volle Kombination aus Tamponade, Druckverband, Zugang und Infusion – hart, aber vertretbar.
+- **i064:** Beutel-Masken-Beatmung als Überbrückung bei zirkulär eingeschnürtem Thorax? Fachlich strittig, daher nicht eingebaut.
+- **i071:** Der CO-Abbau unter Sauerstoff ist eher schnell.
+- **i002, i063, i077:** RR um 80–85 mmHg ohne tastbaren Radialispuls ist ein Grenzwert; bei Hypothermie (i077) vertretbar.
+- **ki-4dda18 (Schule):** keine Analgesie trotz Schmerz 8–9, weil das Szenario für Sanitätshelfer gedacht ist.
+
+## i071–i084
+- korrigiert: i071 SpCO steigt nach Ende der Exposition nicht weiter (11 %, 10 % statt 13 %); i081 Hinweistext passte nicht zum Verlauf (Verletzung entsteht erst in Phase 3)
+- offen: i071 Abfall unter O₂ eher schnell; i077 RR 85/50 ohne Radialispuls bei Hypothermie vertretbar; i078 SK III nach mSTaRT, EKG-Überwachung trotzdem nötig (gewollte Falle)
+
+## i015–i028
+- korrigiert: i015 keine sprunghafte Erholung aus Phase 4 mehr (Zwischenphase); i016 Glas- statt Metallsplitter passend zur Anamnese; i023 Intubation bei beidseits weiten, lichtstarren Pupillen macht die Einklemmung nicht rückgängig; i026 Totenflecken an den unten liegenden Stellen, Auflagestellen ausgespart
+- offen: i015 Druckverband pauschal schädlich, obwohl ein Halsdruckverband mit Gegenzug gelehrt wird
+
+## i057–i070
+- korrigiert: i061 keine Besserung der Unterkühlung ohne Maßnahme mehr; i065 Pupillenbefund in der Todesphase ergänzt; i067 CO-Abbau realistisch (Halbwertszeit an Luft 4–5 h, unter O₂ 60–90 min)
+- offen: i063 Antiarrhythmikum bei stabilem tachykardem Vorhofflimmern als einzige Rettung, verhindert die spätere Kammertachykardie (konstruiert?), RR 80/50 ohne Radialispuls grenzwertig; i064 Beutelbeatmung als Überbrückung bei eingeschnürtem Thorax?; i068 Sprung von Phase 3 direkt zu tot, Anamnese in Ich-Form bei nicht sprechendem Patienten; i069 Phase 4 ohne Rettung (Point of no return gewollt?)
+
+## i085–i100
+- korrigiert: i085 Tütenrückatmung schädlich; i091 Wundverband wirkt jetzt; i096 Intubation allein hebt die Vergiftung nicht auf, Entkleiden nötig
+- offen: i088 Neugeborenes erholt sich aus „kalt, schlaff“ in einer Phase, Schmerz 9 nach der Geburt; i089 Endzustände ohne weitere Blutung trotz innerer Blutung; i090 Blutdrucksenkung und O₂ fehlen bei Präeklampsie, Antikonvulsivum steht für Magnesium; i096 O₂ fehlt trotz SpO₂ 86 %
+
+## i029–i042
+- keine eindeutigen Fehler
+- offen: i029 Atropin als erstes Medikament bei Bradykardie fehlt (Katalog: nur „Antidot“); i033 Lungenödem bessert sich ohne Nitrat; i034 ASS bei LAE nicht indiziert (nur Heparin); i038 Blutdrucksenkung beim Schlaganfall unter 220/120 schädlich?; i039 Analgesie stoppt den ganzen Verlauf der Hirnblutung
+
+## i001–i014
+- korrigiert: i010 EKG in „2-vorbereitet“ passend zur HF
+- offen: i005 Druckverband hilft nach dem Herausziehen nicht (soll er?); i014 nur die volle Kombination rettet in Phase 3 (hart, gewollt?)
+
+## i043–i056
+- korrigiert: i044 Augenöffnen passend zu GCS 13; i047/i049/i050 kindgerechte Infusion nur mit Venen- oder i.o.-Zugang; i052 EKG-Text passend zu HF 64; i053 Analgesie senkt den Schmerz auch ohne Wärmeerhalt
+- offen: i049 nach Kühlen ohne Volumen Rückfall in ungekühlte Phasen, Phase 3 Endzustand ohne Verschlechterung; i050 in Phase 3 keine Rettung mehr (späte Blutstillung + Volumen?); i056 Übergabe-Frist 45 statt 30 min bei Milzruptur (load and go); Info: i053 Wiedererwärmung mit Rettungsdecke recht schnell
+
+## p01–p13
+- korrigiert: p02 GCS 10 statt 13 bei fehlender Antwort, Tippfehler; p03 Schocklagerung beim schweren SHT schädlich; p06 Schmerz sinkt nicht ohne Analgesie; p10 Bild nannte das Sichtungsergebnis; p11 EKG allein besserte den Infarkt (falsche Ursache-Wirkung), Nitrat beim Hinterwandinfarkt mit fallendem RR schädlich
+- offen: p01 nach spätem Tourniquet keine Besserung durch Volumen; p05 Wendl-Tubus bei Mittelgesichtstrauma (deutsche Lehre: kontraindiziert) als kritisch; p11 Kammerflimmern ohne Defibrillation endgültig; p12 Glukose ohne Zugang bei GCS 12
+
+## Import-Szenarien (29 Fälle)
+- korrigiert (21): tote Phasen mit SpO₂ 0 statt geerbter Werte (16 Fälle); ki-9ca006 Pupillenkontrolle bremste die Hirnblutung; ki-7b7278 STEMI im EKG, Kammerflimmern nur mit Defibrillation, Kammertachykardie mit Kardioversion; CO-Fälle mit SpCO-Werten (ki-c2f70e, ki-dc9a60, ki-ea33b4, ki-eb8b72), Antikonvulsivum beim anhaltenden Krampf; ki-01b9c2 Tourniquet zählt wie Druckverband, keine Erholung aus GCS 5 ohne Volumen; ki-e74c7b Asthma bessert sich nur mit Bronchodilatator
+- „Bild nennt die Diagnose“-Warnungen sind Fehlalarme (gemeinsame Wörter wie „Unterarm“, „rechts“)
+
+## Entscheidungen umgesetzt (Teil A)
+- p01 Volumen nach spätem Tourniquet bessert teilweise; p05 Wendl-Tubus bei Mittelgesichtstrauma schädlich (Golden-Test angepasst); p11 Kammerflimmern mit Defibrillation unter Reanimation → ROSC; p12 Glukose nur mit Zugang; i005 Druckverband reicht nach dem Herausziehen; i015 Druckverband nicht mehr schädlich; i029 Atropin als erstes Medikament (Teilbesserung), kritisch Atropin/Schrittmacher/Katecholamine; i033 Endzustand nur mit Nitrat; i034 Heparin statt ASS+Heparin; i038 Blutdrucksenkung beim Schlaganfall schädlich; i039 Nachblutung ohne Übergabe nach ~45 min
+- offen: Soll-Sichtung bei Atemstillstand (z. B. Kammerflimmern) ist I, weil die Engine „keine Atmung“ als Rot-Kriterium wertet; nach mSTaRT wäre „keine Atmung nach Freimachen der Atemwege“ EX
+
+## Entscheidungen umgesetzt (Import)
+- ki-edfcfe ohne Rettungsdecke kein Tod mehr; ki-7b7278 ASS/Heparin Teil der Rettung und kritisch; ki-a121b3 Schocklagerung nicht mehr kritisch (S3); ki-fe7814 manuelle Kompression überbrückt; ki-9a6caa Infusion verzögert nur (permissive Hypotension)
+- bewusst unverändert: ki-4dda18 ohne Analgesie (Szenario für Sanitätshelfer)
+
+## Entscheidungen umgesetzt (Teil B)
+- i049 gekühlter Verlauf ohne Rückfall, kein stabiler Endzustand im dekompensierten Schock; i050 späte Blutstillung + kindgerechtes Volumen rettet knapp; i056 Übergabe bis 30 min (load and go); i063 Antiarrhythmikum nur Frequenzkontrolle, Kammertachykardie kommt trotzdem; i068 präfinale Phase, Beutelbeatmung oder Intubation rettet; i069 Defibrillation + Kühlung in Phase 4; i088 Neugeborenes wird langsam wieder warm, Schmerz der Mutter nach der Geburt 4; i089 Volumen verzögert nur, ohne Übergabe kein Überleben; i090 Magnesium zuerst, Blutdrucksenkung und O₂ kritisch, ohne Blutdrucksenkung erneuter Anfall; i096 Sauerstoff Pflicht für die Rettung

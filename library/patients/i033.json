@@ -1,6 +1,6 @@
 {
   "id": "i033",
-  "version": 2,
+  "version": 3,
   "title": "Atemnot bei Herzschwäche",
   "picture": "Frau, ca. 80 Jahre, sitzt kerzengerade auf einem Stuhl und hält sich an der Lehne fest. Atmet schnell und brodelnd, Lippen bläulich, beide Unterschenkel dick geschwollen. „Meine Tabletten sind noch in der Wohnung!“",
   "profile": {
@@ -197,9 +197,14 @@
             "fluids"
           ],
           "then": "2"
+        },
+        {
+          "when": [
+            "nitrate"
+          ],
+          "then": "3-versorgt"
         }
-      ],
-      "else": "3-versorgt"
+      ]
     },
     "3-gebessert": {
       "findings": {

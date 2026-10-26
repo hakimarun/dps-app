@@ -66,7 +66,7 @@ test("Soll-SK nach mSTaRT stimmt mit den Verlaufstabellen überein", () => {
     p08: { "1": "III", "2": "III", "3": "II", "4": "I" },
     p09: { "1": "III" },
     p10: { "1": "EX" },
-    p11: { "1": "III", "2": "II", "3": "EX" }, // gehfähig: die Falle zeigt erst das EKG
+    p11: { "1": "III", "2": "II", "3": "I", "tot": "EX" }, // gehfähig: die Falle zeigt erst das EKG; Kammerflimmern ist reanimierbar, erst "tot" ist EX
     p12: { "1": "I", "2": "I", "versorgt": "II" },
     p13: { "1": "II", "2": "I", "stimuliert": "II", "3": "EX" },
   };
@@ -96,11 +96,13 @@ const paths: [string, Event[], number, Record<string, string>][] = [
   ["P05 Atemweg frei, aber nicht gehalten", [scan(0, "p05"), act(1, "p05", "airway_open")], 60, { p05: "tot" }],
   ["P05 Atemweg dauerhaft gehalten", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold")], 45, { p05: "3" }],
   ["P05 Halten beendet: erneute Verlegung", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "airway_hold"), end(40)], 54, { p05: "1-wieder" }],
-  ["P05 Wendl-Tubus", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "wendl")], 60, { p05: "3" }],
-  ["P11 unbehandelt: Kammerflimmern", [], 45, { p11: "3" }],
+  ["P05 Wendl-Tubus hilft beim Mittelgesichtstrauma nicht", [scan(0, "p05"), act(1, "p05", "airway_open"), act(2, "p05", "wendl")], 60, { p05: "tot" }],
+  ["P11 unbehandelt: Kammerflimmern", [], 35, { p11: "3" }],
+  ["P11 Kammerflimmern ohne Defibrillation: Tod", [], 45, { p11: "tot" }],
+  ["P11 Defibrillation unter Reanimation: ROSC", [scan(30, "p11"), act(30, "p11", "cpr"), scan(30, "p11", "h2"), { t: 30, type: "assist", participant: "h2", patient: "p11" }, join(30, "h3", "rtw1"), scan(31, "p11", "h3"), act(31, "p11", "defibrillation", "h3")], 60, { p11: "rosc" }],
   ["P11 EKG erkennt den Infarkt, Übergabe", [scan(0, "p11"), act(1, "p11", "ecg"), handover(20, "p11", "rtw1")], 60, { p11: "2-erkannt" }],
-  ["P11 EKG erkannt, aber nicht transportiert", [scan(0, "p11"), act(1, "p11", "ecg")], 45, { p11: "3" }],
-  ["P12 Blutzucker und Glukose", [scan(0, "p12"), act(1, "p12", "blood_glucose"), act(3, "p12", "glucose")], 60, { p12: "versorgt" }],
+  ["P11 EKG erkannt, aber nicht transportiert", [scan(0, "p11"), act(1, "p11", "ecg")], 45, { p11: "tot" }],
+  ["P12 Blutzucker und Glukose", [scan(0, "p12"), act(1, "p12", "blood_glucose"), act(2, "p12", "iv_access"), act(5, "p12", "glucose")], 60, { p12: "versorgt" }],
   ["P12 unbehandelt: bewusstlos, aber am Leben", [], 60, { p12: "3" }],
   ["P13 Schrittmacher durch NEF", [scan(0, "p13"), act(1, "p13", "ecg"), scan(11, "p13", "h2"), act(11, "p13", "pacing", "h2")], 60, { p13: "stimuliert" }],
   ["P13 unbehandelt: Asystolie", [], 45, { p13: "3" }],

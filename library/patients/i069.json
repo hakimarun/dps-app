@@ -1,5 +1,5 @@
 {
-  "id": "i069", "version": 1, "title": "Agitierter Festivalbesucher (sympathomimetische Intoxikation)",
+  "id": "i069", "version": 2, "title": "Agitierter Festivalbesucher (sympathomimetische Intoxikation)",
   "picture": "Mann, ca. 25 Jahre, auf dem Gelände vor der Bühne, extrem unruhig, schlägt und tritt um sich. Schweißgebadet, Gesicht hochrot, sehr weite Pupillen. Schreit unverständlich und reagiert nicht auf Ansprache.",
   "profile": {
     "temperament": "aggressiv",
@@ -18,7 +18,8 @@
     "1": { "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "2-gekuehlt" }], "else": "2" },
     "2": { "findings": { "rr": 32, "spo2": 94, "hr": 160, "bp": "190/110", "temp": 39.8 }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["cool_large"], "then": "3-gekuehlt" }], "else": "3" },
     "3": { "findings": { "rr": 36, "spo2": 84, "hr": 170, "bp": "200/115", "gcs": 5, "temp": 40.6, "exam": { "bodycheck": "generalisiert krampfend, Zungenbiss, Haut heiß" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }, { "when": ["anticonvulsant", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["anticonvulsant"], "then": "sediert" }], "else": "4" },
-    "4": { "findings": { "rr": 8, "spo2": 75, "hr": 180, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 3, "temp": 41.2, "exam": { "ecg": "Kammertachykardie" } }, "else": "tot" },
+    "4": { "findings": { "rr": 8, "spo2": 75, "hr": 180, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 3, "temp": 41.2, "exam": { "ecg": "Kammertachykardie" } }, "rules": [{ "when": ["defibrillation", "cool_large"], "then": "5-kritisch" }], "else": "tot" },
+    "5-kritisch": { "findings": { "rr": 10, "spo2": 86, "hr": 135, "bp": "85/50", "radialPulse": true, "recap": 4, "gcs": 3, "temp": 40.0, "exam": { "ecg": "Sinustachykardie nach Defibrillation", "bodycheck": "bewusstlos, Muskulatur schlaff, Haut heiß und feucht gekühlt, Schürfwunden an beiden Händen" } } },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "exam": { "ecg": "Asystolie" } } },
     "2-gekuehlt": { "findings": { "rr": 28, "hr": 150, "bp": "180/105", "temp": 39.2, "exam": { "bodycheck": "Haut feucht gekühlt, tobt weiter, Muskeln angespannt, Schürfwunden an beiden Händen" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }], "else": "3-gekuehlt" },
     "3-gekuehlt": { "findings": { "rr": 30, "hr": 155, "bp": "185/110", "temp": 39.5, "exam": { "bodycheck": "Haut feucht gekühlt, tobt weiter, Muskeln angespannt, Schürfwunden an beiden Händen" } }, "rules": [{ "when": ["sedation", "cool_large"], "then": "sediert-gekuehlt" }, { "when": ["sedation"], "then": "sediert" }, { "when": ["intubation"], "then": "narkose" }] },

@@ -1,5 +1,5 @@
 {
-  "id": "i053", "version": 1, "title": "Hüftnahe Femurfraktur mit beginnender Unterkühlung",
+  "id": "i053", "version": 2, "title": "Hüftnahe Femurfraktur mit beginnender Unterkühlung",
   "picture": "Mann, ca. 85 Jahre, liegt auf dem kalten Boden und kann nicht aufstehen. Das rechte Bein ist verkürzt und nach außen gedreht. Zittert, Hände kühl. „Ich bin einfach ausgerutscht, und jetzt komme ich nicht mehr hoch. Die Hüfte tut so weh.“",
   "profile": { "temperament": "kooperativ", "speech": "ganze Sätze, etwas langsam, klagt über Kälte",
     "anamnesis": { "symptoms": "Die rechte Hüfte tut furchtbar weh, und mir ist kalt.", "allergies": "Allergien habe ich keine.", "medication": "Ich nehme Tabletten gegen hohen Blutdruck und ASS.", "history": "Ich habe hohen Blutdruck und Arthrose in den Knien.", "lastMeal": "Heute Morgen habe ich gefrühstückt.", "event": "Ich bin ausgerutscht und auf die rechte Seite gefallen. Den Kopf habe ich mir nicht angeschlagen.", "risk": "Ich lebe allein, ich gehe sonst mit dem Stock." },
@@ -10,9 +10,11 @@
     "exam": { "pelvis": "Becken stabil, Druckschmerz rechte Leiste", "bodycheck": "rechtes Bein verkürzt und außenrotiert, Druck- und Bewegungsschmerz rechte Hüfte, Durchblutung, Motorik und Sensibilität am Fuß erhalten, sonst unverletzt, Haut kühl" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }], "else": "2-kalt" },
-    "2-kalt": { "findings": { "hr": 98, "bp": "160/90", "temp": 35.1 }, "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }], "else": "3-kalt" },
-    "3-kalt": { "findings": { "rr": 16, "hr": 86, "bp": "150/85", "temp": 34.5, "gcs": 14, "exam": { "bodycheck": "rechtes Bein verkürzt und außenrotiert, Haut kalt und marmoriert, starkes Muskelzittern, wirkt verlangsamt" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }] },
+    "1": { "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }, { "when": ["analgesia"], "then": "2-analgesie" }], "else": "2-kalt" },
+    "2-kalt": { "findings": { "hr": 98, "bp": "160/90", "temp": 35.1 }, "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }, { "when": ["analgesia"], "then": "3-analgesie" }], "else": "3-kalt" },
+    "3-kalt": { "findings": { "rr": 16, "hr": 86, "bp": "150/85", "temp": 34.5, "gcs": 14, "exam": { "bodycheck": "rechtes Bein verkürzt und außenrotiert, Haut kalt und marmoriert, starkes Muskelzittern, wirkt verlangsamt" } }, "rules": [{ "when": ["warm", "analgesia"], "then": "versorgt" }, { "when": ["warm"], "then": "warm" }, { "when": ["analgesia"], "then": "3-analgesie" }] },
+    "2-analgesie": { "findings": { "hr": 88, "bp": "150/85", "temp": 35.1, "pain": 3 }, "rules": [{ "when": ["warm"], "then": "versorgt" }], "else": "3-analgesie" },
+    "3-analgesie": { "findings": { "rr": 16, "hr": 84, "bp": "145/80", "temp": 34.5, "gcs": 14, "pain": 3, "exam": { "bodycheck": "rechtes Bein verkürzt und außenrotiert, Haut kalt und marmoriert, starkes Muskelzittern, wirkt verlangsamt" } }, "rules": [{ "when": ["warm"], "then": "versorgt" }] },
     "warm": { "findings": { "hr": 94, "temp": 35.6 }, "rules": [{ "when": ["analgesia"], "then": "versorgt" }] },
     "versorgt": { "findings": { "rr": 16, "hr": 84, "bp": "145/80", "temp": 35.9, "pain": 3 } }
   }

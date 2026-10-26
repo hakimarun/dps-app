@@ -576,7 +576,7 @@
     },
     {
       "id": "ki-fe7814",
-      "version": 1,
+      "version": 3,
       "title": "Junktionale Blutung in der Leiste mit hämorrhagischem Schock",
       "picture": "Mann, ca. 30 Jahre, liegt auf dem Rücken in einer großen Blutlache, das rechte Bein leicht angewinkelt. Tiefe, klaffende Schnittwunde in der rechten Leiste, aus der hellrotes Blut pulsierend spritzt. Die Hose ist blutgetränkt, Glassplitter hängen an der Kleidung. Haut auffallend blass, kalter Schweiß auf der Stirn. Er presst ungeschickt eine Hand auf die Wunde, schlägt mit der anderen um sich und schreit: „Macht doch endlich was, ich verblute hier!“",
       "profile": {
@@ -616,6 +616,7 @@
         "critical": [
           {
             "actions": [
+              "manual_compression",
               "wound_packing"
             ],
             "within": 5
@@ -698,6 +699,13 @@
               ],
               "active": [],
               "then": "3"
+            },
+            {
+              "when": [],
+              "active": [
+                "manual_compression"
+              ],
+              "then": "11"
             }
           ],
           "else": "4",
@@ -759,6 +767,13 @@
               ],
               "active": [],
               "then": "6"
+            },
+            {
+              "when": [],
+              "active": [
+                "manual_compression"
+              ],
+              "then": "3"
             }
           ],
           "else": "4",
@@ -789,6 +804,13 @@
               ],
               "active": [],
               "then": "7"
+            },
+            {
+              "when": [],
+              "active": [
+                "manual_compression"
+              ],
+              "then": "4"
             }
           ],
           "else": "8",
@@ -881,7 +903,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -934,12 +956,47 @@
           },
           "rules": [],
           "dead": false
+        },
+        "11": {
+          "findings": {
+            "spurtingBleeding": false,
+            "exam": {
+              "wound": "Blutung in der Leiste wird manuell komprimiert und steht, solange der Druck gehalten wird",
+              "behavior": "unruhig, stöhnt unter dem Druck, antwortet noch adäquat"
+            }
+          },
+          "rules": [
+            {
+              "when": [
+                "wound_packing",
+                "pressure_dressing"
+              ],
+              "active": [],
+              "then": "2"
+            },
+            {
+              "when": [
+                "wound_packing"
+              ],
+              "active": [],
+              "then": "3"
+            },
+            {
+              "when": [],
+              "active": [
+                "manual_compression"
+              ],
+              "then": "11"
+            }
+          ],
+          "else": "4",
+          "dead": false
         }
       }
     },
     {
       "id": "ki-c467b9",
-      "version": 1,
+      "version": 2,
       "title": "Hypoglykämie unter Alkoholeinfluss, als Trunkenheit verkannt",
       "picture": "Mann, ca. 45 Jahre, sitzt auf dem Bordstein. Beim Versuch aufzustehen schwankt er und setzt sich wieder. Gesicht blass und stark verschwitzt, Hände zittern. Riecht deutlich nach Bier, Sprache verwaschen. Kleine Schürfwunde an der rechten Hand. Wirkt verwirrt und gereizt, schiebt Helfer weg und sagt: „Lasst mich in Ruhe, ich hab nur ein paar Bier getrunken!“",
       "profile": {
@@ -1216,7 +1273,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -1236,7 +1293,7 @@
     },
     {
       "id": "ki-9a6caa",
-      "version": 1,
+      "version": 3,
       "title": "Stumpfes Bauchtrauma mit Milzruptur und verzögertem Schock",
       "picture": "Frau, ca. 30 Jahre, liegt auf der linken Seite am Boden und hält sich mit beiden Armen den Oberbauch. Greift sich zwischendurch an die linke Schulter. Leicht blass, wach, ruhig und gut ansprechbar. Kleine Schnittwunden an beiden Handflächen, keine stärkere Blutung sichtbar. Sagt: „Mir geht's eigentlich gut, ich hab nur einen Schlag abbekommen. Haben Sie meine Freundin gesehen? Sie hat ein rotes Kleid an.“",
       "profile": {
@@ -1418,7 +1475,8 @@
             }
           },
           "rules": [],
-          "dead": false
+          "dead": false,
+          "else": "7"
         },
         "5": {
           "findings": {
@@ -1471,7 +1529,8 @@
               "then": "9"
             }
           ],
-          "dead": false
+          "dead": false,
+          "else": "4"
         },
         "7": {
           "findings": {
@@ -1491,7 +1550,8 @@
             }
           },
           "rules": [],
-          "dead": false
+          "dead": false,
+          "else": "8"
         },
         "8": {
           "findings": {
@@ -1508,7 +1568,8 @@
               "ecg": "Asystolie",
               "skin": "Fahlgrau, kalt, marmoriert.",
               "behavior": "Keine Reaktion, keine Atmung, kein tastbarer Puls."
-            }
+            },
+            "spo2": 0
           },
           "rules": [],
           "dead": true
@@ -1524,7 +1585,8 @@
             }
           },
           "rules": [],
-          "dead": false
+          "dead": false,
+          "else": "4"
         }
       }
     },
@@ -2294,7 +2356,7 @@
     },
     {
       "id": "ki-60cb5f",
-      "version": 1,
+      "version": 2,
       "title": "Verstecktes Schädel-Hirn-Trauma unter Alkoholeinfluss",
       "picture": "Mann, ca. 35 Jahre, steht schwankend und hält ein Handy hoch, mit dem er filmt. Aus den Haaren am Hinterkopf läuft Blut in den Nacken, das T-Shirt ist blutverschmiert. Das rechte Handgelenk hält er an den Körper gepresst. Er riecht stark nach Alkohol, lallt und schreit Helfer an: „Fasst mich nicht an! Ich film das alles, ihr seid doch viel zu langsam! Mir geht's gut, kümmert euch um die anderen!“",
       "profile": {
@@ -2635,7 +2697,7 @@
             "walking": false,
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,

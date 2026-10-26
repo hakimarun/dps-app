@@ -85,7 +85,7 @@ Der Server speichert nur angenommene Helfer-Aktionen und berechnet den Zustand d
 Fest eingebaut sind 113 Fälle und 101 Szenarien: die Musterfälle P01–P13 mit dem Szenario „Busunfall“ sowie die
 100 Fall-Ideen (I001–I100) und 100 Szenario-Ideen (S001–S100) aus `library/ideas/`, als spielbare Verläufe umgesetzt.
 Jeder Fall besteht die automatische Prüfung und startet in der Sichtungskategorie der Idee (ein Test hält das fest).
-Der Maßnahmenkatalog umfasst 71 Maßnahmen, darunter ärztliche Medikamente, Defibrillation, i.o.-Zugang, Dekontamination und Geburt.
+Der Maßnahmenkatalog umfasst 73 Maßnahmen, darunter ärztliche Medikamente, Defibrillation, i.o.-Zugang, Dekontamination und Geburt.
 Kinder werden mit kindgerechten Atemgrenzen gesichtet (JumpSTART); bei aussichtslosen Fällen zählt SK IV (abwartend) als richtig.
 Szenarien erreichen die geplante Zahl Betroffener, indem Fälle mehrfach ausgelegt werden: „I011-2“ ist eine zweite Karte von I011
 mit eigenem Verlauf. Kräfte, die keine Fahrzeuge sind (Feuerwehr, OrgL, RTH …), stehen in der Lagebeschreibung.

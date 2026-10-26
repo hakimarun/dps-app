@@ -1,6 +1,6 @@
 {
   "id": "i071",
-  "version": 1,
+  "version": 2,
   "title": "Rauchgasintoxikation mit drohendem Inhalationstrauma",
   "picture": "Mann, ca. 55 Jahre, ist selbst aus dem verqualmten Treppenhaus gekommen. Hustet immer wieder, Ruß an Nase und Mund, atmet schnell. „Da war überall Qualm, ich hab kaum Luft gekriegt.“",
   "profile": {
@@ -97,7 +97,7 @@
         "pain": 4,
         "exam": {
           "airway": "Ruß in Nase und Mund, Rachen gerötet, Stimme heiser",
-          "spco": "SpCO 13 %"
+          "spco": "SpCO 11 %"
         }
       },
       "rules": [
@@ -121,7 +121,7 @@
         "exam": {
           "airway": "Rachen geschwollen, Stimme heiser, inspiratorischer Stridor",
           "auscultation": "Giemen beidseits",
-          "spco": "SpCO 12 %"
+          "spco": "SpCO 10 %"
         }
       },
       "rules": [

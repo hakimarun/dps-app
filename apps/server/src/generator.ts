@@ -118,6 +118,9 @@ export function toPatient(g: GenPatient, id: string): unknown {
 export type Report = { ok: boolean; errors: string[]; warnings: string[]; sk: Sk | null };
 
 // G9: automatische Prüfung eines Falls (generiert oder von Hand); Fehler sperren die Freigabe.
+// Was man sieht, ist keine Diagnose: Seiten, Körperstellen und sichtbare Befunde zählen nicht als verratene Diagnose.
+const VISIBLE = /^(rechts|recht(e|er|en)|links|link(e|er|en)|beid(e|en|seits)|offen(e|er|en)?|klein(e|er|en)|gro(ß|ss)(e|er|en)|blutung|blutend(e|er)?|wunde[n]?|(ober|unter)(arm|schenkel)|schulter|handgelenk|knöchel|leiste|gesicht|brustkorb|thorax|abdomen|bauch|becken|rücken|kopfplatzwunde|schürfwunde[n]?|prellung(en)?|verbrennung(en)?|verbrühung)$/;
+
 export function check(raw: unknown, actions: Record<string, Action>): Report {
   const parsed = Patient.safeParse(raw);
   if (!parsed.success) return { ok: false, errors: parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`), warnings: [], sk: null };
@@ -142,7 +145,7 @@ export function check(raw: unknown, actions: Record<string, Action>): Report {
     if (f.rr > 70 || f.hr > 250 || f.spo2 !== undefined && f.spo2 > 100) errors.push(`Phase ${id}: Vitalwert außerhalb des möglichen Bereichs`);
     if (ph.dead && (f.hr > 0 || f.breathing)) warnings.push(`Phase ${id}: tot, aber noch Puls oder Atmung`);
   }
-  const titleWords = p.title.toLowerCase().split(/[^a-zäöüß-]+/).filter((w) => w.length > 5);
+  const titleWords = p.title.toLowerCase().split(/[^a-zäöüß-]+/).filter((w) => w.length > 5 && !VISIBLE.test(w));
   if (titleWords.some((w) => p.picture.toLowerCase().includes(w))) warnings.push("Das sichtbare Bild nennt die Diagnose");
   if (!p.scoring.critical.length) warnings.push("keine kritischen Maßnahmen angegeben");
   const sk = p.phases[p.start].dead ? "EX" : triage({ ...p.base, ...p.phases[p.start].findings, exam: {} }, "mstart");

@@ -1,6 +1,6 @@
 {
-  "id": "p10", "version": 2, "title": "Offensichtlich tödliche Verletzung",
-  "picture": "Person unter dem umgekippten Bus mit Verletzungen, die mit dem Leben nicht vereinbar sind. Keine Atmung, keine Lebenszeichen.",
+  "id": "p10", "version": 3, "title": "Offensichtlich tödliche Verletzung",
+  "picture": "Mann, ca. 40 Jahre, liegt eingeklemmt unter dem umgekippten Bus, Kopf und Brustkorb vom Bus zerquetscht. Keine Atmung, keine Lebenszeichen.",
   "meta": {"category": "Trauma", "tags": ["Tod"], "difficulty": "einsteiger"},
   "scoring": {"critical": [], "harmful": ["cpr"]},
   "base": { "walking": false, "lethalInjury": true, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false },

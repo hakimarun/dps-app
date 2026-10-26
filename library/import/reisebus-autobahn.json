@@ -180,7 +180,7 @@
   "patients": [
     {
       "id": "ki-edfcfe",
-      "version": 1,
+      "version": 3,
       "title": "Instabile Beckenfraktur mit Schock unter Antikoagulation",
       "picture": "Mann, ca. 78 Jahre, liegt eingezwängt zwischen zwei Sitzreihen halb auf der rechten Seite, die Beine unter der vorderen Sitzbank. Gesicht blass, Stirn kaltschweißig, Hände kalt. Er hält sich mit einer Hand die rechte Hüfte, keine sichtbare Blutung. Wach, ruhig und höflich, sagt lächelnd: „Mir geht's ganz gut, nur die Hüfte zwickt ein bisschen. Kümmern Sie sich lieber um die anderen.“",
       "profile": {
@@ -500,14 +500,14 @@
               "then": "6"
             }
           ],
-          "else": "2",
+          "else": "7",
           "dead": false
         },
         "9": {
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -528,7 +528,7 @@
     },
     {
       "id": "ki-9f0514",
-      "version": 1,
+      "version": 2,
       "title": "Offener Pneumothorax bei COPD-Patientin",
       "picture": "Frau, ca. 70 Jahre, sitzt auf dem Boden, nach vorn gebeugt, und stützt sich mit den Armen auf die Knie. Sie trägt eine dicke Strickjacke und hält sie mit der rechten Hand vor der Brust zusammen. An der rechten Seite ist die Jacke dunkel verfärbt und feucht. Sie atmet schnell und angestrengt mit Lippenbremse, ist blass und schwitzt. Sie ist ängstlich, greift nach jedem Helfer, der vorbeikommt, und sagt: „Bleiben Sie bei mir! Ich krieg so schlecht Luft, aber das ist meine COPD, das ist immer so.“",
       "profile": {
@@ -812,7 +812,8 @@
             "exam": {
               "ecg": "Asystolie",
               "skin": "Grau-zyanotisch"
-            }
+            },
+            "spo2": 0
           },
           "rules": [],
           "dead": true
@@ -821,7 +822,7 @@
     },
     {
       "id": "ki-9ca006",
-      "version": 1,
+      "version": 2,
       "title": "Kopfplatzwunde unter Marcumar mit sich entwickelnder Hirnblutung und Schenkelhalsfraktur",
       "picture": "Frau, ca. 80 Jahre, liegt auf dem Rücken am Boden, das rechte Bein nach außen gedreht. Platzwunde am behaarten Kopf rechts, die stark sickernd blutet; Blut läuft über Gesicht, Hals und Bluse. Wach und blass, schimpft energisch und versucht vergeblich, sich aufzurichten. Sie sagt: „Wo ist meine Handtasche? Holen Sie mir sofort meine Tasche! Ich würde ja aufstehen, aber mein Bein!“",
       "profile": {
@@ -978,7 +979,6 @@
             },
             {
               "when": [
-                "check_pupils",
                 "upper_body_up",
                 "oxygen"
               ],
@@ -1007,7 +1007,6 @@
             {
               "when": [
                 "pressure_dressing",
-                "check_pupils",
                 "upper_body_up",
                 "oxygen"
               ],
@@ -1078,8 +1077,7 @@
             {
               "when": [
                 "oxygen",
-                "upper_body_up",
-                "check_pupils"
+                "upper_body_up"
               ],
               "active": [],
               "then": "7"
@@ -1185,7 +1183,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -1254,7 +1252,7 @@
     },
     {
       "id": "ki-059761",
-      "version": 1,
+      "version": 2,
       "title": "Offene Unterschenkelfraktur mit verschleiertem Schock unter Betablocker",
       "picture": "Mann, ca. 70 Jahre, sitzt auf dem Boden und stützt sich mit beiden Händen nach hinten ab. Der rechte Unterschenkel ist deutlich fehlgestellt. Das Hosenbein ist zerrissen und blutdurchtränkt. Aus einer offenen Wunde sickert gleichmäßig Blut, darunter bildet sich eine kleine Blutlache. Er ist wach, presst die Lippen aufeinander und spricht kaum. Knapp sagt er: „Geht schon. Kümmern Sie sich um die anderen.“",
       "profile": {
@@ -1889,7 +1887,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -1909,7 +1907,7 @@
     },
     {
       "id": "ki-7b7278",
-      "version": 1,
+      "version": 3,
       "title": "Stummer Herzinfarkt bei gehfähigem Diabetiker",
       "picture": "Mann, ca. 75 Jahre, läuft umher und hilft anderen beim Aufstehen. Oberflächliche Schürfwunden an beiden Händen. Wirkt etwas blass, auf der Stirn steht leichter Schweiß. Er reibt sich ab und zu über die Brust und sagt: „Mir ist nur ein bisschen flau, kümmern Sie sich erst um die anderen.“",
       "profile": {
@@ -1959,6 +1957,12 @@
               "upper_body_up"
             ],
             "within": 20
+          },
+          {
+            "actions": [
+              "acs_meds"
+            ],
+            "within": 25
           }
         ],
         "harmful": [
@@ -2023,7 +2027,8 @@
             {
               "when": [
                 "upper_body_up",
-                "iv_access"
+                "iv_access",
+                "acs_meds"
               ],
               "active": [],
               "then": "4"
@@ -2042,7 +2047,7 @@
             "recap": 3,
             "pain": 5,
             "exam": {
-              "ecg": "VES",
+              "ecg": "STEMI (ST-Hebung), einzelne VES",
               "skin": "Blass, kaltschweißig",
               "general": "Hat sich hingesetzt, hat einmal erbrochen, sagt: Mir ist auf einmal ganz schlecht."
             }
@@ -2070,7 +2075,7 @@
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
               "skin": "Etwas blass, trocken",
-              "general": "Liegt ruhig mit erhöhtem Oberkörper, Venenzugang liegt, transportbereit für die Herzkatheter-Klinik"
+              "general": "Liegt ruhig mit erhöhtem Oberkörper, Venenzugang liegt, ASS und Heparin gegeben, transportbereit für die Herzkatheter-Klinik"
             }
           },
           "rules": [],
@@ -2084,7 +2089,7 @@
             "bp": "120/75",
             "pain": 4,
             "exam": {
-              "ecg": "VES",
+              "ecg": "STEMI (ST-Hebung), einzelne VES",
               "skin": "Blass, feuchte Stirn"
             }
           },
@@ -2092,7 +2097,8 @@
             {
               "when": [
                 "upper_body_up",
-                "iv_access"
+                "iv_access",
+                "acs_meds"
               ],
               "active": [],
               "then": "4"
@@ -2121,7 +2127,8 @@
             {
               "when": [
                 "oxygen",
-                "iv_access"
+                "iv_access",
+                "acs_meds"
               ],
               "active": [],
               "then": "11"
@@ -2147,7 +2154,15 @@
               "auscultation": "Rasselgeräusche beidseits"
             }
           },
-          "rules": [],
+          "rules": [
+            {
+              "when": [
+                "defibrillation"
+              ],
+              "active": [],
+              "then": "6"
+            }
+          ],
           "else": "8",
           "dead": false
         },
@@ -2156,7 +2171,7 @@
             "walking": false,
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -2171,7 +2186,9 @@
           },
           "rules": [
             {
-              "when": [],
+              "when": [
+                "defibrillation"
+              ],
               "active": [
                 "cpr"
               ],
@@ -2216,7 +2233,7 @@
             "walking": false,
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -2244,7 +2261,7 @@
             "exam": {
               "ecg": "STEMI (ST-Hebung)",
               "skin": "Blass, noch feucht",
-              "general": "Unter Sauerstoff und mit Venenzugang grenzwertig stabil, sofortiger Transport mit Notarzt erforderlich"
+              "general": "Unter Sauerstoff, mit Venenzugang und nach ASS und Heparin grenzwertig stabil, sofortiger Transport mit Notarzt erforderlich"
             }
           },
           "rules": [],
@@ -2275,7 +2292,7 @@
     },
     {
       "id": "ki-28a638",
-      "version": 1,
+      "version": 2,
       "title": "Hypoglykämie bei insulinpflichtigem Diabetes mit Stirnprellung",
       "picture": "Frau, ca. 70 Jahre, sitzt am Straßenrand auf dem Boden und hält ihre Handtasche fest. Kleine Prellung an der rechten Stirn, keine offene Wunde, keine Blutung. Wirkt etwas verlangsamt und unsicher, schaut sich suchend um und lächelt freundlich. Sagt: „Ach, mir geht es gut. Ich weiß nur gerade nicht genau, wo wir eigentlich hinwollten.“",
       "profile": {
@@ -2586,7 +2603,7 @@
             "walking": false,
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -2606,7 +2623,7 @@
     },
     {
       "id": "ki-a121b3",
-      "version": 1,
+      "version": 3,
       "title": "Stumpfes Bauchtrauma mit Milzverletzung und verzögertem Schock",
       "picture": "Mann, ca. 45 Jahre, in dunkler Uniformhose und Diensthemd, läuft aufgeregt hin und her und will immer wieder zurück. Das Hemd ist aus der Hose gerutscht, quer über dem Unterbauch ist ein rötlicher, streifenförmiger Abdruck zu sehen. Keine blutenden Wunden. Gesicht gerötet, leicht verschwitzt, gestikuliert hektisch. Er ruft: „Mir fehlt nichts! Kümmern Sie sich um meine Leute, ich muss da wieder rein!“",
       "profile": {
@@ -2648,12 +2665,6 @@
               "examine_abdomen"
             ],
             "within": 20
-          },
-          {
-            "actions": [
-              "shock_position"
-            ],
-            "within": 30
           },
           {
             "actions": [
@@ -2706,16 +2717,14 @@
           "rules": [
             {
               "when": [
-                "examine_abdomen",
-                "shock_position"
+                "examine_abdomen"
               ],
               "active": [],
               "then": "7"
             },
             {
               "when": [
-                "body_check",
-                "shock_position"
+                "body_check"
               ],
               "active": [],
               "then": "7"
@@ -2741,7 +2750,6 @@
             {
               "when": [
                 "examine_abdomen",
-                "shock_position",
                 "warm"
               ],
               "active": [],
@@ -2750,7 +2758,6 @@
             {
               "when": [
                 "body_check",
-                "shock_position",
                 "warm"
               ],
               "active": [],
@@ -2779,7 +2786,6 @@
           "rules": [
             {
               "when": [
-                "shock_position",
                 "warm",
                 "iv_access",
                 "fluids"
@@ -2789,7 +2795,6 @@
             },
             {
               "when": [
-                "shock_position",
                 "warm"
               ],
               "active": [],
@@ -2819,7 +2824,6 @@
           "rules": [
             {
               "when": [
-                "shock_position",
                 "warm",
                 "oxygen",
                 "iv_access",
@@ -2858,7 +2862,7 @@
             "walking": false,
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,

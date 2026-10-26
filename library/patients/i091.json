@@ -1,5 +1,5 @@
 {
-  "id": "i091", "version": 1, "title": "Schürfwunden der Hände bei Schwangerschaft (20. SSW)",
+  "id": "i091", "version": 2, "title": "Schürfwunden der Hände bei Schwangerschaft (20. SSW)",
   "picture": "Frau, ca. 28 Jahre, leicht gewölbter Bauch, kommt selbst zur Sammelstelle. Hautabschürfungen an beiden Handflächen. Fragt immer wieder: \"Geht es meinem Baby gut?\"",
   "profile": { "temperament": "ängstlich", "speech": "ganze Sätze, fragt ständig nach dem Baby",
     "anamnesis": { "symptoms": "Nur die Hände brennen. Bauchschmerzen habe ich keine.", "allergies": "Ich vertrage kein Pflaster mit Latex.", "medication": "Nur Folsäure.", "history": "Ich bin in der 20. Woche, es ist mein erstes Kind.", "lastMeal": "Vor einer Stunde ein Müsliriegel.", "event": "Ich bin beim Aussteigen hingefallen und habe mich mit den Händen abgefangen. Mit dem Bauch bin ich nirgends aufgekommen.", "risk": "Ich will wissen, ob mit dem Baby alles in Ordnung ist." },
@@ -10,7 +10,8 @@
     "exam": { "bodycheck": "Schürfwunden an beiden Handflächen, leicht verschmutzt, sonst unverletzt", "abdomen": "weich, kein Druckschmerz, Gebärmutter in Nabelhöhe" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["wound_dressing", "calm"], "then": "versorgt" }, { "when": ["calm"], "then": "beruhigt" }] },
+    "1": { "rules": [{ "when": ["wound_dressing", "calm"], "then": "versorgt" }, { "when": ["calm"], "then": "beruhigt" }, { "when": ["wound_dressing"], "then": "verbunden" }] },
+    "verbunden": { "findings": { "pain": 1, "exam": { "bodycheck": "Schürfwunden an beiden Handflächen steril abgedeckt, sonst unverletzt" } }, "rules": [{ "when": ["calm"], "then": "versorgt" }] },
     "beruhigt": { "findings": { "hr": 84 }, "rules": [{ "when": ["wound_dressing"], "then": "versorgt" }] },
     "versorgt": { "findings": { "hr": 80, "pain": 1, "exam": { "bodycheck": "Schürfwunden an beiden Handflächen steril abgedeckt, sonst unverletzt" } } }
   }

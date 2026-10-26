@@ -1,6 +1,6 @@
 {
   "id": "i005",
-  "version": 2,
+  "version": 3,
   "title": "Pfählungsverletzung Oberschenkel",
   "picture": "Frau, ca. 35 Jahre, sitzt am Boden. Ein Metallstab steckt im linken Bein oberhalb des Knies, kaum Blut. Sie greift immer wieder nach dem Stab: „Zieht das raus, zieht das sofort raus!“",
   "profile": {
@@ -142,6 +142,12 @@
         {
           "when": [
             "wound_packing"
+          ],
+          "then": "3-abgebunden"
+        },
+        {
+          "when": [
+            "pressure_dressing"
           ],
           "then": "3-abgebunden"
         },
@@ -300,6 +306,12 @@
         {
           "when": [
             "wound_packing"
+          ],
+          "then": "3-abgebunden"
+        },
+        {
+          "when": [
+            "pressure_dressing"
           ],
           "then": "3-abgebunden"
         },

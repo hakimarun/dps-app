@@ -1,15 +1,17 @@
 {
-  "id": "p11", "version": 1, "title": "STEMI (Hinterwand) bei Gehfähigem",
+  "id": "p11", "version": 3, "title": "STEMI (Hinterwand) bei Gehfähigem",
   "picture": "Mann, ca. 60 Jahre, steht etwas abseits, blass und kaltschweißig, hält sich die Brust. Keine sichtbaren Verletzungen. Winkt ab: \"Kümmern Sie sich um die anderen.\"",
   "profile": { "temperament": "verharmlosend", "speech": "ganze Sätze", "anamnesis": { "symptoms": "Mir drückt es so auf der Brust, und es zieht in den linken Arm.", "allergies": "Nein, Allergien habe ich keine.", "medication": "Ich nehme Ramipril gegen den hohen Blutdruck.", "history": "Ich habe hohen Blutdruck und rauche, sonst nichts.", "lastMeal": "Vor der Abfahrt habe ich gefrühstückt.", "event": "Beim Aufprall bin ich nur durchgeschüttelt worden, danach fing das mit der Brust an." }, "pitfall": "Das ist nur der Schreck, das geht gleich wieder.", "sources": ["ESC-Leitlinie Akutes Koronarsyndrom 2023", "ERC-Leitlinien 2021"] },
   "meta": {"category": "Internistisch", "tags": ["Untertriage-Falle", "EKG"], "difficulty": "experte"},
-  "scoring": {"critical": [{"actions": ["ecg"], "within": 20}, {"actions": ["handover"], "within": 30}], "harmful": []},
+  "scoring": {"critical": [{"actions": ["ecg"], "within": 20}, {"actions": ["handover"], "within": 30}], "harmful": ["nitrate"]},
   "base": { "walking": true, "breathing": true, "rr": 20, "spo2": 95, "hr": 96, "bp": "150/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 6, "exam": { "ecg": "STEMI (ST-Hebung in II, III, aVF)", "bodycheck": "keine äußeren Verletzungen, kaltschweißig" } },
   "start": "1",
   "phases": {
     "1": { "rules": [{ "when": ["ecg"], "then": "2-erkannt" }], "else": "2" },
-    "2": { "findings": { "walking": false, "rr": 22, "spo2": 93, "hr": 112, "bp": "105/70", "pain": 8, "exam": { "ecg": "STEMI (ST-Hebung in II, III, aVF), einzelne VES", "bodycheck": "keine äußeren Verletzungen, kaltschweißig, sitzt jetzt" } }, "rules": [{ "when": ["ecg"], "then": "2-erkannt" }], "else": "3" },
-    "2-erkannt": { "findings": { "hr": 90, "pain": 5 }, "else": "3" },
-    "3": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "ecg": "Kammerflimmern", "bodycheck": "keine äußeren Verletzungen" } } }
+    "2": { "findings": { "walking": false, "rr": 22, "spo2": 93, "hr": 112, "bp": "105/70", "pain": 8, "exam": { "ecg": "STEMI (ST-Hebung in II, III, aVF), einzelne VES", "bodycheck": "keine äußeren Verletzungen, kaltschweißig, sitzt jetzt" } }, "else": "3" },
+    "2-erkannt": { "findings": { "walking": false, "rr": 22, "spo2": 93, "hr": 112, "bp": "105/70", "pain": 8, "exam": { "ecg": "STEMI (ST-Hebung in II, III, aVF), einzelne VES", "bodycheck": "keine äußeren Verletzungen, kaltschweißig, sitzt jetzt" } }, "else": "3" },
+    "3": { "minutes": 10, "findings": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "ecg": "Kammerflimmern", "bodycheck": "keine äußeren Verletzungen" } }, "rules": [{ "when": ["defibrillation"], "active": ["cpr"], "then": "rosc" }, { "when": ["cpr", "defibrillation"], "then": "rosc" }], "else": "tot" },
+    "rosc": { "findings": { "walking": false, "breathing": true, "rr": 12, "spo2": 90, "hr": 110, "bp": "90/60", "radialPulse": true, "recap": 3, "gcs": 5, "followsCommands": false, "pain": 0, "exam": { "ecg": "Sinustachykardie nach Defibrillation, ST-Hebung in II, III, aVF", "bodycheck": "keine äußeren Verletzungen, bewusstlos, atmet spontan" } } },
+    "tot": { "dead": true, "findings": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false, "pain": 0, "exam": { "ecg": "Asystolie", "bodycheck": "keine äußeren Verletzungen" } } }
   }
 }

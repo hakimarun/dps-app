@@ -278,3 +278,10 @@ test("Befundschlüssel: Untersuchungen unter festen Schlüsseln, Temperatur als 
   });
   assert.deepEqual(tidyExam({ exam: { "Schwere Blutung am Unterschenkel. Pupillen reagieren auf Licht.": "normal", "Versuch der Analgesie": "", "Auskultation Lunge": "Rasseln" } }), { exam: { auscultation: "Rasseln" } });
 });
+
+test("Fallprüfung: sichtbare Körperstellen sind keine verratene Diagnose, Diagnosewörter schon", () => {
+  const base = structuredClone(lib.defs.patients.p01);
+  const warn = (title: string, picture: string) => check({ ...base, title, picture }, lib.defs.actions).warnings.includes("Das sichtbare Bild nennt die Diagnose");
+  assert.equal(warn("Offene Unterschenkelfraktur rechts", "Mann, ca. 40 Jahre, offene Wunde am rechten Unterschenkel"), false);
+  assert.equal(warn("Offene Unterschenkelfraktur rechts", "Mann, ca. 40 Jahre, Unterschenkelfraktur mit Knochen sichtbar"), true);
+});

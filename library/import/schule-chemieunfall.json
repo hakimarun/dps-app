@@ -151,7 +151,7 @@
   "patients": [
     {
       "id": "ki-01b9c2",
-      "version": 1,
+      "version": 2,
       "title": "Arterielle Schnittverletzung am Unterarm mit leichten Handverbrennungen",
       "picture": "Frau, ca. 40 Jahre, sitzt am Rand des Schulhofs auf dem Boden und presst ein blutgetränktes Tuch auf den rechten Unterarm. Darunter spritzt hellrotes Blut stoßweise hervor, daneben eine Blutlache. Beide Hände sind gerötet und haben kleine Blasen. Sie ist wach, gefasst und etwas blass. Sie versucht immer wieder aufzustehen und sagt: „Ich muss nach meinen Schülern sehen, mir geht es gut!“",
       "profile": {
@@ -191,7 +191,8 @@
         "critical": [
           {
             "actions": [
-              "pressure_dressing"
+              "pressure_dressing",
+              "tourniquet"
             ],
             "within": 10
           },
@@ -543,7 +544,17 @@
             {
               "when": [
                 "tourniquet",
-                "shock_position"
+                "iv_access",
+                "fluids"
+              ],
+              "active": [],
+              "then": "10"
+            },
+            {
+              "when": [
+                "pressure_dressing",
+                "iv_access",
+                "fluids"
               ],
               "active": [],
               "then": "10"
@@ -568,7 +579,8 @@
               "ecg": "Asystolie",
               "skin": "Wachsbleich, kalt.",
               "pupils": "Weit, lichtstarr beidseits."
-            }
+            },
+            "spo2": 0
           },
           "rules": [],
           "dead": true
@@ -1004,7 +1016,7 @@
     },
     {
       "id": "ki-e74c7b",
-      "version": 1,
+      "version": 2,
       "title": "Asthmaanfall nach Reizgasinhalation",
       "picture": "Mädchen, ca. 14 Jahre, sitzt vornübergebeugt auf einer Bank und stützt die Arme auf die Knie. Sie hustet stark und atmet schnell mit hörbarem Pfeifen beim Ausatmen. Gesicht blass, Augen gerötet und tränend, keine sichtbaren Brandverletzungen. Ein Rucksack liegt neben ihr. Sie wirkt ängstlich, schaut die Helfer an und sagt stockend: „Ich krieg … schlecht Luft … mein Asthma …“",
       "profile": {
@@ -1047,6 +1059,12 @@
               "upper_body_up"
             ],
             "within": 5
+          },
+          {
+            "actions": [
+              "bronchodilator"
+            ],
+            "within": 10
           },
           {
             "actions": [
@@ -1099,16 +1117,7 @@
           "rules": [
             {
               "when": [
-                "upper_body_up",
-                "oxygen"
-              ],
-              "active": [],
-              "then": "2"
-            },
-            {
-              "when": [
-                "upper_body_up",
-                "calm"
+                "bronchodilator"
               ],
               "active": [],
               "then": "2"
@@ -1151,14 +1160,7 @@
           "rules": [
             {
               "when": [
-                "oxygen"
-              ],
-              "active": [],
-              "then": "2"
-            },
-            {
-              "when": [
-                "calm"
+                "bronchodilator"
               ],
               "active": [],
               "then": "2"
@@ -1183,16 +1185,8 @@
           "rules": [
             {
               "when": [
-                "upper_body_up",
+                "bronchodilator",
                 "oxygen"
-              ],
-              "active": [],
-              "then": "6"
-            },
-            {
-              "when": [
-                "upper_body_up",
-                "calm"
               ],
               "active": [],
               "then": "6"
@@ -1250,7 +1244,7 @@
           "rules": [
             {
               "when": [
-                "upper_body_up",
+                "bronchodilator",
                 "oxygen"
               ],
               "active": [],
@@ -1333,7 +1327,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,

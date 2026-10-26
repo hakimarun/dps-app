@@ -1,5 +1,5 @@
 {
-  "id": "p01", "version": 1, "title": "Arterielle Blutung am Unterschenkel",
+  "id": "p01", "version": 2, "title": "Arterielle Blutung am Unterschenkel",
   "picture": "Mann, ca. 35 Jahre, liegt neben dem Bus. Offene Wunde am rechten Unterschenkel, spritzende Blutung, große Blutlache. Wach, ängstlich und blass.",
   "profile": { "temperament": "ängstlich", "speech": "ganze Sätze, ab Phase 2 verwirrt", "anamnesis": { "allergies": "Ja, ich vertrage kein Penicillin.", "medication": "Nein, ich nehme keine Medikamente.", "history": "Nein, ich bin eigentlich gesund.", "lastMeal": "Ich habe vor ungefähr zwei Stunden zu Mittag gegessen." }, "pitfall": "fragt ständig: Verliere ich mein Bein?" },
   "meta": {"category": "Trauma", "tags": ["Blutung", "Schock"], "difficulty": "einsteiger"},
@@ -9,7 +9,8 @@
   "phases": {
     "1": { "rules": [{ "when": ["tourniquet"], "then": "2-versorgt" }], "else": "2-schock" },
     "2-schock": { "findings": { "rr": 32, "spo2": 93, "hr": 135, "bp": "85/60", "recap": 4, "gcs": 13 }, "rules": [{ "when": ["tourniquet"], "then": "2-schock-gestillt" }], "else": "3-schock" },
-    "2-schock-gestillt": { "findings": { "rr": 32, "spo2": 93, "hr": 135, "bp": "85/60", "recap": 4, "gcs": 13, "spurtingBleeding": false } },
+    "2-schock-gestillt": { "findings": { "rr": 32, "spo2": 93, "hr": 135, "bp": "85/60", "recap": 4, "gcs": 13, "spurtingBleeding": false }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-gestillt-volumen" }] },
+    "3-gestillt-volumen": { "findings": { "rr": 26, "spo2": 94, "hr": 115, "bp": "90/60", "radialPulse": true, "recap": 3, "gcs": 14, "spurtingBleeding": false } },
     "3-schock": { "findings": { "rr": 36, "spo2": 93, "hr": 150, "bp": "60 palp.", "radialPulse": false, "recap": 5, "gcs": 8, "followsCommands": false }, "else": "4-tot" },
     "4-tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
     "2-versorgt": { "findings": { "rr": 22, "hr": 115, "bp": "105/75", "spurtingBleeding": false }, "rules": [{ "when": ["iv_access", "fluids"], "then": "3-volumen" }], "else": "3-ohne-volumen" },

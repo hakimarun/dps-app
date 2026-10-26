@@ -1,5 +1,5 @@
 {
-  "id": "p12", "version": 1, "title": "Hypoglykämie mit Verwirrtheit",
+  "id": "p12", "version": 2, "title": "Hypoglykämie mit Verwirrtheit",
   "picture": "Junge Frau, ca. 25 Jahre, sitzt am Straßenrand, schwitzt stark, zittert und antwortet wirr. Wird gereizt, wenn man sie anfasst. Keine sichtbaren Verletzungen.",
   "profile": { "temperament": "verwirrt, gereizt", "speech": "verwirrt, nach Glukose ganze Sätze", "anamnesis": { "symptoms": "Mir ist so zittrig, und alles ist so komisch.", "allergies": "Nein, Allergien habe ich keine.", "medication": "Ich spritze Insulin, heute Morgen auch.", "history": "Ich habe Zucker, seit ich zwölf bin.", "lastMeal": "Gegessen habe ich heute noch nichts, die Fahrt ging so früh los.", "event": "Mir war schon im Bus so komisch, dann hat es gerumst." }, "pitfall": "wirkt betrunken oder psychisch auffällig", "sources": ["DDG-Praxisempfehlung Hypoglykämie", "ERC-Leitlinien 2021 Erste Hilfe"] },
   "meta": {"category": "Internistisch", "tags": ["Bewusstsein", "Blutzucker"], "difficulty": "fortgeschritten"},
@@ -7,9 +7,9 @@
   "base": { "walking": false, "breathing": true, "rr": 18, "spo2": 97, "hr": 108, "bp": "125/80", "radialPulse": true, "recap": 2, "gcs": 12, "followsCommands": false, "pain": 0, "exam": { "glucose": "38 mg/dl", "pupils": "mittelweit, prompt", "bodycheck": "keine Verletzungen, kaltschweißig, zittert" } },
   "start": "1",
   "phases": {
-    "1": { "rules": [{ "when": ["glucose"], "then": "versorgt" }], "else": "2" },
-    "2": { "findings": { "gcs": 9, "hr": 115, "exam": { "glucose": "31 mg/dl", "pupils": "mittelweit, prompt", "bodycheck": "keine Verletzungen, kaltschweißig, kaum noch ansprechbar" } }, "rules": [{ "when": ["glucose"], "then": "versorgt" }], "else": "3" },
-    "3": { "findings": { "gcs": 6, "rr": 14, "hr": 120, "exam": { "glucose": "25 mg/dl", "pupils": "mittelweit, träge", "bodycheck": "keine Verletzungen, kaltschweißig, reagiert nur auf Schmerz" } }, "rules": [{ "when": ["glucose"], "then": "versorgt" }] },
+    "1": { "rules": [{ "when": ["glucose", "iv_access"], "then": "versorgt" }, { "when": ["glucose", "io_access"], "then": "versorgt" }], "else": "2" },
+    "2": { "findings": { "gcs": 9, "hr": 115, "exam": { "glucose": "31 mg/dl", "pupils": "mittelweit, prompt", "bodycheck": "keine Verletzungen, kaltschweißig, kaum noch ansprechbar" } }, "rules": [{ "when": ["glucose", "iv_access"], "then": "versorgt" }, { "when": ["glucose", "io_access"], "then": "versorgt" }], "else": "3" },
+    "3": { "findings": { "gcs": 6, "rr": 14, "hr": 120, "exam": { "glucose": "25 mg/dl", "pupils": "mittelweit, träge", "bodycheck": "keine Verletzungen, kaltschweißig, reagiert nur auf Schmerz" } }, "rules": [{ "when": ["glucose", "iv_access"], "then": "versorgt" }, { "when": ["glucose", "io_access"], "then": "versorgt" }] },
     "versorgt": { "findings": { "gcs": 15, "followsCommands": true, "hr": 92, "exam": { "glucose": "112 mg/dl", "pupils": "mittelweit, prompt", "bodycheck": "keine Verletzungen, wieder klar" } } }
   }
 }

@@ -1,6 +1,6 @@
 {
-  "id": "p02", "version": 2, "title": "Spannungspneumothorax",
-  "picture": "Frau, ca. 45 Jahre, sitzt an die Buswand gelehnt und hält sich die rechte Brustseite. Deutlich luftnot, spricht nur kurze Sätze. Äußerlich kaum verletzt.",
+  "id": "p02", "version": 3, "title": "Spannungspneumothorax",
+  "picture": "Frau, ca. 45 Jahre, sitzt an die Buswand gelehnt und hält sich die rechte Brustseite. Deutliche Luftnot, spricht nur kurze Sätze. Äußerlich kaum verletzt.",
   "profile": { "temperament": "kooperativ", "speech": "2–3 Wörter pro Antwort, ab Phase 3 keine", "anamnesis": { "history": "Ich habe Asthma, schon seit der Kindheit.", "medication": "Ich habe ein Asthmaspray, Salbutamol.", "event": "Seit dem Aufprall tut es rechts beim Atmen weh." }, "pitfall": "Asthma verleitet zur Fehldiagnose Asthmaanfall" },
   "meta": {"category": "Trauma", "tags": ["Atmung", "Thorax"], "difficulty": "fortgeschritten"},
   "scoring": {"critical": [{"actions": ["auscultate"], "within": 30}, {"actions": ["needle_decompression"], "within": 30}], "harmful": ["shock_position"]},
@@ -9,7 +9,7 @@
   "phases": {
     "1": { "rules": [{ "when": ["needle_decompression"], "then": "2-entlastet" }], "else": "2" },
     "2": { "findings": { "rr": 38, "spo2": 84, "hr": 130, "bp": "120/80" }, "rules": [{ "when": ["needle_decompression"], "then": "3-entlastet" }], "else": "3" },
-    "3": { "findings": { "rr": 40, "spo2": 76, "hr": 140, "bp": "95/60", "gcs": 13, "followsCommands": false }, "else": "4-tot" },
+    "3": { "findings": { "rr": 40, "spo2": 76, "hr": 140, "bp": "95/60", "gcs": 10, "followsCommands": false }, "else": "4-tot" },
     "4-tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
     "2-entlastet": { "findings": { "rr": 24, "spo2": 94, "hr": 105, "bp": "125/80", "exam": { "auscultation": "Atemgeräusch rechts abgeschwächt" } }, "else": "3-entlastet" },
     "3-entlastet": { "findings": { "rr": 22, "spo2": 95, "hr": 100, "bp": "125/80", "exam": { "auscultation": "Atemgeräusch rechts abgeschwächt" } } }

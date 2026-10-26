@@ -1,9 +1,9 @@
 {
-  "id": "i068", "version": 1, "title": "Stark alkoholisierter Jugendlicher",
+  "id": "i068", "version": 2, "title": "Stark alkoholisierter Jugendlicher",
   "picture": "Junge, ca. 16 Jahre, liegt auf dem Rücken im nassen Rasen. Reagiert nur auf Schmerzreiz mit Stöhnen. Erbrochenes an Mund und Pullover, riecht stark nach Alkohol, Atmung gurgelnd. Haut kühl.",
   "profile": {
     "temperament": "keins",
-    "speech": "spricht nicht, stöhnt auf Schmerzreiz",
+    "speech": "spricht nicht, stöhnt nur auf Schmerzreiz; Angaben nur durch Begleiter oder später",
     "anamnesis": {
       "event": "Wir haben Wodka aus der Flasche getrunken, ich weiß nicht mehr, wie viel.",
       "lastMeal": "Seit Mittag habe ich nichts gegessen."
@@ -20,7 +20,9 @@
   "phases": {
     "1": { "rules": [{ "when": ["recovery_position"], "then": "2-seitenlage" }], "else": "2-aspiration" },
     "2-aspiration": { "findings": { "rr": 26, "spo2": 86, "hr": 112, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "3" },
-    "3": { "findings": { "rr": 32, "spo2": 79, "hr": 128, "bp": "100/60", "recap": 3, "gcs": 6, "temp": 34.9, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "tot" },
+    "3": { "findings": { "rr": 32, "spo2": 79, "hr": 128, "bp": "100/60", "recap": 3, "gcs": 6, "temp": 34.9, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["recovery_position", "airway_open", "oxygen"], "then": "3-aspiration-versorgt" }], "else": "4-praefinal" },
+    "4-praefinal": { "findings": { "rr": 6, "spo2": 68, "hr": 48, "bp": "80/45", "radialPulse": false, "recap": 4, "gcs": 3, "temp": 34.6, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche, kaum noch Atemgeräusch", "glucose": "45 mg/dl", "bodycheck": "Schnappatmung, Lippen zyanotisch, Erbrochenes im Rachen; Prellmarke mit kleiner Schwellung am Hinterkopf. Kleidung nass." } }, "rules": [{ "when": ["airway_open"], "active": ["bag_valve"], "then": "4-beatmet" }, { "when": ["intubation"], "then": "4-beatmet" }], "else": "tot" },
+    "4-beatmet": { "findings": { "rr": 12, "spo2": 88, "hr": 92, "bp": "100/60", "gcs": 3, "temp": 34.6, "exam": { "auscultation": "beidseits grobblasige Rasselgeräusche, unter Beatmung belüftet", "glucose": "45 mg/dl", "bodycheck": "wird beatmet, Rachen abgesaugt; Prellmarke mit kleiner Schwellung am Hinterkopf. Kleidung nass." } } },
     "tot": { "dead": true, "findings": { "breathing": false, "rr": 0, "spo2": 0, "hr": 0, "bp": "0", "radialPulse": false, "gcs": 3, "followsCommands": false } },
     "3-aspiration-versorgt": { "findings": { "rr": 22, "spo2": 91, "hr": 104, "gcs": 7, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche", "glucose": "48 mg/dl" } }, "rules": [{ "when": ["glucose"], "then": "aspiration-glukose" }] },
     "aspiration-glukose": { "findings": { "rr": 20, "spo2": 92, "hr": 98, "gcs": 9, "temp": 35.3, "exam": { "auscultation": "rechts basal grobblasige Rasselgeräusche", "glucose": "108 mg/dl" } } },

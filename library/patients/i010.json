@@ -1,6 +1,6 @@
 {
   "id": "i010",
-  "version": 2,
+  "version": 3,
   "title": "Lange Einklemmung unter Trümmern",
   "picture": "Frau, ca. 60 Jahre, liegt auf dem Rücken, beide Beine unter einem Betonteil. Wach, Lippen trocken: „Ich hab so Durst. Wie lange dauert das noch?“",
   "profile": {
@@ -100,7 +100,10 @@
     "2-vorbereitet": {
       "findings": {
         "hr": 95,
-        "bp": "115/75"
+        "bp": "115/75",
+        "exam": {
+          "ecg": "Sinusrhythmus, unauffällig"
+        }
       },
       "else": "3-befreit-vorbereitet"
     },

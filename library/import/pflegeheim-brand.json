@@ -169,7 +169,7 @@
   "patients": [
     {
       "id": "ki-c2f70e",
-      "version": 1,
+      "version": 2,
       "title": "Rauchgasinhalation mit CO-Vergiftung, beginnender Atemwegsschwellung und Unterkühlung",
       "picture": "Frau, ca. 85 Jahre, liegt im Nachthemd auf einer Krankentrage, in eine nasse Decke gewickelt. Ruß an Nase und Mund, hustet schwarzen Schleim ab. Atmet schnell, beim Einatmen ist ein pfeifendes Geräusch zu hören, die Stimme ist heiser. Das Gesicht wirkt rosig, sie zittert am ganzen Körper. Sie klammert sich an die Hand des Helfers und ruft ängstlich: „Lassen Sie mich nicht allein, ich krieg so schlecht Luft!“",
       "profile": {
@@ -260,7 +260,8 @@
           "glucose": "118 mg/dl",
           "abdomen": "weich, kein Druckschmerz",
           "pelvis": "stabil, kein Schmerz",
-          "bodycheck": "Keine äußeren Verletzungen, nasse Kleidung und nasse Decke, kalte Füße"
+          "bodycheck": "Keine äußeren Verletzungen, nasse Kleidung und nasse Decke, kalte Füße",
+          "spco": "SpCO 22 %"
         },
         "temp": 35.2
       },
@@ -299,7 +300,8 @@
               "airway": "Ruß im Gesicht, heisere Stimme, leiser inspiratorischer Stridor, nicht zunehmend",
               "auscultation": "leises Giemen beidseits",
               "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
-              "neuro": "wach, orientiert, Kopfschmerz etwas besser, ruhiger"
+              "neuro": "wach, orientiert, Kopfschmerz etwas besser, ruhiger",
+              "spco": "SpCO 15 % unter Sauerstoff"
             },
             "temp": 35.5
           },
@@ -315,7 +317,8 @@
             "exam": {
               "airway": "heisere Stimme, inspiratorischer Stridor unverändert",
               "skin": "rosig, kalt und nass, starkes Kältezittern",
-              "neuro": "wach, verwirrt, Kopfschmerz etwas besser"
+              "neuro": "wach, verwirrt, Kopfschmerz etwas besser",
+              "spco": "SpCO 15 % unter Sauerstoff"
             },
             "temp": 34.8
           },
@@ -373,7 +376,8 @@
               "auscultation": "leises Giemen beidseits",
               "skin": "rosig, warm unter der Rettungsdecke",
               "neuro": "wach, orientiert, ruhig bei Ansprache mit ihrem Namen",
-              "ecg": "Sinusrhythmus"
+              "ecg": "Sinusrhythmus",
+              "spco": "SpCO 10 % unter Sauerstoff"
             },
             "temp": 35.8
           },
@@ -392,7 +396,8 @@
               "airway": "inspiratorischer Stridor, nicht weiter zunehmend, Stimme heiser – Notarzt und frühe Intubation erforderlich",
               "auscultation": "Giemen und vereinzelte Rasselgeräusche beidseits",
               "skin": "rosig, unter der Rettungsdecke trocken, Zittern lässt nach",
-              "neuro": "schläfrig, aber erweckbar, befolgt Aufforderungen"
+              "neuro": "schläfrig, aber erweckbar, befolgt Aufforderungen",
+              "spco": "SpCO 15 % unter Sauerstoff"
             },
             "temp": 35
           },
@@ -444,7 +449,8 @@
               "airway": "Beutel-Masken-Beatmung mit Sauerstoff unter erhöhtem Widerstand möglich, Stridor – sofortige Intubation durch Notarzt erforderlich",
               "auscultation": "beatmet, Atemgeräusch beidseits, Rasselgeräusche",
               "skin": "blass, kalt, Lippen wieder rosiger",
-              "neuro": "bewusstlos, reagiert auf Schmerzreiz mit Abwehrbewegung"
+              "neuro": "bewusstlos, reagiert auf Schmerzreiz mit Abwehrbewegung",
+              "spco": "SpCO 15 % unter Sauerstoff"
             },
             "temp": 34.4
           },
@@ -495,7 +501,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -517,7 +523,7 @@
     },
     {
       "id": "ki-dc9a60",
-      "version": 1,
+      "version": 2,
       "title": "Offene Thoraxverletzung mit Rauchgasinhalation und Unterkühlung",
       "picture": "Mann, ca. 50 Jahre, sitzt an eine Hauswand gelehnt in nasser, weißer Pflegekleidung und zittert. Links seitlich am Brustkorb ist der Kasack blutdurchtränkt. Aus einer Schnittwunde quillt bei jedem Atemzug schaumiges Blut, dabei ist ein schlürfendes Geräusch zu hören. Ruß an Nase und Mund, er hustet und atmet schnell und flach. Er versucht aufzustehen und sackt sofort zurück. Hektisch hält er einen zerknitterten, nassen Zettel hoch und ruft: „Mir geht's gut, kümmert euch um Zimmer 4 und 7, die fehlen noch!“",
       "profile": {
@@ -603,7 +609,8 @@
           "abdomen": "Weich, kein Druckschmerz, keine Abwehrspannung.",
           "pelvis": "Stabil, kein Druckschmerz.",
           "ecg": "Sinustachykardie",
-          "glucose": "118 mg/dl"
+          "glucose": "118 mg/dl",
+          "spco": "SpCO 14 % (Raucher)"
         },
         "temp": 36
       },
@@ -641,7 +648,8 @@
             "exam": {
               "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr, geringe Nachblutung am Rand.",
               "auscultation": "Links weiterhin abgeschwächtes Atemgeräusch, rechts vesikulär.",
-              "head": "Kopfschmerz unter Sauerstoff langsam rückläufig."
+              "head": "Kopfschmerz unter Sauerstoff langsam rückläufig.",
+              "spco": "SpCO 8 % unter Sauerstoff"
             }
           },
           "rules": [
@@ -726,7 +734,8 @@
             "exam": {
               "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch.",
               "auscultation": "Links leicht abgeschwächtes Atemgeräusch, rechts vesikulär.",
-              "behavior": "Ruhiger, fragt aber immer wieder nach Zimmer 4 und 7."
+              "behavior": "Ruhiger, fragt aber immer wieder nach Zimmer 4 und 7.",
+              "spco": "SpCO 8 % unter Sauerstoff"
             },
             "temp": 36
           },
@@ -774,7 +783,8 @@
             "pain": 2,
             "exam": {
               "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet.",
-              "behavior": "Deutlich entspannter und transportbereit."
+              "behavior": "Deutlich entspannter und transportbereit.",
+              "spco": "SpCO 8 % unter Sauerstoff"
             },
             "temp": 36.1
           },
@@ -814,7 +824,8 @@
             "pain": 6,
             "exam": {
               "bodycheck": "Chest Seal sitzt dicht, das Ventil arbeitet. Kein schlürfendes Geräusch mehr.",
-              "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär."
+              "auscultation": "Links abgeschwächtes Atemgeräusch, rechts vesikulär.",
+              "spco": "SpCO 8 % unter Sauerstoff"
             }
           },
           "rules": [
@@ -929,7 +940,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -948,7 +959,7 @@
     },
     {
       "id": "ki-055f4f",
-      "version": 1,
+      "version": 2,
       "title": "Instabile Beckenfraktur mit Handgelenksfraktur und Unterkühlung nach Sturz",
       "picture": "Frau, ca. 80 Jahre, liegt barfuß im durchnässten Nachthemd auf dem Rücken auf nassem Asphalt. Sie hält den rechten Unterarm mit der linken Hand, das rechte Handgelenk ist sichtbar verformt und geschwollen. Das rechte Bein bewegt sie nicht. Sie zittert und ist blass, aber wach und freundlich. Sie sagt: „Ach, das ist nur meine Hand. Kümmern Sie sich erst um die anderen, ich will keine Umstände machen.“",
       "profile": {
@@ -1411,7 +1422,7 @@
           "findings": {
             "breathing": false,
             "rr": 0,
-            "spo2": 50,
+            "spo2": 0,
             "hr": 0,
             "bp": "0",
             "radialPulse": false,
@@ -1431,7 +1442,7 @@
     },
     {
       "id": "ki-ea33b4",
-      "version": 1,
+      "version": 2,
       "title": "Kohlenmonoxidvergiftung nach Rauchgasexposition",
       "picture": "Mann, ca. 88 Jahre, sitzt zusammengesunken im Rollstuhl unter einer nassen Wolldecke, nur im Schlafanzug und barfuß. Keine sichtbaren Verletzungen, Gesicht blass, Schlafanzug riecht stark nach Rauch. Auf der Decke ist Erbrochenes. Er ist unruhig, hält sich mit beiden Händen den Kopf, schaut sich ratlos um und murmelt: „Mir ist so schlecht … wo bin ich denn hier? Ich will in mein Bett.“",
       "profile": {
@@ -1524,7 +1535,8 @@
           "pelvis": "stabil, kein Schmerz",
           "bodycheck": "keine Verletzungen, keine Verbrennungen; Füße bloß und kalt",
           "glucose": "118 mg/dl",
-          "ecg": "Sinustachykardie"
+          "ecg": "Sinustachykardie",
+          "spco": "SpCO 28 %"
         },
         "temp": 35.4
       },
@@ -1560,7 +1572,8 @@
             "pain": 3,
             "exam": {
               "neuro": "ruhiger, behält die Maske auf, hält die Hand des Helfers; Kopfschmerz und Übelkeit lassen nach",
-              "skin": "kühl, nass, zittert am ganzen Körper"
+              "skin": "kühl, nass, zittert am ganzen Körper",
+              "spco": "SpCO 18 % unter Sauerstoff"
             },
             "temp": 35
           },
@@ -1640,7 +1653,8 @@
             "pain": 2,
             "exam": {
               "neuro": "kooperativ, behält die Maske auf; laut Pflege fast wieder „wie sonst“, Kopfschmerz nur noch leicht, keine Übelkeit",
-              "skin": "unter Rettungsdecke trocken, Zittern lässt nach"
+              "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
+              "spco": "SpCO 10 % unter Sauerstoff"
             },
             "temp": 35.6
           },
@@ -1655,7 +1669,8 @@
             "pain": 3,
             "exam": {
               "neuro": "behält die Maske auf, Kopfschmerz und Übelkeit rückläufig, klagt: „Mir ist so kalt.“",
-              "skin": "kalt, nass, starkes Kältezittern, Lippen bläulich"
+              "skin": "kalt, nass, starkes Kältezittern, Lippen bläulich",
+              "spco": "SpCO 18 % unter Sauerstoff"
             },
             "temp": 34.8
           },
@@ -1681,7 +1696,8 @@
             "pain": 2,
             "exam": {
               "neuro": "zunehmend schläfrig und verlangsamt, befolgt einfache Aufforderungen; Kopfschmerz und Übelkeit rückläufig",
-              "skin": "kalt, blass-marmoriert, Kältezittern lässt nach"
+              "skin": "kalt, blass-marmoriert, Kältezittern lässt nach",
+              "spco": "SpCO 10 % unter Sauerstoff"
             },
             "temp": 34
           },
@@ -1701,7 +1717,8 @@
               "airway": "frei nach Absaugen, kein Gurgeln mehr",
               "neuro": "schläfrig, desorientiert, befolgt einfache Aufforderungen, keine Muskelzuckungen mehr",
               "skin": "kalt, nass, zittert",
-              "ecg": "Sinustachykardie"
+              "ecg": "Sinustachykardie",
+              "spco": "SpCO 18 % unter Sauerstoff"
             },
             "temp": 34.7
           },
@@ -1737,6 +1754,15 @@
           "rules": [
             {
               "when": [
+                "anticonvulsant",
+                "airway_open",
+                "oxygen"
+              ],
+              "active": [],
+              "then": "11"
+            },
+            {
+              "when": [
                 "airway_open",
                 "oxygen",
                 "recovery_position"
@@ -1761,7 +1787,8 @@
               "airway": "frei",
               "neuro": "weiterhin verwirrter als sonst, aber ruhig, behält die Maske auf, befolgt Aufforderungen",
               "skin": "unter Rettungsdecke trocken, Zittern lässt nach",
-              "ecg": "Sinustachykardie"
+              "ecg": "Sinustachykardie",
+              "spco": "SpCO 10 % unter Sauerstoff"
             },
             "temp": 35.3
           },
@@ -1781,7 +1808,8 @@
               "neuro": "Krampf hat aufgehört, nachschlafend, öffnet die Augen auf Schmerzreiz, wehrt gezielt ab, stöhnt",
               "airway": "frei in Seitenlage, Atmung regelmäßig",
               "pupils": "isokor, mittelweit, lichtreagibel",
-              "ecg": "Sinustachykardie"
+              "ecg": "Sinustachykardie",
+              "spco": "SpCO 18 % unter Sauerstoff"
             },
             "temp": 34.6
           },
@@ -1833,7 +1861,8 @@
               "airway": "frei nach Absaugen, Brustkorb hebt sich unter Beutel-Masken-Beatmung, Eigenatmung flach",
               "neuro": "bewusstlos, ungezielte Bewegungen auf Schmerzreiz",
               "skin": "kalt, blass",
-              "ecg": "Sinustachykardie"
+              "ecg": "Sinustachykardie",
+              "spco": "SpCO 15 % unter Beatmung mit Sauerstoff"
             },
             "temp": 34.3
           },
@@ -2277,7 +2306,7 @@
     },
     {
       "id": "ki-eb8b72",
-      "version": 1,
+      "version": 2,
       "title": "Rauchgasexposition mit verdecktem akutem Koronarsyndrom",
       "picture": "Mann, ca. 70 Jahre, steht im durchnässten Schlafanzug und in Hausschuhen, läuft geschäftig umher und trägt mehrere Decken unter dem Arm. Rußspuren an den Nasenlöchern, keine sichtbaren Wunden. Hustet immer wieder, Haare nass vom Regen, Hände zittern leicht. Wirkt munter und abwehrend und sagt: „Mir fehlt nichts, kümmern Sie sich lieber um die anderen!“",
       "profile": {
@@ -2367,7 +2396,8 @@
           "airway": "Ruß an den Nasenlöchern, Mund und Rachen ohne Ruß, Stimme klar, keine Heiserkeit, keine Schluckbeschwerden",
           "skin": "Rosig, kühl, Schlafanzug durchnässt",
           "bodycheck": "Gibt keine Brustschmerzen an; Keine Verletzungen, keine Verbrennungen",
-          "neuro": "Wach, orientiert, Pupillen isokor und prompt lichtreagibel, leichter Kopfschmerz"
+          "neuro": "Wach, orientiert, Pupillen isokor und prompt lichtreagibel, leichter Kopfschmerz",
+          "spco": "SpCO 12 %"
         },
         "temp": 35.8
       },
@@ -2398,7 +2428,8 @@
             "exam": {
               "neuro": "Wach, orientiert, Kopfschmerz rückläufig",
               "bodycheck": "Keine Brustschmerzen, Husten seltener",
-              "skin": "Rosig, warm unter der Rettungsdecke"
+              "skin": "Rosig, warm unter der Rettungsdecke",
+              "spco": "SpCO 6 % unter Sauerstoff"
             },
             "temp": 36.1
           },
@@ -2447,7 +2478,8 @@
               "ecg": "ST-Senkung",
               "bodycheck": "Druckgefühl deutlich rückläufig, keine Ausstrahlung mehr",
               "skin": "Blass, nicht mehr schweißig",
-              "behavior": "Sitzt ruhig in die Decke gewickelt, akzeptiert die Versorgung"
+              "behavior": "Sitzt ruhig in die Decke gewickelt, akzeptiert die Versorgung",
+              "spco": "SpCO 6 % unter Sauerstoff"
             },
             "temp": 35.9
           },
@@ -2502,7 +2534,8 @@
               "ecg": "STEMI (ST-Hebung)",
               "bodycheck": "Brustschmerz etwas gebessert, aber anhaltend",
               "skin": "Blass, kühl, weniger schweißig",
-              "behavior": "Sitzt mit erhöhtem Oberkörper, ruhig, ängstlich, braucht dringend Notarzt und Transport"
+              "behavior": "Sitzt mit erhöhtem Oberkörper, ruhig, ängstlich, braucht dringend Notarzt und Transport",
+              "spco": "SpCO 6 % unter Sauerstoff"
             },
             "temp": 35.6
           },
@@ -2558,7 +2591,8 @@
               "ecg": "STEMI (ST-Hebung)",
               "auscultation": "Feuchte Rasselgeräusche basal beidseits",
               "skin": "Blass, kühl, schweißig",
-              "behavior": "Wach, ängstlich, kritisch krank, sofortiger Transport mit Notarzt erforderlich"
+              "behavior": "Wach, ängstlich, kritisch krank, sofortiger Transport mit Notarzt erforderlich",
+              "spco": "SpCO 6 % unter Sauerstoff"
             }
           },
           "rules": [],

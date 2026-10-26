@@ -1,6 +1,6 @@
 {
   "id": "i039",
-  "version": 2,
+  "version": 3,
   "title": "Plötzlicher stärkster Kopfschmerz",
   "picture": "Mann, ca. 45 Jahre, in Einsatzkleidung, geht langsam und hält sich mit beiden Händen den Hinterkopf. Blinzelt ins Licht. „Mir ist beim Tragen was in den Kopf geschossen. So schlimm war es noch nie.“",
   "profile": {
@@ -173,7 +173,9 @@
         "hr": 84,
         "bp": "160/95",
         "pain": 5
-      }
+      },
+      "minutes": 30,
+      "else": "nachblutung"
     },
     "3-versorgt": {
       "findings": {
@@ -185,7 +187,8 @@
         "exam": {
           "bodycheck": "Nackensteife, hat erbrochen, keine Verletzungen"
         }
-      }
+      },
+      "else": "nachblutung"
     },
     "intubiert": {
       "findings": {
@@ -216,6 +219,30 @@
           "death": "Keine Atmung, kein Puls, Asystolie, Pupillen weit und lichtstarr. Totenflecken noch nicht ausgebildet."
         }
       }
+    },
+    "nachblutung": {
+      "findings": {
+        "walking": false,
+        "rr": 16,
+        "spo2": 95,
+        "hr": 64,
+        "bp": "200/110",
+        "gcs": 10,
+        "followsCommands": false,
+        "exam": {
+          "pupils": "rechts weiter als links, rechts träge",
+          "bodycheck": "Nackensteife, erbricht erneut, keine Verletzungen"
+        }
+      },
+      "rules": [
+        {
+          "when": [
+            "intubation"
+          ],
+          "then": "intubiert"
+        }
+      ],
+      "else": "4"
     }
   }
 }

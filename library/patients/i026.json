@@ -1,10 +1,10 @@
 {
-  "id": "i026", "version": 1, "title": "Verschüttete Person mit sicheren Todeszeichen",
-  "picture": "Mann, ca. 70 Jahre, liegt unter Trümmern, nur Kopf, Oberkörper und ein Arm sind frei. Keine Atmung, keine Lebenszeichen. Blauviolette Flecken an den aufliegenden Körperstellen, der freie Arm ist steif und lässt sich nicht bewegen.",
+  "id": "i026", "version": 2, "title": "Verschüttete Person mit sicheren Todeszeichen",
+  "picture": "Mann, ca. 70 Jahre, liegt unter Trümmern, nur Kopf, Oberkörper und ein Arm sind frei. Keine Atmung, keine Lebenszeichen. Blauviolette Flecken an den unten liegenden Körperstellen, der freie Arm ist steif und lässt sich nicht bewegen.",
   "profile": { "temperament": "keins", "speech": "spricht nicht", "pitfall": "sichere Todeszeichen feststellen und kennzeichnen – Bergung erst, wenn die Lebenden versorgt sind" },
   "meta": {"category": "Trauma", "tags": ["Sichtung", "Todeszeichen"], "difficulty": "einsteiger"},
   "scoring": {"critical": [{"actions": ["death_check"], "within": 15}], "harmful": ["cpr"]},
-  "base": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "keine Atmung, kein Puls. zusammenfließende Totenflecken an den aufliegenden Körperpartien, Leichenstarre in Kiefer und Armen. Sonst durch Trümmer verdeckt.", "pupils": "weit, lichtstarr, Hornhaut getrübt", "death": "Sichere Todeszeichen: zusammenfließende Totenflecken an den aufliegenden Körperpartien, auf festen Daumendruck nur noch teilweise wegdrückbar; Leichenstarre in Kiefer, Nacken und Armen voll ausgeprägt. Todeseintritt vor mehreren Stunden (etwa 4–8 h) – die Verschüttung liegt also schon länger zurück. Tod festgestellt, Kennzeichnung als tot, Bergung erst nach Versorgung der Lebenden." } },
+  "base": { "walking": false, "breathing": false, "rr": 0, "hr": 0, "radialPulse": false, "gcs": 3, "followsCommands": false, "exam": { "bodycheck": "keine Atmung, kein Puls. zusammenfließende Totenflecken an den unten liegenden Körperpartien, Auflagestellen ausgespart, Leichenstarre in Kiefer und Armen. Sonst durch Trümmer verdeckt.", "pupils": "weit, lichtstarr, Hornhaut getrübt", "death": "Sichere Todeszeichen: zusammenfließende Totenflecken an den unten liegenden Körperpartien, Auflagestellen ausgespart, auf festen Daumendruck nur noch teilweise wegdrückbar; Leichenstarre in Kiefer, Nacken und Armen voll ausgeprägt. Todeseintritt vor mehreren Stunden (etwa 4–8 h) – die Verschüttung liegt also schon länger zurück. Tod festgestellt, Kennzeichnung als tot, Bergung erst nach Versorgung der Lebenden." } },
   "start": "1",
   "phases": { "1": { "dead": true } }
 }

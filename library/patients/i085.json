@@ -1,11 +1,11 @@
 {
-  "id": "i085", "version": 2, "title": "Panische Mutter",
+  "id": "i085", "version": 3, "title": "Panische Mutter",
   "picture": "Frau, ca. 35 Jahre, unverletzt, schreit nach ihrem Kind: \"Wo ist mein Sohn? Ich will zu ihm!\" Läuft zwischen den liegenden Verletzten hin und her, atmet schnell.",
   "profile": { "temperament": "panisch", "speech": "schreit, abgehackt; nach Betreuung ruhiger",
     "anamnesis": { "symptoms": "Mir kribbeln die Hände, ich krieg keine Luft!", "allergies": "Nein.", "medication": "Nein.", "history": "Nein, ich bin gesund.", "lastMeal": "Heute Morgen.", "event": "Wir saßen im Bus, dann hat es geknallt. Sie haben mir Jonas weggenommen!", "risk": "Ich bleibe nicht hier sitzen." },
     "pitfall": "Ihr Sohn wird bereits versorgt. Ihre Unruhe steckt andere Betroffene an. Eine feste Bezugsperson und Kontakt zum Kind beruhigen sie." },
   "meta": { "category": "Psychiatrie", "tags": ["Psyche", "Betreuung", "Kind"], "difficulty": "einsteiger" },
-  "scoring": { "critical": [{ "actions": ["calm", "psnv"], "within": 10 }], "harmful": [] },
+  "scoring": { "critical": [{ "actions": ["calm", "psnv"], "within": 10 }], "harmful": ["bag_rebreathing"] },
   "base": { "walking": true, "breathing": true, "rr": 26, "spo2": 99, "hr": 115, "bp": "145/90", "radialPulse": true, "recap": 2, "gcs": 15, "followsCommands": true, "pain": 0,
     "exam": { "bodycheck": "unverletzt, Kribbeln in beiden Händen" } },
   "start": "1",
